@@ -15,7 +15,7 @@ public class LoginController {
 			return "/codeBlue/home";
 		}
 		
-		return "/codeBlue/home";
+		return "/home";
 	}
 	
 	@GetMapping("/login")
