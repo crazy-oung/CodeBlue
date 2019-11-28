@@ -12,10 +12,10 @@ public class LoginController {
 	public String getHome(HttpSession session) {
 		System.out.println("::: get - codeBlue home :::");
 		if(session.getAttribute("user") == null) {
-			return "/codeBlue/home";
+			return "/home";
 		}
 		
-		return "/home";
+		return "/codeBlue/home";
 	}
 	
 	@GetMapping("/login")
