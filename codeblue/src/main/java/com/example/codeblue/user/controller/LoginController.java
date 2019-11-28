@@ -12,7 +12,7 @@ public class LoginController {
 	public String getHome(HttpSession session) {
 		System.out.println("::: get - codeBlue home :::");
 		if(session.getAttribute("user") == null) {
-			return "home";
+			return "/codeBlue/home";
 		}
 		
 		return "/codeBlue/home";
