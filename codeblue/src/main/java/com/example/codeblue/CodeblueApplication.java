@@ -1,12 +1,12 @@
 package com.example.codeblue;
 
+import java.util.Properties;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.servlet.ViewResolver;
-import org.thymeleaf.spring5.SpringTemplateEngine;
-import org.thymeleaf.spring5.view.ThymeleafViewResolver;
-import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 @SpringBootApplication
 public class CodeblueApplication {
@@ -28,5 +28,21 @@ public class CodeblueApplication {
 //        viewResolver.setTemplateEngine(engine);
 //        return viewResolver;        
 //    } 
-
+	 @Bean
+	    public JavaMailSender getJavaMailSender() {
+	        JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
+	        javaMailSender.setHost("smtp.gmail.com");
+	        javaMailSender.setPort(587);
+	        //이진혁 구글아이디
+	        javaMailSender.setUsername("dnwnsmsdnwn1@gmail.com");
+	        javaMailSender.setPassword("a74101234");
+	        
+	        Properties properties = new Properties();
+	        properties.setProperty("mail.smtp.auth", "true");
+	        properties.setProperty("mail.smtp.starttls.enable", "true");
+	        javaMailSender.setJavaMailProperties(properties);
+	        
+	        return javaMailSender;
+	        
+	 }
 }

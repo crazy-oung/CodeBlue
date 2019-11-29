@@ -87,12 +87,12 @@
 						    <div class="invalid-feedback">닉네임을 입력해주세요.</div>
 						  </div>
 						  <div class="form-group">
-						    <label class="text-dark font-weight-bold" for="pwd">비밀번호</label>
-						    <input type="password" class="form-control form-control-sm" id="pwd" placeholder="비밀번호" name="memberPw" required>
+						    <label class="text-dark font-weight-bold" for="pw">비밀번호</label>
+						    <input type="password" class="form-control form-control-sm" id="pw" placeholder="비밀번호" name="memberPw" required>
 						    <div class="valid-feedback">좋아요.</div>
 						    <div class="invalid-feedback">비밀번호를 입력해주세요.</div>
 						  </div> 
-						  <button type="button" class="btn btn-block btn-primary join">회원가입</button> 
+						  <button type="button" class="btn btn-block btn-primary join" id="join">회원가입</button> 
 						 </form> 
 						  <!-- 입력 클릭시 인증코드 입력란 출력 -->
 						  <b class="text-sm card my-3 p-3 text-center text-primary shadow" id="notice" style="display:none">인증 메일이 전송 되었습니다! 확인해 주세요!</b>
@@ -144,25 +144,25 @@
 <script> 
 		$(".join").click(function(){
 			console.log("입력완료 메일전송 시작.");
-			if($("#id").val()=="" || $("#name").val()=="" || $("#pwd").val()==""){
+			if($("#id").val()=="" || $("#name").val()=="" || $("#pw").val()==""){
 				alert("빈칸을 채워주세요!");
 				return;
 			} 
 			
 			$.ajax({
 				url:"/rest/sendEmailToConfirm",
-				data:{ "memberId" : $("#id").val() , "memberName" : $("#name").val() },
+				data:{ "userId" : $("#id").val() , "userName" : $("#name").val() },
 				method:"post", 
 				success:function(){
 					console.log("메일 전송 완료!")
 					$("#notice").fadeIn(300); 
 					setTimeout(function() {
 						$("#codeForm").slideDown(500); 
-					}, 300);			
+					}, 300);
 					
 					$('#id').prop('readonly', true); 
 					$("#name").prop('readonly', true); 
-					$("#pwd").prop('readonly', true);  
+					$("#pw").prop('readonly', true);  
 					$(".join").prop('disabled', true);  
 					
 					console.log($('#id').val());
@@ -177,9 +177,9 @@
 			console.log("코드 검사");
 		 	$.ajax({
 		 		url:"/rest/checkCode",
-				data:{ 	"memberId" : $("#id").val() , 
-						"memberName" : $("#name").val(),
-						"memberPw" : $("#pwd").val(), 
+				data:{ 	"userId" : $("#id").val() , 
+						"userName" : $("#name").val(),
+						"userPw" : $("#pw").val(), 
 						"code" : $("#code").val() },
 				method:"post", 
 				success:function(json){

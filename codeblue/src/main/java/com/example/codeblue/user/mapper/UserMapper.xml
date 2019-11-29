@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.codeblue.user.mapper.UserMapper">
+	<insert id="insertUser"
+			parameterType="com.example.codeblue.user.vo.User">
+	INSERT INTO user(
+	user_id,user_name,user_pw
+	)VALUES(
+	#{userId},#{userName},#{userPw}
+	)
+	</insert>
+</mapper>
