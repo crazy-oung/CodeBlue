@@ -23,7 +23,7 @@
 <link href="css/sb-admin-2.min.css" rel="stylesheet">
 <!-- Custom styles for codeBlue -->
 <link href="css/codeBlue.css" rel="stylesheet">
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
 <style>
 .hov-g:hover {
 	background: #d9d9d9 !important;
@@ -77,20 +77,20 @@
 				</p>
 				<!-- login Form begin -->
 				<div class="card shadow p-2 mx-5"> 
-					<form class="was-validated card-body">
+					<form class="was-validated card-body" action="/login" method="post">
 					  <div class="form-group">
 					    <label class="text-dark font-weight-bold" for="id">아이디</label>
-					    <input type="email" class="form-control form-control-sm" id="id" placeholder="E-Mail@example.com" name="memberId" required>
+					    <input type="email" class="form-control form-control-sm" id="userId" placeholder="E-Mail@example.com" name="userId" required>
 					    <div class="valid-feedback">좋아요.</div>
 					    <div class="invalid-feedback">올바른 이메일을 입력해주세요.</div>
 					  </div> 
 					  <div class="form-group">
-					    <label class="text-dark font-weight-bold" for="pwd">비밀번호</label>
-					    <input type="password" class="form-control form-control-sm" id="pwd" placeholder="비밀번호" name="memberPw" required>
+					    <label class="text-dark font-weight-bold" for="pw">비밀번호</label>
+					    <input type="password" class="form-control form-control-sm" id="userPw" placeholder="비밀번호" name="userPw" required>
 					    <div class="valid-feedback">좋아요.</div>
 					    <div class="invalid-feedback">비밀번호를 입력해주세요.</div>
 					  </div> 
-					  <button type="submit" class="btn btn-block btn-primary join">로그인</button> 
+					  <button type="submit" class="btn btn-block btn-primary join" id="login">로그인</button> 
 					</form>  
 				</div>
 				<!-- login Form end --> 
@@ -119,5 +119,23 @@
 	<script src="js/demo/chart-area-demo.js"></script>
 	<script src="js/demo/chart-pie-demo.js"></script>
 </body>
-
+<script> 
+/* 	$("#login").click(function(){
+		console.log("login click");
+		if($("#id").val() == "" || $("#pw").val() == ""){
+			alert("공백입니다. 입력해주세요.");
+			return;
+		} 
+		console.log("login ajax after ");
+		$.ajax({
+			url:"/login",
+			data:{"userId" : $("#id").val() , "userPw" : $("#pw").val() },
+			method : "post",
+			success : function(){
+				console.log("success ! ")	
+			}
+		})
+	}) */
+	
+</script>
 </html>

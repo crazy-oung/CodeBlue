@@ -11,13 +11,19 @@ import com.example.codeblue.user.vo.User;
 @Service
 public class UserService {
 	@Autowired UserMapper userMapper;
-	@Autowired JavaMailSender javaMailSender;
+	
+	public User loginUser(User user) {
+		return userMapper.checkUser(user);
+	}
+	
 	//회원가입
 	public int addUser(User user) {
 		
 		userMapper.insertUser(user);
 		return 0;
 	}
+	
+	@Autowired JavaMailSender javaMailSender;
 	//회원가입 메일 보내기
 	public String sendmail(User user) {	        
 	    

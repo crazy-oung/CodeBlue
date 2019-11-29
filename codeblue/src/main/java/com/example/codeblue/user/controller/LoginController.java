@@ -5,9 +5,10 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-
+import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.codeblue.user.service.UserService;
+import com.example.codeblue.user.vo.User;
 
 
 @Controller
@@ -32,6 +33,23 @@ public class LoginController {
 		} 
 		return "login";
 	}
+	
+	@PostMapping("/login")
+	public String postLogin(HttpSession session, User user) {
+		System.out.println("::: post - login :::");
+		System.out.println(user);
+		System.out.println(session.getAttribute("loginUser"));
+		
+		// 세션 검사
+		User loginUser = userService.loginUser(user);
+		
+		if(loginUser != null) {
+			session.setAttribute("loginUser", loginUser); 
+			return "/codeBlue/today";
+		}  
+		return "redirect:/";
+	}
+	
 	@GetMapping("/register")
 	public String getRegister(HttpSession session) {
 		System.out.println("::: get - register :::");
