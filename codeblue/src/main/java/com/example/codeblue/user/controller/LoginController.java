@@ -15,25 +15,23 @@ public class LoginController {
 			return "/home";
 		}
 		
-		return "/codeBlue/home";
+		return "/codeBlue/today";
 	}
 	
 	@GetMapping("/login")
 	public String getLogin(HttpSession session) {
 		System.out.println("::: get - login :::");
 		if(session.getAttribute("user") != null) {
-			return "/codeBlue/home";
-		}
-		
+			return "/codeBlue/today";
+		} 
 		return "login";
 	}
 	@GetMapping("/register")
 	public String getRegister(HttpSession session) {
 		System.out.println("::: get - register :::");
 		if(session.getAttribute("user") != null) {
-			return "/codeBlue/home";
-		}
-		
+			return "/codeBlue/today";
+		} 
 		return "register";
 	}
 	

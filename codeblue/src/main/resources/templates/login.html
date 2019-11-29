@@ -10,7 +10,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>최근 질문 - 코드블루</title>
+<title>로그인 - 코드블루</title>
 
 <!-- Custom fonts for this template-->
 <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
@@ -33,7 +33,7 @@
 </style>
 </head>
 
-<body id="page-top">
+<body style="background: #ebebeb; height: 94vh">
  
 		<!-- Topbar -->
 		<nav
@@ -41,7 +41,9 @@
 			style="height: 50px; border-bottom: 1px solid #d9d9d9; border-top: 4px solid #4e73df; background: #f2f2f2;">
 			<div class="container">
 				<!-- topbar codeblue logo -->
-				<a class="navbar-brand text-primary mr-0" href="/"><img src="/img/codeBlueLogo.png" width="130px"></a> 
+				<a class="navbar-brand text-primary mr-0" href="/">
+					<img src="/img/codeBlueLogo.png" width="130px"> 
+				</a> 
 				<a class="btn btn-sm btn-default mx-2 hov-g text-dark" href="/QnA">QnA</a>
 
 				<!-- Topbar Search -->
@@ -63,61 +65,39 @@
 		<!-- End of Topbar -->
 
 		<!-- Begin Page Content -->
-		<div class="container">
-			<div class="row"> 
-			
-				<!-- Side Bar -->
-				<div class="col-sm-1 p-0 " style="border-right: 1px solid #d9d9d9;">
-					<nav class="navbar pl-0 sticky-container">
-						<div style="margin-top: 70px">
-							<ul class="nav flex-column">
-								<li class="pl-0"><small>질문</small></li> 
-								<li class="nav-item pl-1"><a class="nav-link pl-2 font-weight-bold pt-1 pb-0" href="/">today</a></li> 
-								<li class="nav-item pl-1"><a class="nav-link pl-2 text-danger font-weight-bold pt-1 pb-0" href="/">hot 🔥</a></li>
-								<li class="nav-item pl-1"><a class="nav-link pl-2 text-warning font-weight-bold pt-1 pb-0" href="/">help!</a></li>
-								<li class="nav-item pl-1"><a class="nav-link pl-2 text-success font-weight-bold pt-1 pb-0" href="/">ongoing</a></li>
-								<li class="mt-2"><small>조회</small></li> 
-								<li class="nav-item"><a class="nav-link text-dark pl-2 pt-1 pb-0" href="/">유저</a></li>
-								<li class="nav-item"><a class="nav-link text-dark pl-2 pt-1 pb-0" href="/">태그</a></li>
-								<li class="nav-item"><a class="nav-link text-dark pl-2 pt-1 pb-0" href="/">랭킹</a></li>
-							</ul>
-						</div> 
-					</nav>
+		<div class="container" style="height: 100%" align="center">  
+			<div class="p-5 m-5 text-left" style="width: 50%"> 
+				<p class="text-center">
+					<a href="/">
+						<img src="/img/codeBlueIcon.png" width="50px"><br>
+						<img class="mb-4" src="/img/codeBlue.png" width="100px">
+					</a> 
+				</p>
+				<!-- login Form begin -->
+				<div class="card shadow p-2 mx-5"> 
+					<form class="was-validated card-body">
+					  <div class="form-group">
+					    <label class="text-dark font-weight-bold" for="id">아이디</label>
+					    <input type="email" class="form-control form-control-sm" id="id" placeholder="E-Mail@example.com" name="memberId" required>
+					    <div class="valid-feedback">좋아요.</div>
+					    <div class="invalid-feedback">올바른 이메일을 입력해주세요.</div>
+					  </div> 
+					  <div class="form-group">
+					    <label class="text-dark font-weight-bold" for="pwd">비밀번호</label>
+					    <input type="password" class="form-control form-control-sm" id="pwd" placeholder="비밀번호" name="memberPw" required>
+					    <div class="valid-feedback">좋아요.</div>
+					    <div class="invalid-feedback">비밀번호를 입력해주세요.</div>
+					  </div> 
+					  <button type="submit" class="btn btn-block btn-primary join">로그인</button> 
+					</form>  
 				</div>
-				<!-- Side Bar End -->
-				
-				<!-- Page Content -->
-				<div class="col-sm-8">
-					<!-- Page Heading -->
-					<div class="d-sm-flex align-items-center justify-content-between mb-4" style="margin-top: 80px">
-						<h4 class="text-gray-800 mb-0">최근 올라온 질문</h4>
-						<a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow"><i class="mr-2 fas fa-plus fa-sm text-white-50"></i>질문 올리기</a> 
-					</div><!-- page Heading End -->
-					<hr>
-					
-					<div style="height:1000px;">
-						<h1>한다영 커밋</h1>
-						<h1>이정원 커밋</h1>
-						<h1>정종원 커밋</h1>
-						<h1>유영쥬 커밋</h1>
-						<h1>이진혁 커밋</h1>
-					</div>
-				</div>
-				<!-- Page Content End -->
-				
-				
-			</div>
+				<!-- login Form end --> 
+				<p class="text-center"><a class="nav-link" href="/register">아직 회원이 아니신가요?</a></p>
+				<p class="text-center mt-0 pt-0"><a class="nav-link" href="/registerExpert">전문가 이신가요?</a></p>
+			</div> 			
 		</div> 
-
-	<!-- Footer -->
-	<footer class="sticky-footer text-light" style="background: #333333">
-		<div class="container my-auto">
-			<div class="copyright text-right my-auto">
-				<span>Copyright &copy; codeBlue 2019</span>
-			</div>
-		</div>
-	</footer>
-	<!-- End of Footer -->
+		<!-- Page Content End --> 
+		 
 
 
 	<!-- Bootstrap core JavaScript-->

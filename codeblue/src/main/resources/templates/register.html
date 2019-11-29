@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>회원가입 - 코드블루</title>
+
+<!-- Custom fonts for this template-->
+<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+<!-- Custom styles for this template-->
+<link href="css/sb-admin-2.min.css" rel="stylesheet">
+<!-- import JQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
+<style>
+.hov-g:hover {
+	background: #d9d9d9 !important;
+}
+
+.hov-p:hover {
+	background: #d1e3ff !important;
+}
+</style>
+</head>
+
+<body style="background: #ebebeb; height: 94vh">
+ 
+		<!-- Topbar -->
+		<nav
+			class="navbar navbar-expand navbar-light topbar mb-4 shadow fixed-top"
+			style="height: 50px; border-bottom: 1px solid #d9d9d9; border-top: 4px solid #4e73df; background: #f2f2f2;">
+			<div class="container">
+				<!-- topbar codeblue logo -->
+				<a class="navbar-brand text-primary mr-0" href="/"><img src="/img/codeBlueLogo.png" width="130px"></a> 
+				<a class="btn btn-sm btn-default mx-2 hov-g text-dark" href="/QnA">QnA</a>
+
+				<!-- Topbar Search -->
+				<div class="input-group">
+					<input type="text" class="form-control  form-control-sm bg-light border-1" placeholder="검색어" style="width: 400px !important">
+					<div class="input-group-append">
+						<button class="btn btn-primary btn-sm" type="button">
+							<i class="fas fa-search fa-sm"></i>
+						</button>
+					</div>
+				</div>
+
+				<div class="d-felx justify-content-end" style="width: 600px">
+					<a class="ml-3 btn btn-sm hov-p text-primary" href="/login">로그인</a>
+					<a class=" btn ml-1 btn-sm btn-primary" href="/register">회원가입</a>
+				</div> 
+			</div>
+		</nav>
+		<!-- End of Topbar -->
+
+		<!-- Begin Page Content -->
+		<div class="container" style="height: 100%">  
+			<div class="row p-5 m-5">
+				
+				<div class="col-sm-6 mt-5 pt-5"><!-- explain codeBlue member 혜택 -->
+					<img src="/img/codeBlueLogo.png" width="250px"> 
+					<h1 class="text-primary h4 mt-2">회원이 되어볼까요?</h1>
+					<label>코드블루 회원들은 ...</label>
+				</div>
+				
+				<div class="col-sm-6 mt-5 pt-4">
+					<!-- register Form begin -->
+					<div class="card shadow p-1 m-4 mx-4"> 
+						<form class="was-validated card-body">
+						  <div class="form-group">
+						    <label class="text-dark font-weight-bold" for="id">아이디</label>
+						    <input type="email" class="form-control form-control-sm" id="id" placeholder="E-Mail@example.com" name="memberId" required>
+						    <div class="valid-feedback">좋아요.</div>
+						    <div class="invalid-feedback">올바른 이메일을 입력해주세요.</div>
+						  </div>
+						  <div class="form-group">
+						    <label class="text-dark font-weight-bold" for="name">닉네임</label>
+						    <input type="text" class="form-control form-control-sm" id="name" placeholder="이름" name="memberName" required>
+						    <div class="valid-feedback">좋아요.</div>
+						    <div class="invalid-feedback">닉네임을 입력해주세요.</div>
+						  </div>
+						  <div class="form-group">
+						    <label class="text-dark font-weight-bold" for="pwd">비밀번호</label>
+						    <input type="password" class="form-control form-control-sm" id="pwd" placeholder="비밀번호" name="memberPw" required>
+						    <div class="valid-feedback">좋아요.</div>
+						    <div class="invalid-feedback">비밀번호를 입력해주세요.</div>
+						  </div> 
+						  <button type="button" class="btn btn-block btn-primary join">회원가입</button> 
+						 </form> 
+						  <!-- 입력 클릭시 인증코드 입력란 출력 -->
+						  <b class="text-sm card my-3 p-3 text-center text-primary shadow" id="notice" style="display:none">인증 메일이 전송 되었습니다! 확인해 주세요!</b>
+						  <form class="was-validated card-body" > 
+							  <div id="codeForm" style="display:none">	  
+							  	<div class="form-group">
+							    	<label for="uname">인증코드</label>
+							    	<input type="text" class="form-control" id="code" placeholder="인증코드를 입력해주세요" name="confirmCode" required>
+							    	<div class="valid-feedback">좋아요.</div>
+							    	<div class="invalid-feedback">인증 코드를 입력해주세요 🎆</div> 
+							  	</div> 
+							  	<button type="button" id="confirmCode" class="btn btn-block btn-outline-primary">확인</button>  
+								<a href="/sendMail" id="resend" class="small text-center">메일이 안왔나요?</a>
+								<a href="/sendMail" class="small text-center">제게 메일을 보내주세요!</a>
+							  </div>
+						  </form>
+						  <div class="card my-3 p-3 text-center shadow" style="display:none" id="joinComplete">
+							  <h3 class="my-3 p-3 text-center text-success font-weight-bold" id="ok"></h3>
+							  <a href="/login" class="font-weight-bold" id="toLogin"></a>
+						  </div> 
+					</div>
+					<!-- register Form end -->
+				</div>
+				
+				
+			</div> 
+		</div> 
+		<!-- Page Content End --> 
+		 
+
+
+	<!-- Bootstrap core JavaScript-->
+	<script src="vendor/jquery/jquery.min.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+	<!-- Core plugin JavaScript-->
+	<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+	<!-- Custom scripts for all pages-->
+	<script src="js/sb-admin-2.min.js"></script>
+
+	<!-- Page level plugins -->
+	<script src="vendor/chart.js/Chart.min.js"></script>
+
+	<!-- Page level custom scripts -->
+	<script src="js/demo/chart-area-demo.js"></script>
+	<script src="js/demo/chart-pie-demo.js"></script>
+</body>
+<script> 
+		$(".join").click(function(){
+			console.log("입력완료 메일전송 시작.");
+			if($("#id").val()=="" || $("#name").val()=="" || $("#pwd").val()==""){
+				alert("빈칸을 채워주세요!");
+				return;
+			} 
+			
+			$.ajax({
+				url:"/rest/sendEmailToConfirm",
+				data:{ "memberId" : $("#id").val() , "memberName" : $("#name").val() },
+				method:"post", 
+				success:function(){
+					console.log("메일 전송 완료!")
+					$("#notice").fadeIn(300); 
+					setTimeout(function() {
+						$("#codeForm").slideDown(500); 
+					}, 300);			
+					
+					$('#id').prop('readonly', true); 
+					$("#name").prop('readonly', true); 
+					$("#pwd").prop('readonly', true);  
+					$(".join").prop('disabled', true);  
+					
+					console.log($('#id').val());
+					console.log($('#name').val()); 
+				}
+
+			})
+			 
+		})
+		 
+		$("#confirmCode").click(function(){
+			console.log("코드 검사");
+		 	$.ajax({
+		 		url:"/rest/checkCode",
+				data:{ 	"memberId" : $("#id").val() , 
+						"memberName" : $("#name").val(),
+						"memberPw" : $("#pwd").val(), 
+						"code" : $("#code").val() },
+				method:"post", 
+				success:function(json){
+					if(json === "false"){
+						alert("코드가 틀렸습니다! 다시 시도하여 주세요. :(")
+						return;
+					}
+					$("#confirmCode").prop("disabled", true);
+					$("#joinComplete").fadeIn(300);
+					setTimeout(function() {
+						$("#ok").append("환영합니다.🎆 회원가입이 완료 되었어요!");
+						$("#toLogin").append("로그인 하러 가볼까요?");
+					}, 300);	
+					
+				},
+				fail:function(){
+					alert("코드가 틀렸습니다! 다시 시도하여 주세요. :(")
+				}
+			})
+
+		})  
+</script>
+</html>
