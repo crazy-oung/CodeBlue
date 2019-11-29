@@ -19,8 +19,15 @@
 	background: #7e98e7; 
 }
 
-/* 하이라이터 */
 ::selection {
 	background: #7e98e7;
 	color: 	#0d0d0d;
+}
+
+.hov-g:hover {
+	background: #d9d9d9;
+}
+
+.hov-p:hover {
+	background: #d1e3ff;
 }
