@@ -7,7 +7,8 @@ import com.example.codeblue.user.vo.User;
 @Mapper
 public interface UserMapper {
 	//로그인
-	public User checkUser(User user);
+	public User selectUserId(User user);
+	
 	//회원가입
 	public int insertUser(User user);
 	

@@ -28,14 +28,15 @@ public class CodeblueApplication {
 //        viewResolver.setTemplateEngine(engine);
 //        return viewResolver;        
 //    } 
+	
 	 @Bean
 	    public JavaMailSender getJavaMailSender() {
 	        JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
 	        javaMailSender.setHost("smtp.gmail.com");
 	        javaMailSender.setPort(587);
-	        //이진혁 구글아이디
-	        javaMailSender.setUsername("dnwnsmsdnwn1@gmail.com");
-	        javaMailSender.setPassword("a74101234");
+	        //한다영 구글아이디
+	        javaMailSender.setUsername("ddukgyen@gmail.com");
+	        javaMailSender.setPassword("goodee2019#*");
 	        
 	        Properties properties = new Properties();
 	        properties.setProperty("mail.smtp.auth", "true");

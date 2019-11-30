@@ -32,21 +32,20 @@ public class LoginController {
 			return "/codeBlue/today";
 		} 
 		return "login";
-	}
-	
+	} 
 	@PostMapping("/login")
 	public String postLogin(HttpSession session, User user) {
-		System.out.println("::: post - login :::");
-		System.out.println(user);
-		System.out.println(session.getAttribute("loginUser"));
+		System.out.println("::: post - login :::"); 
+		System.out.println(user); 
 		
 		// 세션 검사
-		User loginUser = userService.loginUser(user);
-		
+		User loginUser = userService.verifyUser(user);		
 		if(loginUser != null) {
+			System.out.println("already loged in Back to user Home");
 			session.setAttribute("loginUser", loginUser); 
 			return "/codeBlue/today";
 		}  
+		
 		return "redirect:/";
 	}
 	
@@ -57,5 +56,14 @@ public class LoginController {
 			return "/codeBlue/today";
 		} 
 		return "register";
+	}
+	
+	@GetMapping("/registerExpert")
+	public String getRegisterExpert(HttpSession session) {
+		System.out.println("::: get - register :::");
+		if(session.getAttribute("user") != null) {
+			return "/codeBlue/today";
+		} 
+		return "registerExpert";
 	}
 }
