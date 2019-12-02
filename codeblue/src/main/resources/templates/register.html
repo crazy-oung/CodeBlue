@@ -78,21 +78,40 @@
 						<form class="was-validated card-body">
 						  <div class="form-group">
 						    <label class="text-dark font-weight-bold" for="id">아이디</label>
-						    <input type="email" class="form-control form-control-sm" id="id" placeholder="E-Mail@example.com" name="memberId" required>
+						    <input type="email" class="form-control form-control-sm" id="id" placeholder="E-Mail@example.com" name="userId" required>
 						    <div class="valid-feedback">좋아요.</div>
 						    <div class="invalid-feedback">올바른 이메일을 입력해주세요.</div>
 						  </div>
 						  <div class="form-group">
 						    <label class="text-dark font-weight-bold" for="name">닉네임</label>
-						    <input type="text" class="form-control form-control-sm" id="name" placeholder="이름" name="memberName" required>
+						    <input type="text" class="form-control form-control-sm" id="name" placeholder="이름" name="userName" required>
 						    <div class="valid-feedback">좋아요.</div>
 						    <div class="invalid-feedback">닉네임을 입력해주세요.</div>
 						  </div>
 						  <div class="form-group">
 						    <label class="text-dark font-weight-bold" for="pw">비밀번호</label>
-						    <input type="password" class="form-control form-control-sm" id="pw" placeholder="비밀번호" name="memberPw" required>
+						    <input type="password" class="form-control form-control-sm" id="pw" placeholder="비밀번호" name="userPw" required>
 						    <div class="valid-feedback">좋아요.</div>
 						    <div class="invalid-feedback">비밀번호를 입력해주세요.</div>
+						  </div>
+						  
+						  <div class="form-group">
+						    <label class="text-dark font-weight-bold" for="pw">비밀번호 확인</label>
+						    <input type="password" class="form-control form-control-sm" id="pw2" placeholder="비밀번호" name="memberPw2" required>
+						    <div class="valid-feedback">좋아요.</div>
+						    <div class="invalid-feedback">비밀번호를 입력해주세요.</div>
+						  </div> 
+						  <div class="form-group">
+						    <label class="text-dark font-weight-bold" for="pw">생일</label>
+						    <input type="date" class="form-control form-control-sm" id="birthDate" name="userBirthDate" required>
+						    <div class="valid-feedback">좋아요.</div>
+						    <div class="invalid-feedback">생일을 입력해주세요.</div>
+						  </div> 
+						  <div class="form-group">
+						    <label class="text-dark font-weight-bold" for="pw">활동지</label>
+						    <select class="form-control form-control-sm" id="region" name="userRegion" required></select> 
+						    <div class="valid-feedback">좋아요.</div>
+						    <div class="invalid-feedback">활동지를 선택해주세요.</div>
 						  </div> 
 						  <button type="button" class="btn btn-block btn-primary join" id="join">회원가입</button> 
 						 </form> 
