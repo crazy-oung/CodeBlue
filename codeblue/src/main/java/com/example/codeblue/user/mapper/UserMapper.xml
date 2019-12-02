@@ -33,7 +33,7 @@
 		FROM user WHERE user_id = #{userId} AND user_pw = #{userPw}
 	</select>
 	
-	<select id="selectUserIdForReset" parameterType="com.example.codeblue.user.vo.User" resultType="com.example.codeblue.user.vo.User">
+	<select id="selectUserIdForCheck" parameterType="com.example.codeblue.user.vo.User" resultType="com.example.codeblue.user.vo.User">
 		SELECT user_id as userId, user_name as userName
 		FROM user WHERE user_id = #{userId}
 	</select>

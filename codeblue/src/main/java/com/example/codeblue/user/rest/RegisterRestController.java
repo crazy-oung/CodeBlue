@@ -22,14 +22,11 @@ public class RegisterRestController {
 	
 
 	@PostMapping("/rest/resetPassword")
-	public int postAccountRecovery(User user, @PathVariable("id")String id) {
+	public int postAccountRecovery(User user) {
 		System.out.println("::: post - resetPassword :::");
-		System.out.println(id);
-		System.out.println("User"+ user);
-		user.setUserId(id);
 		System.out.println("User"+ user);
 		
-		return userService.updateUserPw(user);
+		return userService.modifyUserPw(user);
 	}
 	
 	
@@ -38,8 +35,9 @@ public class RegisterRestController {
 		System.out.println("::: post - verifyUserForReset :::");
 		System.out.println(user.toString());
 		
-		String result = userService.verifyUserForReset(user); 
+		String result = userService.getUserIdForCheck(user); 
 		if(result == null) {
+			System.out.println("noSuchUser!! ");
 			return "noSuchUser";
 		}
 		

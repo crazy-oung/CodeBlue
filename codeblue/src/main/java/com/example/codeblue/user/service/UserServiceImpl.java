@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService{
 	
 	@Override
 	public User verifyUser(User user) {
-		System.out.println("::: UserServluceImpl - loginUser :::");
+		System.out.println("::: UserServluceImpl - verifyUser :::");
 		return userMapper.selectUserId(user);
 	}
 	
@@ -91,10 +91,10 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public String verifyUserForReset(User user) {
+	public String getUserIdForCheck(User user) {
 		System.out.println("::: UserServluceImpl - verifyUserForReset :::");
 		
-		if(userMapper.selectUserIdForReset(user) == null) {
+		if(userMapper.selectUserIdForCheck(user) == null) {
 			return null;
 		}
 		
@@ -103,7 +103,8 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public int updateUserPw(User user) {
+	public int modifyUserPw(User user) {
+		System.out.println("::: UserServluceImpl - modifyUserPw :::");
 		return userMapper.updateUserPw(user);
 	}
 
