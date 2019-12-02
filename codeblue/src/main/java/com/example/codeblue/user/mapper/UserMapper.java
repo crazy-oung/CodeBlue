@@ -14,6 +14,7 @@ import com.example.codeblue.user.vo.User;
 public interface UserMapper {
 	// 유저 로그인
 	public User selectUserId(User user);
+	public User selectUserIdForReset(User user);
 	// 관리자 로그인
 	public Manager selectManagerId(User user);
 	
@@ -29,4 +30,6 @@ public interface UserMapper {
 	// 전문가 추가
 	public int insertExpert(Expert expert);
 	 
+	// 비밀번호 변경
+	public int updateUserPw(User user);
 }

@@ -6,8 +6,8 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.codeblue.user.service.UserService;
@@ -19,20 +19,32 @@ import com.example.codeblue.user.vo.User;
 @RestController
 public class RegisterRestController {
 	@Autowired UserService userService;
+	
 
 	@PostMapping("/rest/resetPassword")
-	public String postResetPasswrod(HttpSession session,User user) { 
+	public int postAccountRecovery(User user, @PathVariable("id")String id) {
 		System.out.println("::: post - resetPassword :::");
+		System.out.println(id);
+		System.out.println("User"+ user);
+		user.setUserId(id);
+		System.out.println("User"+ user);
+		
+		return userService.updateUserPw(user);
+	}
+	
+	
+	@PostMapping("/rest/verifyUserForReset")
+	public String verifyUserForReset(HttpSession session,User user) { 
+		System.out.println("::: post - verifyUserForReset :::");
 		System.out.println(user.toString());
 		
-		String result = userService.resetPassword(user); 
-		if(result.equals("noSuchUser")) {
-			return result;
+		String result = userService.verifyUserForReset(user); 
+		if(result == null) {
+			return "noSuchUser";
 		}
 		
 		session.setAttribute("verifyCode", result);
-		
-		return result;
+		return "success";
 	}
 	
 	@PostMapping("/rest/sendEmailToConfirm")
@@ -48,7 +60,7 @@ public class RegisterRestController {
 	
 	// verify code & add User
 	@PostMapping("/rest/verifyCode")
-	public boolean verifyCode(User user, HttpSession session, @RequestParam(value="code")String code) {
+	public boolean verifyCode(User user, HttpSession session, String code) {
 		System.out.println("::: post - verifyCode :::");
 		System.out.println(user.toString() + "입력받은 코드:" +code);
 		
@@ -62,6 +74,21 @@ public class RegisterRestController {
 		
 		return true;
 	}
+	// verify code & add User
+	@PostMapping("/rest/verifyCodeForRest")
+	public boolean verifyCodeForRest(HttpSession session, String code) {
+		System.out.println("::: post - verifyCodeForRest :::");
+		
+		if(session.getAttribute("verifyCode").equals(code) != true) {
+			System.out.println("!password not correct");
+			System.out.println("code : "+code+", verifyCode: "+session.getAttribute("verifyCode"));
+			return false;
+		}
+		
+		System.out.println("code correct!");	
+		return true;
+	}
+	
 	@PostMapping("/rest/addExpert")
 	public boolean addExpert(Expert expert) {
 		System.out.println("::: post - addExpert :::");    

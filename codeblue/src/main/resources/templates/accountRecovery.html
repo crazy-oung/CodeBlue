@@ -10,7 +10,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>회원가입 - 코드블루</title>
+<title>비밀번호 초기화 - 코드블루</title>
 
 <!-- Custom fonts for this template-->
 <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -54,38 +54,35 @@
 		<!-- End of Topbar -->
 
 		<!-- Begin Page Content -->
-		<div class="container" style="height: 100%">  
-			<div class="row p-5 m-5">
-				
-				<div class="col-sm-6 mt-5 pt-5"><!-- explain codeBlue member 혜택 -->
-					<img src="/img/codeBlueLogo.png" width="250px"> 
-					<h1 class="text-primary h4 mt-2">회원이 되어볼까요?</h1>
-					<label>코드블루 회원들은 ...</label>
-					<a href="/registerExpert">전문가 이신가요?</a>
+		<div class="container" style="height: 100%" align="center">  
+			
+			<div class="p-5 m-5 text-left" style="width: 50%">	
+				<p class="text-center">
+					<a href="/">
+						<img src="/img/codeBlueIcon.png" width="50px"><br>
+						<img class="mb-4" src="/img/codeBlue.png" width="100px">
+					</a> 
+				</p>			
+				<!-- reset Form begin -->
+				<div class="card shadow pt-2 px-2 mx-5"> 
+					<form class="was-validated card-body" action="/resetPassword" method="post">
+					<input type="text" class="form-control form-control-sm" id="userId" readonly> 
+					  <div class="form-group">
+					    <label class="text-dark font-weight-bold" for="pw">비밀번호</label>
+					    <input type="password" class="form-control form-control-sm" id="pw" placeholder="비밀번호" required>
+					    <div class="valid-feedback">좋아요.</div>
+					    <div class="invalid-feedback">새 비밀번호를 입력해주세요.</div>
+					  </div>
+					  <div class="form-group">
+					    <label class="text-dark font-weight-bold" for="pw2">비밀번호 확인</label>
+					    <input type="password" class="form-control form-control-sm" id="pw2" placeholder="비밀번호" required>
+					    <div class="valid-feedback">좋아요.</div>
+					    <div class="invalid-feedback">비밀번호를 한번 더 입력해주세요.</div>
+					  </div> 
+					  <button type="button" id="reset" class="btn btn-block btn-outline-primary">비밀번호 변경</button>
+				  	</form>
 				</div>
-				
-				<div class="col-sm-6 mt-5 pt-4">
-					<!-- register Form begin -->
-					<div class="card shadow p-1 m-4 mx-4"> 
-						<form class="was-validated card-body">
-						  <div class="form-group">
-						    <label class="text-dark font-weight-bold" for="pw">비밀번호</label>
-						    <input type="password" class="form-control form-control-sm" id="pw" placeholder="비밀번호" required>
-						    <div class="valid-feedback">좋아요.</div>
-						    <div class="invalid-feedback">새 비밀번호를 입력해주세요.</div>
-						  </div>
-						  <div class="form-group">
-						    <label class="text-dark font-weight-bold" for="pw2">비밀번호 확인</label>
-						    <input type="password" class="form-control form-control-sm" id="pw2" placeholder="비밀번호" required>
-						    <div class="valid-feedback">좋아요.</div>
-						    <div class="invalid-feedback">비밀번호를 한번 더 입력해주세요.</div>
-						  </div> 
-					  	</form>
-					</div>
-					<!-- register Form end -->
-				</div>
-				
-				
+				<!-- reset Form end -->
 			</div> 
 		</div> 
 		<!-- Page Content End --> 
@@ -110,122 +107,30 @@
 	<script src="js/demo/chart-pie-demo.js"></script>
 </body>
 <script> 
+	// hide parameters from address
+/* 	history.replaceState({},null,location.pathname); */
 
-
-		$.ajax({
-			url : "/rest/getRegionList",
-			method : "get",
-			success : function(json){
-				console.log(json);
-				let region;
-				$(json).each(function(index,item){
-					region = "<option value='";
-					region += item.regionId;
-					region += "'>";
-					region += item.regionName;
-					region += "</option>";
-					$("#region").append(region);
-				})
-			}
-		})
-
-
-		$(".join").click(function(){
-			console.log("입력완료 메일전송 시작.");
-			if($("#id").val()=="" || $("#name").val()=="" || $("#pw").val()==""){
-				alert("빈칸을 채워주세요!");
-				return;
-			} 
-			
-			$.ajax({
-				url:"/rest/sendEmailToConfirm",
-				data:{ "userId" : $("#id").val() , "userName" : $("#name").val() },
-				method:"post", 
-				success:function(){
-					console.log("메일 전송 완료!")
-					$("#notice").fadeIn(300); 
-					setTimeout(function() {
-						$("#codeForm").slideDown(500); 
-					}, 300);
-					
-					$('#id').prop('readonly', true); 
-					$("#name").prop('readonly', true); 
-					$("#pw").prop('readonly', true);  
-					$(".join").prop('disabled', true);  
-					
-					console.log($('#id').val());
-					console.log($('#name').val()); 
-				}
-
-			})
-			 
-		})
+	
+	$("#reset").click(function(){
+		console.log("비밀번호 변경!");
+		if($("#pw").val() != $("#pw2").val()){
+			alert("비밀번호가 일치하지 않습니다!!");
+			return;
+		}
 		
-		$("#resend").click(function(){
-			console.log("입력완료 메일전송 시작.");
-			
-			$.ajax({
-				url:"/rest/sendEmailToConfirm",
-				data:{ "userId" : $("#id").val() , "userName" : $("#name").val() },
-				method:"post", 
-				success:function(){
-					console.log("메일 전송 완료!")
-					$("#notice").fadeIn(300); 
-					setTimeout(function() {
-						$("#codeForm").slideDown(500); 
-					}, 300);
-					
-					$('#id').prop('readonly', true); 
-					$("#name").prop('readonly', true); 
-					$("#pw").prop('readonly', true);  
-					$(".join").prop('disabled', true);  
-					
-					console.log($('#id').val());
-					console.log($('#name').val()); 
-				}
-
-			})
-			 
+		$.ajax({
+			url : "/rest/resetPassword",
+			method : "post",
+			data : {
+					"userPw" : $("#pw").val()
+					}, 
+			success : function(json){
+				console.log("실행");
+				location.href="/login";
+			}                                                                                                                                                                                                                                          
 		})
-		 
-		$("#confirmCode").click(function(){
-			console.log("코드 검사");
-		 	$.ajax({
-		 		url:"/rest/verifyCode",
-				data:{ 	"userId" : $("#id").val() , 
-						"userName" : $("#name").val(),
-						"userPw" : $("#pw").val(), 
-						"code" : $("#code").val(),
-						"userBirthDate" : $("#birthDate").val(),
-						"regionId" : $("#region").val() 
-						},
-				method:"post", 
-				async : "true",
-				success:function(json){
-					console.log(json);
-					if(json == false){
-						alert("코드가 틀렸습니다! 다시 시도하여 주세요. :( ")
-						return;
-					}
-					$("#code").prop("disabled", true);
-					$("#confirmCode").prop("disabled", true);
-					$('#resend').css("display", "none");  
-					
-					$("#joinComplete").fadeIn(300);
-					setTimeout(function() {
-						$("#ok").append("회원이 되신 것을<br>환영합니다 🎆!");
-						$("#toLogin").append("로그인 하러 가볼까요?");
-					}, 300);	
-					
-					alert("회원가입 완료! 환영합니다~!")
-					location.replace("/login");	
-					
-				},
-				fail:function(){
-					alert("알 수 없는 에러갑 발생 했습니다! 다시 시도하여 주세요 😥");
-				}
-			})
+	})
+		
 
-		})  
 </script>
 </html>

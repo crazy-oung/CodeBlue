@@ -85,8 +85,26 @@ public class UserServiceImpl implements UserService{
 		if(userMapper.selectUserId(user) == null) {
 			return "noSuchUser";
 		}
+		
 		String randNum = sendCodeToMail(user);
 		return randNum;
+	}
+
+	@Override
+	public String verifyUserForReset(User user) {
+		System.out.println("::: UserServluceImpl - verifyUserForReset :::");
+		
+		if(userMapper.selectUserIdForReset(user) == null) {
+			return null;
+		}
+		
+		String randNum = sendCodeToMail(user);
+		return randNum;
+	}
+
+	@Override
+	public int updateUserPw(User user) {
+		return userMapper.updateUserPw(user);
 	}
 
 }

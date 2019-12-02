@@ -66,17 +66,17 @@
 						<img class="mb-4" src="/img/codeBlue.png" width="100px">
 					</a> 
 				</p>
-				<!-- login Form begin -->
+				<!-- email Form begin -->
 				<div class="card shadow pt-2 px-2 mx-5"> 
 					<form class="card-body">
-						<small class="mb-2 pb-4">
+						<small>
 							비밀번호가 기억이 안나시나요? 이메일을 입력하시면 인증 코드를 보내드립니다! 인증코드로 이메일을 인증하고 비밀번호를 새로 설정해보세요.
 						</small>
 					  <div class="form-group">
-					    <label class="text-dark font-weight-bold" for="id">이메일</label>
-					    <input type="email" class="form-control form-control-sm" id="userId" placeholder="E-Mail@example.com"> 
+					    <label class="text-dark font-weight-bold mt-3" for="userId">이메일</label>
+					    <input type="email" class="form-control form-control-sm" id="id" placeholder="E-Mail@example.com"> 
 					  </div>  
-					  <button type="button" class="btn btn-block btn-primary" id="email">인증 메일 받기</button> 
+					  <button type="button" class="btn btn-block btn-primary" id="getCode">인증 메일 받기</button> 
 					</form> 
 					<!-- 입력 클릭시 인증코드 입력란 출력 -->
 					  <b class="text-sm card mt-3 mx-3 p-3 text-center text-primary shadow" id="notice" style="display:none">인증 메일이 전송 되었습니다!</b>
@@ -116,11 +116,12 @@
 	<script src="js/demo/chart-pie-demo.js"></script>
 </body>
 <script> 
-$("#email").click(function(){
+
+$("#getCode").click(function(){
 	$.ajax({
-		url : "/rest/resetPassword",
+		url : "/rest/verifyUserForReset",
 		method : "post",
-		data : {"userId" : $("#userId").val()},
+		data : {"userId" : $("#id").val()},
 		success : function(json){
 			console.log(json);
 			if(json == "noSuchUser"){
@@ -128,21 +129,37 @@ $("#email").click(function(){
 				return;
 			}
 			console.log("메일 전송 완료!") 
-			$("#email").prop("readonly", true);
+			$("#userId").prop("readonly", true);
 			$("#notice").fadeIn(300); 
 			setTimeout(function() {
 				$("#codeForm").slideDown(500); 
 			}, 300); 
+			
 		}
 	})
-}) 
+})
+
+$("#resend").click(function(){
+	console.log("입력완료 메일전송 시작.");
+	$.ajax({
+		url:"/rest/sendEmailToConfirm",
+		data:{ "userId" : $("#id").val() },
+		method:"post", 
+		success:function(){
+			console.log("메일 전송 완료!")
+		}
+
+	})
+	 
+})
 
 $("#confirmCode").click(function(){
 	console.log("코드 검사");
  	$.ajax({
- 		url:"/rest/verifyCode",
+ 		url:"/rest/verifyCodeForRest",
 		method:"post", 
 		async : "true",
+		data : {"code":$("#code").val()},
 		success:function(json){
 			console.log(json);
 			if(json == false){
@@ -153,26 +170,13 @@ $("#confirmCode").click(function(){
 			$("#confirmCode").prop("disabled", true);
 			$('#resend').css("display", "none");  
 			
-			$("#joinComplete").fadeIn(300);
-			setTimeout(function() {
-				$("#ok").append("회원이 되신 것을<br>환영합니다 🎆!");
-				$("#toLogin").append("로그인 하러 가볼까요?");
-			}, 300);
+			location.href="/accountRecovery?id="+$("#id").val();
 			
-			$.ajax({
-				url : "/accountRecovery",
-				method: "post",
-				data : {"userId" : $("#email").val()},
-				success : function(){
-					console.log("비밀번호 변경");
-				}
-			})
 		},
 		fail:function(){
 			alert("알 수 없는 에러가 발생 했습니다! 다시 시도하여 주세요 😥");
 		}
 	})
-
 })  
 	
 </script>

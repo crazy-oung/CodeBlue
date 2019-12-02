@@ -32,6 +32,12 @@
 		SELECT user_id as userId, user_name as userName
 		FROM user WHERE user_id = #{userId} AND user_pw = #{userPw}
 	</select>
+	
+	<select id="selectUserIdForReset" parameterType="com.example.codeblue.user.vo.User" resultType="com.example.codeblue.user.vo.User">
+		SELECT user_id as userId, user_name as userName
+		FROM user WHERE user_id = #{userId}
+	</select>
+	
 	<select id="selectManagerId" parameterType="com.example.codeblue.user.vo.User" resultType="com.example.codeblue.user.vo.Manager">
 		SELECT manager_id as managerId
 		FROM manager WHERE manager_id = #{userId} AND manager_pw = #{userPw}
@@ -46,4 +52,22 @@
 		SELECT feild_id as feildId, feild_name as feildName
 		FROM Feild 
 	</select> 
+	
+	<update id="updateUserPw" parameterType="com.example.codeblue.user.vo.User">
+		UPDATE user SET user_pw = #{userPw} WHERE user_id = #{userId}
+	</update>
 </mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
