@@ -1,1 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.codeblue.board.mapper.NoticeBoardMapper">
+	<select id="selectNoticeBoardList"
+			parameterType="com.example.codeblue.board.vo.Page"
+			resultType="com.example.codeblue.board.vo.NoticeBoard">
+	SELECT notice_id as noticeId,
+			notice_title as noticeTitle,
+			notice_content as noticeContent,
+			file_id as fileId,
+			notice_datetime as noticeDatetime
+    FROM notice_board
+    ORDER BY notice_datetime DESC
+    LIMIT #{beginRow},#{rowPerPage}
+   </select>
+   
+   <select id="noticeBoardTotalRow"
+		   resultType="int">
+   		SELECT COUNT(*) 
+   			FROM notice_board
+   </select>
+</mapper>
