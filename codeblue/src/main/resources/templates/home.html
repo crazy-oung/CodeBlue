@@ -130,4 +130,15 @@
 	<script src="js/demo/chart-pie-demo.js"></script>
 </body>
 
+<script type="text/javascript">
+$.ajax({
+	url:"/rest/getBoardList",
+	method:"POST",
+	success: function(json){
+		console.log(json);
+	}
+})
+</script>
+
+
 </html>
