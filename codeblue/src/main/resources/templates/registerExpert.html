@@ -59,54 +59,67 @@
 				
 				<div class="col-sm-6 mt-5 pt-5"><!-- explain codeBlue member 혜택 -->
 					<img src="/img/codeBlueLogo.png" width="250px"> 
-					<h1 class="text-primary h4 mt-2">회원이 되어볼까요?</h1>
+					<h1 class="text-primary h4 mt-2">전문가 회원이 되어볼까요?</h1>
 					<label>코드블루 회원들은 ...</label>
+					<a href="/register">전문가가 아니신가요?</a>
 				</div>
 				
-				<div class="col-sm-6 mt-5 pt-4">
+				<div class="col-sm-6 pt-2">
 					<!-- register Form begin -->
-					<div class="card shadow p-1 m-4 mx-4"> 
+					<div class="card shadow p-1 mx-4"> 
 						<form class="was-validated card-body">
 						  <div class="form-group">
 						    <label class="text-dark font-weight-bold" for="id">아이디</label>
-						    <input type="email" class="form-control form-control-sm" id="id" placeholder="E-Mail@example.com" name="userId" required>
+						    <input type="email" class="form-control form-control-sm" id="id" placeholder="E-Mail@example.com" required>
 						    <div class="valid-feedback">좋아요.</div>
 						    <div class="invalid-feedback">올바른 이메일을 입력해주세요.</div>
 						  </div>
 						  <div class="form-group">
 						    <label class="text-dark font-weight-bold" for="name">닉네임</label>
-						    <input type="text" class="form-control form-control-sm" id="name" placeholder="이름" name="userName" required>
+						    <input type="text" class="form-control form-control-sm" id="name" placeholder="이름" required>
 						    <div class="valid-feedback">좋아요.</div>
 						    <div class="invalid-feedback">닉네임을 입력해주세요.</div>
 						  </div>
 						  <div class="form-group">
-						    <label class="text-dark font-weight-bold" for="name">라이센스 번호</label>
-						    <input type="text" class="form-control form-control-sm" id="name" placeholder="이름" name="expertId" required>
+						    <label class="text-dark font-weight-bold" for="feild">전공분야</label>
+						    <select type="text" class="form-control form-control-sm" id="feild" placeholder="전공분야" required></select>
+						    <div class="valid-feedback">좋아요.</div>
+						    <div class="invalid-feedback">전공분야를 선택해주세요</div>
+						  </div>
+						  <div class="form-group">
+						    <label class="text-dark font-weight-bold" for="license">라이센스 번호</label>
+						    <input type="text" class="form-control form-control-sm" id="license" placeholder="라이센스 번호" required>
 						    <div class="valid-feedback">좋아요.</div>
 						    <div class="invalid-feedback">자격증 번호를 입력해주세요.</div>
 						  </div>
 						  <div class="form-group">
+						    <label class="text-dark font-weight-bold" for="licenseIssueDate">발급날짜</label>
+						    <input type="date" class="form-control form-control-sm" id="licenseIssueDate" placeholder="발급날짜" required>
+						    <div class="valid-feedback">좋아요.</div>
+						    <div class="invalid-feedback">자격증 발급 날짜를 입력해주세요.</div>
+						  </div>
+						  <div class="form-group">
 						    <label class="text-dark font-weight-bold" for="pw">비밀번호</label>
-						    <input type="password" class="form-control form-control-sm" id="pw" placeholder="비밀번호" name="userPw" required>
+						    <input type="password" class="form-control form-control-sm" id="pw" placeholder="비밀번호" required>
 						    <div class="valid-feedback">좋아요.</div>
 						    <div class="invalid-feedback">비밀번호를 입력해주세요.</div>
 						  </div>
 						  
 						  <div class="form-group">
-						    <label class="text-dark font-weight-bold" for="pw">비밀번호 확인</label>
-						    <input type="password" class="form-control form-control-sm" id="pw2" placeholder="비밀번호" name="memberPw2" required>
+						    <label class="text-dark font-weight-bold" for="pw2">비밀번호 확인</label>
+						    <input type="password" class="form-control form-control-sm" id="pw2" placeholder="비밀번호 확인" required>
 						    <div class="valid-feedback">좋아요.</div>
 						    <div class="invalid-feedback">비밀번호를 입력해주세요.</div>
 						  </div> 
 						  <div class="form-group">
-						    <label class="text-dark font-weight-bold" for="pw">생일</label>
-						    <input type="date" class="form-control form-control-sm" id="birthDate" name="userBirthDate" required>
+						    <label class="text-dark font-weight-bold" for="birthDate">생일</label>
+						    <input type="date" class="form-control form-control-sm" id="birthDate" required>
 						    <div class="valid-feedback">좋아요.</div>
 						    <div class="invalid-feedback">생일을 입력해주세요.</div>
 						  </div> 
 						  <div class="form-group">
-						    <label class="text-dark font-weight-bold" for="pw">활동지</label>
-						    <select class="form-control form-control-sm" id="region" name="userRegion" required></select> 
+						    <label class="text-dark font-weight-bold" for="region">활동지</label>
+						    <select class="form-control form-control-sm" id="region" required></select> 
 						    <div class="valid-feedback">좋아요.</div>
 						    <div class="invalid-feedback">활동지를 선택해주세요.</div>
 						  </div> 
@@ -123,13 +136,9 @@
 							    	<div class="invalid-feedback">인증 코드를 입력해주세요 🎆</div> 
 							  	</div> 
 							  	<button type="button" id="confirmCode" class="btn btn-block btn-outline-primary">확인</button>  
-								<a href="#" id="resend" class="small text-center">메일이 못 받으셨나요? 다시 보내드립니다!</a> 
+								<a href="#" id="resend" class="small text-center">메일을 못 받으셨나요? 다시 보내드립니다!</a> 
 							  </div>
 						  </form>
-						  <div class="card bg-primary m-3 p-3 text-center shadow" style="display:none" id="joinComplete">
-							  <h4 class="my-2 p-2 text-center text-light font-weight-bold" id="ok"></h4>
-							  <a href="/login" class="text-warning nav-link font-weight-bold" id="toLogin"></a>
-						  </div> 
 					</div>
 					<!-- register Form end -->
 				</div>
@@ -159,7 +168,46 @@
 	<script src="js/demo/chart-pie-demo.js"></script>
 </body>
 <script> 
+		$.ajax({
+			url : "/rest/getFeildList",
+			method : "get",
+			success : function(json){
+				console.log(json);
+				let feild;
+				$(json).each(function(index, item){
+					feild = "<option value='";
+					feild += item.feildId;
+					feild += "'>";
+					feild += item.feildName;
+					feild += "</option>";
+					$("#feild").append(feild);
+				})
+			}
+		})
+
+		$.ajax({
+			url : "/rest/getRegionList",
+			method : "get",
+			success : function(json){
+				console.log(json);
+				let region;
+				$(json).each(function(index,item){
+					region = "<option value='";
+					region += item.regionId;
+					region += "'>";
+					region += item.regionName;
+					region += "</option>";
+					$("#region").append(region);
+				})
+			}
+		})
+
 		$(".join").click(function(){
+			if($("#pw").val() != $("#pw2").val()){
+				alert("입력하신 비밀번호가 틀립니다. 확인해 주세요");				
+				return;
+			}
+				
 			console.log("입력완료 메일전송 시작.");
 			if($("#id").val()=="" || $("#name").val()=="" || $("#pw").val()==""){
 				alert("빈칸을 채워주세요!");
@@ -179,7 +227,14 @@
 					
 					$('#id').prop('readonly', true); 
 					$("#name").prop('readonly', true); 
-					$("#pw").prop('readonly', true);  
+					$("#pw").prop('readonly', true);
+					$("#pw2").prop("readonly", true);
+					$("#feild").not(":selected").attr("disabled", true);
+					$("#license").prop("readonly", true);
+					$("#licenseIssueDate").prop("readonly", true);
+					$("#birthDate").prop("readonly", true);
+					$("#region").not(":selected").attr("disabled", true);
+					
 					$(".join").prop('disabled', true);  
 					
 					console.log($('#id').val());
@@ -201,12 +256,7 @@
 					$("#notice").fadeIn(300); 
 					setTimeout(function() {
 						$("#codeForm").slideDown(500); 
-					}, 300);
-					
-					$('#id').prop('readonly', true); 
-					$("#name").prop('readonly', true); 
-					$("#pw").prop('readonly', true);  
-					$(".join").prop('disabled', true);  
+					}, 300); 
 					
 					console.log($('#id').val());
 					console.log($('#name').val()); 
@@ -222,8 +272,11 @@
 		 		url:"/rest/verifyCode",
 				data:{ 	"userId" : $("#id").val() , 
 						"userName" : $("#name").val(),
-						"userPw" : $("#pw").val(), 
-						"code" : $("#code").val() },
+						"userPw" : $("#pw").val(),
+						"code" : $("#code").val(),
+						"userBirthDate" : $("#birthDate").val(),
+						"regionId" : $("#region").val()
+						},
 				method:"post", 
 				success:function(json){
 					console.log(json);
@@ -232,20 +285,35 @@
 						return;
 					}
 					$("#code").prop("disabled", true);
-					$("#confirmCode").prop("disabled", true);
-					$("#resend").prop("disabled", true);
+					$("#confirmCode").prop("disabled", true); 
+					$('#resend').css("display", "none");  
 					
-					$("#joinComplete").fadeIn(300);
-					setTimeout(function() {
-						$("#ok").append("회원이 되신 것을<br>환영합니다 🎆!");
-						$("#toLogin").append("로그인 하러 가볼까요?");
-					}, 300);	
+					// 전문가 추가
+					$.ajax({
+				 		url:"/rest/addExpert",
+						data:{ 	"feildId" : $("#feild").val() , 
+								"expertLicenseNo" : $("#license").val(),
+								"expertLicenseIssueDate" : $("#licenseIssueDate").val(),
+								"userId" : $("#id").val()
+								},
+						method:"post", 
+						async : "true",
+						success:function(){   
+							alert("전문가 등록 완료! 감사합니다! 환영합니다~")
+							location.replace("/login");	
+						},
+						fail:function(){
+							alert("알 수 없는 에러가 발생 했습니다! 다시 시도하여 주세요 😥");
+						}
+					})					
 					
 				},
 				fail:function(){
 					alert("알 수 없는 에러갑 발생 했습니다! 다시 시도하여 주세요 😥");
 				}
 			})
+			
+			
 
 		})  
 </script>

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.codeblue.user.service.UserService;
+import com.example.codeblue.user.vo.Manager;
 import com.example.codeblue.user.vo.User;
 
 
@@ -25,6 +26,20 @@ public class LoginController {
 		return "/codeBlue/today";
 	}
 	
+	@GetMapping("/resetPassword")
+	public String getResetPasswrod() { 
+		System.out.println("::: get - resetPassword :::"); 
+		return "/resetPassword";
+	}
+	
+	
+	@GetMapping("/logout")
+	public String logout(HttpSession session) {
+		System.out.println("::: get - logout :::"); 
+		session.invalidate();
+		return "/home";
+	} 
+	
 	@GetMapping("/login")
 	public String getLogin(HttpSession session) {
 		System.out.println("::: get - login :::");
@@ -39,14 +54,27 @@ public class LoginController {
 		System.out.println(user); 
 		
 		// 세션 검사
-		User loginUser = userService.verifyUser(user);		
-		if(loginUser != null) {
-			System.out.println("already loged in Back to user Home");
-			session.setAttribute("loginUser", loginUser); 
+		if(session.getAttribute("loginUser") != null) {
+			System.out.println("already loged in Back to user Home"); 
 			return "/codeBlue/today";
 		}  
 		
-		return "redirect:/";
+		// 매니저 검사
+		Manager loginManager = userService.verifyManager(user);
+		if(loginManager != null) {
+			System.out.println("manager Login"); 
+			session.setAttribute("loginManager", loginManager);
+			return "/codeblue/admin/home";
+		}
+		// 유저 검사
+		User loginUser = userService.verifyUser(user);
+		if(loginUser != null) {
+			System.out.println("user Login"); 
+			session.setAttribute("loginUser", loginUser);
+			return "/codeBlue/today";
+		}
+		
+		return "/login";
 	}
 	
 	@GetMapping("/register")

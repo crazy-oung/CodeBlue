@@ -9,7 +9,7 @@ public class User {
 	private String userPw;
 	private int regionId;
 	private String userActivity;
-	private String userBirthdate;
+	private String userBirthDate;
 	private String userCreatetime;
 	private int rankId;
 	private String userAuthority;

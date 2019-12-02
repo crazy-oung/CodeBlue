@@ -4,20 +4,46 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.codeblue.user.mapper.UserMapper">
+	<insert id="insertExpert" parameterType="com.example.codeblue.user.vo.Expert">
+		INSERT INTO expert(
+			user_id,
+			feild_id,
+			expert_license_no,
+			expert_license_issue_date
+		)VALUE(
+			#{userId}, #{feildId}, #{expertLicenseNo},#{expertLicenseIssueDate}
+		)
+	</insert>
+
 	<insert id="insertUser" parameterType="com.example.codeblue.user.vo.User">
-			INSERT INTO user(
+		INSERT INTO user(
 			user_id,
 			user_name,
 			user_pw,
-			user_createtime
-			)VALUES(
-			#{userId},#{userName},#{userPw}, NOW()
-			)
+			user_birthdate,
+			user_createtime,
+			region_id
+		) values (
+			#{userId}, #{userName}, #{userPw},#{userBirthDate}, now(),#{regionId}
+		)
 	</insert>
 	
 	<select id="selectUserId" parameterType="com.example.codeblue.user.vo.User" resultType="com.example.codeblue.user.vo.User">
-			SELECT user_id as userId, user_name as userName
-			FROM user WHERE user_id = #{userId} AND user_pw = #{userPw}
+		SELECT user_id as userId, user_name as userName
+		FROM user WHERE user_id = #{userId} AND user_pw = #{userPw}
+	</select>
+	<select id="selectManagerId" parameterType="com.example.codeblue.user.vo.User" resultType="com.example.codeblue.user.vo.Manager">
+		SELECT manager_id as managerId
+		FROM manager WHERE manager_id = #{userId} AND manager_pw = #{userPw}
 	</select>
 	
+	<select id="selectRegionList" parameterType="com.example.codeblue.user.vo.Region" resultType="com.example.codeblue.user.vo.Region">
+		SELECT region_id as regionId, region_name as regionName 
+		FROM region	
+	</select> 
+	
+	<select id="selectFeildList" parameterType="com.example.codeblue.user.vo.Feild" resultType="com.example.codeblue.user.vo.Feild">
+		SELECT feild_id as feildId, feild_name as feildName
+		FROM Feild 
+	</select> 
 </mapper>
