@@ -1,5 +1,10 @@
 package com.example.codeblue.board.service;
 
-public interface QuestionBoardService {
+import java.util.Map;
 
+
+
+public interface QuestionBoardService {
+	
+	public Map<String,Object> getQuestBoardList(int currentpage,int rowPerPage,String searchWord);
 }

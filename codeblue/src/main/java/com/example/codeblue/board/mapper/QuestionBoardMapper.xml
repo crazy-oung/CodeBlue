@@ -5,4 +5,43 @@
   
 <mapper	namespace="com.example.codeblue.board.mapper.QuestionBoardMapper">
 
+	<select id="selectQuestionBoardVotes" resultType="int" parameterType="com.example.codeblue.board.vo.QuestionBoard">
+		SELECT 
+			COUNT(question_id) 
+		FROM question_vote
+			WHERE question_id = #{questionId}
+	</select>
+	
+	<select id="selectQuestionBoardAnswerCount" resultType="int" parameterType="com.example.codeblue.board.vo.QuestionBoard">
+		SELECT 
+			COUNT(question_id) 
+		FROM answer
+			WHERE question_id = #{questionId}
+	</select>
+	
+	<select id="selectQuestionBoardList" resultType="com.example.codeblue.board.vo.QuestionBoard" parameterType="com.example.codeblue.board.vo.Page">
+		SELECT 
+			question_id as questionId,
+			question_title as questionTitle,
+			user_id as userId,
+			question_datetime as questionDatetime
+		FROM question_board 
+		<where>
+			<if test="searchWord != null">
+				question_title like CONCAT('%',#{searchWord},'%')
+			</if>
+		</where>
+			ORDER BY question_datetime DESC 
+			LIMIT #{beginRow},#{rowPerPage}
+	</select>
+	<select id="selectQuestionBoardTotalCount" resultType="int" parameterType="com.example.codeblue.board.vo.Page">
+		SELECT 
+			COUNT(*)
+		FROM question_board
+		<where>
+			<if test="searchWord != null">
+				question_title like CONCAT('%',#{searchWord},'%')
+			</if>
+		</where>
+	</select>
 </mapper>

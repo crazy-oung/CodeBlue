@@ -38,9 +38,9 @@
 
 				<!-- Topbar Search -->
 				<div class="input-group">
-					<input type="text" class="form-control  form-control-sm bg-light border-1" placeholder="검색어" style="width: 400px !important">
+					<input type="text" class="form-control  form-control-sm bg-light border-1" placeholder="검색어" style="width: 400px !important" id="searchWord">
 					<div class="input-group-append">
-						<button class="btn btn-primary btn-sm" type="button">
+						<button class="btn btn-primary btn-sm" type="button" id="search">
 							<i class="fas fa-search fa-sm"></i>
 						</button>
 					</div>
@@ -85,23 +85,45 @@
 						<h4 class="text-gray-800 mb-0">최근 올라온 질문</h4>
 						<a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow"><i class="mr-2 fas fa-plus fa-sm text-white-50"></i>질문 올리기</a> 
 					</div><!-- page Heading End -->
-					<hr>
 					
-					<div style="height:1000px;">
-						<h1>한다영 커밋</h1>
-						<h1>이정원 커밋</h1>
-						<h1>정종원 커밋</h1>
-						<h1>유영쥬 커밋</h1>
-						<h1>이진혁 커밋</h1>
-					</div>
+					<table id="questionBoard" class="table table-hover">
+						
+					</table>
+					<br>
+					
+					<button type="button" id="prevBtn" class="btn btn-primary">이전</button>
+					<button type="button" id="nextBtn" class="btn btn-primary">다음</button>
+					
 				</div>
-				<!-- Page Content End -->
-				
+				<!-- Page rigth side bar -->
+				<div class="col-sm-3 pt-5">
+					<div class="card br-light border-1 mt-4">
+					
+						<table class="table table-hover">
+							<thead class="alert-warning">
+								<tr>
+									<td>Featured on Meta</td>
+								</tr>
+							</thead>
+							<tbody class="">
+								<tr>
+									<td><small>Feedback post: Moderator review and reinstatement processes</small></td>
+								</tr>
+								<tr>
+									<td><small>Upvotes on questions will now be worth the same as upvotes on answers</small></td>
+								</tr>
+							</tbody>
+						</table>
+					
+					</div>
+					
+				</div> <!-- rigth side bar end -->
 				
 			</div>
 		</div> 
 
 	<!-- Footer -->
+	<br>
 	<footer class="sticky-footer text-light" style="background: #333333">
 		<div class="container my-auto">
 			<div class="copyright text-right my-auto">
@@ -131,13 +153,150 @@
 </body>
 
 <script type="text/javascript">
-$.ajax({
-	url:"/rest/getBoardList",
-	method:"POST",
-	success: function(json){
-		console.log(json);
+
+
+	//현재페이지값
+	var currentPage = 1;
+	//마지막페이지값
+	var lastPage = 0;
+	//검색한 단어
+	var searchWord = null;
+	//홈페이지
+	$.ajax({
+		url:"/rest/getBoardList",
+		method:"POST",
+		data:{"currentPage" : currentPage},
+		success: function(json){
+			currentPage = json.currentPage;
+			lastPage = json.lastPage;
+			BtnShow(currentPage,lastPage);
+			$(json.list).each(function(index,item){
+				html = "<tr>"+
+						"<td width='10%' class=><div class='text-center pt-1'>"+item.voteCount+"<br>"+
+						"<small class='my-1'>추천</small>"+
+						"</div></td>"+
+						"<td width='13%' class='px-1'><div class='card border-success text-center pt-1' >"+item.answerCount+"<br>"+
+						"<small class='text-success my-1'>답변</small>"+
+						"</div></td>"+
+						"<td><a class='nav-link' href='#'>"+item.questionTitle+"</a>" +
+						"<div class='d-flex justify-content-between'>"+
+						"<small class='p-2'>태그들...</small>"+
+						"<small class='p-2'>uploaded at"+item.questionDatetime +" by " + item.userId+"</small></div>"
+						+"</td></tr>";
+/* 						"<td width='10%'>"+item.userId+"</td>"+
+						"<td width='20%'>"+item.questionDatetime+"</td>"+
+						"</tr>";  */
+				$("#questionBoard").append(html);
+			})
+		}
+	})
+	//이전버튼
+	$("#prevBtn").click(function(){
+		$.ajax({
+			url:"/rest/getBoardList",
+			method:"POST",
+			data:{"currentPage" : currentPage-1,"searchWord": searchWord},
+			success: function(json){
+				currentPage = json.currentPage;
+				lastPage = json.lastPage;
+				$("#searchWord").val(json.searchWord);
+				BtnShow(currentPage,lastPage);
+				$("#questionBoard").empty();
+				$(json.list).each(function(index,item){
+					html = "<tr>"+
+							"<td width='10%' class=><div class='text-center pt-1'>"+item.voteCount+"<br>"+
+							"<small class='my-1'>추천</small>"+
+							"</div></td>"+
+							"<td width='13%' class='px-1'><div class='card border-success text-center pt-1' >"+item.answerCount+"<br>"+
+							"<small class='text-success my-1'>답변</small>"+
+							"</div></td>"+
+							"<td><a class='nav-link' href='#'>"+item.questionTitle+"</a>" +
+							"<div class='d-flex justify-content-between'>"+
+							"<small class='p-2'>태그들...</small>"+
+							"<small class='p-2'>uploaded at"+item.questionDatetime +" by " + item.userId+"</small></div>"
+							+"</td></tr>";
+					$("#questionBoard").append(html);
+				})
+			}
+		})
+	});
+	//다음버튼
+	$("#nextBtn").click(function(){
+		$.ajax({
+			url:"/rest/getBoardList",
+			method:"POST",
+			data:{"currentPage" : currentPage+1,"searchWord": searchWord},
+			success: function(json){
+				currentPage = json.currentPage;
+				lastPage = json.lastPage;
+				$("#searchWord").val(json.searchWord);
+				BtnShow(currentPage,lastPage);
+				$("#questionBoard").empty();
+				$(json.list).each(function(index,item){
+					html = "<tr>"+
+							"<td width='10%' class=><div class='text-center pt-1'>"+item.voteCount+"<br>"+
+							"<small class='my-1'>추천</small>"+
+							"</div></td>"+
+							"<td width='13%' class='px-1'><div class='card border-success text-center pt-1' >"+item.answerCount+"<br>"+
+							"<small class='text-success my-1'>답변</small>"+
+							"</div></td>"+
+							"<td><a class='nav-link' href='#'>"+item.questionTitle+"</a>" +
+							"<div class='d-flex justify-content-between'>"+
+							"<small class='p-2'>태그들...</small>"+
+							"<small class='p-2'>uploaded at"+item.questionDatetime +" by " + item.userId+"</small></div>"
+							+"</td></tr>";
+					$("#questionBoard").append(html);
+				})
+			}
+		})
+	});
+	//검색버튼
+	$("#search").click(function(){
+		$.ajax({
+			url:"/rest/getBoardList",
+			method:"POST",
+			data:{"searchWord": $("#searchWord").val()},
+			success: function(json){
+				console.log(json);
+				currentPage = json.currentPage;
+				lastPage = json.lastPage;
+				$("#searchWord").val(json.searchWord);
+				searchWord = json.searchWord;
+				BtnShow(currentPage,lastPage);
+				$("#questionBoard").empty();
+				$(json.list).each(function(index,item){
+					html = "<tr>"+
+							"<tr>"+
+							"<td width='10%' class=><div class='text-center pt-1'>"+item.voteCount+"<br>"+
+							"<small class='my-1'>추천</small>"+
+							"</div></td>"+
+							"<td width='13%' class='px-1'><div class='card border-success text-center pt-1' >"+item.answerCount+"<br>"+
+							"<small class='text-success my-1'>답변</small>"+
+							"</div></td>"+
+							"<td><a class='nav-link' href='#'>"+item.questionTitle+"</a>" +
+							"<div class='d-flex justify-content-between'>"+
+							"<small class='p-2'>태그들...</small>"+
+							"<small class='p-2'>uploaded at"+item.questionDatetime +" by " + item.userId+"</small></div>"
+							+"</td></tr>";
+					$("#questionBoard").append(html);
+				})
+			}
+		})
+	});
+	
+	//이전 다음 버튼이 숨기는지 안숨기는지 함수로변경
+	function BtnShow(currentPage,lastPage) {
+		if(currentPage == 1){
+			$("#prevBtn").hide();
+		} else {
+			$("#prevBtn").show();
+		}
+		if(currentPage <lastPage) {
+			$("#nextBtn").show();
+		} else {
+			$("#nextBtn").hide();
+		}
 	}
-})
 </script>
 
 
