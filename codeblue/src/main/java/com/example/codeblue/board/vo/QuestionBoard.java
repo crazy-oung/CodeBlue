@@ -10,11 +10,11 @@ public class QuestionBoard {
 	private String questionContent;
 	private String questionDatetime;
 	private int feildId;
-	private int fileId;
 	private String userId;
 	private int tagId;
 	private String questionFL;
 	private int answerCount;
 	private int voteCount;
+	private int commentCount;
 	
 }

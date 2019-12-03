@@ -5,6 +5,38 @@
   
 <mapper	namespace="com.example.codeblue.board.mapper.QuestionBoardMapper">
 
+	<select id="selectQuestionCommentList" parameterType="int" resultType="com.example.codeblue.board.vo.QuestionComment">
+		SELECT
+			question_comment_id as questionComment,
+			user_id as userId,
+			question_comment_content as questionCommentContent,
+			question_id as questionId,
+			question_comment_datetime as questionCommentDatetime
+		FROM question_comment
+		WHERE question_id = #{qestionId}
+		ORDER BY question_comment_datetime DESC
+	</select>
+	
+	<select id="selectQuestionCommentCount" resultType="int" parameterType="int">
+		SELECT 
+			COUNT(question_id) 
+		FROM question_comment
+			WHERE question_id = #{questionId}
+	</select>
+	
+	<select id="selectQuestionBoardOne" parameterType="int" resultType="com.example.codeblue.board.vo.QuestionBoard">
+		SELECT 
+			question_id as questionId,
+			question_title as questionTitle,
+			question_content as questionContent,
+			question_datetime as questionDatetime,
+			feild_id as feildId,
+			user_id as userId,
+			tag_id as tagId,
+			question_FL as questionFL
+		FROM question_board
+		WHERE question_id = #{questionId}
+	</select>
 	<select id="selectQuestionBoardVotes" resultType="int" parameterType="com.example.codeblue.board.vo.QuestionBoard">
 		SELECT 
 			COUNT(question_id) 

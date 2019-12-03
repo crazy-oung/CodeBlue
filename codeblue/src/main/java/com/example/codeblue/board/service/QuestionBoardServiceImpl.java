@@ -1,6 +1,6 @@
 package com.example.codeblue.board.service;
 
-import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.codeblue.board.mapper.QuestionBoardMapper;
 import com.example.codeblue.board.vo.Page;
 import com.example.codeblue.board.vo.QuestionBoard;
+import com.example.codeblue.board.vo.QuestionComment;
 
 
 @Service
@@ -19,6 +20,21 @@ import com.example.codeblue.board.vo.QuestionBoard;
 public class QuestionBoardServiceImpl implements QuestionBoardService{
 	@Autowired
 	private QuestionBoardMapper questionBoardMapper;
+	
+	@Override
+	public List<QuestionComment> getQuestionCommentList(int questionId) {
+		System.out.println("::: QuestionBoardServiceImpl - selectQuestionCommentList :::");
+		return questionBoardMapper.selectQuestionCommentList(questionId);
+	}
+	
+	@Override
+	public QuestionBoard getQuestionBoardOne(int questionId) {
+		System.out.println("::: QuestionBoardServiceImpl - selectQuestionBoardOne :::");
+		QuestionBoard questionBoard = questionBoardMapper.selectQuestionBoardOne(questionId);
+		questionBoard.setCommentCount(questionBoardMapper.selectQuestionCommentCount(questionId));
+		System.out.println(questionBoard.toString());
+		return questionBoard;
+	}
 	
 	@Override
 	public Map<String,Object> getQuestBoardList(int currentPage, int rowPerPage,String searchWord) {
@@ -58,4 +74,5 @@ public class QuestionBoardServiceImpl implements QuestionBoardService{
 		map.put("searchWord",searchWord);
 		return map;
 	}
+	
 }
