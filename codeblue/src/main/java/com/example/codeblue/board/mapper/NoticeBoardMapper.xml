@@ -22,4 +22,15 @@
    		SELECT COUNT(*) 
    			FROM notice_board
    </select>
+   <select  id="selectNoticeBoardOne" 
+   			parameterType="int"
+   			resultType="com.example.codeblue.board.vo.NoticeBoard">
+   	SELECT notice_id as noticeId,
+			notice_title as noticeTitle,
+			notice_content as noticeContent,
+			file_id as fileId,
+			notice_datetime as noticeDatetime
+    FROM notice_board
+    WHERE notice_id = #{noticeId}
+   	</select>
 </mapper>

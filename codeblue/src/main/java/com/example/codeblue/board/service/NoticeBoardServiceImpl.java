@@ -19,6 +19,12 @@ public class NoticeBoardServiceImpl implements NoticeBoardService{
 	@Autowired NoticeBoardMapper noticeBoardMapper;
 	
 	@Override
+	public NoticeBoard getNoticeBoardOne(int noticeId) {
+		System.out.println("::: NoticeBoardServiceImpl - getNoticeBoardOne :::");
+		return noticeBoardMapper.selectNoticeBoardOne(noticeId);
+	}
+	
+	@Override
 	public Map<String, Object> getNoticeBoardList(int currentPage, int rowPerPage) {
 		
 		List<NoticeBoard> list = new ArrayList<>();
@@ -52,5 +58,7 @@ public class NoticeBoardServiceImpl implements NoticeBoardService{
 		System.out.println("-------------------");
 		return map;
 	}
+
+	
 	
 }

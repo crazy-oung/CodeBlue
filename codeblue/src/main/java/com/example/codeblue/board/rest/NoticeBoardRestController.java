@@ -3,13 +3,13 @@ package com.example.codeblue.board.rest;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.codeblue.board.service.NoticeBoardService;
+import com.example.codeblue.board.vo.NoticeBoard;
 
 @RestController
 public class NoticeBoardRestController {
@@ -18,7 +18,7 @@ public class NoticeBoardRestController {
 	@GetMapping("/rest/getNoticeList")
 	public Map<String,Object> getnoticeList(@RequestParam(value="currentPage", defaultValue = "1")int currentPage,
 									 @RequestParam(value="rowPerPage", defaultValue = "10")int rowPerPage) {
-		System.out.println("::: post - getnoticeList :::"); 
+		System.out.println("::: get - getnoticeList :::"); 
 		System.out.println("currentPage : " + currentPage);
 		System.out.println("rowPerPage : " + rowPerPage);
 		
@@ -39,5 +39,12 @@ public class NoticeBoardRestController {
 		System.out.println("리턴!");
 		System.out.println(map.toString());
 		return noticeBoardService.getNoticeBoardList(currentPage, rowPerPage);
-}
+	}
+	
+	@PostMapping("/rest/noticeOne")
+	public NoticeBoard getNoticeOne(int noticeId) {
+		System.out.println("::: get - getNoticeOne :::");
+		
+		return noticeBoardService.getNoticeBoardOne(noticeId);
+	}
 }

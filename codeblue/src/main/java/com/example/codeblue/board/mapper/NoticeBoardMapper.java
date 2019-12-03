@@ -8,5 +8,6 @@ import com.example.codeblue.board.vo.Page;
 @Mapper
 public interface NoticeBoardMapper {
 	public List<NoticeBoard> selectNoticeBoardList(Page page);
+	public NoticeBoard selectNoticeBoardOne(int noticeId);
 	public int noticeBoardTotalRow();
 }
