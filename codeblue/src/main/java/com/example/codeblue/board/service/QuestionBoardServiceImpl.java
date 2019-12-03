@@ -23,13 +23,13 @@ public class QuestionBoardServiceImpl implements QuestionBoardService{
 	
 	@Override
 	public List<QuestionComment> getQuestionCommentList(int questionId) {
-		System.out.println("::: QuestionBoardServiceImpl - selectQuestionCommentList :::");
+		System.out.println("::: QuestionBoardServiceImpl - getQuestionCommentList :::");
 		return questionBoardMapper.selectQuestionCommentList(questionId);
 	}
 	
 	@Override
 	public QuestionBoard getQuestionBoardOne(int questionId) {
-		System.out.println("::: QuestionBoardServiceImpl - selectQuestionBoardOne :::");
+		System.out.println("::: QuestionBoardServiceImpl - getQuestionBoardOne :::");
 		QuestionBoard questionBoard = questionBoardMapper.selectQuestionBoardOne(questionId);
 		questionBoard.setCommentCount(questionBoardMapper.selectQuestionCommentCount(questionId));
 		System.out.println(questionBoard.toString());
@@ -38,7 +38,7 @@ public class QuestionBoardServiceImpl implements QuestionBoardService{
 	
 	@Override
 	public Map<String,Object> getQuestBoardList(int currentPage, int rowPerPage,String searchWord) {
-		System.out.println("::: QuestionBoardServiceImpl - selectQuestionBoardList :::");
+		System.out.println("::: QuestionBoardServiceImpl - getQuestBoardList :::");
 		//페이징객체 생성
 		Page page = new Page();
 		//페이징 시작값

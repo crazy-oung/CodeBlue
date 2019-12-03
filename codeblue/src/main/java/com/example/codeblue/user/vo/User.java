@@ -7,7 +7,7 @@ public class User {
 	private String userId;
 	private String userName;
 	private String userPw;
-	private int regionId;
+	private Region region;
 	private String userActivity;
 	private String userBirthDate;
 	private String userCreatetime;
