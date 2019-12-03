@@ -1,5 +1,7 @@
 package com.example.codeblue.board.vo;
 
+import java.io.File;
+
 import lombok.Data;
 
 @Data
@@ -7,6 +9,6 @@ public class NoticeBoard {
 	private int noticeId;
 	private String noticeTitle;
 	private String noticeContent;
-	private String fileId;
+	private File file;
 	private String noticeDatetime;
 }

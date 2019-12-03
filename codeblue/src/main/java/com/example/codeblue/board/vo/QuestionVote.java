@@ -5,10 +5,9 @@ import com.example.codeblue.user.vo.User;
 import lombok.Data;
 
 @Data
-public class QuestionComment {
-	private int questionCommentId;
+public class QuestionVote {
+	private int questionVoteId;
 	private User user;
-	private String questionCommentContent;
 	private QuestionBoard questionBoard;
-	private String questionCommentDatetime;
+	private String questionVoteDateTime;
 }

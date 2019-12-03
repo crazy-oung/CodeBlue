@@ -32,8 +32,7 @@
 			question_datetime as questionDatetime,
 			feild_id as feildId,
 			user_id as userId,
-			tag_id as tagId,
-			question_FL as questionFL
+			tag_id as tagId
 		FROM question_board
 		WHERE question_id = #{questionId}
 	</select>
