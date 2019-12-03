@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.example.codeblue.board.mapper.AskMapper">
+	<insert id="insertQuestion" parameterType="com.example.codeblue.board.vo.QuestionBoard">
+		INSERT INTO question_board  (
+			user_id,
+			question_title,
+			question_content,
+			question_datetime,
+			feild_id
+		)
+		VALUES (
+			#{userId},
+			#{questionTitle},
+			#{questionContent},
+			NOW(),
+			#{feildId}
+		)		
+	</insert>
+</mapper>

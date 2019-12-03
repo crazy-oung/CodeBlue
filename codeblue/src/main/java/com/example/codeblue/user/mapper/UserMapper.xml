@@ -43,16 +43,6 @@
 		FROM manager WHERE manager_id = #{userId} AND manager_pw = #{userPw}
 	</select>
 	
-	<select id="selectRegionList" parameterType="com.example.codeblue.user.vo.Region" resultType="com.example.codeblue.user.vo.Region">
-		SELECT region_id as regionId, region_name as regionName 
-		FROM region	
-	</select> 
-	
-	<select id="selectFeildList" parameterType="com.example.codeblue.user.vo.Feild" resultType="com.example.codeblue.user.vo.Feild">
-		SELECT feild_id as feildId, feild_name as feildName
-		FROM Feild 
-	</select> 
-	
 	<update id="updateUserPw" parameterType="com.example.codeblue.user.vo.User">
 		UPDATE user SET user_pw = #{userPw} WHERE user_id = #{userId}
 	</update>

@@ -51,19 +51,6 @@ public class UserServiceImpl implements UserService{
 	    javaMailSender.send(simpleMailMessage);
 	    return randNum;
 	}
-	
-	//지역 리스트 출력
-	@Override
-	public List<Region> getRegionList() {
-		System.out.println("::: UserServluceImpl - getRegionList :::");
-		return userMapper.selectRegionList();
-	}
-
-	@Override
-	public List<Feild> getFeildList() {
-		System.out.println("::: UserServluceImpl - getFeildList :::");
-		return userMapper.selectFeildList();
-	}
 
 	@Override
 	public int addExpert(Expert expert) {

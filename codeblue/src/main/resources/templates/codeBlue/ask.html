@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>질문 - 코드블루</title>
+
+<!-- Custom fonts for this template-->
+<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+<!-- JQuery Library import -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.js"></script>
+
+<!-- Custom styles for this template-->
+<link href="css/sb-admin-2.min.css" rel="stylesheet">
+<!-- Custom styles for codeBlue -->
+<link href="css/codeBlue.css" rel="stylesheet">
+
+
+
+</head>
+
+<body style="background: #ebebeb;" >
+ 		
+		<!-- Topbar -->
+		<nav 
+			class="navbar navbar-expand navbar-light topbar mb-4 shadow fixed-top"
+			style="height: 50px; border-bottom: 1px solid #d9d9d9; border-top: 4px solid #4e73df; background: #f2f2f2;">
+			<div class="container">
+				<!-- topbar codeblue logo -->
+				<a class="navbar-brand text-primary mr-0" href="/">
+					<img src="/img/codeBlueLogo.png" width="130px"> 
+				</a> 
+				<a class="btn btn-sm btn-default mx-2 hov-g text-dark" href="/QnA">QnA</a>
+
+				<!-- Topbar Search -->
+				<div class="input-group">
+					<input type="text" class="form-control  form-control-sm bg-light border-1" placeholder="검색어" style="width: 400px !important">
+					<div class="input-group-append">
+						<button class="btn btn-primary btn-sm" type="button">
+							<i class="fas fa-search fa-sm"></i>
+						</button>
+					</div>
+				</div>
+
+				<div class="d-felx justify-content-end" style="width: 600px">
+					<a class="ml-3 btn btn-sm hov-p text-primary" href="/login">로그인</a>
+					<a class=" btn ml-1 btn-sm btn-primary" href="/register">회원가입</a>
+				</div> 
+			</div>
+		</nav>
+		<!-- End of Topbar -->
+		
+		<!-- Begin Page Content -->
+		<div class="container" style="height: 100%" align="center">  
+			<div class="pt-4 mt-5 text-left" > 
+				<p class="text-center">
+					<a href="/">
+						<img src="/img/codeBlueIcon.png" width="50px"><br>
+						<img class="mb-1" src="/img/codeBlue.png" width="100px">
+					</a> 
+				</p>
+				
+				<!-- ask Form begin -->
+				<div class="card shadow p-3 mx-5">  
+					<form method="post">
+						<input class="form-control form-control-sm mb-2" placeholder="아이디" id="id">
+						<label class="text-dark font-weight-bold">분야</label>
+						<select id="feild" class="form-control form-control-sm mb-2"></select>
+						<label class="text-dark font-weight-bold">제목</label>
+						<input class="form-control form-control-sm mb-2" placeholder="제목" id="title">
+						<label class="text-dark font-weight-bold">내용</label>
+						
+						<div class="mb-3" style="height: 100%">
+					  		<div id="summernote"></div>
+					  	</div>
+					  <hr>
+					  <label class="text-dark font-weight-bold">태그</label>
+					  <input class="form-control form-control-sm mb-2" placeholder="태그" id="tags">
+					</form>
+				</div>
+				<!-- ask Form end --> 
+				<button id="submit" class="btn btn-primary shadow mt-3 px-4  ml-5">질문 등록</button>
+			</div> 			
+		</div> 
+		<!-- Page Content End --> 
+		 
+	<!-- Footer -->
+	<br>
+	<footer class="sticky-footer text-light" style="background: #333333">
+		<div class="container my-auto">
+			<div class="copyright text-right my-auto">
+				<span>Copyright &copy; codeBlue 2019</span>
+			</div>
+		</div>
+	</footer>
+	<!-- End of Footer -->
+
+	<!-- Bootstrap core JavaScript-->
+	<script src="vendor/jquery/jquery.min.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+	<!-- Core plugin JavaScript-->
+	<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+	<!-- Custom scripts for all pages-->
+	<script src="js/sb-admin-2.min.js"></script>
+
+	<!-- Page level plugins -->
+	<script src="vendor/chart.js/Chart.min.js"></script>
+
+	<!-- Page level custom scripts -->
+	<script src="js/demo/chart-area-demo.js"></script>
+	<script src="js/demo/chart-pie-demo.js"></script>
+	
+	<!-- summer note scripts -->
+	<script src="js/summernote/summernote-bs4.min.js"></script>
+	<script src="js/summernote/summernote-ko-KR.js"></script>
+	<script src="js/summernote/summernote.min.js"></script> 
+	
+	
+</body>
+<script> 
+	$(document).ready(function() {
+		
+		$.ajax({
+			url : "/rest/getFeildList",
+			method : "get",
+			success : function(json){
+				console.log(json);
+				let feild;
+				$(json).each(function(index,item){
+					feild = "<option value='";
+					feild += item.feildId;
+					feild += "'>";
+					feild += item.feildName;
+					feild += "</option>";
+					$("#feild").append(feild);
+				})
+			}
+		})
+		
+	  $('#summernote').summernote({
+		  toolbar: [
+			  ['style', ['style']],
+			  ['font', ['bold', 'underline', 'clear']],
+			  ['color', ['color']],
+			  ['para', ['ul', 'ol', 'paragraph']],
+			  ['table', ['table']],
+			  ['insert', ['link', 'picture', 'video']],
+			  ['view', ['fullscreen', 'help']],
+			],
+		lang : 'ko-KR',
+		placeholder: '내용을 입력해주세요',
+		tabsize: 4,
+		height: 500
+	  });
+	  
+		$("#submit").click(function(){
+			if(confirm( '질문을 등록하시겠습니까?' )){
+				console.log($("#id").val());
+				$.ajax({
+					url:"/addQuestion",
+					method : "post",
+					data : {"userId" : $("#id").val(),
+							"feildId" :$("#feild").val(),
+							"questionTitle" : $("#title").val(),
+							"questionContent" : $("#summernote").val()},
+					success:function(){
+						console.log("성공");
+						location.href="/QnA";
+					}
+				})
+			}
+		});
+	  
+	});
+</script>
+</html>

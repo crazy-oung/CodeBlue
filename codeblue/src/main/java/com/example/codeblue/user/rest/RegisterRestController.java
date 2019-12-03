@@ -1,19 +1,13 @@
 package com.example.codeblue.user.rest;
 
-import java.util.List;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.codeblue.user.service.UserService;
 import com.example.codeblue.user.vo.Expert;
-import com.example.codeblue.user.vo.Feild;
-import com.example.codeblue.user.vo.Region;
 import com.example.codeblue.user.vo.User;
 
 @RestController
@@ -94,17 +88,4 @@ public class RegisterRestController {
 		return true;
 	}
 	
-	@GetMapping("/rest/getRegionList")
-	public List<Region> getRegionList(){
-		System.out.println("::: get - getRegionList :::");
-		
-		return userService.getRegionList();
-	}
-	
-	@GetMapping("/rest/getFeildList")
-	public List<Feild> getFeildList(){
-		System.out.println("::: get - getRegionList :::");
-		
-		return userService.getFeildList();
-	}
 }

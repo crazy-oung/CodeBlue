@@ -28,15 +28,9 @@ public class LoginController {
 		return "/codeBlue/today";
 	}
 	
-	@GetMapping("/verifyUserForReset")
-	public String getResetPasswrod() { 
-		System.out.println("::: get - verifyUserForReset :::"); 
-		return "/verifyUserForReset";
-	}
-	
 	@GetMapping("/accountRecovery")
-	public String getAccountRecovery() {
-		System.out.println("::: get - getAccountRecovery :::");
+	public String getResetPasswrod() { 
+		System.out.println("::: get - accountRecovery :::"); 
 		return "/accountRecovery";
 	}
 	

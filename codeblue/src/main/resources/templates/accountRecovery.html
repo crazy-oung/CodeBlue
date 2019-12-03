@@ -10,17 +10,19 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>비밀번호 초기화 - 코드블루</title>
+<title>비밀번호 찾기 - 코드블루</title>
 
 <!-- Custom fonts for this template-->
-<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
+	type="text/css">
+<link
+	href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+	rel="stylesheet">
 
 <!-- Custom styles for this template-->
 <link href="css/sb-admin-2.min.css" rel="stylesheet">
 <!-- Custom styles for codeBlue -->
 <link href="css/codeBlue.css" rel="stylesheet">
-<!-- import JQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 
@@ -32,7 +34,9 @@
 			style="height: 50px; border-bottom: 1px solid #d9d9d9; border-top: 4px solid #4e73df; background: #f2f2f2;">
 			<div class="container">
 				<!-- topbar codeblue logo -->
-				<a class="navbar-brand text-primary mr-0" href="/"><img src="/img/codeBlueLogo.png" width="130px"></a> 
+				<a class="navbar-brand text-primary mr-0" href="/">
+					<img src="/img/codeBlueLogo.png" width="130px"> 
+				</a> 
 				<a class="btn btn-sm btn-default mx-2 hov-g text-dark" href="/QnA">QnA</a>
 
 				<!-- Topbar Search -->
@@ -55,19 +59,46 @@
 
 		<!-- Begin Page Content -->
 		<div class="container" style="height: 100%" align="center">  
-			
-			<div class="p-5 m-5 text-left" style="width: 50%">	
+			<div class="p-5 m-5 text-left" style="width: 50%"> 
 				<p class="text-center">
 					<a href="/">
 						<img src="/img/codeBlueIcon.png" width="50px"><br>
-						<img class="mb-4" src="/img/codeBlue.png" width="100px">
+						<img class="mb-3" src="/img/codeBlue.png" width="100px">
 					</a> 
-				</p>			
-				<!-- reset Form begin -->
-				<div class="card shadow pt-2 px-2 mx-5"> 
-					<form class="was-validated card-body" action="/resetPassword" method="post">
-					<input type="text" class="form-control form-control-sm" id="userId" readonly> 
+				</p>
+				<!-- email Form begin -->
+				<div class="card shadow px-2 mx-5"> 
+					<form class="card-body pb-0">
+						<small>
+							비밀번호가 기억이 안나시나요? 이메일을 입력하시면 인증 코드를 보내드립니다! 인증코드로 이메일을 인증하고 비밀번호를 새로 설정해보세요.
+						</small>
 					  <div class="form-group">
+					    <label class="text-dark font-weight-bold mt-3" for="userId">이메일</label>
+					    <input type="email" class="form-control form-control-sm" id="id" placeholder="E-Mail@example.com"> 
+					  </div>  
+					  <button type="button" class="btn btn-block btn-primary mb-2" id="getCode">인증 메일 받기</button> 
+					</form> 
+					
+					<!-- 입력 클릭시 인증코드 입력란 출력 -->
+					  <b class="text-sm card mt-1 mx-3 p-3 text-center text-primary shadow" id="notice" style="display:none">인증 메일이 전송 되었습니다!</b>
+					  <form class="was-validated card-body px-2 py-2" > 
+						  <div id="codeForm" style="display:none">	  
+						  	<div class="form-group">
+						    	<label class="text-dark font-weight-bold mt-1" for="code">인증코드</label>
+						    	<input type="text" class="form-control" id="code" placeholder="인증코드를 입력해주세요" required> 
+						    	<div class="invalid-feedback">인증 코드를 입력해주세요 🎆</div> 
+						  	</div> 
+						  	<button type="button" id="confirmCode" class="btn btn-block btn-outline-primary mb-1">확인</button>  
+							<a href="#" id="resend" class="small text-center">메일을 못 받으셨나요? 다시 보내드립니다!</a> 
+						  </div>
+					  </form> 
+				</div> <!-- email Form end -->
+				
+				<!-- reset Form begin -->
+				<div class="card shadow mt-2 pt-3 px-2 mx-5" id="restForm" style="display:none"> 
+					<b class="card border-success text-success p-2 mx-3 text-center mb-0">인증이 완료 되었습니다!<br>새 비밀번호를 설정해 주세요.</b>
+					<form class="was-validated card-body" action="/resetPassword" method="post">
+					  <div class="form-group mb-1">
 					    <label class="text-dark font-weight-bold" for="pw">비밀번호</label>
 					    <input type="password" class="form-control form-control-sm" id="pw" placeholder="비밀번호" required>
 					    <div class="valid-feedback">좋아요.</div>
@@ -83,7 +114,8 @@
 				  	</form>
 				</div>
 				<!-- reset Form end -->
-			</div> 
+				
+			</div> 			
 		</div> 
 		<!-- Page Content End --> 
 		 
@@ -107,9 +139,73 @@
 	<script src="js/demo/chart-pie-demo.js"></script>
 </body>
 <script> 
-	// hide parameters from address
-/* 	history.replaceState({},null,location.pathname); */
-
+	
+	$("#getCode").click(function(){
+		$.ajax({
+			url : "/rest/verifyUserForReset",
+			method : "post",
+			data : {"userId" : $("#id").val()},
+			success : function(json){
+				console.log(json);
+				if(json == "noSuchUser"){
+					alert("해당 이메일과 일치하는 유저 정보가 없습니다!");
+					return;
+				}
+				console.log("메일 전송 완료!") 
+				$("#userId").prop("readonly", true);
+				$("#getCode").prop("disabled", true);
+				
+				$("#notice").fadeIn(300); 
+				setTimeout(function() {
+					$("#codeForm").slideDown(500); 
+				}, 300); 
+				
+			}
+		})
+	})
+	
+	$("#resend").click(function(){
+		console.log("입력완료 메일전송 시작.");
+		$.ajax({
+			url:"/rest/sendEmailToConfirm",
+			data:{ "userId" : $("#id").val() },
+			method:"post", 
+			success:function(){
+				console.log("메일 전송 완료!")
+			}
+	
+		})
+		 
+	})
+	
+	$("#confirmCode").click(function(){
+		console.log("코드 검사");
+	 	$.ajax({
+	 		url:"/rest/verifyCodeForRest",
+			method:"post", 
+			async : "true",
+			data : {"code":$("#code").val()},
+			success:function(json){
+				console.log(json);
+				if(json == false){
+					alert("코드가 틀렸습니다! 다시 시도하여 주세요. :( ")
+					return;
+				}
+				$("#code").prop("disabled", true);
+				$("#confirmCode").prop("disabled", true);
+				$('#resend').css("display", "none");  
+				
+				setTimeout(function() {
+					$("#restForm").fadeIn();
+				}, 300); 		
+				
+				
+			},
+			fail:function(){
+				alert("알 수 없는 에러가 발생 했습니다! 다시 시도하여 주세요 😥");
+			}
+		})
+	})  
 	
 	$("#reset").click(function(){
 		console.log("비밀번호 변경!");
@@ -121,16 +217,14 @@
 		$.ajax({
 			url : "/rest/resetPassword",
 			method : "post",
-			data : {
-					"userPw" : $("#pw").val()
-					}, 
+			data :{ "userId" : $("#id").val(),
+					"userPw" : $("#pw").val() }, 
 			success : function(json){
 				console.log("실행");
 				location.href="/login";
 			}                                                                                                                                                                                                                                          
 		})
 	})
-		
-
+	
 </script>
 </html>

@@ -21,12 +21,6 @@ public interface UserMapper {
 	//회원가입
 	public int insertUser(User user);
 	
-	//지역 리스트
-	public List<Region> selectRegionList();
-	
-	//분야 리스트
-	public List<Feild> selectFeildList(); 
-	
 	// 전문가 추가
 	public int insertExpert(Expert expert);
 	 

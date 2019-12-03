@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>QnA - 코드블루</title>
+
+<!-- Custom fonts for this template-->
+<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+<!-- Custom styles for this template-->
+<link href="css/sb-admin-2.min.css" rel="stylesheet">
+<!-- Custom styles for codeBlue -->
+<link href="css/codeBlue.css" rel="stylesheet">
+</head>
+
+<body id="page-top" >
+ 
+		<!-- Topbar -->
+		<nav class="navbar navbar-expand navbar-light topbar mb-4 shadow fixed-top"
+			style="height: 50px; border-bottom: 1px solid #d9d9d9; border-top: 4px solid #4e73df; background: #f2f2f2;">
+			<div class="container">
+				<!-- topbar codeblue logo -->
+				<a class="navbar-brand text-primary mr-0" href="/"><img src="/img/codeBlueLogo.png" width="130px"></a> 
+				<a class="btn btn-sm btn-default mx-2 hov-g text-dark" href="/QnA">QnA</a>
+
+				<!-- Topbar Search -->
+				<div class="input-group">
+					<input type="text" class="form-control  form-control-sm bg-light border-1" placeholder="검색어" style="width: 400px !important" id="searchWord">
+					<div class="input-group-append">
+						<button class="btn btn-primary btn-sm" type="button" id="search">
+							<i class="fas fa-search fa-sm"></i>
+						</button>
+					</div>
+				</div>
+
+				<div class="d-felx justify-content-end" style="width: 600px">
+					<a class="ml-3 btn btn-sm hov-p text-primary" href="/login">로그인</a>
+					<a class=" btn ml-1 btn-sm btn-primary" href="/register">회원가입</a>
+				</div> 
+			</div>
+		</nav>
+		<!-- End of Topbar -->
+
+		<!-- Begin Page Content -->
+		<div class="container">
+			<div class="row"> 
+			
+				<!-- Side Bar -->
+				<div class="col-sm-1 p-0" style="border-right: 1px solid #d9d9d9;">
+					<nav class="navbar pl-0 sticky-container">
+						<div style="margin-top: 70px">
+							<ul class="nav flex-column">
+								<li class="pl-0"><small>질문</small></li> 
+								<li class="nav-item pl-1"><a class="nav-link pl-2 font-weight-bold pt-1 pb-0" href="/">today</a></li> 
+								<li class="nav-item pl-1"><a class="nav-link pl-2 text-danger font-weight-bold pt-1 pb-0" href="/">hot 🔥</a></li>
+								<li class="nav-item pl-1"><a class="nav-link pl-2 text-warning font-weight-bold pt-1 pb-0" href="/">help!</a></li>
+								<li class="nav-item pl-1"><a class="nav-link pl-2 text-success font-weight-bold pt-1 pb-0" href="/">ongoing</a></li>
+								<li class="mt-2"><small>조회</small></li> 
+								<li class="nav-item"><a class="nav-link text-dark pl-2 pt-1 pb-0" href="/">유저</a></li>
+								<li class="nav-item"><a class="nav-link text-dark pl-2 pt-1 pb-0" href="/">태그</a></li>
+								<li class="nav-item"><a class="nav-link text-dark pl-2 pt-1 pb-0" href="/">랭킹</a></li>
+							</ul>
+						</div> 
+					</nav>
+				</div>
+				<!-- Side Bar End -->
+				
+				<!-- Page Content -->
+				<div class="col-sm-8">
+					<!-- Page Heading -->
+					<div class="d-sm-flex align-items-center justify-content-between mb-2" style="margin-top: 80px">
+						<h3 class="text-gray-800 mb-2 font-weight-bold">QnA</h3>
+						<a href="/ask" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow"><i class="mr-2 fas fa-plus fa-sm text-white-50"></i>질문 올리기</a> 
+					</div>
+					<!-- page Heading End -->
+					<div class="card mb-3 border-primary p-1"><ul class="nav" id="feilds"></ul></div>
+					
+					
+					<table id="questionBoard" class="table table-hover"></table>
+					<br>
+					
+					<button type="button" id="prevBtn" class="btn btn-primary">이전</button>
+					<button type="button" id="nextBtn" class="btn btn-primary">다음</button>
+					
+				</div>
+				<!-- Page rigth side bar -->
+				<div class="col-sm-3 pt-5">
+					<div class="card bg-light border-1 mt-4 shadow">
+					
+						<table class="table table-hover">
+							<thead class="alert-warning">
+								<tr>
+									<td>Featured on Meta</td>
+								</tr>
+							</thead>
+							<tbody class="">
+								<tr>
+									<td><small>Feedback post: Moderator review and reinstatement processes</small></td>
+								</tr>
+								<tr>
+									<td><small>Upvotes on questions will now be worth the same as upvotes on answers</small></td>
+								</tr>
+							</tbody>
+						</table>
+					
+					</div>
+					
+				</div> <!-- rigth side bar end -->
+				
+			</div>
+		</div> 
+
+	<!-- Footer -->
+	<br>
+	<footer class="sticky-footer text-light" style="background: #333333">
+		<div class="container my-auto">
+			<div class="copyright text-right my-auto">
+				<span>Copyright &copy; codeBlue 2019</span>
+			</div>
+		</div>
+	</footer>
+	<!-- End of Footer -->
+
+
+	<!-- Bootstrap core JavaScript-->
+	<script src="vendor/jquery/jquery.min.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+	<!-- Core plugin JavaScript-->
+	<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+	<!-- Custom scripts for all pages-->
+	<script src="js/sb-admin-2.min.js"></script>
+
+	<!-- Page level plugins -->
+	<script src="vendor/chart.js/Chart.min.js"></script>
+
+	<!-- Page level custom scripts -->
+	<script src="js/demo/chart-area-demo.js"></script>
+	<script src="js/demo/chart-pie-demo.js"></script>
+</body>
+
+<script type="text/javascript">
+	
+	
+	//현재페이지값
+	var currentPage = 1;
+	//마지막페이지값
+	var lastPage = 0;
+	//검색한 단어
+	var searchWord = null;
+
+	// 필드 테이블 출력
+	$.ajax({
+		url : "/rest/getFeildList",
+		method : "GET",
+		success : function(json){
+			console.log(json);
+			
+			$(json).each(function(index, item){
+				html = " <li class='nav-item'> <a class='nav-link p-1 mx-1 hov-p text-primary' onclick='getQuestionList()' value='"+item.feildId+"'>"+
+						item.feildName +
+						"</a></li>";
+				$("#feilds").append(html);
+				
+			})
+		}
+	})
+	
+	// 분야 필터링 
+	function getQuestionList(){
+		console.log(this)
+	}
+	
+	//홈페이지
+	$.ajax({
+		url:"/rest/getBoardList",
+		method:"POST",
+		data:{"currentPage" : currentPage},
+		success: function(json){
+			currentPage = json.currentPage;
+			lastPage = json.lastPage;
+			BtnShow(currentPage,lastPage);
+			$(json.list).each(function(index,item){
+				html = "<tr>"+
+						"<td width='9%' class=><div class='text-center pt-1'>"+item.voteCount+"<br>"+
+						"<small class='my-1'>추천</small>"+
+						"</div></td>"+
+						"<td width='11%' class='px-1'><div class='card border-success text-center pt-1' >"+item.answerCount+"<br>"+
+						"<small class='text-success my-1'>답변</small>"+
+						"</div></td>"+
+						"<td><a class='nav-link' href='#'>"+item.questionTitle+"</a>" +
+						"<div class='d-flex justify-content-between'>"+
+						"<small class='p-2'>태그들...</small>"+
+						"<small class='p-2'>uploaded at"+item.questionDatetime +" by " + item.userId+"</small></div>"
+						+"</td></tr>";
+				$("#questionBoard").append(html);
+			})
+		}
+	})
+	
+	//이전버튼
+	$("#prevBtn").click(function(){
+		$.ajax({
+			url:"/rest/getBoardList",
+			method:"POST",
+			data:{"currentPage" : currentPage-1,"searchWord": searchWord},
+			success: function(json){
+				currentPage = json.currentPage;
+				lastPage = json.lastPage;
+				$("#searchWord").val(json.searchWord);
+				BtnShow(currentPage,lastPage);
+				$("#questionBoard").empty();
+				$(json.list).each(function(index,item){
+					html = "<tr>"+
+							"<td width='10%' class=><div class='text-center pt-1'>"+item.voteCount+"<br>"+
+							"<small class='my-1'>추천</small>"+
+							"</div></td>"+
+							"<td width='13%' class='px-1'><div class='card border-success text-center pt-1' >"+item.answerCount+"<br>"+
+							"<small class='text-success my-1'>답변</small>"+
+							"</div></td>"+
+							"<td><a class='nav-link' href='#'>"+item.questionTitle+"</a>" +
+							"<div class='d-flex justify-content-between'>"+
+							"<small class='p-2'>태그들...</small>"+
+							"<small class='p-2'>uploaded at"+item.questionDatetime +" by " + item.userId+"</small></div>"
+							+"</td></tr>";
+					$("#questionBoard").append(html);
+				})
+			}
+		})
+	});
+	
+	//다음버튼
+	$("#nextBtn").click(function(){
+		$.ajax({
+			url:"/rest/getBoardList",
+			method:"POST",
+			data:{"currentPage" : currentPage+1,"searchWord": searchWord},
+			success: function(json){
+				currentPage = json.currentPage;
+				lastPage = json.lastPage;
+				$("#searchWord").val(json.searchWord);
+				BtnShow(currentPage,lastPage);
+				$("#questionBoard").empty();
+				$(json.list).each(function(index,item){
+					html = "<tr>"+
+							"<td width='10%' class=><div class='text-center pt-1'>"+item.voteCount+"<br>"+
+							"<small class='my-1'>추천</small>"+
+							"</div></td>"+
+							"<td width='13%' class='px-1'><div class='card border-success text-center pt-1' >"+item.answerCount+"<br>"+
+							"<small class='text-success my-1'>답변</small>"+
+							"</div></td>"+
+							"<td><a class='nav-link' href='#'>"+item.questionTitle+"</a>" +
+							"<div class='d-flex justify-content-between'>"+
+							"<small class='p-2'>태그들...</small>"+
+							"<small class='p-2'>uploaded at"+item.questionDatetime +" by " + item.userId+"</small></div>"
+							+"</td></tr>";
+					$("#questionBoard").append(html);
+				})
+			}
+		})
+	});
+	
+	//검색버튼
+	$("#search").click(function(){
+		$.ajax({
+			url:"/rest/getBoardList",
+			method:"POST",
+			data:{"searchWord": $("#searchWord").val()},
+			success: function(json){
+				console.log(json);
+				currentPage = json.currentPage;
+				lastPage = json.lastPage;
+				$("#searchWord").val(json.searchWord);
+				searchWord = json.searchWord;
+				BtnShow(currentPage,lastPage);
+				$("#questionBoard").empty();
+				$(json.list).each(function(index,item){
+					html = "<tr>"+
+							"<tr>"+
+							"<td width='10%' class=><div class='text-center pt-1'>"+item.voteCount+"<br>"+
+							"<small class='my-1'>추천</small>"+
+							"</div></td>"+
+							"<td width='13%' class='px-1'><div class='card border-success text-center pt-1' >"+item.answerCount+"<br>"+
+							"<small class='text-success my-1'>답변</small>"+
+							"</div></td>"+
+							"<td><a class='nav-link' href='#'>"+item.questionTitle+"</a>" +
+							"<div class='d-flex justify-content-between'>"+
+							"<small class='p-2'>태그들...</small>"+
+							"<small class='p-2'>uploaded at"+item.questionDatetime +" by " + item.userId+"</small></div>"
+							+"</td></tr>";
+					$("#questionBoard").append(html);
+				})
+			}
+		})
+	});
+	
+	//이전 다음 버튼이 숨기는지 안숨기는지 함수로변경
+	function BtnShow(currentPage,lastPage) {
+		if(currentPage == 1){
+			$("#prevBtn").hide();
+		} else {
+			$("#prevBtn").show();
+		}
+		if(currentPage <lastPage) {
+			$("#nextBtn").show();
+		} else {
+			$("#nextBtn").hide();
+		}
+	}
+</script>
+
+</html>
