@@ -18,4 +18,5 @@ public class AdminFaqBoardServiceImpl implements AdminFaqBoardService {
 		faqBoard.toString();
 		return adminFaqBoardMapper.insertFaqBoard(faqBoard);
 	}	
+	
 }

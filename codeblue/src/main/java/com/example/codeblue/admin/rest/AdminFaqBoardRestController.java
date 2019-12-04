@@ -15,6 +15,7 @@ public class AdminFaqBoardRestController {
 	public int addFaqBoard(FaqBoard faqBoard) {
 		System.out.println("::: post - addFaqBoard :::");
 		
+		
 		return adminFaqBoardService.addFaqBoard(faqBoard);
 	}
 }

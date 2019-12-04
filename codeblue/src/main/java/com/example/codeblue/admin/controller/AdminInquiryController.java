@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class AdminInquiryController {
-	
+
 	@GetMapping({"adminInquiry","adminReport"})
 	public String getInquiry() {
 		System.out.println("::: get - adminInquiry :::");

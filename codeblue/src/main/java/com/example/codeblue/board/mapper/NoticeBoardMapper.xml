@@ -34,3 +34,4 @@
     WHERE notice_id = #{noticeId}
    	</select>
 </mapper>
+

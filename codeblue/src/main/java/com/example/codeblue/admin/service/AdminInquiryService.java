@@ -14,4 +14,6 @@ public interface AdminInquiryService {
 	public Map<String, Object> getReportHistoryList(int currentPage, int rowPerPage);
 	//신고 내역 상세 페이지 출력
 	public ReportHistory getReportHistoryOne(int reportHistoryId);
+	
+	
 }

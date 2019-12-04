@@ -4,6 +4,7 @@ import com.example.codeblue.user.vo.ServiceCategory;
 
 import lombok.Data;
 
+
 @Data
 public class FaqBoard {
 	private int faqId;

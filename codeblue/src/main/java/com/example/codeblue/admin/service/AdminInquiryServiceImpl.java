@@ -25,6 +25,7 @@ public class AdminInquiryServiceImpl implements AdminInquiryService {
 	}
 
 	
+
 	//문의내역 상세페이지 가져오기
 	@Override
 	public InquiryHistory getInquiryHistoryOne(int inquiryHistoryId) {

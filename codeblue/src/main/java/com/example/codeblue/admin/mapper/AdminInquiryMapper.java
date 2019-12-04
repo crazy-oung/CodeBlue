@@ -21,3 +21,4 @@ public interface AdminInquiryMapper {
 	//신고내역 상세 내용 가져오기
 	public ReportHistory selectReportHistoryOne(int reportHistoryId);
 }
+

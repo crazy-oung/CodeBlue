@@ -11,3 +11,4 @@ public interface NoticeBoardMapper {
 	public NoticeBoard selectNoticeBoardOne(int noticeId);
 	public int noticeBoardTotalRow();
 }
+
