@@ -354,6 +354,7 @@
 				</div>
 				<!-- ask Form end --> 
 				<button id="submit" class="btn btn-primary shadow mt-3 px-4  ml-5">질문 등록</button>
+				<button id="cancel" class="btn btn-primary shadow mt-3 px-4  ml-5">취소</button>
 			</div> 			
 		</div> 
         
@@ -425,26 +426,19 @@
 </body>
 <script type="text/javascript">
 $(document).ready(function(){
+
 	
-/*   $('#summernote').summernote({
-	  toolbar: [
-		  ['style', ['style']],
-		  ['font', ['bold', 'underline', 'clear']],
-		  ['color', ['color']],
-		  ['para', ['ul', 'ol', 'paragraph']],
-		  ['table', ['table']],
-		  ['insert', ['link', 'picture', 'video']],
-		  ['view', ['fullscreen', 'help']],
-		],
-	lang : 'ko-KR',
-	placeholder: '내용을 입력해주세요',
-	tabsize: 4,
-	height: 500
-  }); */
-  
 	$("#submit").click(function(){
 		console.log($("#title").val());
 		console.log($("#contents").val());
+		
+		if($("#title").val() == ""){
+			alert("제목을 입력하시오");
+			return;
+		}else if($("#contents").val()==""){
+			alert("내용을 입력하시오");
+			return;
+		}
 		
 			$.ajax({
 				url:"/rest/adminNoticeAdd",
@@ -453,11 +447,14 @@ $(document).ready(function(){
 						"noticeContent" : $("#contents").val()},
 				success:function(){
 					console.log("성공");
-// 					location.href="/adminNotice";
+					location.href="/adminNotice";
 				}
 			})	
 	});
   
+  $("#cancel").click(function(){
+	  location.href="/adminNotice";
+  })
 //document
 })
 </script>
