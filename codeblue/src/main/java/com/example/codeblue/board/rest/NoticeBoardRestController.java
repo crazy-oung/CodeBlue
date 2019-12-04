@@ -16,16 +16,9 @@ public class NoticeBoardRestController {
 	@Autowired NoticeBoardService noticeBoardService;
 	
 	@GetMapping("/rest/getNoticeList")
-	public Map<String,Object> getnoticeList(@RequestParam(value="currentPage", defaultValue = "1")int currentPage,
-									 @RequestParam(value="rowPerPage", defaultValue = "10")int rowPerPage) {
+	public Map<String,Object> getNoticeList() {
 		System.out.println("::: get - getnoticeList :::"); 
-		System.out.println("currentPage : " + currentPage);
-		System.out.println("rowPerPage : " + rowPerPage);
-		
-		Map<String,Object> map = noticeBoardService.getNoticeBoardList(currentPage, rowPerPage);
-		System.out.println("리턴!");
-		System.out.println(map.toString());
-		return noticeBoardService.getNoticeBoardList(currentPage, rowPerPage);
+		return noticeBoardService.getNoticeBoardList(1, 10);
 		
 	}
 	@PostMapping("/rest/getNoticeList")
@@ -43,7 +36,7 @@ public class NoticeBoardRestController {
 	
 	@PostMapping("/rest/noticeOne")
 	public NoticeBoard getNoticeOne(int noticeId) {
-		System.out.println("::: get - getNoticeOne :::");
+		System.out.println("::: post - getNoticeOne :::");
 		
 		return noticeBoardService.getNoticeBoardOne(noticeId);
 	}

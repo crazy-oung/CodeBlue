@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.codeblue.admin.mapper.AdminFaqBoardMapper">
+	<insert id="insertFaqBoard" parameterType="com.example.codeblue.user.vo.ServiceCategory">
+		INSERT INTO faq_board(
+			FAQ_title,
+			service_category_id,
+			FAQ_content,
+			FAQ_datetime
+		)	VALUES	(
+			#{faqTitle},
+			#{serviceCategoryId},
+			#{faqContent},
+			now()
+		)
+	</insert>
+</mapper>

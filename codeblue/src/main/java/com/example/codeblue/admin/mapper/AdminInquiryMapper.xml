@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.codeblue.admin.mapper.AdminInquiryMapper">
+   <!-- inquiry vo 만들기  -->
+   <resultMap type="com.example.codeblue.board.vo.InquiryHistory" id="inquiryList"> 
+      <!-- pk는 id 그 외는 result칼럼사용 -->
+      <!-- column은 테이블에서의 칼럼명  property는 클레스의 필드명 -->
+      <id column="inquiry_history_id" property="inquiryHistoryId" ></id>
+      <result column="inquiry_title" property="inquiryTitle" ></result>
+      <result column="inquiry_content" property="inquiryContent" ></result>
+      <result column="inquiry_datetime" property="inquiryDatetime"></result>
+      
+      <association property="inquiry" javaType="com.example.codeblue.board.vo.Inquiry">
+         <result column="inquiry_id" property="inquiryId"/>
+         <result column="inquiry_name" property="inquiryName"/>
+      </association>
+      <association property="user" javaType="com.example.codeblue.user.vo.User">
+         <result column="user_id" property="userId"/>
+         <result column="user_name" property="userName"/>
+      </association>
+   </resultMap>
+   <!-- report vo 만들기  -->
+   <resultMap type="com.example.codeblue.board.vo.ReportHistory" id="reportList"> 
+      <!-- pk는 id 그 외는 result칼럼사용 -->
+      <!-- column은 테이블에서의 칼럼명  property는 클레스의 필드명 -->
+      <id column="report_history_id" property="reportHistoryId" ></id>
+      <result column="report_title" property="reportTitle" ></result>
+      <result column="report_content" property="reportContent" ></result>
+      <result column="report_datetime" property="reportDatetime"></result>
+      
+      <association property="report" javaType="com.example.codeblue.board.vo.Report">
+         <result column="report_id" property="reportId"/>
+         <result column="report_name" property="reportName"/>
+      </association>
+      <association property="user" javaType="com.example.codeblue.user.vo.User">
+         <result column="user_id" property="userId"/>
+         <result column="user_name" property="userName"/>
+      </association>
+   </resultMap>
+
+	<!--  문의내역 SQL 문 -->
+	<!--  문의내역 상세페이지 -->
+	   <select  id="selectInquiryHistoryOne" 
+   			parameterType="int"
+   			resultMap="inquiryList">
+	   	SELECT  ih.inquiry_history_id,
+				ih.inquiry_title,
+				ih.inquiry_content, 
+				i.inquiry_name,
+				u.user_id,
+				ih.inquiry_datetime
+	    FROM inquiry_history ih INNER JOIN inquiry i INNER JOIN user u
+	    ON ih.inquiry_id = i.inquiry_id AND ih.user_id = u.user_id 
+	    WHERE ih.inquiry_history_id = #{inquiryHistoryId}
+   	</select>
+	<!-- 문의내역 전체 리스트 -->
+	<select id="selectInquiryHistoryList" 
+			parameterType="com.example.codeblue.board.vo.Page" 
+			resultType="com.example.codeblue.board.vo.InquiryHistory">
+	
+	SELECT  inquiry_history_id as inquiryHistoryId,
+			inquiry_title as inquiryTitle,
+			inquiry_datetime as inquiryDatetime
+    FROM inquiry_history
+    ORDER BY inquiry_datetime DESC
+    LIMIT #{beginRow},#{rowPerPage}
+   </select>
+   <!--  문의내역 전체 행 -->
+   <select  id="InquiryHistoryTotalRow" 
+			resultType="int">
+	SELECT count(*)
+	FROM inquiry_history
+   </select>
+
+   
+   <!-- 신고내역 SQL 문 -->
+   <select  id="selectReportHistoryOne" 
+   			parameterType="int"
+   			resultMap="reportList">
+		SELECT  rh.report_history_id,
+				rh.report_title,
+				rh.report_content, 
+				r.report_name,
+				u.user_id,
+				rh.report_datetime
+	    FROM report_history rh INNER JOIN report r INNER JOIN user u
+	    ON rh.report_id = r.report_id AND rh.user_id = u.user_id 
+	    WHERE rh.report_history_id = #{reportHistoryId}
+   	</select>
+   
+   <!-- 신고내역 전체 리스트 -->
+	<select id="selectReportHistoryList" 
+			parameterType="com.example.codeblue.board.vo.Page" 
+			resultType="com.example.codeblue.board.vo.ReportHistory">
+	
+	SELECT  report_history_id as reportHistoryId,
+			report_title as reportTitle,
+			report_datetime as reportDatetime
+    FROM report_history
+    ORDER BY report_datetime DESC
+    LIMIT #{beginRow},#{rowPerPage}
+   </select>
+   <!--  신고내역 전체 행 -->
+   <select  id="ReportHistoryTotalRow" 
+			resultType="int">
+	SELECT count(*)
+	FROM report_history
+   </select>   
+   
+</mapper>
