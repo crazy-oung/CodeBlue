@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.codeblue.admin.mapper.AdminUserMapper">
+	<resultMap type="com.example.codeblue.user.vo.User" id="useList"> 
+		<!-- pk는 id 그 외는 result칼럼사용 -->
+		<!-- column은 테이블에서의 칼럼명  property는 클레스의 필드명 -->
+		<id column="user_id" property="userId" ></id>
+		<result column="user_name" property="userName" ></result>
+		<result column="user_birthdate" property="userBirthdate" ></result>
+		<result column="user_createtime" property="userCreatetime"></result>
+		<result column="user_authority" property="userAuthority" ></result>
+		<association property="region" javaType="com.example.codeblue.user.vo.Region">
+			<result column="region_id" property="regionId"/>
+			<result column="region_name" property="regionName"/>
+		</association>
+		<association property="rank" javaType="com.example.codeblue.user.vo.Rank">
+			<result column="rank_id" property="rankId"/>
+			<result column="rank_name" property="rankName"/>
+		</association>
+	</resultMap>
+	
+	<select id="adminSelectUserList" parameterType="com.example.codeblue.board.vo.Page" resultMap="useList">
+		select
+			u.user_id,
+			u.user_name,
+			re.region_id,
+			re.region_name,
+			u.user_birthdate,
+			u.user_createtime,
+			ra.rank_id,
+			ra.rank_name,
+			u.user_authority
+		from user u inner join  region re INNER JOIN rank ra
+		ON u.region_id = re.region_id AND u.rank_id = ra.rank_id
+		where user_authority = 'user'
+		order by u.user_createtime desc
+		limit #{beginRow},#{rowPerPage}
+	</select>
+	<select id="adminSelectUserCount" resultType="int">
+		select
+			count(*)
+		from user
+	</select>
+</mapper>
