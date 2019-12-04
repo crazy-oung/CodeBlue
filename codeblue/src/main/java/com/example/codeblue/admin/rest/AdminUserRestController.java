@@ -22,6 +22,6 @@ public class AdminUserRestController {
 		System.out.println("currentPage : "+currentPage);
 		System.out.println("rowPerPage : "+rowPerPage);
 		System.out.println("searchWord : "+searchWord);
-		return adminUserService.getAdminUserList(currentPage, rowPerPage);
+		return adminUserService.getAdminUserList(currentPage, rowPerPage,searchWord);
 	}
 }

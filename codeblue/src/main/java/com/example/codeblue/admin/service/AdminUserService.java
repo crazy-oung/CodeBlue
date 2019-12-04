@@ -5,5 +5,5 @@ import java.util.Map;
 
 public interface AdminUserService {
 
-	public Map<String,Object> getAdminUserList(int currentPage, int rowPerPage);
+	public Map<String,Object> getAdminUserList(int currentPage, int rowPerPage, String searchWord);
 }

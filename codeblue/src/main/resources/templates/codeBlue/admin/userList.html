@@ -8,10 +8,15 @@
 <body>
 	<h2>userList</h2>
 	<!-- select -->
-	<select id="searchCategory">
-	</select>
+	<div>
+	검색어 : 
 	<input type="text" id="searchContent">
+	</div>
+	<div>
+	<input type="date" id=""> ~ <input type="date" id="">
+	</div>
 	<button type="button" id="searchBtn">검색</button>
+	
 	
 	<!-- list -->
 	<table border="1" id="userList">
@@ -93,7 +98,7 @@
 		$.ajax({
 			url : "/rest/adminuserList",
 			method : "post",
-			data : {"currentPage" : currentPage+1},
+			data : {"currentPage" : currentPage+1, "searchWord" : $("#searchContent").val()},
 			success : function(json){
 				console.log(json);
 				currentPage = json.currentPage;
@@ -119,7 +124,7 @@
 		$.ajax({
 			url : "/rest/adminuserList",
 			method : "post",
-			data : {"currentPage" : currentPage-1},
+			data : {"currentPage" : currentPage-1, "searchWord" : $("#searchContent").val()},
 			success : function(json){
 				console.log(json);
 				currentPage = json.currentPage;

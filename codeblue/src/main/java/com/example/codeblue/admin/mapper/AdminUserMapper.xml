@@ -35,7 +35,12 @@
 			u.user_authority
 		from user u inner join  region re INNER JOIN rank ra
 		ON u.region_id = re.region_id AND u.rank_id = ra.rank_id
-		where user_authority = 'user'
+		where u.user_authority = 'user'
+<!-- 		<where> -->
+			<if test="searchWord != null">
+				and u.user_name like CONCAT('%',#{searchWord},'%')
+			</if>
+<!-- 		</where> -->
 		order by u.user_createtime desc
 		limit #{beginRow},#{rowPerPage}
 	</select>
