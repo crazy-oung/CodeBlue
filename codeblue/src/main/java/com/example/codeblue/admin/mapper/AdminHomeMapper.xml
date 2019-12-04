@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.codeblue.admin.mapper.AdminHomeMapper">
+
+	<select id="selectCurrentQuestionCountFor6Month" resultType="com.example.codeblue.admin.vo.QuestionCount">
+		SELECT MONTH(question_datetime) AS questionMonth, IFNULL(COUNT(*), 0) as COUNT
+		FROM ( SELECT question_datetime from question_board WHERE YEAR(question_datetime) = YEAR(NOW()) )t
+		GROUP BY questionMonth
+	</select>
+	<select id="selectCurrentQuestionCountFromFeild" resultType="com.example.codeblue.admin.vo.QuestionCount">
+		SELECT feildId, COUNT(*) AS count
+		FROM ( SELECT feild_id as feildId from question_board WHERE YEAR(question_datetime) = YEAR(NOW()) )t
+		GROUP BY feildId
+	</select>
+	
+</mapper>
