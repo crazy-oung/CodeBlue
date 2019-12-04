@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.example.codeblue.mapper.AdminMapper">
+	
+
+	<resultMap type="com.example.codeblue.vo.User" id="useList"> 
+		<!-- pk는 id 그 외는 result칼럼사용 -->
+		<!-- column은 테이블에서의 칼럼명  property는 클레스의 필드명 -->
+		<id column="user_id" property="userId" ></id>
+		<result column="user_name" property="userName" ></result>
+		<result column="user_birthdate" property="userBirthdate" ></result>
+		<result column="user_createtime" property="userCreatetime"></result>
+		<result column="user_authority" property="userAuthority" ></result>
+		<association property="region" javaType="com.example.codeblue.vo.Region">
+			<result column="region_id" property="regionId"/>
+			<result column="region_name" property="regionName"/>
+		</association>
+		<association property="rank" javaType="com.example.codeblue.vo.Rank">
+			<result column="rank_id" property="rankId"/>
+			<result column="rank_name" property="rankName"/>
+		</association>
+	</resultMap>
+	
+	<select id="adminSelectUserList" parameterType="com.example.codeblue.vo.Page" resultMap="useList">
+		select
+			u.user_id,
+			u.user_name,
+			re.region_id,
+			re.region_name,
+			u.user_birthdate,
+			u.user_createtime,
+			ra.rank_id,
+			ra.rank_name,
+			u.user_authority
+		from user u inner join  region re INNER JOIN rank ra
+		ON u.region_id = re.region_id AND u.rank_id = ra.rank_id
+		where u.user_authority = 'user'
+<!-- 		<where> -->
+			<if test="searchWord != null">
+				and u.user_name like CONCAT('%',#{searchWord},'%')
+			</if>
+<!-- 		</where> -->
+		order by u.user_createtime desc
+		limit #{beginRow},#{rowPerPage}
+	</select>
+	<select id="adminSelectUserCount" resultType="int">
+		select
+			count(*)
+		from user
+	</select>
+
+	<select id="selectNoticeBoard" resultType="com.example.codeblue.vo.Notice"
+  									parameterType="com.example.codeblue.vo.Page">
+  		SELECT notice_id AS noticeId,
+  			notice_title AS noticeTitle,
+  			notice_content AS noticeContent,
+  			notice_datetime AS noticeDatetime
+  		FROM
+  			notice_board
+  		<where>
+			<if test="searchWord != null">
+				question_title like CONCAT('%',#{searchWord},'%')
+			</if>
+		</where>
+  		ORDER BY notice_datetime desc
+  		LIMIT #{beginRow}, #{rowPerPage}
+  		<where>
+  		
+  		</where>
+  	</select>
+  	
+  	<select id="noticeBoardCount" resultType="int" parameterType="com.example.codeblue.vo.Page">
+  		SELECT 
+  			COUNT(*) 
+  		FROM notice_board
+  		<where>
+			<if test="searchWord != null">
+				question_title like CONCAT('%',#{searchWord},'%')
+			</if>
+		</where>
+  	</select>
+  	
+  	<select id="noticeBoardOne" resultType="com.example.codeblue.vo.Notice" parameterType="int">
+  			SELECT notice_id AS noticeId,
+  			notice_title AS noticeTitle,
+  			notice_content AS noticeContent,
+  			notice_datetime AS noticeDatetime
+  		FROM
+  			notice_board
+  		WHERE 
+  			notice_id = #{noticeId}
+  	</select>
+  	
+  	<insert id ="insertNoticeBoard" parameterType="com.example.codeblue.vo.Notice">
+  		INSERT INTO notice_board (
+  			notice_title,
+  			notice_content,
+  			notice_datetime
+  		) values(
+  			#{noticeTitle},
+  			#{noticeContent},
+  			now()
+  		)
+  		
+  	</insert>
+
+	 <!-- inquiry vo 만들기  -->
+   <resultMap type="com.example.codeblue.vo.InquiryHistory" id="inquiryList"> 
+      <!-- pk는 id 그 외는 result칼럼사용 -->
+      <!-- column은 테이블에서의 칼럼명  property는 클레스의 필드명 -->
+      <id column="inquiry_history_id" property="inquiryHistoryId" ></id>
+      <result column="inquiry_title" property="inquiryTitle" ></result>
+      <result column="inquiry_content" property="inquiryContent" ></result>
+      <result column="inquiry_datetime" property="inquiryDatetime"></result>
+      
+      <association property="inquiry" javaType="com.example.codeblue.vo.Inquiry">
+         <result column="inquiry_id" property="inquiryId"/>
+         <result column="inquiry_name" property="inquiryName"/>
+      </association>
+      <association property="user" javaType="com.example.codeblue.vo.User">
+         <result column="user_id" property="userId"/>
+         <result column="user_name" property="userName"/>
+      </association>
+   </resultMap>
+   <!-- report vo 만들기  -->
+   <resultMap type="com.example.codeblue.vo.ReportHistory" id="reportList"> 
+      <!-- pk는 id 그 외는 result칼럼사용 -->
+      <!-- column은 테이블에서의 칼럼명  property는 클레스의 필드명 -->
+      <id column="report_history_id" property="reportHistoryId" ></id>
+      <result column="report_title" property="reportTitle" ></result>
+      <result column="report_content" property="reportContent" ></result>
+      <result column="report_datetime" property="reportDatetime"></result>
+      
+      <association property="report" javaType="com.example.codeblue.vo.Report">
+         <result column="report_id" property="reportId"/>
+         <result column="report_name" property="reportName"/>
+      </association>
+      <association property="user" javaType="com.example.codeblue.vo.User">
+         <result column="user_id" property="userId"/>
+         <result column="user_name" property="userName"/>
+      </association>
+   </resultMap>
+
+	<!--  문의내역 SQL 문 -->
+	<!--  문의내역 상세페이지 -->
+	   <select  id="selectInquiryHistoryOne" 
+   			parameterType="int"
+   			resultMap="inquiryList">
+	   	SELECT  ih.inquiry_history_id,
+				ih.inquiry_title,
+				ih.inquiry_content, 
+				i.inquiry_name,
+				u.user_id,
+				ih.inquiry_datetime
+	    FROM inquiry_history ih INNER JOIN inquiry i INNER JOIN user u
+	    ON ih.inquiry_id = i.inquiry_id AND ih.user_id = u.user_id 
+	    WHERE ih.inquiry_history_id = #{inquiryHistoryId}
+   	</select>
+	<!-- 문의내역 전체 리스트 -->
+	<select id="selectInquiryHistoryList" 
+			parameterType="com.example.codeblue.vo.Page" 
+			resultType="com.example.codeblue.vo.InquiryHistory">
+	
+	SELECT  inquiry_history_id as inquiryHistoryId,
+			inquiry_title as inquiryTitle,
+			inquiry_datetime as inquiryDatetime
+    FROM inquiry_history
+    ORDER BY inquiry_datetime DESC
+    LIMIT #{beginRow},#{rowPerPage}
+   </select>
+   <!--  문의내역 전체 행 -->
+   <select  id="InquiryHistoryTotalRow" 
+			resultType="int">
+	SELECT count(*)
+	FROM inquiry_history
+   </select>
+
+   
+   <!-- 신고내역 SQL 문 -->
+   <select  id="selectReportHistoryOne" 
+   			parameterType="int"
+   			resultMap="reportList">
+		SELECT  rh.report_history_id,
+				rh.report_title,
+				rh.report_content, 
+				r.report_name,
+				u.user_id,
+				rh.report_datetime
+	    FROM report_history rh INNER JOIN report r INNER JOIN user u
+	    ON rh.report_id = r.report_id AND rh.user_id = u.user_id 
+	    WHERE rh.report_history_id = #{reportHistoryId}
+   	</select>
+   
+   <!-- 신고내역 전체 리스트 -->
+	<select id="selectReportHistoryList" 
+			parameterType="com.example.codeblue.vo.Page" 
+			resultType="com.example.codeblue.vo.ReportHistory">
+	
+	SELECT  report_history_id as reportHistoryId,
+			report_title as reportTitle,
+			report_datetime as reportDatetime
+    FROM report_history
+    ORDER BY report_datetime DESC
+    LIMIT #{beginRow},#{rowPerPage}
+   </select>
+   <!--  신고내역 전체 행 -->
+   <select  id="ReportHistoryTotalRow" 
+			resultType="int">
+	SELECT count(*)
+	FROM report_history
+   </select>   
+
+	<select id="selectCurrentQuestionCountFor6Month" resultType="com.example.codeblue.vo.QuestionCount">
+		SELECT MONTH(question_datetime) AS questionMonth, IFNULL(COUNT(*), 0) as COUNT
+		FROM ( SELECT question_datetime from question_board WHERE YEAR(question_datetime) = YEAR(NOW()) )t
+		GROUP BY questionMonth
+	</select>
+	<select id="selectCurrentQuestionCountFromFeild" resultType="com.example.codeblue.vo.QuestionCount">
+		SELECT feildId, COUNT(*) AS count
+		FROM ( SELECT feild_id as feildId from question_board WHERE YEAR(question_datetime) = YEAR(NOW()) )t
+		GROUP BY feildId
+	</select>
+
+	<insert id="insertFaqBoard" parameterType="com.example.codeblue.vo.ServiceCategory">
+		INSERT INTO faq_board(
+			FAQ_title,
+			service_category_id,
+			FAQ_content,
+			FAQ_datetime
+		)	VALUES	(
+			#{faqTitle},
+			#{serviceCategoryId},
+			#{faqContent},
+			now()
+		)
+	</insert>
+	
+	<select id="selectAdminFeildList" resultType="String">
+		SELECT 
+			feild_name as feildName
+		FROM feild
+	</select>
+	
+	<select id="selectAdminBoardTotalCount" resultType="int" parameterType="com.example.codeblue.vo.Page">
+		SELECT 
+			COUNT(*)
+		FROM question_board
+		<where>
+			<if test="searchWord != null">
+				question_title like CONCAT('%',#{searchWord},'%')
+			</if>
+		</where>
+	</select>
+	
+	<resultMap type="com.example.codeblue.vo.QuestionBoard" id="boardList"> 
+			<!-- pk는 id 그 외는 result칼럼사용 -->
+			<!-- column은 테이블에서의 칼럼명  property는 클레스의 필드명 -->
+			<result column="question_id" property="questionId" ></result>
+			<result column="question_title" property="questionTitle" ></result>
+			<result column="question_content" property="questionContent" ></result>
+			<result column="question_datetime" property="questionDatetime"></result>
+			<result column="answer_count" property="answerCount"></result>
+			
+			<association property="user" javaType="com.example.codeblue.vo.User">
+			   <result column="user_id" property="userId" ></result>
+			   <result column="user_name" property="userName" ></result>
+			   <result column="user_birthdate" property="userBirthdate" ></result>
+			   <result column="user_createtime" property="userCreatetime"></result>
+			</association>	
+			<association property="feild" javaType="com.example.codeblue.vo.Feild">
+			   <result column="feild_id" property="feildId"/>
+			   <result column="feild_name" property="feildName"/>
+			</association>
+	</resultMap>
+	<select id="selectAdminBoardList" resultMap="boardList" parameterType="com.example.codeblue.vo.Page">
+		SELECT 
+				q.question_id,
+				q.question_title,
+				q.question_datetime,
+				q.user_id,
+				CASE WHEN a.answer_count IS NULL then 0 ELSE a.answer_count END AS answer_count,
+				fe.feild_name
+		FROM question_board q left JOIN (SELECT COUNT(*) AS answer_count,question_id FROM
+		answer
+		GROUP BY question_id) a
+		ON q.question_id = a.question_id
+		LEFT JOIN feild fe
+		ON q.feild_id = fe.feild_id
+		<where>
+			<if test="searchWord != null">
+				question_title like CONCAT('%',#{searchWord},'%')
+			</if>
+		</where>
+		LIMIT #{beginRow},#{rowPerPage}
+	</select>
+</mapper>

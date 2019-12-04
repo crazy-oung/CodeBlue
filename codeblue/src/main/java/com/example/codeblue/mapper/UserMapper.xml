@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.codeblue.mapper.UserMapper">
+	<select id="selectUserOne" parameterType="com.example.codeblue.vo.User"
+			resultType="com.example.codeblue.vo.User">
+		SELECT 
+			   user_id as userId,
+			   user_name as userName,
+			   region_id as regionId,
+			   user_birthdate as userBirthDate,
+			   user_createtime as userCreatetime
+		FROM user
+		WHERE user_id = ${userId}
+	</select>
+
+	<select id="selectTagList" parameterType="com.example.codeblue.vo.Page" resultType="com.example.codeblue.vo.Tag">
+		SELECT 
+			tag_name as tagName
+	    FROM tag
+	    ORDER BY notice_datetime DESC
+	    LIMIT #{beginRow},#{rowPerPage}
+	</select>
+
+	<select id="selectQuestionCommentList" parameterType="int" resultType="com.example.codeblue.vo.QuestionComment">
+		SELECT
+			question_comment_id as questionComment,
+			user_id as userId,
+			question_comment_content as questionCommentContent,
+			question_id as questionId,
+			question_comment_datetime as questionCommentDatetime
+		FROM question_comment
+		WHERE question_id = #{qestionId}
+		ORDER BY question_comment_datetime DESC
+	</select>
+	
+	<select id="selectQuestionCommentCount" resultType="int" parameterType="int">
+		SELECT 
+			COUNT(question_id) 
+		FROM question_comment
+			WHERE question_id = #{questionId}
+	</select>
+	
+	<select id="selectQuestionBoardOne" parameterType="int" resultType="com.example.codeblue.vo.QuestionBoard">
+		SELECT 
+			question_id as questionId,
+			question_title as questionTitle,
+			question_content as questionContent,
+			question_datetime as questionDatetime,
+			feild_id as feildId,
+			user_id as userId,
+			tag_id as tagId
+		FROM question_board
+		WHERE question_id = #{questionId}
+	</select>
+	<select id="selectQuestionBoardVotes" resultType="int" parameterType="com.example.codeblue.vo.QuestionBoard">
+		SELECT 
+			COUNT(question_id) 
+		FROM question_vote
+			WHERE question_id = #{questionId}
+	</select>
+	
+	<select id="selectQuestionBoardAnswerCount" resultType="int" parameterType="com.example.codeblue.vo.QuestionBoard">
+		SELECT 
+			COUNT(question_id) 
+		FROM answer
+			WHERE question_id = #{questionId}
+	</select>
+	
+	<select id="selectQuestionBoardList" resultType="com.example.codeblue.vo.QuestionBoard" parameterType="com.example.codeblue.vo.Page">
+		SELECT 
+			question_id as questionId,
+			question_title as questionTitle,
+			user_id as userId,
+			question_datetime as questionDatetime
+		FROM question_board 
+		<where>
+			<if test="searchWord != null">
+				question_title like CONCAT('%',#{searchWord},'%')
+			</if>
+		</where>
+			ORDER BY question_datetime DESC 
+			LIMIT #{beginRow},#{rowPerPage}
+	</select>
+	<select id="selectQuestionBoardTotalCount" resultType="int" parameterType="com.example.codeblue.vo.Page">
+		SELECT 
+			COUNT(*)
+		FROM question_board
+		<where>
+			<if test="searchWord != null">
+				question_title like CONCAT('%',#{searchWord},'%')
+			</if>
+		</where>
+	</select>
+
+	<select id="selectNoticeBoardList"
+			parameterType="com.example.codeblue.vo.Page"
+			resultType="com.example.codeblue.vo.NoticeBoard">
+	SELECT notice_id as noticeId,
+			notice_title as noticeTitle,
+			notice_content as noticeContent,
+			file_id as fileId,
+			notice_datetime as noticeDatetime
+    FROM notice_board
+    ORDER BY notice_datetime DESC
+    LIMIT #{beginRow},#{rowPerPage}
+   </select>
+   
+   <select id="noticeBoardTotalRow"
+		   resultType="int">
+   		SELECT COUNT(*) 
+   			FROM notice_board
+   </select>
+   <select  id="selectNoticeBoardOne" 
+   			parameterType="int"
+   			resultType="com.example.codeblue.vo.NoticeBoard">
+   	SELECT notice_id as noticeId,
+			notice_title as noticeTitle,
+			notice_content as noticeContent,
+			file_id as fileId,
+			notice_datetime as noticeDatetime
+    FROM notice_board
+    WHERE notice_id = #{noticeId}
+   	</select>
+
+	<insert id="insertQuestion" parameterType="com.example.codeblue.vo.QuestionBoard">
+		INSERT INTO question_board  (
+			user_id,
+			question_title,
+			question_content,
+			question_datetime,
+			feild_id
+		)
+		VALUES (
+			#{userId},
+			#{questionTitle},
+			#{questionContent},
+			NOW(),
+			#{feildId}
+		)		
+	</insert>
+
+	<insert id="insertExpert" parameterType="com.example.codeblue.vo.Expert">
+		INSERT INTO expert(
+			user_id,
+			feild_id,
+			expert_license_no,
+			expert_license_issue_date
+		)VALUE(
+			#{userId}, #{feildId}, #{expertLicenseNo},#{expertLicenseIssueDate}
+		)
+	</insert>
+
+	<insert id="insertUser" parameterType="com.example.codeblue.vo.User">
+		INSERT INTO user(
+			user_id,
+			user_name,
+			user_pw,
+			user_birthdate,
+			user_createtime,
+			region_id
+		) values (
+			#{userId}, #{userName}, #{userPw},#{userBirthDate}, now(),#{regionId}
+		)
+	</insert>
+	
+	<select id="selectUserId" parameterType="com.example.codeblue.vo.User" resultType="com.example.codeblue.vo.User">
+		SELECT user_id as userId, user_name as userName
+		FROM user WHERE user_id = #{userId} AND user_pw = #{userPw}
+	</select>
+	
+	<select id="selectUserIdForCheck" parameterType="com.example.codeblue.vo.User" resultType="com.example.codeblue.vo.User">
+		SELECT user_id as userId, user_name as userName
+		FROM user WHERE user_id = #{userId}
+	</select>
+	
+	<select id="selectManagerId" parameterType="com.example.codeblue.vo.User" resultType="com.example.codeblue.vo.Manager">
+		SELECT manager_id as managerId
+		FROM manager WHERE manager_id = #{userId} AND manager_pw = #{userPw}
+	</select>
+	
+	<update id="updateUserPw" parameterType="com.example.codeblue.vo.User">
+		UPDATE user SET user_pw = #{userPw} WHERE user_id = #{userId}
+	</update>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
