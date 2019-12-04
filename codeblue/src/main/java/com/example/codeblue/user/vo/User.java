@@ -8,10 +8,8 @@ public class User {
 	private String userName;
 	private String userPw;
 	private Region region;
-	private String userActivity;
-	private String userBirthDate;
+	private String userBirthdate;
 	private String userCreatetime;
 	private Rank rank;
 	private String userAuthority;
-	private int expertId;
 }

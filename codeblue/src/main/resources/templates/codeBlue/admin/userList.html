@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<meta charset="utf-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h2>userList</h2>
+	<!-- select -->
+	<select id="searchCategory">
+	</select>
+	<input type="text" id="searchContent">
+	<button type="button" id="searchBtn">검색</button>
+	
+	<!-- list -->
+	<table border="1" id="userList">
+	<tr><td>UserName</td>
+		<td>Rank</td>
+		<td>Region</td>
+		<td>birthdate</td>
+		<td>createtime</td>
+		<td>Authority</td>
+	</tr>
+	</table>
+	<button type="button" id="prevBtn" class="btn btn-primary">이전</button>
+	<button type="button" id="nextBtn" class="btn btn-primary">다음</button>
+	
+</body>
+<script>
+	// select
+	
+	
+	
+	
+	// 페이징
+	var currentPage = 1;
+	var lastPage = 0;
+	var searchWord = null;
+	// 기본 홈
+	$.ajax({
+		url : "/rest/adminuserList",
+		method : "post",
+		data : {"currentPage" : currentPage},
+		success : function(json){
+			console.log(json);
+			currentPage = json.currentPage;
+			lastPage = json.lastPage;
+			BtnShow(currentPage,lastPage);
+			$(json.list).each(function(index,item){
+				var html = "<tr>";
+				html += "<td>"+item.userName+"</td>";
+				html += "<td>"+item.rank.rankName+"</td>";
+				html += "<td>"+item.region.regionName+"</td>";
+				html += "<td>"+item.userBirthdate+"</td>";
+				html += "<td>"+item.userCreatetime+"</td>";
+				html += "<td>"+item.userAuthority+"</td>";
+				html += "</tr>";
+				$("#userList").append(html);
+			});
+			
+		} 
+	});	
+	// 검색 버튼 클릭
+	$("#searchBtn").click(function(){
+		$("#userList").empty();
+		$.ajax({
+			url : "/rest/adminuserList",
+			method : "post",
+			data : {"searchWord" : $("#searchContent").val()},
+			success : function(json){
+				console.log(json);
+				currentPage = json.currentPage;
+				lastPage = json.lastPage;
+				BtnShow(currentPage,lastPage);
+				$(json.list).each(function(index,item){
+					var html = "<tr>";
+					html += "<td>"+item.userName+"</td>";
+					html += "<td>"+item.rank.rankName+"</td>";
+					html += "<td>"+item.region.regionName+"</td>";
+					html += "<td>"+item.userBirthdate+"</td>";
+					html += "<td>"+item.userCreatetime+"</td>";
+					html += "<td>"+item.userAuthority+"</td>";
+					html += "</tr>";
+				$("#userList").append(html);
+				});
+			} 
+		});
+	});
+	// 다음 버튼 클릭
+	$("#nextBtn").click(function(){
+		$("#userList").empty();
+		$.ajax({
+			url : "/rest/adminuserList",
+			method : "post",
+			data : {"currentPage" : currentPage+1},
+			success : function(json){
+				console.log(json);
+				currentPage = json.currentPage;
+				lastPage = json.lastPage;
+				BtnShow(currentPage,lastPage);
+				$(json.list).each(function(index,item){
+					var html = "<tr>";
+					html += "<td>"+item.userName+"</td>";
+					html += "<td>"+item.rank.rankName+"</td>";
+					html += "<td>"+item.region.regionName+"</td>";
+					html += "<td>"+item.userBirthdate+"</td>";
+					html += "<td>"+item.userCreatetime+"</td>";
+					html += "<td>"+item.userAuthority+"</td>";
+					html += "</tr>";
+				$("#userList").append(html);
+				});
+			} 
+		});
+	});
+	// 이전 버튼 클릭
+	$("#prevBtn").click(function(){
+		$("#userList").empty();
+		$.ajax({
+			url : "/rest/adminuserList",
+			method : "post",
+			data : {"currentPage" : currentPage-1},
+			success : function(json){
+				console.log(json);
+				currentPage = json.currentPage;
+				lastPage = json.lastPage;
+				BtnShow(currentPage,lastPage);
+				$(json.list).each(function(index,item){
+					var html = "<tr>";
+					html += "<td>"+item.userName+"</td>";
+					html += "<td>"+item.rank.rankName+"</td>";
+					html += "<td>"+item.region.regionName+"</td>";
+					html += "<td>"+item.userBirthdate+"</td>";
+					html += "<td>"+item.userCreatetime+"</td>";
+					html += "<td>"+item.userAuthority+"</td>";
+					html += "</tr>";
+				$("#userList").append(html);
+				});
+			} 
+		});
+	});
+	// 이전,다음버튼 함수
+	function BtnShow(currentPage,lastPage) {
+		if(currentPage == 1){
+			$("#prevBtn").hide();
+		} else {
+			$("#prevBtn").show();
+		}
+		if(currentPage <lastPage) {
+			$("#nextBtn").show();
+		} else {
+			$("#nextBtn").hide();
+		}
+	}
+</script>
+</html>
