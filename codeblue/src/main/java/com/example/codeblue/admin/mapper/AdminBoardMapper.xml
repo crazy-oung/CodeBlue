@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+
+<mapper namespace="com.example.codeblue.admin.mapper.AdminBoardMapper">
+	
+	<select id="selectAdminFeildList" resultType="String">
+		SELECT 
+			feild_name as feildName
+		FROM feild
+	</select>
+	
+	<select id="selectAdminBoardTotalCount" resultType="int" parameterType="com.example.codeblue.board.vo.Page">
+		SELECT 
+			COUNT(*)
+		FROM question_board
+		<where>
+			<if test="searchWord != null">
+				question_title like CONCAT('%',#{searchWord},'%')
+			</if>
+		</where>
+	</select>
+	
+	<resultMap type="com.example.codeblue.board.vo.QuestionBoard" id="boardList"> 
+			<!-- pk는 id 그 외는 result칼럼사용 -->
+			<!-- column은 테이블에서의 칼럼명  property는 클레스의 필드명 -->
+			<result column="question_id" property="questionId" ></result>
+			<result column="question_title" property="questionTitle" ></result>
+			<result column="question_content" property="questionContent" ></result>
+			<result column="question_datetime" property="questionDatetime"></result>
+			<result column="answer_count" property="answerCount"></result>
+			
+			<association property="user" javaType="com.example.codeblue.user.vo.User">
+			   <result column="user_id" property="userId" ></result>
+			   <result column="user_name" property="userName" ></result>
+			   <result column="user_birthdate" property="userBirthdate" ></result>
+			   <result column="user_createtime" property="userCreatetime"></result>
+			</association>	
+			<association property="feild" javaType="com.example.codeblue.user.vo.Feild">
+			   <result column="feild_id" property="feildId"/>
+			   <result column="feild_name" property="feildName"/>
+			</association>
+	</resultMap>
+	<select id="selectAdminBoardList" resultMap="boardList" parameterType="com.example.codeblue.board.vo.Page">
+		SELECT 
+				q.question_id,
+				q.question_title,
+				q.question_datetime,
+				q.user_id,
+				CASE WHEN a.answer_count IS NULL then 0 ELSE a.answer_count END AS answer_count,
+				fe.feild_name
+		FROM question_board q left JOIN (SELECT COUNT(*) AS answer_count,question_id FROM
+		answer
+		GROUP BY question_id) a
+		ON q.question_id = a.question_id
+		LEFT JOIN feild fe
+		ON q.feild_id = fe.feild_id
+		<where>
+			<if test="searchWord != null">
+				question_title like CONCAT('%',#{searchWord},'%')
+			</if>
+		</where>
+		LIMIT #{beginRow},#{rowPerPage}
+	</select>
+</mapper>

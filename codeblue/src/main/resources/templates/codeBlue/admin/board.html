@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<!-- jquery CDN 주소 -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<body>
+	<h1>게시글 관리</h1>
+	<!-- 검색 조건 -->
+	<form id="searchBoard">
+		<div>
+			<div>
+				<span>게시판 카테고리</span>
+				<select id="searchCategory">
+					<option value="All">전체</option>
+				</select>
+			</div>
+			<div>
+				<span>검색어</span>
+				<span><input type="text" id="searchWord"></span>
+			</div>
+			<div>
+				<span>날짜</span>
+				<span><input type="date" id="toDate"></span>
+				~
+				<span><input type="date" id="fromDate"></span>
+			</div>
+			<div>
+				<button type="button" id="getBoard">검색</button>
+				<button type="reset" id="reset">초기화</button>
+			</div>
+		</div>
+	</form>
+	<!-- 검색조건끝 -->
+	<br>
+	<br>
+	<!-- 검색한것에따른 보여주는 부분 -->
+	<div>
+		<div>
+			<span>검색결과 : </span>
+			<button type="button" id="removeBoard">게시글 삭제</button>
+			<select>
+				<option>10개씩 보기</option>
+				<option>20개씩 보기</option>
+				<option>30개씩 보기</option>
+				<option>30개씩 보기</option>
+				<option>50개씩 보기</option>
+			</select>
+		</div>
+		<div>
+			<br>
+			<table border="1" id="boardList">
+				<thead>
+					<tr>
+						<th><input type="checkbox"></th>
+						<th>게시글 번호</th>
+						<th>카테고리</th>
+						<th>제목</th>
+						<th>답변수</th>
+						<th>작성자 아이디</th>
+						<th>작성일자</th>
+					</tr>
+				</thead>
+				<tbody id="boardListBody">
+					
+				</tbody>
+			</table>
+			<button type="button" id="prevBtn" class="btn btn-primary">이전</button>
+			<button type="button" id="nextBtn" class="btn btn-primary">다음</button>
+		</div>
+	</div>
+	<!-- 보여주는 부분끝 -->
+</body>
+<script>
+	//작성날짜 끝 자동적으로 입력하게하기
+	document.getElementById("fromDate").valueAsDate = new Date();
+	$("#reset").click(function() {
+		document.getElementById("fromDate").valueAsDate = new Date();
+	});
+	
+	$.ajax({
+		url:"/rest/adminFeildList",
+		method:"post",
+		success:function(json) {
+			console.log(json);
+			$(json).each(function(index,item){
+				var html = "<option value="+(index+1)+">"+item+"</option>";
+				$("#searchCategory").append(html);
+			});
+		}
+	});
+	
+	//현재페이지값
+	var currentPage = 1;
+	//마지막페이지값
+	var lastPage = 0;
+	//카테고리설정
+	var searchCategory = undefined;
+	//검색어
+	var searchWord = undefined;
+	//작성기간시작
+	var toDate = undefined;
+	//작성기간끝
+	var fromDate = undefined;
+	
+	//검색하기
+	$("#getBoard").click(function() {
+		console.log("::: 검색 폼 :::")
+		//값 학인 테스트
+// 		console.log("카테고리 값 : "+document.getElementById("searchCategory").value);
+// 		console.log("검색어 : "+$("#searchWord").val())
+// 		console.log("작성날짜시작 : "+document.querySelector("input[id='toDate']").valueAsDate.toISOString().slice(0, 10));
+// 		console.log("작성날짜끝 : "+$("input[id='fromDate']").eq(0).prop("valueAsDate").toISOString().slice(0, 10) );
+
+		if(document.getElementById("searchCategory").value != "All") {
+			searchCategory = document.getElementById("searchCategory").value;
+		}
+ 		if(document.getElementById("searchWord").value){
+ 			searchWord = $("#searchWord").val();
+ 		}
+		if(document.querySelector("input[id='toDate']").valueAsDate){
+			toDate = document.querySelector("input[id='toDate']").valueAsDate.toISOString().slice(0, 10);	
+		}
+		if(document.querySelector("input[id='fromDate']").valueAsDate){
+			fromDate = document.querySelector("input[id='fromDate']").valueAsDate.toISOString().slice(0, 10);
+		}
+		console.log("카테고리 값 : " +searchCategory);
+		console.log("검색어 : "+ searchWord)
+		console.log("작성 날짜 시작 : "+toDate);
+		console.log("작성 날짜 끝 : "+fromDate);
+		$.ajax({
+			url: "/rest/adminBoardList",
+			method:"post",
+			data:{"searchCategory":searchCategory,"searchWord":searchWord,"toDate":toDate,"fromDate":fromDate,"currentPage" : currentPage},
+			success: function(json){
+				console.log(json);
+				currentPage = json.currentPage;
+				lastPage = json.lastPage;
+				$("#searchWord").val(json.searchWord);
+				BtnShow(currentPage,lastPage);
+				$("#boardListBody").empty();
+				$(json.list).each(function(index,item) {
+					var html =  "<tr>"+
+							"<td><input type='checkbox'></td>"+
+							"<td>"+item.questionId+"</td>"+
+							"<td>"+item.feild.feildName+"</td>"+
+							"<td>"+item.questionTitle+"</td>"+
+							"<td>"+item.answerCount+"</td>"+
+							"<td>"+item.user.userId+"</td>"+
+							"<td>"+item.questionDatetime+"</td>"+
+							"<tr>";
+					$("#boardList").append(html);
+				})
+			}
+		});
+	});
+	//이전버튼
+	$("#prevBtn").click(function(){
+		$.ajax({
+			url:"/rest/adminBoardList",
+			method:"POST",
+			data:{"currentPage" : currentPage-1,"searchCategory":searchCategory,"searchWord":searchWord,"toDate":toDate,"fromDate":fromDate},
+			success: function(json){
+				currentPage = json.currentPage;
+				lastPage = json.lastPage;
+				$("#searchWord").val(json.searchWord);
+				BtnShow(currentPage,lastPage);
+				$("#boardListBody").empty();
+				$(json.list).each(function(index,item) {
+					var html =  "<tr>"+
+							"<td><input type='checkbox'></td>"+
+							"<td>"+item.questionId+"</td>"+
+							"<td>"+item.feild.feildName+"</td>"+
+							"<td>"+item.questionTitle+"</td>"+
+							"<td>"+item.answerCount+"</td>"+
+							"<td>"+item.user.userId+"</td>"+
+							"<td>"+item.questionDatetime+"</td>"+
+							"<tr>";
+					$("#boardList").append(html);
+				})
+			}
+		})
+	});
+	//다음버튼
+	$("#nextBtn").click(function(){
+		$.ajax({
+			url:"/rest/adminBoardList",
+			method:"POST",
+			data:{"currentPage" : currentPage+1,"searchCategory":searchCategory,"searchWord":searchWord,"toDate":toDate,"fromDate":fromDate},
+			success: function(json){
+				currentPage = json.currentPage;
+				lastPage = json.lastPage;
+				$("#searchWord").val(json.searchWord);
+				BtnShow(currentPage,lastPage);
+				$("#boardListBody").empty();
+				$(json.list).each(function(index,item) {
+					var html =  "<tr>"+
+							"<td><input type='checkbox'></td>"+
+							"<td>"+item.questionId+"</td>"+
+							"<td>"+item.feild.feildName+"</td>"+
+							"<td>"+item.questionTitle+"</td>"+
+							"<td>"+item.answerCount+"</td>"+
+							"<td>"+item.user.userId+"</td>"+
+							"<td>"+item.questionDatetime+"</td>"+
+							"<tr>";
+					$("#boardList").append(html);
+				})
+			}
+		})
+	});
+	//이전 다음 버튼이 숨기는지 안숨기는지 함수로변경
+	function BtnShow(currentPage,lastPage) {
+		if(currentPage == 1){
+			$("#prevBtn").hide();
+		} else {
+			$("#prevBtn").show();
+		}
+		if(currentPage <lastPage) {
+			$("#nextBtn").show();
+		} else {
+			$("#nextBtn").hide();
+		}
+	}
+</script>
+</html>
