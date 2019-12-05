@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class Region {
-	private int region_id;
-	private String region_name;
+	private int regionId;
+	private String regionName;
 }

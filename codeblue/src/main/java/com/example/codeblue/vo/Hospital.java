@@ -1,6 +1,5 @@
 package com.example.codeblue.vo;
 
-import javax.swing.plaf.synth.Region;
 
 import lombok.Data;
 

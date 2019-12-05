@@ -8,7 +8,7 @@
 	<meta name="description" content="">
 	<meta name="author" content="">
 	
-	<title>공지 관리 - 코드블루</title>
+	<title>관리자 - 코드블루</title>
 	
 	<!-- Custom fonts for this template-->
 	<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -52,22 +52,20 @@
 
       <!-- Heading -->
       <div class="sidebar-heading">
-        	게시글 및 유저
+        	게시판
       </div>
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
           <i class="fas fa-fw fa-cog"></i>
-          <span>글 관리</span>
+          <span>질문</span>
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">질문 및 답변 관리</h6>
-            <a class="collapse-item" href="buttons.html">질문 관리</a>
-            <a class="collapse-item" href="cards.html">답변 조회</a>
-            <a class="collapse-item" href="cards.html">댓글 조회</a>
-            <a class="collapse-item" href="cards.html">추천수 조회</a>
+            <h6 class="collapse-header">Custom Components:</h6>
+            <a class="collapse-item" href="buttons.html">Buttons</a>
+            <a class="collapse-item" href="cards.html">Cards</a>
           </div>
         </div>
       </li>
@@ -76,15 +74,15 @@
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
           <i class="fas fa-fw fa-wrench"></i>
-          <span>회원 관리</span>
+          <span>Utilities</span>
         </a>
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">회원 조회 및 관리</h6>
-            <a class="collapse-item" href="utilities-color.html">회원 조회</a>
-            <a class="collapse-item" href="utilities-border.html">탈퇴회원 조회</a>
-            <a class="collapse-item" href="utilities-animation.html">신고회원 조회</a>
-            <a class="collapse-item" href="utilities-other.html">전문가 조회</a>
+            <h6 class="collapse-header">Custom Utilities:</h6>
+            <a class="collapse-item" href="utilities-color.html">Colors</a>
+            <a class="collapse-item" href="utilities-border.html">Borders</a>
+            <a class="collapse-item" href="utilities-animation.html">Animations</a>
+            <a class="collapse-item" href="utilities-other.html">Other</a>
           </div>
         </div>
       </li>
@@ -94,24 +92,25 @@
 
       <!-- Heading -->
       <div class="sidebar-heading">
-        	기타 관리
+        Addons
       </div>
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
           <i class="fas fa-fw fa-folder"></i>
-          <span>제휴 관리</span>
+          <span>Pages</span>
         </a>
         <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">제휴 병원 관리</h6>
-            <a class="collapse-item" href="login.html">제휴병원 조회</a>
-            <a class="collapse-item" href="register.html">제휴병원 추가</a>
-<!--             <div class="collapse-divider"></div>
+            <h6 class="collapse-header">Login Screens:</h6>
+            <a class="collapse-item" href="login.html">Login</a>
+            <a class="collapse-item" href="register.html">Register</a>
+            <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
+            <div class="collapse-divider"></div>
             <h6 class="collapse-header">Other Pages:</h6>
             <a class="collapse-item" href="404.html">404 Page</a>
-            <a class="collapse-item" href="blank.html">Blank Page</a> -->
+            <a class="collapse-item" href="blank.html">Blank Page</a>
           </div>
         </div>
       </li>
@@ -120,14 +119,14 @@
       <li class="nav-item">
         <a class="nav-link" href="charts.html">
           <i class="fas fa-fw fa-chart-area"></i>
-          <span>통계</span></a>
+          <span>Charts</span></a>
       </li>
 
       <!-- Nav Item - Tables -->
       <li class="nav-item">
         <a class="nav-link" href="tables.html">
           <i class="fas fa-fw fa-table"></i>
-          <span>관리자 설정</span></a>
+          <span>Tables</span></a>
       </li>
 
       <!-- Divider -->
@@ -332,57 +331,35 @@
 
         <!-- Begin Page Content -->
         
-       	<div class="container-fluid px-4 pt-4">
-		<div class="card border-0 bg-white p-3 m-2 shadow"> 
+       	<div class="container">
+			<div class="row"> 
 				
-		<!-- Begin Page Content -->
-       <div class="container-fluid px-4 pt-4">
- 
-         
-            <!-- Page Content -->
-            <div class="p-2">
-            
-               <!-- Page Heading -->
-               <div class="d-sm-flex align-items-center justify-content-between mb-3" >
-                  <h3 class="text-gray-800 mb-2 font-weight-bold">유저관리</h3>
-               </div>
-               
-               <!-- page Heading End -->
-               
-        		<!-- user search -->
-               <div>
-					검색어 : 
-					<input type="text" id="searchContent">
+				<!-- Page Content -->
+				<div class="col-sm-8">
+					<!-- Page Heading -->
+					<div class="d-sm-flex align-items-center justify-content-between mb-2" style="margin-top: 80px">
+						<h3 class="text-gray-800 mb-2 font-weight-bold">제휴 병원</h3>
+						<a href="/adminHospitalAdd" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow"><i class="mr-2 fas fa-plus fa-sm text-white-50"></i>병원추가</a> 
+					</div>
+					<!-- page Heading End -->
+					
+					<!-- Notice Board -->
+					<div id="hospital" class="table table-hover"></div>
+					<br>
+					
+					<button type="button" id="prevBtn" class="btn btn-primary">이전</button>
+					<button type="button" id="nextBtn" class="btn btn-primary">다음</button>
+					
 				</div>
-				
-				
-				<div>
-					<input type="date" id=""> ~ <input type="date" id="">
-					<button type="button" id="searchBtn">검색</button>
-				</div>
-				
-				
-				
-				<!-- user list -->
-				<table border="1" id="userList">
-					<tr>
-						<td>UserName</td>
-						<td>Rank</td>
-						<td>Region</td>
-						<td>birthdate</td>
-						<td>createtime</td>
-						<td>Authority</td>
-					</tr>
-				</table>
-				
-				<button type="button" id="prevBtn" class="btn btn-primary">이전</button>
-				<button type="button" id="nextBtn" class="btn btn-primary">다음</button>
-               
-            </div>
-         <!--  Page Content End -->
-  
-      </div> 
-      
+			<!--  Page Content End -->
+			</div>
+		</div> 
+        
+        
+        
+        
+        
+        
       <!-- End of Main Content -->
 
       <!-- Footer -->
@@ -418,7 +395,7 @@
           </button>
         </div>
         <div class="modal-body">로그아웃 하고 싶으시면 아래 로그아웃 버튼을 클릭해주세요!</div>
-        <div class="modal-footer">	
+        <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
           <a class="btn btn-primary" href="/logout">로그아웃</a>
         </div>
@@ -444,132 +421,96 @@
   <script src="js/demo/chart-pie-demo.js"></script>
 
 </body>
-<script>
-	// select
+<script type="text/javascript">
+$(document).ready(function(){
 	
-	
-	
-	
-	// 페이징
-	var currentPage = 1;
-	var lastPage = 0;
-	var searchWord = null;
-	// 기본 홈
+	let currentPage = 1;
+	let searchWord = null;
+	let rowPerPage =10;	
+
 	$.ajax({
-		url : "/rest/adminuserList",
+		url : "/rest/adminHospital",
 		method : "post",
-		data : {"currentPage" : currentPage},
+		data : {"currentPage" : currentPage,
+				"rowPerPage" : rowPerPage},
+		sync : true,
 		success : function(json){
 			console.log(json);
-			currentPage = json.currentPage;
-			lastPage = json.lastPage;
-			BtnShow(currentPage,lastPage);
+			let hospital;
 			$(json.list).each(function(index,item){
-				var html = "<tr>";
-				html += "<td>"+item.userName+"</td>";
-				html += "<td>"+item.rank.rankName+"</td>";
-				html += "<td>"+item.region.regionName+"</td>";
-				html += "<td>"+item.userBirthdate+"</td>";
-				html += "<td>"+item.userCreatetime+"</td>";
-				html += "<td>"+item.userAuthority+"</td>";
-				html += "</tr>";
-				$("#userList").append(html);
-			});
-			
-		} 
-	});	
-	// 검색 버튼 클릭
-	$("#searchBtn").click(function(){
-		$("#userList").empty();
-		$.ajax({
-			url : "/rest/adminuserList",
-			method : "post",
-			data : {"searchWord" : $("#searchContent").val()},
-			success : function(json){
-				console.log(json);
-				currentPage = json.currentPage;
-				lastPage = json.lastPage;
-				BtnShow(currentPage,lastPage);
-				$(json.list).each(function(index,item){
-					var html = "<tr>";
-					html += "<td>"+item.userName+"</td>";
-					html += "<td>"+item.rank.rankName+"</td>";
-					html += "<td>"+item.region.regionName+"</td>";
-					html += "<td>"+item.userBirthdate+"</td>";
-					html += "<td>"+item.userCreatetime+"</td>";
-					html += "<td>"+item.userAuthority+"</td>";
-					html += "</tr>";
-				$("#userList").append(html);
-				});
-			} 
-		});
-	});
-	// 다음 버튼 클릭
-	$("#nextBtn").click(function(){
-		$("#userList").empty();
-		$.ajax({
-			url : "/rest/adminuserList",
-			method : "post",
-			data : {"currentPage" : currentPage+1,
-					"searchWord" : $("#searchContent").val()},
-			success : function(json){
-				console.log(json);
-				currentPage = json.currentPage;
-				lastPage = json.lastPage;
-				BtnShow(currentPage,lastPage);
-				$(json.list).each(function(index,item){
-					var html = "<tr>";
-					html += "<td>"+item.userName+"</td>";
-					html += "<td>"+item.rank.rankName+"</td>";
-					html += "<td>"+item.region.regionName+"</td>";
-					html += "<td>"+item.userBirthdate+"</td>";
-					html += "<td>"+item.userCreatetime+"</td>";
-					html += "<td>"+item.userAuthority+"</td>";
-					html += "</tr>";
-				$("#userList").append(html);
-				});
-			} 
-		});
-	});
+				hospital = "<div> 병원명" +item.hospitalName
+				hospital += "</div><div> 위치" + item.region.regionName
+				hospital += "</div><div> 번호" + item.hospitalAddress
+				hospital += "</div>"
+			})
+			$("#hospital").append(hospital)
+		}
+	})
 	
-	// 이전 버튼 클릭
 	$("#prevBtn").click(function(){
-		$("#userList").empty();
+	
 		$.ajax({
-			url : "/rest/adminuserList",
+			url : "/rest/adminHospital",
 			method : "post",
-			data : {"currentPage" : currentPage-1, "searchWord" : $("#searchContent").val()},
+			data : {"currentPage": currentPage-1},
 			success : function(json){
-				console.log(json);
+				$("#hospital").empty();
 				currentPage = json.currentPage;
 				lastPage = json.lastPage;
-				BtnShow(currentPage,lastPage);
+				BtnShow(currentPage, lastPage);
+				console.log(json);
+				let hospital;
 				$(json.list).each(function(index,item){
-					var html = "<tr>";
-					html += "<td>"+item.userName+"</td>";
-					html += "<td>"+item.rank.rankName+"</td>";
-					html += "<td>"+item.region.regionName+"</td>";
-					html += "<td>"+item.userBirthdate+"</td>";
-					html += "<td>"+item.userCreatetime+"</td>";
-					html += "<td>"+item.userAuthority+"</td>";
-					html += "</tr>";
-				$("#userList").append(html);
-				});
-			} 
-		});
-	});
-	// 이전,다음버튼 함수
-	function BtnShow(currentPage,lastPage) {
-		if(currentPage == 1){
+					hospital = "<div> 병원명" +item.hospitalName
+					hospital += "</div><div> 위치" + item.region.regionName
+					hospital += "</div><div> 번호" + item.hospitalAddress
+					hospital += "</div>"
+				})
+				$("#hospital").append(hospital)
+			}
+		})
+	})
+	
+		$("#nextBtn").click(function(){
+	
+		$.ajax({
+			url : "/rest/adminHospital",
+			method : "post",
+			data : {"currentPage": currentPage+1},
+			success : function(json){
+				$("#hospital").empty();
+				currentPage = json.currentPage;
+				lastPage = json.lastPage;
+				BtnShow(currentPage, lastPage);
+				console.log(json);
+				let hospital;
+				$(json.list).each(function(index,item){
+					hospital = "<div> 병원명" +item.hospitalName
+					hospital += "</div><div> 위치" + item.region.regionName
+					hospital += "</div><div> 번호" + item.hospitalAddress
+					hospital += "</div>"
+				})
+				$("#hospital").append(hospital)
+			}
+		})
+	})
+//document
+})
+
+	
+	function BtnShow(currentPage, lastPage){
+	console.log("currentPage"+currentPage+"/ lastPage"+lastPage);
+		if(currentPage <= 1){
 			$("#prevBtn").hide();
-		} else {
+		}else{
 			$("#prevBtn").show();
 		}
-		if(currentPage <lastPage) {
-			$("#nextBtn").show();
-		} else {
+		if(currentPage >= lastPage){
 			$("#nextBtn").hide();
+		}else{
+			$("#nextBtn").show();
 		}
-	}
+}
+
 </script>
 </html>
