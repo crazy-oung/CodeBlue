@@ -202,11 +202,11 @@
 			feild_id
 		)
 		VALUES (
-			#{userId},
+			#{user.userId},
 			#{questionTitle},
 			#{questionContent},
 			NOW(),
-			#{feildId}
+			#{feild.feildId}
 		)		
 	</insert>
 

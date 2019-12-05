@@ -10,14 +10,15 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>최근 질문 - 코드블루</title>
+<title>질문 - 코드블루</title>
 
 <!-- Custom fonts for this template-->
-<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
-	type="text/css">
-<link
-	href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-	rel="stylesheet">
+<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.js"></script>
 
 <!-- Custom styles for this template-->
 <link href="css/sb-admin-2.min.css" rel="stylesheet">
@@ -25,8 +26,8 @@
 <link href="css/codeBlue.css" rel="stylesheet">
 </head>
 
-<body id="page-top">
- 
+<body>
+ 	
 		<!-- Topbar -->
 		<nav
 			class="navbar navbar-expand navbar-light topbar mb-4 shadow fixed-top"
@@ -55,7 +56,7 @@
 		<!-- End of Topbar -->
 
 		<!-- Begin Page Content -->
-		<div class="container" height="100%">
+		<div class="container">
 			<div class="row"> 
 			
 				<!-- Side Bar -->
@@ -79,15 +80,14 @@
 				<!-- Side Bar End -->
 				
 				<!-- Page Content -->
-				<div class="col-sm-8">
+				<div class="col-sm-8 px-3">
 					<!-- Page Heading -->
 					<div class="d-sm-flex align-items-center justify-content-between" style="margin-top: 80px">
-						<h4 class="text-gray-800 mb-0" id="title"></h4>
-						<a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow"><i class="mr-2 fas fa-plus fa-sm text-white-50"></i>질문 올리기</a>	 
+						<h4 class="text-gray-800" id="title"></h4>
 					</div><!-- page Heading End -->
-					<div><small id="datetime">등록일 </small></div>
-					
-					<table class="table" id="tableBody"></table>
+					<div class='text-right mx-3'><small id="datetime">등록일 </small></div>
+					<hr>
+					<div id="tableBody"></div>
 					
 					<div class="row" style="text-align: center;">
 						<div class="col"></div>
@@ -116,6 +116,9 @@
 					</table>
 					</div>
 					
+					<!-- 덧글 입력란 -->
+					<div id="summernote" class="mb-3"></div>
+					<button class='btn btn-sm btn-primary m-1 px-2'>답변게시</button>
 					<!-- questionId 값 숨기기 -->
 					<input type="text" id="questionId" hidden="hidden">
 					
@@ -159,7 +162,7 @@
 		</div>
 	</footer>
 	<!-- End of Footer -->
-
+<div>
 
 	<!-- Bootstrap core JavaScript-->
 	<script src="vendor/jquery/jquery.min.js"></script>
@@ -170,16 +173,32 @@
 
 	<!-- Custom scripts for all pages-->
 	<script src="js/sb-admin-2.min.js"></script>
+	
+	<!-- summer note scripts -->
+	<script src="js/summernote/summernote-bs4.min.js"></script>
+	<script src="js/summernote/summernote-ko-KR.js"></script>
+	<script src="js/summernote/summernote.min.js"></script> 
 
-	<!-- Page level plugins -->
-	<script src="vendor/chart.js/Chart.min.js"></script>
-
-	<!-- Page level custom scripts -->
-	<script src="js/demo/chart-area-demo.js"></script>
-	<script src="js/demo/chart-pie-demo.js"></script>
+	
 </body>
 
 <script type="text/javascript">
+	$('#summernote').summernote({
+		  toolbar: [
+			  ['style', ['style']],
+			  ['font', ['bold', 'underline', 'clear']],
+			  ['color', ['color']],
+			  ['para', ['ul', 'ol', 'paragraph']],
+			  ['table', ['table']],
+			  ['insert', ['link', 'picture', 'video']],
+			  ['view', ['fullscreen', 'help']],
+			],
+		lang : 'ko-KR',
+		placeholder: '내용을 입력해주세요',
+		tabsize: 4,
+		height: 150
+	});
+		
 	//파라메터 정보가 저장될 오브젝트
 	// common.js 같은 모든 페이지에서 로딩되는 js 파일에 넣어두면 됨.
 	var getParam = function(key){
@@ -205,10 +224,7 @@
 			$("#title").append(json.questionTitle);
 			$("#datetime").append(json.questionDatetime);
 			$("#commentBtn").append(json.commentCount);
-			var tableBody = "<tr>";
-				tableBody += "<td>"+json.questionContent+"</td>";
-				tableBody += "</tr>";
-			$("#tableBody").append(tableBody);
+			$("#tableBody").append(json.questionContent);
 			
 		}
 	});
@@ -238,6 +254,7 @@
 		
 		});
 	});
+	
 // 댓글 입력
 // 	$("commentAdd").click(function(){
 // 		url : "/rest/commentAdd",

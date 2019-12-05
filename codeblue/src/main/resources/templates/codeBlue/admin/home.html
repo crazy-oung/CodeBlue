@@ -124,9 +124,9 @@
             <h6 class="collapse-header">제휴 병원 관리</h6>
             <a class="collapse-item" href="/adminInquiryBoard">문의 내역</a>
             <a class="collapse-item" href="/adminReportBoard">신고 내역</a>
+	        <div class="collapse-divider"></div> 
             <a class="collapse-item" href="/adminFAQBoard">FAQ 관리</a>
             <a class="collapse-item" href="/adminNoticeBoard">공지 관리</a>
-<!--        <div class="collapse-divider"></div> -->
           </div>
         </div>
       </li>
@@ -218,10 +218,6 @@
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                 <a class="dropdown-item" href="#">
-                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Profile
-                </a>
-                <a class="dropdown-item" href="#">
                   <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                   Settings
                 </a>
@@ -243,15 +239,15 @@
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
-        <div class="container-fluid pt-4 px-5"> 
+        <div class="container-fluid pt-4 px-5 content"> 
           <!-- Content Row 1 -->
           <div class="row mt-3">
 
             <!-- user manage column -->
             <div class="col-xl-3 col-md-6 mb-4 px-3">
-              <div class="card border-0 p-4"> 
+              <div class="card shadow border-0 p-4"> 
               	<!-- card Header -->
-              	<h3 class="text-dark font-weight-bold mb-4">회원관리</h3> 
+              	<h4 class="text-dark font-weight-bold mb-4">회원관리</h4>
               	<!-- card Content -->
               	<div class="row text-center mb-4">
               		<div class="col-xl-6">
@@ -284,9 +280,9 @@
             
             <!-- user manage column -->
             <div class="col-xl-3 col-md-6 mb-4 px-3">
-              <div class="card border-0 p-4"> 
+              <div class="card shadow border-0 p-4"> 
               	<!-- card Header -->
-              	<h3 class="text-dark font-weight-bold mb-4">게시글 관리</h3> 
+              	<h4 class="text-dark font-weight-bold mb-4">게시글 관리</h4> 
               	<!-- card Content -->
               	<div class="row text-center mb-4">
               		<div class="col-xl-6">
@@ -319,9 +315,9 @@
             
             <!-- user manage column -->
             <div class="col-xl-3 col-md-6 mb-4 px-3">
-              <div class="card border-0 p-4" style="height: 305px"> 
+              <div class="card shadow border-0 p-4"> 
               	<!-- card Header -->
-              	<h3 class="text-dark font-weight-bold mb-4">문의관리</h3> 
+              	<h4 class="text-dark font-weight-bold mb-4">문의관리</h4> 
               	<!-- card Content -->
               	<div class="row text-center mb-4">
               		<div class="col-xl-6">
@@ -354,9 +350,9 @@
             
             <!-- user manage column -->
             <div class="col-xl-3 col-md-6 mb-4 px-3">
-              <div class="card border-0 p-4"> 
+              <div class="card shadow border-0 p-4"> 
               	<!-- card Header -->
-              	<h3 class="text-dark font-weight-bold mb-4">제휴병원 관리</h3> 
+              	<h4 class="text-dark font-weight-bold mb-4">제휴병원 관리</h4> 
               	<!-- card Content -->
               	<div class="row text-center mb-4">
               		<div class="col-xl-6">
@@ -394,36 +390,7 @@
 		
           <!-- Content Row 2--> 
           <div class="row">
-
-            <!-- Area Chart -->
-            <div class="col-xl-8 col-lg-7">
-              <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">연간 월별 질문수</h6>
-                  <div class="dropdown no-arrow">
-                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                    </a>
-                    <!-- pop up -->
-	                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-	                      <div class="dropdown-header">Dropdown Header:</div>
-	                      <a class="dropdown-item" href="#">Action</a>
-	                      <a class="dropdown-item" href="#">Another action</a>
-	                      <div class="dropdown-divider"></div>
-	                      <a class="dropdown-item" href="#">Something else here</a>
-	                    </div>
-                  </div>
-                </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                  <div class="chart-area">
-                    <canvas id="monthlyQuestionCountLineChart"></canvas>
-                  </div>
-                </div>
-              </div>
-            </div>
-
+       
             <!-- Pie Chart -->
             <div class="col-xl-4 col-lg-5">
               <div class="card shadow mb-4">
@@ -465,6 +432,36 @@
                 </div>
               </div>
             </div>
+
+            <!-- Area Chart -->
+            <div class="col-xl-8 col-lg-7">
+              <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">연간 월별 질문수</h6>
+                  <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    <!-- pop up -->
+	                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+	                      <div class="dropdown-header">Dropdown Header:</div>
+	                      <a class="dropdown-item" href="#">Action</a>
+	                      <a class="dropdown-item" href="#">Another action</a>
+	                      <div class="dropdown-divider"></div>
+	                      <a class="dropdown-item" href="#">Something else here</a>
+	                    </div>
+                  </div>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                  <div class="chart-area">
+                    <canvas id="monthlyQuestionCountLineChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
 		<!-- Content Row 2 end --> 
 		
@@ -540,7 +537,7 @@
       <!-- End of Main Content -->
 
       <!-- Footer -->
-      <footer class="sticky-footer">
+      <footer class="sticky-footer ">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
             <img src="./img/codeBlueLogo.png" width="150px">
@@ -626,9 +623,9 @@ var feildQuestionCountChart = new Chart(piectx, {
 	    	"마취통증", "방사선종양", "진단검사의학", "병리학", "응급의학", "직업환경", "예방의학"],
 	    datasets: [{
 	      data: piecount,
-	      backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#4e73df', '#1cc88a', '#36b9cc', '#4e73df', '#1cc88a', '#36b9cc',
-	    	  '#4e73df', '#1cc88a', '#36b9cc', '#4e73df', '#1cc88a', '#36b9cc', '#4e73df', '#1cc88a', '#36b9cc',
-	    	  '#4e73df', '#1cc88a', '#36b9cc', '#4e73df', '#1cc88a', '#36b9cc', '#4e73df'],
+	      backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b', '#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b',
+	    	  '#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b','#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b',
+	    	  '#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b'],
 	      hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'], 
 	      hoverBorderColor: "rgba(234, 236, 244, 1)",
 	    }],

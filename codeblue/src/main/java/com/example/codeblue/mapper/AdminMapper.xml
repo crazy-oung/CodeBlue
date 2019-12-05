@@ -66,7 +66,6 @@
 		<result column="answer_count" property="answerCount"></result>
 		<result column="comment_count" property="commentCount"></result>
 		<result column="vote_count" property="voteCount"></result>
-		
 		<association property="user" resultMap="User">
 		</association>	
 		<association property="feild" resultMap="Feild">

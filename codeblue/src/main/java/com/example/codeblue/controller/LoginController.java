@@ -43,9 +43,10 @@ public class LoginController {
 		System.out.println("::: post - login :::"); 
 		System.out.println(user); 
 		
+		
 		// 세션 검사
 		if(session.getAttribute("loginUser") != null) {
-			System.out.println("already loged in Back to user Home"); 
+			System.out.println("already loged in Back to user Home");
 			return "/codeBlue/today";
 		}  
 		
@@ -56,6 +57,7 @@ public class LoginController {
 			session.setAttribute("loginManager", loginManager);
 			return "/codeblue/admin/home";
 		}
+		
 		// 유저 검사
 		User loginUser = userService.verifyUser(user);
 		if(loginUser != null) {

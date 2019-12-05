@@ -191,18 +191,7 @@
 			lastPage = json.lastPage;
 			BtnShow(currentPage,lastPage);
 			$(json.list).each(function(index,item){
-				html = "<tr>"+
-						"<td width='9%' class=><div class='text-center pt-1'>"+item.voteCount+"<br>"+
-						"<small class='my-1'>추천</small>"+
-						"</div></td>"+
-						"<td width='11%' class='px-1'><div class='card border-success text-center pt-1' >"+item.answerCount+"<br>"+
-						"<small class='text-success my-1'>답변</small>"+
-						"</div></td>"+
-						"<td><a class='nav-link' href='#'>"+item.questionTitle+"</a>" +
-						"<div class='d-flex justify-content-between'>"+
-						"<small class='p-2'>태그들...</small>"+
-						"<small class='p-2'>uploaded at"+item.questionDatetime +" by " + item.userId+"</small></div>"
-						+"</td></tr>";
+				html = append(item);
 				$("#questionBoard").append(html);
 			})
 		}
@@ -221,18 +210,7 @@
 				BtnShow(currentPage,lastPage);
 				$("#questionBoard").empty();
 				$(json.list).each(function(index,item){
-					html = "<tr>"+
-							"<td width='10%' class=><div class='text-center pt-1'>"+item.voteCount+"<br>"+
-							"<small class='my-1'>추천</small>"+
-							"</div></td>"+
-							"<td width='13%' class='px-1'><div class='card border-success text-center pt-1' >"+item.answerCount+"<br>"+
-							"<small class='text-success my-1'>답변</small>"+
-							"</div></td>"+
-							"<td><a class='nav-link' href='#'>"+item.questionTitle+"</a>" +
-							"<div class='d-flex justify-content-between'>"+
-							"<small class='p-2'>태그들...</small>"+
-							"<small class='p-2'>uploaded at"+item.questionDatetime +" by " + item.userId+"</small></div>"
-							+"</td></tr>";
+					html = append(item);
 					$("#questionBoard").append(html);
 				})
 			}
@@ -252,18 +230,7 @@
 				BtnShow(currentPage,lastPage);
 				$("#questionBoard").empty();
 				$(json.list).each(function(index,item){
-					html = "<tr>"+
-							"<td width='10%' class=><div class='text-center pt-1'>"+item.voteCount+"<br>"+
-							"<small class='my-1'>추천</small>"+
-							"</div></td>"+
-							"<td width='13%' class='px-1'><div class='card border-success text-center pt-1' >"+item.answerCount+"<br>"+
-							"<small class='text-success my-1'>답변</small>"+
-							"</div></td>"+
-							"<td><a class='nav-link' href='#'>"+item.questionTitle+"</a>" +
-							"<div class='d-flex justify-content-between'>"+
-							"<small class='p-2'>태그들...</small>"+
-							"<small class='p-2'>uploaded at"+item.questionDatetime +" by " + item.userId+"</small></div>"
-							+"</td></tr>";
+					html = append(item);
 					$("#questionBoard").append(html);
 				})
 			}
@@ -285,19 +252,7 @@
 				BtnShow(currentPage,lastPage);
 				$("#questionBoard").empty();
 				$(json.list).each(function(index,item){
-					html = "<tr>"+
-							"<tr>"+
-							"<td width='10%' class=><div class='text-center pt-1'>"+item.voteCount+"<br>"+
-							"<small class='my-1'>추천</small>"+
-							"</div></td>"+
-							"<td width='13%' class='px-1'><div class='card border-success text-center pt-1' >"+item.answerCount+"<br>"+
-							"<small class='text-success my-1'>답변</small>"+
-							"</div></td>"+
-							"<td><a class='nav-link' href='#'>"+item.questionTitle+"</a>" +
-							"<div class='d-flex justify-content-between'>"+
-							"<small class='p-2'>태그들...</small>"+
-							"<small class='p-2'>uploaded at"+item.questionDatetime +" by " + item.userId+"</small></div>"
-							+"</td></tr>";
+					html = append(item);							
 					$("#questionBoard").append(html);
 				})
 			}
@@ -316,6 +271,21 @@
 		} else {
 			$("#nextBtn").hide();
 		}
+	}
+	
+	function append(item){
+		return "<tr>"+
+		"<td width='9%' class=><div class='text-center pt-1'>"+item.voteCount+"<br>"+
+		"<small class='my-1'>추천</small>"+
+		"</div></td>"+
+		"<td width='11%' class='px-1'><div class='card border-success text-center pt-1' >"+item.answerCount+"<br>"+
+		"<small class='text-success my-1'>답변</small>"+
+		"</div></td>"+
+		"<td><a class='nav-link' href='/questionBoardOne?questionId="+item.questionId+"'>"+item.questionTitle+"</a>" +
+		"<div class='d-flex justify-content-between'>"+
+		"<small class='p-2'>태그들...</small>"+
+		"<small class='p-2'>uploaded at"+item.questionDatetime +" by " + item.userId+"</small></div>"
+		+"</td></tr>";
 	}
 </script>
 

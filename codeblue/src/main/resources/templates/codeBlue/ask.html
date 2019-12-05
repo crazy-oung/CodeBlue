@@ -60,7 +60,7 @@
 		<!-- End of Topbar -->
 		
 		<!-- Begin Page Content -->
-		<div class="container" style="height: 100%" align="center">  
+		<div class="container content" style="height: 100%" align="center">  
 			<div class="pt-4 mt-5 text-left" > 
 				<p class="text-center">
 					<a href="/">
@@ -113,13 +113,6 @@
 
 	<!-- Custom scripts for all pages-->
 	<script src="js/sb-admin-2.min.js"></script>
-
-	<!-- Page level plugins -->
-	<script src="vendor/chart.js/Chart.min.js"></script>
-
-	<!-- Page level custom scripts -->
-	<script src="js/demo/chart-area-demo.js"></script>
-	<script src="js/demo/chart-pie-demo.js"></script>
 	
 	<!-- summer note scripts -->
 	<script src="js/summernote/summernote-bs4.min.js"></script>
@@ -130,6 +123,15 @@
 </body>
 <script> 
 	$(document).ready(function() {
+		
+		$.ajax({
+			url : "/rest/getLoginUser",
+			method : "get",
+			success : function(json){
+				console.log(json);
+				$("#id").val(json.userId);
+			}
+		})
 		
 		$.ajax({
 			url : "/rest/getFeildList",
@@ -170,12 +172,13 @@
 				$.ajax({
 					url:"/addQuestion",
 					method : "post",
-					data : {"userId" : $("#id").val(),
-							"feildId" :$("#feild").val(),
+					data : {"user.userId" : $("#id").val(),
+							"feild.feildId" :$("#feild").val(),
 							"questionTitle" : $("#title").val(),
 							"questionContent" : $("#summernote").val()},
 					success:function(){
 						console.log("성공");
+						alert("질문 등록을 완료 했습니다! <br> 답변이 달리면 알려드리겠습니다! 🙂");
 						location.href="/QnA";
 					}
 				})

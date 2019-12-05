@@ -20,7 +20,15 @@ import com.example.codeblue.vo.User;
 @RestController
 public class UserRestController {
 	@Autowired UserService userService;
-
+	
+	
+	
+	@GetMapping("/rest/getLoginUser")
+	public User getLoginUser(HttpSession session) {
+		System.out.println("::: get - getLoginUser :::"); 
+		return (User) session.getAttribute("loginUser");
+	}
+	
 	@PostMapping("/rest/userOne")
 	public User getUserOne(String userId) {
 		System.out.println("::: post - getUserOne :::"); 
@@ -36,7 +44,6 @@ public class UserRestController {
 		return userService.getQuestionCommentList(questionId);
 		
 	}
-	
 	
 	// 질문 리스트 가져오기
 	@PostMapping("/rest/getBoardList")
@@ -66,6 +73,7 @@ public class UserRestController {
 		return userService.getNoticeBoardList(1, 15);
 		
 	}
+	
 	@PostMapping("/rest/getNoticeList")
 	public Map<String,Object> getNoticeList(@RequestParam(value="currentPage", defaultValue = "1")int currentPage,
 									 @RequestParam(value="rowPerPage", defaultValue = "15")int rowPerPage) {

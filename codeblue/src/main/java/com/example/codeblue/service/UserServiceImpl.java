@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService{
 	public User selectUserOne(String UserId) {
 		System.out.println("::: ProfileServiceImpl - selectUserOne :::");
 		User user = userMapper.selectUserOne(UserId);
-		
+		System.out.println(user);
 		return user;
 	}
 	@Override
@@ -38,6 +38,7 @@ public class UserServiceImpl implements UserService{
 		System.out.println("::: AskServiceImpl - addQuestion :::");
 		return userMapper.insertQuestion(questionBoard);
 	}
+	
 	@Override
 	public List<QuestionComment> getQuestionCommentList(int questionId) {
 		System.out.println("::: QuestionBoardServiceImpl - getQuestionCommentList :::");
@@ -131,6 +132,7 @@ public class UserServiceImpl implements UserService{
 		System.out.println("-------------------");
 		return map;
 	}
+	
 	@Override
 	public User verifyUser(User user) {
 		System.out.println("::: UserServluceImpl - verifyUser :::");
@@ -155,7 +157,7 @@ public class UserServiceImpl implements UserService{
 	    
 	    simpleMailMessage.setTo(user.getUserId()); 
 	    simpleMailMessage.setSubject("코드블루 인증코드입니다. 💙");
-	    simpleMailMessage.setText(user.getUserName()+"님! 인증코드는  ["+randNum+"]입니다. <br> 인증코드 입력란에 입력해주셔야 회원가입이 완료 됩니다! :) <br> 감사합니다.");
+	    simpleMailMessage.setText(user.getUserName()+"님! 인증코드는  ["+randNum+"]입니다. 인증코드 입력란에 입력해주셔야 회원가입이 완료 됩니다! :) 감사합니다. 😍");
 	    System.out.println("인증번호: " + randNum);
 	    
 	    javaMailSender.send(simpleMailMessage);
