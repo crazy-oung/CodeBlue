@@ -4,27 +4,125 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="com.example.codeblue.mapper.AdminMapper">
-	
-
-	<resultMap type="com.example.codeblue.vo.User" id="useList"> 
-		<!-- pk는 id 그 외는 result칼럼사용 -->
+	<!-- User 객체 -->
+	<resultMap type="com.example.codeblue.vo.User" id="User"> 
 		<!-- column은 테이블에서의 칼럼명  property는 클레스의 필드명 -->
-		<id column="user_id" property="userId" ></id>
+		<result column="user_id" property="userId" ></result>
 		<result column="user_name" property="userName" ></result>
+		<result column="user_pw" property="userPw"></result>
 		<result column="user_birthdate" property="userBirthdate" ></result>
 		<result column="user_createtime" property="userCreatetime"></result>
 		<result column="user_authority" property="userAuthority" ></result>
-		<association property="region" javaType="com.example.codeblue.vo.Region">
-			<result column="region_id" property="regionId"/>
-			<result column="region_name" property="regionName"/>
+		
+		<association property="region" resultMap="Region">
 		</association>
-		<association property="rank" javaType="com.example.codeblue.vo.Rank">
-			<result column="rank_id" property="rankId"/>
-			<result column="rank_name" property="rankName"/>
+		<association property="rank" resultMap="Rank">
 		</association>
 	</resultMap>
 	
-	<select id="adminSelectUserList" parameterType="com.example.codeblue.vo.Page" resultMap="useList">
+	<!-- InquiryHistory 객체  -->
+	<resultMap type="com.example.codeblue.vo.InquiryHistory" id="InquiryHistory"> 
+	<!-- column은 테이블에서의 칼럼명  property는 클레스의 필드명 -->
+		<result column="inquiry_history_id" property="inquiryHistoryId" ></result>
+		<result column="inquiry_title" property="inquiryTitle" ></result>
+		<result column="inquiry_content" property="inquiryContent" ></result>
+		<result column="inquiry_datetime" property="inquiryDatetime"></result>
+	   
+		<association property="inquiry" resultMap="Inquiry">
+	   	</association>
+	   	<association property="user" resultMap="User">
+	   	</association>
+	</resultMap>
+	
+	<!-- ReportHistory 객체  -->
+	<resultMap type="com.example.codeblue.vo.ReportHistory" id="ReportHistory"> 
+	<!-- column은 테이블에서의 칼럼명  property는 클레스의 필드명 -->
+	   	<result column="report_history_id" property="reportHistoryId" ></result>
+	   	<result column="report_title" property="reportTitle" ></result>
+	   	<result column="report_content" property="reportContent" ></result>
+	   	<result column="report_datetime" property="reportDatetime"></result>
+	   
+	   	<association property="report" resultMap="Report">
+	  	</association>
+	  	<association property="user" resultMap="User">
+	   	</association>
+	</resultMap>
+	
+	<!-- NoticeBoard 객체 -->
+	<resultMap type="com.example.codeblue.vo.NoticeBoard" id="NoticeBoard">
+		<result column="notice_id" property="noticeId"></result>
+		<result column="notice_title" property="noticeTitle"></result>
+		<result column="notice_content" property="noticeContent"></result>
+		<result column="notice_datetime" property="noticeDatetime"></result>
+	</resultMap>
+	
+	<!-- QuestionBoard 객체 -->
+	<resultMap type="com.example.codeblue.vo.QuestionBoard" id="QuestionBoard"> 
+		<!-- column은 테이블에서의 칼럼명  property는 클레스의 필드명 -->
+		<result column="question_id" property="questionId" ></result>
+		<result column="question_title" property="questionTitle" ></result>
+		<result column="question_content" property="questionContent" ></result>
+		<result column="question_datetime" property="questionDatetime"></result>
+		<result column="answer_count" property="answerCount"></result>
+		<result column="comment_count" property="commentCount"></result>
+		<result column="vote_count" property="voteCount"></result>
+		
+		<association property="user" resultMap="User">
+		</association>	
+		<association property="feild" resultMap="Feild">
+		</association>
+		<association property="tag" resultMap="Tag">
+		</association>
+	</resultMap>
+	<!-- Rank 객체 -->
+	<resultMap type="com.example.codeblue.vo.Rank" id="Rank">
+		<result column="rank_id" property="rankId"></result>
+		<result column="rank_name" property="rankName"></result>
+	</resultMap>
+	
+	<!-- Region 객체 -->
+	<resultMap type="com.example.codeblue.vo.Region" id="Region">
+		<result column="region_id" property="regionId"></result>
+		<result column="region_name" property="regionName"></result>
+	</resultMap>
+	
+	<!-- Inquiry 객체 -->
+	<resultMap type="com.example.codeblue.vo.Inquiry" id="Inquiry">
+		<result column="inquiry_id" property="inquiryId"></result>
+	    <result column="inquiry_name" property="inquiryName"></result>
+	</resultMap>
+	
+	<!-- Report 객체 -->
+	<resultMap type="com.example.codeblue.vo.Report" id="Report">
+		<result column="report_id" property="reportId"></result>
+	     <result column="report_name" property="reportName"></result>
+	</resultMap>
+	
+	<!-- Tag 객체 -->
+	<resultMap type="com.example.codeblue.vo.Tag" id="Tag">
+		<result column="tag_id" property="tagId"></result>
+		<result column="tag_name" property="tagName"></result>
+	</resultMap>
+	
+	<!-- Feild 객체 -->
+	<resultMap type="com.example.codeblue.vo.Feild" id="Feild">
+		<result column="feild_id" property="feildId"></result>
+		<result column="feild_name" property="feildName"></result>
+	</resultMap>
+	
+	<!-- QuestionCount 객체 -->
+	<resultMap type="com.example.codeblue.vo.QuestionCount" id="QuestionCount">
+		<result column="question_date" property="questionDate"></result>
+		<result column="question_month" property="questionMonth"></result>
+		<result column="count" property="count"></result>
+		<association property="feild" resultMap="Feild">
+		</association>
+	</resultMap>
+	
+	<!-- 객체정리 끝
+	ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+	 -->
+	<select id="adminSelectUserList" parameterType="com.example.codeblue.vo.Page" resultMap="User">
 		select
 			u.user_id,
 			u.user_name,
@@ -35,29 +133,28 @@
 			ra.rank_id,
 			ra.rank_name,
 			u.user_authority
-		from user u inner join  region re INNER JOIN rank ra
+		from user u inner join region re INNER JOIN rank ra
 		ON u.region_id = re.region_id AND u.rank_id = ra.rank_id
 		where u.user_authority = 'user'
-<!-- 		<where> -->
 			<if test="searchWord != null">
 				and u.user_name like CONCAT('%',#{searchWord},'%')
 			</if>
-<!-- 		</where> -->
 		order by u.user_createtime desc
 		limit #{beginRow},#{rowPerPage}
 	</select>
+	
 	<select id="adminSelectUserCount" resultType="int">
 		select
 			count(*)
 		from user
 	</select>
 
-	<select id="selectNoticeBoard" resultType="com.example.codeblue.vo.Notice"
+	<select id="selectNoticeBoard" resultMap="NoticeBoard"
   									parameterType="com.example.codeblue.vo.Page">
-  		SELECT notice_id AS noticeId,
-  			notice_title AS noticeTitle,
-  			notice_content AS noticeContent,
-  			notice_datetime AS noticeDatetime
+  		SELECT notice_id,
+  			notice_title,
+  			notice_content,
+  			notice_datetime
   		FROM
   			notice_board
   		<where>
@@ -83,11 +180,11 @@
 		</where>
   	</select>
   	
-  	<select id="noticeBoardOne" resultType="com.example.codeblue.vo.Notice" parameterType="int">
-  			SELECT notice_id AS noticeId,
-  			notice_title AS noticeTitle,
-  			notice_content AS noticeContent,
-  			notice_datetime AS noticeDatetime
+  	<select id="noticeBoardOne" resultMap="NoticeBoard" parameterType="int">
+  			SELECT notice_id,
+  			notice_title,
+  			notice_content,
+  			notice_datetime
   		FROM
   			notice_board
   		WHERE 
@@ -107,49 +204,13 @@
   		
   	</insert>
 
-	 <!-- inquiry vo 만들기  -->
-   <resultMap type="com.example.codeblue.vo.InquiryHistory" id="inquiryList"> 
-      <!-- pk는 id 그 외는 result칼럼사용 -->
-      <!-- column은 테이블에서의 칼럼명  property는 클레스의 필드명 -->
-      <id column="inquiry_history_id" property="inquiryHistoryId" ></id>
-      <result column="inquiry_title" property="inquiryTitle" ></result>
-      <result column="inquiry_content" property="inquiryContent" ></result>
-      <result column="inquiry_datetime" property="inquiryDatetime"></result>
-      
-      <association property="inquiry" javaType="com.example.codeblue.vo.Inquiry">
-         <result column="inquiry_id" property="inquiryId"/>
-         <result column="inquiry_name" property="inquiryName"/>
-      </association>
-      <association property="user" javaType="com.example.codeblue.vo.User">
-         <result column="user_id" property="userId"/>
-         <result column="user_name" property="userName"/>
-      </association>
-   </resultMap>
-   
-   <!-- report vo 만들기  -->
-   <resultMap type="com.example.codeblue.vo.ReportHistory" id="reportList"> 
-      <!-- pk는 id 그 외는 result칼럼사용 -->
-      <!-- column은 테이블에서의 칼럼명  property는 클레스의 필드명 -->
-      <id column="report_history_id" property="reportHistoryId" ></id>
-      <result column="report_title" property="reportTitle" ></result>
-      <result column="report_content" property="reportContent" ></result>
-      <result column="report_datetime" property="reportDatetime"></result>
-      
-      <association property="report" javaType="com.example.codeblue.vo.Report">
-         <result column="report_id" property="reportId"/>
-         <result column="report_name" property="reportName"/>
-      </association>
-      <association property="user" javaType="com.example.codeblue.vo.User">
-         <result column="user_id" property="userId"/>
-         <result column="user_name" property="userName"/>
-      </association>
-   </resultMap>
+
 
 	<!--  문의내역 SQL 문 -->
 	<!--  문의내역 상세페이지 -->
 	   <select  id="selectInquiryHistoryOne" 
    			parameterType="int"
-   			resultMap="inquiryList">
+   			resultMap="InquiryHistory">
 	   	SELECT  ih.inquiry_history_id,
 				ih.inquiry_title,
 				ih.inquiry_content, 
@@ -160,14 +221,15 @@
 	    ON ih.inquiry_id = i.inquiry_id AND ih.user_id = u.user_id 
 	    WHERE ih.inquiry_history_id = #{inquiryHistoryId}
    	</select>
+   	
 	<!-- 문의내역 전체 리스트 -->
 	<select id="selectInquiryHistoryList" 
 			parameterType="com.example.codeblue.vo.Page" 
-			resultType="com.example.codeblue.vo.InquiryHistory">
+			resultMap="InquiryHistory">
 	
-	SELECT  inquiry_history_id as inquiryHistoryId,
-			inquiry_title as inquiryTitle,
-			inquiry_datetime as inquiryDatetime
+	SELECT  inquiry_history_id,
+			inquiry_title,
+			inquiry_datetime
     FROM inquiry_history
     ORDER BY inquiry_datetime DESC
     LIMIT #{beginRow},#{rowPerPage}
@@ -183,7 +245,7 @@
    <!-- 신고내역 SQL 문 -->
    <select  id="selectReportHistoryOne" 
    			parameterType="int"
-   			resultMap="reportList">
+   			resultMap="ReportHistory">
 		SELECT  rh.report_history_id,
 				rh.report_title,
 				rh.report_content, 
@@ -198,11 +260,11 @@
    <!-- 신고내역 전체 리스트 -->
 	<select id="selectReportHistoryList" 
 			parameterType="com.example.codeblue.vo.Page" 
-			resultType="com.example.codeblue.vo.ReportHistory">
+			resultMap="ReportHistory">
 	
-	SELECT  report_history_id as reportHistoryId,
-			report_title as reportTitle,
-			report_datetime as reportDatetime
+	SELECT  report_history_id,
+			report_title,
+			report_datetime
     FROM report_history
     ORDER BY report_datetime DESC
     LIMIT #{beginRow},#{rowPerPage}
@@ -214,15 +276,15 @@
 	FROM report_history
    </select>   
 
-	<select id="selectCurrentQuestionCountFor6Month" resultType="com.example.codeblue.vo.QuestionCount">
-		SELECT MONTH(question_datetime) AS questionMonth, IFNULL(COUNT(*), 0) as COUNT
+	<select id="selectCurrentQuestionCountFor6Month" resultMap="QuestionCount">
+		SELECT MONTH(question_datetime) AS question_month, IFNULL(COUNT(*), 0) as COUNT
 		FROM ( SELECT question_datetime from question_board WHERE YEAR(question_datetime) = YEAR(NOW()) )t
-		GROUP BY questionMonth
+		GROUP BY question_month
 	</select>
-	<select id="selectCurrentQuestionCountFromFeild" resultType="com.example.codeblue.vo.QuestionCount">
-		SELECT feildId, COUNT(*) AS count
-		FROM ( SELECT feild_id as feildId from question_board WHERE YEAR(question_datetime) = YEAR(NOW()) )t
-		GROUP BY feildId
+	<select id="selectCurrentQuestionCountFromFeild" resultMap="QuestionCount">
+		SELECT feild_id, COUNT(*) AS count
+		FROM ( SELECT feild_id from question_board WHERE YEAR(question_datetime) = YEAR(NOW()) )t
+		GROUP BY feild_id
 	</select>
 
 	<insert id="insertFaqBoard" parameterType="com.example.codeblue.vo.ServiceCategory">
@@ -239,9 +301,10 @@
 		)
 	</insert>
 	
-	<select id="selectAdminFeildList" resultType="String">
+	<select id="selectAdminFeildList" resultMap="Feild">
 		SELECT 
-			feild_name as feildName
+			feild_id,
+			feild_name 
 		FROM feild
 	</select>
 	
@@ -256,27 +319,7 @@
 		</where>
 	</select>
 	
-	<resultMap type="com.example.codeblue.vo.QuestionBoard" id="boardList"> 
-			<!-- pk는 id 그 외는 result칼럼사용 -->
-			<!-- column은 테이블에서의 칼럼명  property는 클레스의 필드명 -->
-			<result column="question_id" property="questionId" ></result>
-			<result column="question_title" property="questionTitle" ></result>
-			<result column="question_content" property="questionContent" ></result>
-			<result column="question_datetime" property="questionDatetime"></result>
-			<result column="answer_count" property="answerCount"></result>
-			
-			<association property="user" javaType="com.example.codeblue.vo.User">
-			   <result column="user_id" property="userId" ></result>
-			   <result column="user_name" property="userName" ></result>
-			   <result column="user_birthdate" property="userBirthdate" ></result>
-			   <result column="user_createtime" property="userCreatetime"></result>
-			</association>	
-			<association property="feild" javaType="com.example.codeblue.vo.Feild">
-			   <result column="feild_id" property="feildId"/>
-			   <result column="feild_name" property="feildName"/>
-			</association>
-	</resultMap>
-	<select id="selectAdminBoardList" resultMap="boardList" parameterType="com.example.codeblue.vo.Page">
+	<select id="selectAdminBoardList" resultMap="QuestionBoard" parameterType="com.example.codeblue.vo.Page">
 		SELECT 
 				q.question_id,
 				q.question_title,

@@ -86,12 +86,13 @@
 		success:function(json) {
 			console.log(json);
 			$(json).each(function(index,item){
-				var html = "<option value="+(index+1)+">"+item+"</option>";
+				var html = "<option value="+item.feildNo+">"+item.feildName+"</option>";
 				$("#searchCategory").append(html);
 			});
 		}
 	});
-	
+	$("#prevBtn").hide();
+	$("#nextBtn").hide();
 	//현재페이지값
 	var currentPage = 1;
 	//마지막페이지값
@@ -133,7 +134,7 @@
 		$.ajax({
 			url: "/rest/adminBoardList",
 			method:"post",
-			data:{"searchCategory":searchCategory,"searchWord":searchWord,"toDate":toDate,"fromDate":fromDate,"currentPage" : currentPage},
+			data:{"searchCategory":searchCategory,"searchWord":searchWord,"toDate":toDate,"fromDate":fromDate},
 			success: function(json){
 				console.log(json);
 				currentPage = json.currentPage;

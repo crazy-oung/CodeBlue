@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.example.codeblue.vo.FaqBoard;
+import com.example.codeblue.vo.Feild;
 import com.example.codeblue.vo.InquiryHistory;
 import com.example.codeblue.vo.Notice;
 import com.example.codeblue.vo.Page;
@@ -15,7 +16,7 @@ import com.example.codeblue.vo.User;
 
 @Mapper
 public interface AdminMapper {
-	public List<String> selectAdminFeildList();
+	public List<Feild> selectAdminFeildList();
 	public int selectAdminBoardTotalCount(Page page);
 	public List<QuestionBoard> selectAdminBoardList(Page page);
 	//고객센터 답변 삽입

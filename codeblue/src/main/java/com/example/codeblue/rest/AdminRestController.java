@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.codeblue.service.AdminService;
 import com.example.codeblue.vo.FaqBoard;
+import com.example.codeblue.vo.Feild;
 import com.example.codeblue.vo.InquiryHistory;
 import com.example.codeblue.vo.Notice;
 import com.example.codeblue.vo.Page;
@@ -131,7 +132,7 @@ public class AdminRestController {
 	}
 	
 	@PostMapping("/rest/adminFeildList")
-	public List<String> adminFeildList() {
+	public List<Feild> adminFeildList() {
 		System.out.println("::: post - adminFeildList :::");
 		return adminService.getAdminFeildList();
 	}

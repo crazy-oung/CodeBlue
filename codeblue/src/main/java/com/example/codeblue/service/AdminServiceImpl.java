@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.codeblue.mapper.AdminMapper;
 import com.example.codeblue.vo.FaqBoard;
+import com.example.codeblue.vo.Feild;
 import com.example.codeblue.vo.InquiryHistory;
 import com.example.codeblue.vo.Notice;
 import com.example.codeblue.vo.Page;
@@ -182,7 +183,7 @@ public class AdminServiceImpl implements AdminService {
 		return adminMapper.insertFaqBoard(faqBoard);
 	}	
 	@Override
-	public List<String> getAdminFeildList() {
+	public List<Feild> getAdminFeildList() {
 		System.out.println("::: AdminBoardServiceImpl - getAdminFeildList :::");
 		return adminMapper.selectAdminFeildList();
 	}

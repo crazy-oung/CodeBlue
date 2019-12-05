@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.example.codeblue.vo.FaqBoard;
+import com.example.codeblue.vo.Feild;
 import com.example.codeblue.vo.InquiryHistory;
 import com.example.codeblue.vo.Notice;
 import com.example.codeblue.vo.Page;
@@ -27,7 +28,7 @@ public interface AdminService {
 	public List<QuestionCount> getCurrentQuestionCountFor6Month();
 	public List<QuestionCount> getCurrentQuestionCountFromFeild();
 	public int addFaqBoard(FaqBoard faqBoard);
-	public List<String> getAdminFeildList();
+	public List<Feild> getAdminFeildList();
 	public Map<String,Object> getAdminBoardList(Page page,int currentPage);
 	
 }
