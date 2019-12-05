@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.codeblue.service.UserService;
 import com.example.codeblue.vo.QuestionBoard;
@@ -13,6 +14,30 @@ import com.example.codeblue.vo.QuestionBoard;
 @Controller
 public class UserController {
 	@Autowired UserService userService;
+	@GetMapping("/questionBoardOne")
+	public String QuestionBoardOne(@RequestParam(value="questionId")String questionId) {
+		System.out.println("::: get - QuestionBoardOne :::");
+		System.out.println("questionId : "+questionId);
+		
+		return "questionBoardOne";
+	}
+	
+	@GetMapping("/QnA")
+	public String getQnA() {
+		return "/QnA";
+	}
+	
+	@GetMapping("/notice")
+	public String notice() {
+		System.out.println("::: get - notice :::"); 
+		return "notice";
+	}
+	
+	@GetMapping("/noticeOne")
+	public String getnoticeOne() {
+		System.out.println("::: get - getnoticeOne :::"); 
+		return "noticeOne";
+	}
 	
 	@GetMapping("/userOne")
 	public String getUserOne() {
@@ -22,7 +47,8 @@ public class UserController {
 	
 	 @GetMapping("/oops!")
      public String errorpage(){
-         throw new IllegalStateException("Error");
+//         throw new IllegalStateException("Error");
+		 return "/404";
      }
 	 
 	 @GetMapping("/ask")

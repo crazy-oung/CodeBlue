@@ -125,6 +125,7 @@
          <result column="user_name" property="userName"/>
       </association>
    </resultMap>
+   
    <!-- report vo 만들기  -->
    <resultMap type="com.example.codeblue.vo.ReportHistory" id="reportList"> 
       <!-- pk는 id 그 외는 result칼럼사용 -->

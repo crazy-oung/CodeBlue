@@ -23,8 +23,8 @@
 <body id="page-top"> 
   <!-- Page Wrapper -->
   <div id="wrapper">
-
-    <!-- Sidebar -->
+  
+  	    <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
@@ -64,10 +64,10 @@
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">질문 및 답변 관리</h6>
-            <a class="collapse-item" href="buttons.html">질문 관리</a>
-            <a class="collapse-item" href="cards.html">답변 조회</a>
-            <a class="collapse-item" href="cards.html">댓글 조회</a>
-            <a class="collapse-item" href="cards.html">추천수 조회</a>
+            <a class="collapse-item" href="/adminQuestionBoard">질문 관리</a>
+            <a class="collapse-item" href="/adminAnswerBoard">답변 조회</a>
+            <a class="collapse-item" href="/adminCommentBoard">댓글 조회</a>
+            <a class="collapse-item" href="/adminVoteBoard">추천수 조회</a>
           </div>
         </div>
       </li>
@@ -81,10 +81,10 @@
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">회원 조회 및 관리</h6>
-            <a class="collapse-item" href="utilities-color.html">회원 조회</a>
-            <a class="collapse-item" href="utilities-border.html">탈퇴회원 조회</a>
-            <a class="collapse-item" href="utilities-animation.html">신고회원 조회</a>
-            <a class="collapse-item" href="utilities-other.html">전문가 조회</a>
+            <a class="collapse-item" href="/adminUserList">회원 조회</a>
+            <a class="collapse-item" href="/adminWithdrawUserList">탈퇴회원 조회</a>
+            <a class="collapse-item" href="/adminReportUserList">신고회원 조회</a>
+            <a class="collapse-item" href="/adminExpertUserList">전문가 조회</a>
           </div>
         </div>
       </li>
@@ -106,26 +106,41 @@
         <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">제휴 병원 관리</h6>
-            <a class="collapse-item" href="login.html">제휴병원 조회</a>
-            <a class="collapse-item" href="register.html">제휴병원 추가</a>
-<!--             <div class="collapse-divider"></div>
-            <h6 class="collapse-header">Other Pages:</h6>
-            <a class="collapse-item" href="404.html">404 Page</a>
-            <a class="collapse-item" href="blank.html">Blank Page</a> -->
+            <a class="collapse-item" href="/adminMemberHospitalList">제휴병원 조회</a>
+            <a class="collapse-item" href="/addHospital">제휴병원 추가</a>
+<!--        <div class="collapse-divider"></div> -->
+          </div>
+        </div>
+      </li>
+      
+      <!-- Nav Item - Pages Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReports" aria-expanded="true" aria-controls="collapseReports">
+          <i class="fas fa-fw fa-folder"></i>
+          <span>문의 내역</span>
+        </a>
+        <div id="collapseReports" class="collapse" aria-labelledby="headingReports" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">제휴 병원 관리</h6>
+            <a class="collapse-item" href="/adminInquiryBoard">문의 내역</a>
+            <a class="collapse-item" href="/adminReportBoard">신고 내역</a>
+            <a class="collapse-item" href="/adminFAQBoard">FAQ 관리</a>
+            <a class="collapse-item" href="/adminNoticeBoard">공지 관리</a>
+<!--        <div class="collapse-divider"></div> -->
           </div>
         </div>
       </li>
 
       <!-- Nav Item - Charts -->
       <li class="nav-item">
-        <a class="nav-link" href="charts.html">
+        <a class="nav-link" href="/analysis">
           <i class="fas fa-fw fa-chart-area"></i>
           <span>통계</span></a>
       </li>
 
       <!-- Nav Item - Tables -->
       <li class="nav-item">
-        <a class="nav-link" href="tables.html">
+        <a class="nav-link" href="/manageAdmin">
           <i class="fas fa-fw fa-table"></i>
           <span>관리자 설정</span></a>
       </li>

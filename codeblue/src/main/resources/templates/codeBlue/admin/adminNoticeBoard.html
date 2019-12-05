@@ -8,7 +8,7 @@
 	<meta name="description" content="">
 	<meta name="author" content="">
 	
-	<title>관리자 - 코드블루</title>
+	<title>관리자 공지 - 코드블루</title>
 	
 	<!-- Custom fonts for this template-->
 	<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -24,7 +24,7 @@
   <!-- Page Wrapper -->
   <div id="wrapper">
 
-    <!-- Sidebar -->
+        <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
@@ -41,7 +41,7 @@
       <hr class="sidebar-divider my-0">
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="/admin">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>관리자 홈</span></a>
@@ -52,20 +52,22 @@
 
       <!-- Heading -->
       <div class="sidebar-heading">
-        	게시판
+        	게시글 및 유저
       </div>
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
           <i class="fas fa-fw fa-cog"></i>
-          <span>질문</span>
+          <span>글 관리</span>
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Custom Components:</h6>
-            <a class="collapse-item" href="buttons.html">Buttons</a>
-            <a class="collapse-item" href="cards.html">Cards</a>
+            <h6 class="collapse-header">질문 및 답변 관리</h6>
+            <a class="collapse-item" href="/adminQuestionBoard">질문 관리</a>
+            <a class="collapse-item" href="/adminAnswerBoard">답변 조회</a>
+            <a class="collapse-item" href="/adminCommentBoard">댓글 조회</a>
+            <a class="collapse-item" href="/adminVoteBoard">추천수 조회</a>
           </div>
         </div>
       </li>
@@ -74,15 +76,15 @@
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
           <i class="fas fa-fw fa-wrench"></i>
-          <span>Utilities</span>
+          <span>회원 관리</span>
         </a>
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Custom Utilities:</h6>
-            <a class="collapse-item" href="utilities-color.html">Colors</a>
-            <a class="collapse-item" href="utilities-border.html">Borders</a>
-            <a class="collapse-item" href="utilities-animation.html">Animations</a>
-            <a class="collapse-item" href="utilities-other.html">Other</a>
+            <h6 class="collapse-header">회원 조회 및 관리</h6>
+            <a class="collapse-item" href="/adminUserList">회원 조회</a>
+            <a class="collapse-item" href="/adminWithdrawUserList">탈퇴회원 조회</a>
+            <a class="collapse-item" href="/adminReportUserList">신고회원 조회</a>
+            <a class="collapse-item" href="/adminExpertUserList">전문가 조회</a>
           </div>
         </div>
       </li>
@@ -92,41 +94,55 @@
 
       <!-- Heading -->
       <div class="sidebar-heading">
-        Addons
+        	기타 관리
       </div>
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
           <i class="fas fa-fw fa-folder"></i>
-          <span>Pages</span>
+          <span>제휴 관리</span>
         </a>
         <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Login Screens:</h6>
-            <a class="collapse-item" href="login.html">Login</a>
-            <a class="collapse-item" href="register.html">Register</a>
-            <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-            <div class="collapse-divider"></div>
-            <h6 class="collapse-header">Other Pages:</h6>
-            <a class="collapse-item" href="404.html">404 Page</a>
-            <a class="collapse-item" href="blank.html">Blank Page</a>
+            <h6 class="collapse-header">제휴 병원 관리</h6>
+            <a class="collapse-item" href="/adminMemberHospitalList">제휴병원 조회</a>
+            <a class="collapse-item" href="/addHospital">제휴병원 추가</a>
+<!--        <div class="collapse-divider"></div> -->
+          </div>
+        </div>
+      </li>
+      
+      <!-- Nav Item - Pages Collapse Menu -->
+      <li class="nav-item active">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReports" aria-expanded="false" aria-controls="collapseReports">
+          <i class="fas fa-fw fa-folder"></i>
+          <span>공지 및 문의 내역</span>
+        </a>
+        <div id="collapseReports" class="collapse show" aria-labelledby="headingReports" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">제휴 병원 관리</h6>
+            <a class="collapse-item" href="/adminInquiryBoard">문의 내역</a>
+            <a class="collapse-item" href="/adminReportBoard">신고 내역</a>
+            <a class="collapse-item" href="/adminFAQBoard">FAQ 관리</a>
+            <a class="collapse-item" href="/adminNoticeBoard">공지 관리</a>
+<!--        <div class="collapse-divider"></div> -->
           </div>
         </div>
       </li>
 
       <!-- Nav Item - Charts -->
       <li class="nav-item">
-        <a class="nav-link" href="charts.html">
+        <a class="nav-link" href="/analysis">
           <i class="fas fa-fw fa-chart-area"></i>
-          <span>Charts</span></a>
+          <span>통계</span></a>
       </li>
 
       <!-- Nav Item - Tables -->
       <li class="nav-item">
-        <a class="nav-link" href="tables.html">
+        <a class="nav-link" href="/manageAdmin">
           <i class="fas fa-fw fa-table"></i>
-          <span>Tables</span></a>
+          <span>관리자 설정</span></a>
       </li>
 
       <!-- Divider -->
@@ -328,21 +344,18 @@
 
         </nav>
         <!-- End of Topbar -->
-
+		
         <!-- Begin Page Content -->
-        
-       	<div class="container">
-			<div class="row"> 
-				
+       <div class="container-fluid px-4 pt-4">
+			<div class="card border-0 bg-white p-3 my-2 shadow mx-3"> 
 				<!-- Page Content -->
-				<div class="col-sm-8">
+				<div class="p-2">
 					<!-- Page Heading -->
-					<div class="d-sm-flex align-items-center justify-content-between mb-2" style="margin-top: 80px">
+					<div class="d-sm-flex align-items-center justify-content-between mb-3" >
 						<h3 class="text-gray-800 mb-2 font-weight-bold">공지사항</h3>
-						<a href="/adminNoticeAdd" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow"><i class="mr-2 fas fa-plus fa-sm text-white-50"></i>공지 올리기</a> 
+						<a href="/adminNoticeAdd" class="d-none d-sm-inline-block btn btn-primary shadow"><i class="mr-2 fas fa-plus fa-sm text-white-50"></i>공지 올리기</a> 
 					</div>
 					<!-- page Heading End -->
-					<div class="card mb-3 border-primary p-1"><ul class="nav" id="feilds"></ul></div>
 					
 					<!-- Notice Board -->
 					<table id="notice" class="table table-hover"></table>
@@ -355,11 +368,6 @@
 			<!--  Page Content End -->
 			</div>
 		</div> 
-        
-        
-        
-        
-        
         
       <!-- End of Main Content -->
 
