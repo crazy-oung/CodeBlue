@@ -101,7 +101,6 @@
 	SELECT notice_id as noticeId,
 			notice_title as noticeTitle,
 			notice_content as noticeContent,
-			file_id as fileId,
 			notice_datetime as noticeDatetime
     FROM notice_board
     ORDER BY notice_datetime DESC
@@ -119,7 +118,6 @@
    	SELECT notice_id as noticeId,
 			notice_title as noticeTitle,
 			notice_content as noticeContent,
-			file_id as fileId,
 			notice_datetime as noticeDatetime
     FROM notice_board
     WHERE notice_id = #{noticeId}
