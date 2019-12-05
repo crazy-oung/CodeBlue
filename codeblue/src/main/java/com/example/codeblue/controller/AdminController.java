@@ -1,10 +1,50 @@
 package com.example.codeblue.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.example.codeblue.service.AdminService;
+
+
 
 @Controller
 public class AdminController {
+	@Autowired AdminService adminService;
+	
+	//제휴병원 게시판
+	@GetMapping("/adminHospital")
+	public String getHospital() {
+		System.out.println(":::get - getHospital:::");
+		return"/codeBlue/admin/adminHospital";
+	}
+	
+	//제휴병원 입력
+	@GetMapping("/addHospital")
+	public String getAddHospital() {
+		System.out.println(":::get - AddHospital:::");
+		return"/codeBlue/admin/adminAddHospital";
+	}
+	
+	//제휴병원 삭제
+	@GetMapping("/removeHospital")
+	public String postRemoveHospital(@RequestParam(value="hospitalId")int hospitalId) {
+		System.out.println(":::post - postRemoveHospital:::");
+		System.out.println("hospitalId"+hospitalId);
+		adminService.removeHospital(hospitalId);
+		return "/codeBlue/admin/adminHospitalOne";
+	}
+	
+	//제휴병원 상세보기
+	@GetMapping("/getHospitalOne")
+	public String getHospitalOne(@RequestParam(value="hospitalId")int hospitalId) {
+		System.out.println(":::get - getHospitalOne:::");
+		System.out.println("hospitalId"+hospitalId);
+		
+		return"/codeBlue/admin/adminHospitalOne";
+	}
+	
 	@GetMapping({"adminInquiryBoard","adminReportBoard"})
 	public String getInquiry() {
 		System.out.println("::: get - adminInquiry :::");

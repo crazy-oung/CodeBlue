@@ -157,7 +157,7 @@
           <!-- Topbar Search -->
           <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
             <div class="input-group">
-              <input type="text" class="form-control bg-light border-1 small" placeholder="항목 검색" aria-label="Search" aria-describedby="basic-addon2">
+              <input type="text" class="form-control bg-light border-1 small" placeholder="병원 검색" aria-label="Search" aria-describedby="basic-addon2">
               <div class="input-group-append">
                 <button class="btn btn-primary" type="button">
                   <i class="fas fa-search fa-sm"></i>
@@ -330,30 +330,32 @@
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
+        <div class="container-fluid px-4 pt-4">
+			<div class="card border-0 bg-white p-3 m-2 shadow"> 
         
-       	<div class="container">
-			<div class="row"> 
-				
-				<!-- Page Content -->
-				<div class="col-sm-8">
-					<!-- Page Heading -->
-					<div class="d-sm-flex align-items-center justify-content-between mb-2" style="margin-top: 80px">
-						<h3 class="text-gray-800 mb-2 font-weight-bold">제휴 병원</h3>
-						<a href="/adminHospitalAdd" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow"><i class="mr-2 fas fa-plus fa-sm text-white-50"></i>병원추가</a> 
+	       	<div class="container">
+				<div class="row"> 
+					
+					<!-- Page Content -->
+					<div class="col-sm-8">
+						<!-- Page Heading -->
+						<div class="d-sm-flex align-items-center justify-content-between mb-2" style="margin-top: 80px">
+							<h3 class="text-gray-800 mb-2 font-weight-bold">제휴 병원</h3>
+							<a href="/addHospital" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow"><i class="mr-2 fas fa-plus fa-sm text-white-50"></i>병원등록</a> 
+						</div>
+						<!-- page Heading End -->
+						
+						<!-- hospital Board -->
+						<table id="hospital" class="table table-hover table-bordered"></table>
+						<br>
+						
+						<button type="button" id="prevBtn" class="btn btn-primary">이전</button>
+						<button type="button" id="nextBtn" class="btn btn-primary">다음</button>
+						
 					</div>
-					<!-- page Heading End -->
-					
-					<!-- Notice Board -->
-					<div id="hospital" class="table table-hover"></div>
-					<br>
-					
-					<button type="button" id="prevBtn" class="btn btn-primary">이전</button>
-					<button type="button" id="nextBtn" class="btn btn-primary">다음</button>
-					
+				<!--  Page Content End -->
 				</div>
-			<!--  Page Content End -->
-			</div>
-		</div> 
+			</div> 
         
         
         
@@ -433,17 +435,23 @@ $(document).ready(function(){
 		method : "post",
 		data : {"currentPage" : currentPage,
 				"rowPerPage" : rowPerPage},
-		sync : true,
 		success : function(json){
 			console.log(json);
 			let hospital;
 			$(json.list).each(function(index,item){
-				hospital = "<div> 병원명" +item.hospitalName
-				hospital += "</div><div> 위치" + item.region.regionName
-				hospital += "</div><div> 번호" + item.hospitalAddress
-				hospital += "</div>"
+				hospital = "<tr><td> 병원명 </td><td>"
+				hospital +="<a href='/getHospitalOne?hospitalId=";
+				hospital +=item.hospitalId;
+				hospital +="'>"+item.hospitalName
+				hospital +="</a></td></tr>";
+				hospital +="<tr><td> 위치  </td><td>" + item.region.regionName;
+				hospital +="</td></tr>";
+				hospital += "<tr><td> 번호 </td><td>" + item.hospitalAddress;
+				hospital += "</td></tr>";
+				
+					$("#hospital").append(hospital)
 			})
-			$("#hospital").append(hospital)
+			
 		}
 	})
 	
@@ -461,12 +469,18 @@ $(document).ready(function(){
 				console.log(json);
 				let hospital;
 				$(json.list).each(function(index,item){
-					hospital = "<div> 병원명" +item.hospitalName
-					hospital += "</div><div> 위치" + item.region.regionName
-					hospital += "</div><div> 번호" + item.hospitalAddress
-					hospital += "</div>"
+					hospital = "<tr><td> 병원명 </td><td>"
+						hospital +="<a href='/getHospitalOne?hospitalId=";
+						hospital +=item.hospitalId;
+						hospital +="'>"+item.hospitalName
+						hospital +="</a></td></tr>";
+						hospital +="<tr><td> 위치  </td><td>" + item.region.regionName;
+						hospital +="</td></tr>";
+						hospital += "<tr><td> 번호 </td><td>" + item.hospitalAddress;
+						hospital += "</td></tr>";
+						
+							$("#hospital").append(hospital)
 				})
-				$("#hospital").append(hospital)
 			}
 		})
 	})
@@ -485,12 +499,17 @@ $(document).ready(function(){
 				console.log(json);
 				let hospital;
 				$(json.list).each(function(index,item){
-					hospital = "<div> 병원명" +item.hospitalName
-					hospital += "</div><div> 위치" + item.region.regionName
-					hospital += "</div><div> 번호" + item.hospitalAddress
-					hospital += "</div>"
+					hospital = "<tr><td> 병원명 </td><td>"
+						hospital +="<a href='/getHospitalOne?hospitalId=";
+						hospital +=item.hospitalId;
+						hospital +="'>"+item.hospitalName
+						hospital +="</a></td></tr>";
+						hospital +="<tr><td> 위치  </td><td>" + item.region.regionName;
+						hospital +="</td></tr>";
+						hospital += "<tr><td> 번호 </td><td>" + item.hospitalAddress;
+						hospital += "</td></tr>";
+							$("#hospital").append(hospital)
 				})
-				$("#hospital").append(hospital)
 			}
 		})
 	})

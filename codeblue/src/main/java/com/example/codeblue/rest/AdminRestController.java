@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.codeblue.service.AdminService;
 import com.example.codeblue.vo.FaqBoard;
 import com.example.codeblue.vo.Feild;
+import com.example.codeblue.vo.Hospital;
 import com.example.codeblue.vo.InquiryHistory;
 import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.Page;
@@ -22,6 +23,37 @@ import com.example.codeblue.vo.ReportHistory;
 @RestController
 public class AdminRestController {
 	@Autowired private AdminService adminService;
+	
+	//병원 리스트
+		@PostMapping("/rest/adminHospital")
+		public Map<String, Object>postHospital(@RequestParam(value="currentPage", defaultValue="1")int currentPage,
+											@RequestParam(value="rowPerPage", defaultValue="10")int rowPerPage,
+											   @RequestParam(value="searchWord", required = false)String searchWord) {
+		System.out.println(":::post - postHospital:::");
+		System.out.println("currentPage"+currentPage);
+		System.out.println("rowPerPage"+rowPerPage);
+		System.out.println("searchWord"+searchWord);
+		
+		return adminService.getHospitalList(currentPage, rowPerPage, searchWord);
+		}
+		
+		//병원 입력
+		@PostMapping("/rest/adminHospitalAdd")
+		public int addHospital(Hospital hospital) {
+			System.out.println(":::post - addHospital");
+			System.out.println("hospital"+hospital);
+			
+			return adminService.addHospital(hospital);
+		}
+			
+		//병원 상세페이지
+		@PostMapping("/rest/adminHospitalOne")
+		public List<Hospital> getHospitalOne(@RequestParam(value="hospitalId")int hospitalId){
+			System.out.println(":::post - getHospitalOne");
+			System.out.println("hospitalId"+hospitalId);
+			
+			return adminService.getHospitalOne(hospitalId);
+		}
 	
 	@PostMapping("/rest/adminUserList")
 	public Map<String,Object> adminUserList(@RequestParam(value="currentPage", defaultValue = "1")int currentPage,

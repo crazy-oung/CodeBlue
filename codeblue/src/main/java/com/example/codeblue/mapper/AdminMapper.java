@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.example.codeblue.vo.FaqBoard;
 import com.example.codeblue.vo.Feild;
+import com.example.codeblue.vo.Hospital;
 import com.example.codeblue.vo.InquiryHistory;
 import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.Page;
@@ -34,14 +35,27 @@ public interface AdminMapper {
 	public InquiryHistory selectInquiryHistoryOne(int inquiryHistoryId);
 	//신고내역 상세 내용 가져오기
 	public ReportHistory selectReportHistoryOne(int reportHistoryId);
-	
+	//공지사항 리스트
 	public List<NoticeBoard> selectNoticeBoard(Page page);
+	//공지사항 수
 	public int noticeBoardCount(Page page);
+	//공지사항 상세보기
 	public NoticeBoard noticeBoardOne(int noticeId);
+	//공지사항 입력
 	public int insertNoticeBoard(NoticeBoard noticeBoard);
-	
+	//회원리스트
 	public List<User> adminSelectUserList(Page page);
+	//회원 수
 	public int adminSelectUserCount();
-	
+	//병원 리스트 
+	public List<Hospital> hospitalList(Page page);
+	//병원 수
+	public int hospitalCount();
+	//병원 데이터 입력
+	public int insertHospital(Hospital hospital);
+	//병원 데이터 삭제
+	public int deleteHospital(int hospitalId);
+	//병원 상세정보 
+	public List<Hospital> hospitalOne(int hospitalId);
 	
 }

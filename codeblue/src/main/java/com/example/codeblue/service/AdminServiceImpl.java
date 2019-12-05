@@ -1,5 +1,6 @@
 package com.example.codeblue.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.codeblue.mapper.AdminMapper;
 import com.example.codeblue.vo.FaqBoard;
 import com.example.codeblue.vo.Feild;
+import com.example.codeblue.vo.Hospital;
 import com.example.codeblue.vo.InquiryHistory;
 import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.Page;
@@ -25,6 +27,67 @@ public class AdminServiceImpl implements AdminService {
 	@Autowired
 	private AdminMapper adminMapper;
 	
+	//병원 리스트
+		@Override 
+		public Map<String, Object> getHospitalList(int currentPage, int rowPerPage, String searchWord) {
+			System.out.println(":::HospitalServiceImpl - getHospitalList:::");
+			
+			int beginRow = (currentPage-1)*rowPerPage;
+			Page page = new Page();
+			page.setBeginRow(beginRow);
+			page.setRowPerPage(rowPerPage);
+			page.setSearchWord(searchWord);
+			
+			int totalRow = adminMapper.hospitalCount();
+			int lastPage = 0;
+			
+			if(totalRow % rowPerPage ==0) {
+				lastPage = totalRow/rowPerPage;
+			}else {
+				lastPage = (totalRow/rowPerPage)+1;
+			}
+			
+			System.out.println("lastPage : "+lastPage);
+			
+			List<Hospital> list = new ArrayList<Hospital>();
+			list = adminMapper.hospitalList(page);
+			System.out.println(list.toString());
+			
+			Map<String,Object> map = new  HashMap<String, Object>();
+			map.put("currentPage", currentPage);
+			map.put("rowPerPage", rowPerPage);
+			map.put("searchWord", searchWord);
+			map.put("totalRow", totalRow);
+			map.put("lastPage", lastPage);
+			map.put("list", list);
+			
+			return map;
+		}
+		
+		//제휴병원 추가
+		@Override
+		public int addHospital(Hospital hospital) {
+			System.out.println(":::HospitalServiceImpl - addHospital:::");
+			System.out.println("hospital"+hospital);
+			return adminMapper.insertHospital(hospital);
+		}
+		
+		//제휴병원 삭제
+		@Override
+		public int removeHospital(int hospitalId) {
+			System.out.println(":::HospitalServiceImpl - removeHospital:::");
+			System.out.println("hospitalId"+hospitalId);
+			return adminMapper.deleteHospital(hospitalId);
+		}
+		
+		//제휴병원 상세정보
+		@Override
+		public List<Hospital> getHospitalOne(int hospitalId) {
+			System.out.println(":::HospitalServiceImpl - getHospitalOne:::");
+			System.out.println("hospitalId"+hospitalId);
+
+			return adminMapper.hospitalOne(hospitalId);
+		}
 	@Override
 	public Map<String,Object> getAdminUserList(int currentPage, int rowPerPage, String searchWord) {
 		System.out.println("::: AdminUserServiceImpl - selectUserList :::");
