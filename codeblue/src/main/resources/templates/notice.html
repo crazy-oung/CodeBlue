@@ -101,8 +101,15 @@
 
 							</tbody>
 						</table>
-						<button type="button" id="prevBtn" class="btn ml-1 btn-sm btn-primary">이전</button>
-						<button type="button" id="nextBtn" class="btn ml-1 btn-sm btn-primary">다음</button>
+						<button type="button" id="prevBtn" class="btn ml-1 btn-primary">이전</button>
+						<button type="button" id="nextBtn" class="btn ml-1 btn-primary">다음</button>
+						
+						<div align="right">
+						<span class="page-numbers desc">per page : </span>
+							<button id="rowPerPageBtn1" type="button" class="btn btn-primary-sm" value="15">15</button>
+						    <button id="rowPerPageBtn2" type="button" class="btn btn-primary-sm" value="30">30</button>
+						    <button id="rowPerPageBtn3" type="button" class="btn btn-primary-sm" value="50">50</button>
+					    </div>
 					</div>
 				</div>
 				<!-- Page Content End -->
@@ -144,14 +151,37 @@
 $(document).ready(function() {
 	var currentPage = 1;
 	var lastPage = 0;	
+	var rowPerPage = 15 ;
+	//button value 값 가져오기
+	$("#rowPerPageBtn1").on("click", (e) => {
+		rowPerPage = e.target.value;
+		console.log("rowPerPage",rowPerPage);
+		rowPerPageShow(rowPerPage);
+	})
+	
+	$("#rowPerPageBtn2").on("click", (e) => {
+		rowPerPage = e.target.value;
+		console.log("rowPerPage",rowPerPage);
+		rowPerPageShow(rowPerPage);
+	})
+	
+	$("#rowPerPageBtn3").on("click", (e) => {
+		rowPerPage = e.target.value;
+		console.log("rowPerPage",rowPerPage);
+		rowPerPageShow(rowPerPage);
+	})
+
+	
 	$("#prevBtn").click(function(){ 
 		$.ajax({
 			url:"/rest/getNoticeList",
 			method:"post",
-			data:{"currentPage" : currentPage-1},
+			data:{"currentPage" : currentPage-1,
+				"rowPerPage" : rowPerPage},
 			success: function(json){
+				console.log("이전rowPerPage",rowPerPage);
 				$("#noticeList").empty();
-				console.log(json)
+				rowPerPage = json.rowPerPage;
 				currentPage = json.currentPage;
 				lastPage = json.lastPage;
 				BtnShow(currentPage, lastPage);
@@ -178,9 +208,12 @@ $(document).ready(function() {
 		$.ajax({
 			url:"/rest/getNoticeList",
 			method:"post",
-			data:{"currentPage" : currentPage+1},
+			data:{"currentPage" : currentPage+1,
+				  "rowPerPage" : rowPerPage},
 			success: function(json){
+				console.log("다음rowPerPage",rowPerPage);
 				$("#noticeList").empty();
+				rowPerPage = json.rowPerPage;
 				currentPage = json.currentPage;
 				lastPage = json.lastPage;
 				BtnShow(currentPage, lastPage);
@@ -243,7 +276,37 @@ $(document).ready(function() {
 		}else{
 			$("#nextBtn").show();
 		}
-}
+	}
+	function rowPerPageShow(rowPerPage) {
+		console.log("rowPerPageShow : ", rowPerPage);
+		$.ajax({
+			url:"/rest/getNoticeList",
+			method:"post",
+			data:{"rowPerPage" : rowPerPage},
+			success: function(json){
+				$("#noticeList").empty();
+				rowPerPage = json.rowPerPage;
+				currentPage = json.currentPage;
+				lastPage = json.lastPage;
+				BtnShow(currentPage, lastPage);
+				let html;
+				$(json.list).each(function(index,item){
+					html="<tr><td>";
+					html += item.noticeId;
+					html += "</td><td>";
+					html += "<a href='/noticeOne?noticeId=";
+					html += item.noticeId;
+					html += "'>";
+					html += item.noticeTitle;
+					html += "</a>"
+					html += "</td><td>";
+					html += item.noticeDatetime;
+					html += "</td></tr>";
+					$("#noticeList").append(html);
+				});
+			}
+		})
+	}
 	
 	
 </script>

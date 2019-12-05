@@ -63,12 +63,12 @@ public class UserRestController {
 	@GetMapping("/rest/getNoticeList")
 	public Map<String,Object> getNoticeList() {
 		System.out.println("::: get - getnoticeList :::"); 
-		return userService.getNoticeBoardList(1, 10);
+		return userService.getNoticeBoardList(1, 15);
 		
 	}
 	@PostMapping("/rest/getNoticeList")
 	public Map<String,Object> getNoticeList(@RequestParam(value="currentPage", defaultValue = "1")int currentPage,
-									 @RequestParam(value="rowPerPage", defaultValue = "10")int rowPerPage) {
+									 @RequestParam(value="rowPerPage", defaultValue = "15")int rowPerPage) {
 		System.out.println("::: post - getnoticeList :::"); 
 		System.out.println("currentPage : " + currentPage);
 		System.out.println("rowPerPage : " + rowPerPage);

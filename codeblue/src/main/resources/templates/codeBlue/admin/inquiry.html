@@ -23,7 +23,7 @@
   <!-- Page Wrapper -->
   <div id="wrapper">
 
-      <!-- Sidebar -->
+	 <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
@@ -111,12 +111,12 @@
           </div>
         </div>
       </li>
-      
+
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item active">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReports" aria-expanded="false" aria-controls="collapseReports">
           <i class="fas fa-fw fa-folder"></i>
-          <span>문의 내역</span>
+          <span>공지 및 문의 내역</span>
         </a>
         <div id="collapseReports" class="collapse show" aria-labelledby="headingReports" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
@@ -153,8 +153,8 @@
       </div>
 
     </ul>
-    <!-- End of Sidebar -->
-
+    <!-- End of Sidebar --> 
+   
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
 
@@ -449,22 +449,25 @@
   <script src="js/demo/chart-pie-demo.js"></script>
 
 </body>
+
 <script type="text/javascript">
 $(document).ready(function() {
-	var currentPage = 1;
+	
+	var reportCurrentPage = 1;
+	var inquiryCurrentPage = 1;
 	var lastPage = 0;	
 	
 	$("#inquiryPrevBtn").click(function(){ 
 		$.ajax({
 			url:"/rest/admin/getInquiryHistoryList",
 			method:"post",
-			data:{"currentPage" : currentPage-1},
+			data:{"currentPage" : inquiryCurrentPage-1},
 			success: function(json){
 				$("#inquiryHistoryList").empty();
 				console.log(json)
-				currentPage = json.currentPage;
+				inquiryCurrentPage = json.currentPage;
 				lastPage = json.lastPage;
-				InquiryBtnShow(currentPage, lastPage);
+				InquiryBtnShow(inquiryCurrentPage, lastPage);
 				let html;
 				$(json.list).each(function(index,item){
 					html="<tr><td>";
@@ -488,12 +491,12 @@ $(document).ready(function() {
 		$.ajax({
 			url:"/rest/admin/getInquiryHistoryList",
 			method:"post",
-			data:{"currentPage" : currentPage+1},
+			data:{"currentPage" : inquiryCurrentPage+1},
 			success: function(json){
 				$("#inquiryHistoryList").empty();
-				currentPage = json.currentPage;
+				inquiryCurrentPage = json.currentPage;
 				lastPage = json.lastPage;
-				InquiryBtnShow(currentPage, lastPage);
+				InquiryBtnShow(inquiryCurrentPage, lastPage);
 				let html;
 				$(json.list).each(function(index,item){
 					html="<tr><td>";
@@ -517,10 +520,10 @@ $(document).ready(function() {
 			url:"/rest/admin/getInquiryHistoryList",
 			method:"get",
 			success:function(json){
-				$("#reportHistoryList").empty();
-				currentPage = json.currentPage;
+				$("#inquiryHistoryList").empty();
+				inquiryCurrentPage = json.currentPage;
 				lastPage = json.lastPage;
-				InquiryBtnShow(currentPage, lastPage);
+				InquiryBtnShow(inquiryCurrentPage, lastPage);
 				console.log(json);
 				console.log(json.list);
 				let html;
@@ -546,14 +549,12 @@ $(document).ready(function() {
 			$.ajax({
 				url:"/rest/admin/getReportHistoryList",
 				method:"post",
-				data:{"currentPage" : currentPage-1},
+				data:{"currentPage" : reportCurrentPage-1},
 				success: function(json){
 					$("#reportHistoryList").empty();
-					currentPage = json.currentPage;
+					reportCurrentPage = json.currentPage;
 					lastPage = json.lastPage;
-					console.log(currentPage);
-					console.log(lastPage);
-					ReportBtnShow(currentPage, lastPage);
+					ReportBtnShow(reportCurrentPage, lastPage);
 					let html;
 					$(json.list).each(function(index,item){
 						html="<tr><td>";
@@ -577,14 +578,12 @@ $(document).ready(function() {
 			$.ajax({
 				url:"/rest/admin/getReportHistoryList",
 				method:"post",
-				data:{"currentPage" : currentPage+1},
+				data:{"currentPage" : reportCurrentPage+1},
 				success: function(json){
 					$("#reportHistoryList").empty();
-					currentPage = json.currentPage;
+					reportCurrentPage = json.currentPage;
 					lastPage = json.lastPage;
-					console.log(currentPage);
-					console.log(lastPage);
-					ReportBtnShow(currentPage, lastPage);
+					ReportBtnShow(reportCurrentPage, lastPage);
 					let html;
 					$(json.list).each(function(index,item){
 						html="<tr><td>";
@@ -610,11 +609,9 @@ $(document).ready(function() {
 				method:"get",
 				success:function(json){
 					$("#reportHistoryList").empty();
-					currentPage = json.currentPage;
+					reportCurrentPage = json.currentPage;
 					lastPage = json.lastPage;
-					console.log(currentPage);
-					console.log(lastPage);
-					ReportBtnShow(currentPage, lastPage);
+					ReportBtnShow(reportCurrentPage, lastPage);
 					console.log(json);
 					console.log(json.list);
 					let html;
