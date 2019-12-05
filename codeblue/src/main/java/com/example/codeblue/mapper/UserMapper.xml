@@ -4,33 +4,103 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.codeblue.mapper.UserMapper">
+	<!-- Region 객체 -->
+	<resultMap type="com.example.codeblue.vo.Region" id="Region">
+		<result column="region_id" property="regionId"></result>
+		<result column="region_name" property="regionName"></result>
+	</resultMap>
+	<!-- Rank 객체 -->
+	<resultMap type="com.example.codeblue.vo.Rank" id="Rank">
+		<result column="rank_id" property="rankId"></result>
+		<result column="rank_name" property="rankName"></result>
+	</resultMap>
+	
+	<!-- Tag 객체 -->
+	<resultMap type="com.example.codeblue.vo.Tag" id="Tag">
+		<result column="tag_id" property="tagId"></result>
+		<result column="tag_name" property="tagName"></result>
+	</resultMap>
+	
+	<!-- Feild 객체 -->
+	<resultMap type="com.example.codeblue.vo.Feild" id="Feild">
+		<result column="feild_id" property="feildId"></result>
+		<result column="feild_name" property="feildName"></result>
+	</resultMap>
+	
+	<!-- NoticeBoard 객체 -->
+	<resultMap type="com.example.codeblue.vo.NoticeBoard" id="NoticeBoard">
+		<result column="notice_id" property="noticeId"></result>
+		<result column="notice_title" property="noticeTitle"></result>
+		<result column="notice_content" property="noticeContent"></result>
+		<result column="notice_datetime" property="noticeDatetime"></result>
+	</resultMap>
+	
+	<!-- User 객체 -->
+	<resultMap type="com.example.codeblue.vo.User" id="User">
+		<result column="user_id" property="userId"></result>
+		<result column="user_name" property="userName"></result>
+		<result column="user_pw" property="userPw"></result>
+		<result column="user_birthdate" property="userBirthdate"></result>
+		<result column="user_createtime" property="userCreatetime"></result>
+		<result column="user_authority" property="userAuthority"></result>
+		
+		<association property="region" resultMap="Region"></association>
+		<association property="rank" resultMap="Rank"></association>
+	</resultMap>
+	
+
+	<!-- QuestionComment 객체 -->
+	<resultMap type="com.example.codeblue.vo.QuestionComment" id="QuestionComment">
+		<result column="question_comment_id" property="questionCommentId"></result>
+		<result column="question_comment_content" property="questionCommentContent"></result>
+		<result column="question_comment__datetime" property="questionCommentDatetime"></result>
+		
+		<association property="user" resultMap="User"></association>
+		<association property="questionBoard" resultMap="QuestionBoard"></association>
+	</resultMap>
+	
+	<!-- QuestionBoard 객체 -->
+	<resultMap type="com.example.codeblue.vo.QuestionBoard" id="QuestionBoard">
+		<result column="question_id" property="questionId"></result>
+		<result column="question_title" property="questionTitle"></result>
+		<result column="question_content" property="questionContent"></result>
+		<result column="question_datetime" property="questionDatetime"></result>
+		<result column="answer_count" property="answerCount"></result>
+		<result column="vote_count" property="voteCount"></result>
+		<result column="comment_count" property="commentCount"></result>
+		
+		<association property="feild" resultMap="Feild"></association>
+		<association property="user" resultMap="User"></association>
+		<association property="tag" resultMap="Tag"></association>
+	</resultMap>
+	
 	<select id="selectUserOne" parameterType="com.example.codeblue.vo.User"
-			resultType="com.example.codeblue.vo.User">
+			resultMap="User">
 		SELECT 
-			   user_id as userId,
-			   user_name as userName,
-			   region_id as regionId,
-			   user_birthdate as userBirthDate,
-			   user_createtime as userCreatetime
+			   user_id,
+			   user_name,
+			   region_id,
+			   user_birthdate,
+			   user_createtime
 		FROM user
 		WHERE user_id = ${userId}
 	</select>
 
-	<select id="selectTagList" parameterType="com.example.codeblue.vo.Page" resultType="com.example.codeblue.vo.Tag">
+	<select id="selectTagList" parameterType="com.example.codeblue.vo.Page" resultMap="Tag">
 		SELECT 
-			tag_name as tagName
+			tag_name
 	    FROM tag
 	    ORDER BY notice_datetime DESC
 	    LIMIT #{beginRow},#{rowPerPage}
 	</select>
 
-	<select id="selectQuestionCommentList" parameterType="int" resultType="com.example.codeblue.vo.QuestionComment">
-		SELECT
-			question_comment_id as questionComment,
-			user_id as userId,
-			question_comment_content as questionCommentContent,
-			question_id as questionId,
-			question_comment_datetime as questionCommentDatetime
+	<select id="selectQuestionCommentList" parameterType="int" resultMap="QuestionComment">
+		SELECT	
+			question_comment_id,
+			user_id,
+			question_comment_content,
+			question_id,
+			question_comment_datetime
 		FROM question_comment
 		WHERE question_id = #{qestionId}
 		ORDER BY question_comment_datetime DESC
@@ -43,15 +113,15 @@
 			WHERE question_id = #{questionId}
 	</select>
 	
-	<select id="selectQuestionBoardOne" parameterType="int" resultType="com.example.codeblue.vo.QuestionBoard">
+	<select id="selectQuestionBoardOne" parameterType="int" resultMap="QuestionBoard">
 		SELECT 
-			question_id as questionId,
-			question_title as questionTitle,
-			question_content as questionContent,
-			question_datetime as questionDatetime,
-			feild_id as feildId,
-			user_id as userId,
-			tag_id as tagId
+			question_id,
+			question_title,
+			question_content,
+			question_datetime,
+			feild_id,
+			user_id,
+			tag_id
 		FROM question_board
 		WHERE question_id = #{questionId}
 	</select>
@@ -69,12 +139,12 @@
 			WHERE question_id = #{questionId}
 	</select>
 	
-	<select id="selectQuestionBoardList" resultType="com.example.codeblue.vo.QuestionBoard" parameterType="com.example.codeblue.vo.Page">
+	<select id="selectQuestionBoardList" resultMap="QuestionBoard" parameterType="com.example.codeblue.vo.Page">
 		SELECT 
-			question_id as questionId,
-			question_title as questionTitle,
-			user_id as userId,
-			question_datetime as questionDatetime
+			question_id,
+			question_title,
+			user_id,
+			question_datetime
 		FROM question_board 
 		<where>
 			<if test="searchWord != null">
@@ -97,11 +167,11 @@
 
 	<select id="selectNoticeBoardList"
 			parameterType="com.example.codeblue.vo.Page"
-			resultType="com.example.codeblue.vo.NoticeBoard">
-	SELECT notice_id as noticeId,
-			notice_title as noticeTitle,
-			notice_content as noticeContent,
-			notice_datetime as noticeDatetime
+			resultMap="NoticeBoard">
+	SELECT notice_id,
+			notice_title,
+			notice_content,
+			notice_datetime
     FROM notice_board
     ORDER BY notice_datetime DESC
     LIMIT #{beginRow},#{rowPerPage}
@@ -114,11 +184,11 @@
    </select>
    <select  id="selectNoticeBoardOne" 
    			parameterType="int"
-   			resultType="com.example.codeblue.vo.NoticeBoard">
-   	SELECT notice_id as noticeId,
-			notice_title as noticeTitle,
-			notice_content as noticeContent,
-			notice_datetime as noticeDatetime
+   			resultMap="NoticeBoard">
+   	SELECT notice_id,
+			notice_title,
+			notice_content,
+			notice_datetime
     FROM notice_board
     WHERE notice_id = #{noticeId}
    	</select>
@@ -164,13 +234,13 @@
 		)
 	</insert>
 	
-	<select id="selectUserId" parameterType="com.example.codeblue.vo.User" resultType="com.example.codeblue.vo.User">
-		SELECT user_id as userId, user_name as userName
+	<select id="selectUserId" parameterType="com.example.codeblue.vo.User" resultMap="User">
+		SELECT user_id, user_name
 		FROM user WHERE user_id = #{userId} AND user_pw = #{userPw}
 	</select>
 	
-	<select id="selectUserIdForCheck" parameterType="com.example.codeblue.vo.User" resultType="com.example.codeblue.vo.User">
-		SELECT user_id as userId, user_name as userName
+	<select id="selectUserIdForCheck" parameterType="com.example.codeblue.vo.User" resultMap="User">
+		SELECT user_id, user_name
 		FROM user WHERE user_id = #{userId}
 	</select>
 	

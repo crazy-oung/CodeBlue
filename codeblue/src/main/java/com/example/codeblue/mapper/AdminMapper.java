@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.example.codeblue.vo.FaqBoard;
 import com.example.codeblue.vo.Feild;
 import com.example.codeblue.vo.InquiryHistory;
-import com.example.codeblue.vo.Notice;
+import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.QuestionCount;
@@ -22,7 +22,7 @@ public interface AdminMapper {
 	//고객센터 답변 삽입
 	public int insertFaqBoard(FaqBoard faqBoard);
 	// 관리자 통계
-	public List<QuestionCount> selectCurrentQuestionCountFor6Month();
+	public List<QuestionCount> selectYearlyQuestionCount();
 	public List<QuestionCount> selectCurrentQuestionCountFromFeild();
 	//문의내역 가져오기
 	public List<InquiryHistory> selectInquiryHistoryList(Page page);
@@ -35,10 +35,10 @@ public interface AdminMapper {
 	//신고내역 상세 내용 가져오기
 	public ReportHistory selectReportHistoryOne(int reportHistoryId);
 	
-	public List<Notice> selectNoticeBoard(Page page);
+	public List<NoticeBoard> selectNoticeBoard(Page page);
 	public int noticeBoardCount(Page page);
-	public Notice noticeBoardOne(int noticeId);
-	public int insertNoticeBoard(Notice notice);
+	public NoticeBoard noticeBoardOne(int noticeId);
+	public int insertNoticeBoard(NoticeBoard noticeBoard);
 	
 	public List<User> adminSelectUserList(Page page);
 	public int adminSelectUserCount();

@@ -456,7 +456,7 @@
 	var searchWord = null;
 	// 기본 홈
 	$.ajax({
-		url : "/rest/adminuserList",
+		url : "/rest/adminUserList",
 		method : "post",
 		data : {"currentPage" : currentPage},
 		success : function(json){
@@ -482,7 +482,7 @@
 	$("#searchBtn").click(function(){
 		$("#userList").empty();
 		$.ajax({
-			url : "/rest/adminuserList",
+			url : "/rest/adminUserList",
 			method : "post",
 			data : {"searchWord" : $("#searchContent").val()},
 			success : function(json){
@@ -508,7 +508,7 @@
 	$("#nextBtn").click(function(){
 		$("#userList").empty();
 		$.ajax({
-			url : "/rest/adminuserList",
+			url : "/rest/adminUserList",
 			method : "post",
 			data : {"currentPage" : currentPage+1,
 					"searchWord" : $("#searchContent").val()},
@@ -536,7 +536,7 @@
 	$("#prevBtn").click(function(){
 		$("#userList").empty();
 		$.ajax({
-			url : "/rest/adminuserList",
+			url : "/rest/adminUserList",
 			method : "post",
 			data : {"currentPage" : currentPage-1, "searchWord" : $("#searchContent").val()},
 			success : function(json){

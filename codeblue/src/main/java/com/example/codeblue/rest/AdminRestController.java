@@ -13,7 +13,7 @@ import com.example.codeblue.service.AdminService;
 import com.example.codeblue.vo.FaqBoard;
 import com.example.codeblue.vo.Feild;
 import com.example.codeblue.vo.InquiryHistory;
-import com.example.codeblue.vo.Notice;
+import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionCount;
 import com.example.codeblue.vo.ReportHistory;
@@ -23,7 +23,7 @@ import com.example.codeblue.vo.ReportHistory;
 public class AdminRestController {
 	@Autowired private AdminService adminService;
 	
-	@PostMapping("/rest/adminuserList")
+	@PostMapping("/rest/adminUserList")
 	public Map<String,Object> adminUserList(@RequestParam(value="currentPage", defaultValue = "1")int currentPage,
 			 @RequestParam(value="rowPerPage", defaultValue = "10")int rowPerPage,
 			 @RequestParam(value="searchWord", required = false)String searchWord) {
@@ -48,17 +48,17 @@ public class AdminRestController {
 	}
 	
 	@PostMapping("/rest/adminNoticeBoardOne")
-	public Notice postNoticeOne(@RequestParam(value="noticeId") int noticeId) {
+	public NoticeBoard postNoticeOne(@RequestParam(value="noticeId") int noticeId) {
 		System.out.println(":::post - postNoticeOne:::");
 		System.out.println("noticeId"+noticeId);
 		return adminService.getNoticeOne(noticeId);
 	}
 	
 	@PostMapping("/rest/adminNoticeAdd")
-	public int postNoticeAdd(Notice notice) {
+	public int postNoticeAdd(NoticeBoard noticeBoard) {
 		System.out.println(":::post - postNoticeAdd");
-		System.out.println("Notice"+notice);
-		return adminService.addNotice(notice);
+		System.out.println("NoticeBoard"+noticeBoard);
+		return adminService.addNotice(noticeBoard);
 	}
 
 	//신고내역 상세페이지 가져오기
@@ -111,10 +111,10 @@ public class AdminRestController {
 		return adminService.getReportHistoryList(currentPage, rowPerPage);
 	}
 	
-	@GetMapping("/getCurrentQuestionCountFor6Month")
-	public List<QuestionCount> getCurrentQuestionCountFor6Month(){
-		System.out.println("::: get - getCurrentQuestionCountFor6Month :::");
-		return adminService.getCurrentQuestionCountFor6Month();
+	@GetMapping("/getYearlyQuestionCount")
+	public List<QuestionCount> getYearlyQuestionCount(){
+		System.out.println("::: get - getYearlyQuestionCount :::");
+		return adminService.getYearlyQuestionCount();
 	}
 	
 	@GetMapping("/getCurrentQuestionCountFromFeild")

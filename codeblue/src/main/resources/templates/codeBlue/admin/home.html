@@ -609,7 +609,7 @@ $.ajax({
 		console.log(json);			
 		
 		$(json).each(function(index, item){
-			piecount[item.feildId-1] = item.count;
+			piecount[item.feildId-1] = item.questionCount;
 		})
 		console.log(piecount)
 		feildQuestionCountChart.update();
@@ -659,13 +659,13 @@ var linectx = document.getElementById("monthlyQuestionCountLineChart");
 var linecount = [0,0,0,0,0,0,0,0,0,0,0,0];
 
 $.ajax({
-	url:"/getCurrentQuestionCountFor6Month",
+	url:"/getYearlyQuestionCount",
 	method:"get",
 	success : function(json){
 		console.log(json);			
 		
 		$(json).each(function(index, item){
-			linecount[item.questionMonth-1] = item.count;
+			linecount[item.questionMonth-1] = item.questionCount;
 		})
 		console.log(linecount);
 		yearlyQuestionCountChart.update();

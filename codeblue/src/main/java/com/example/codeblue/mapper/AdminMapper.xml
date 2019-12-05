@@ -114,9 +114,8 @@
 	<resultMap type="com.example.codeblue.vo.QuestionCount" id="QuestionCount">
 		<result column="question_date" property="questionDate"></result>
 		<result column="question_month" property="questionMonth"></result>
-		<result column="count" property="count"></result>
-		<association property="feild" resultMap="Feild">
-		</association>
+		<result column="count" property="questionCount"></result>
+		<result column="feild_id" property="feildId"></result>
 	</resultMap>
 	
 	<!-- 객체정리 끝
@@ -191,7 +190,7 @@
   			notice_id = #{noticeId}
   	</select>
   	
-  	<insert id ="insertNoticeBoard" parameterType="com.example.codeblue.vo.Notice">
+  	<insert id ="insertNoticeBoard" parameterType="com.example.codeblue.vo.NoticeBoard">
   		INSERT INTO notice_board (
   			notice_title,
   			notice_content,
@@ -201,7 +200,6 @@
   			#{noticeContent},
   			now()
   		)
-  		
   	</insert>
 
 
@@ -276,14 +274,16 @@
 	FROM report_history
    </select>   
 
-	<select id="selectCurrentQuestionCountFor6Month" resultMap="QuestionCount">
-		SELECT MONTH(question_datetime) AS question_month, IFNULL(COUNT(*), 0) as COUNT
+	<select id="selectYearlyQuestionCount" resultMap="QuestionCount">
+		SELECT MONTH(question_datetime) AS question_month, IFNULL(COUNT(*), 0) as count
 		FROM ( SELECT question_datetime from question_board WHERE YEAR(question_datetime) = YEAR(NOW()) )t
 		GROUP BY question_month
 	</select>
+	
 	<select id="selectCurrentQuestionCountFromFeild" resultMap="QuestionCount">
-		SELECT feild_id, COUNT(*) AS count
-		FROM ( SELECT feild_id from question_board WHERE YEAR(question_datetime) = YEAR(NOW()) )t
+		SELECT feild_id, COUNT(*) AS "count"
+		FROM question_board 
+		WHERE YEAR(question_datetime) = YEAR(NOW()) 
 		GROUP BY feild_id
 	</select>
 

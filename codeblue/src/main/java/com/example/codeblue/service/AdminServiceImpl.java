@@ -12,7 +12,7 @@ import com.example.codeblue.mapper.AdminMapper;
 import com.example.codeblue.vo.FaqBoard;
 import com.example.codeblue.vo.Feild;
 import com.example.codeblue.vo.InquiryHistory;
-import com.example.codeblue.vo.Notice;
+import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.QuestionCount;
@@ -70,7 +70,7 @@ public class AdminServiceImpl implements AdminService {
 		}
 		System.out.println("lastPage:"+ lastPage );
 		
-		List<Notice> list = adminMapper.selectNoticeBoard(page);
+		List<NoticeBoard> list = adminMapper.selectNoticeBoard(page);
 		System.out.println(list.toString());
 		
 		Map<String, Object> map = new HashMap<String,Object>();
@@ -86,7 +86,7 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public Notice getNoticeOne(int noticeId) {
+	public NoticeBoard getNoticeOne(int noticeId) {
 		System.out.println(":::AdminNoticeServiceImpl - getNoticeOne");
 		System.out.println("noticeId"+noticeId);
 		
@@ -94,10 +94,10 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public int addNotice(Notice notice) {
+	public int addNotice(NoticeBoard noticeBoard) {
 		System.out.println(":::AdminNoticeServiceImpl - addNotice");
-		System.out.println("Notice"+ notice);
-		return adminMapper.insertNoticeBoard(notice);
+		System.out.println("NoticeBoard"+ noticeBoard);
+		return adminMapper.insertNoticeBoard(noticeBoard);
 	}
 	//신고내역 상세 페이지 가져오기
 	@Override
@@ -165,14 +165,16 @@ public class AdminServiceImpl implements AdminService {
 		return map;
 	}
 	@Override
-	public List<QuestionCount> getCurrentQuestionCountFor6Month() {
-		System.out.println("::: AdminHomeServiceImpl - getCurrentQuestionCountFor6Month :::");
-		return adminMapper.selectCurrentQuestionCountFor6Month();
+	public List<QuestionCount> getYearlyQuestionCount() {
+		System.out.println("::: AdminHomeServiceImpl - getYearlyQuestionCount :::");
+		return adminMapper.selectYearlyQuestionCount();
 	}
 
 	@Override
 	public List<QuestionCount> getCurrentQuestionCountFromFeild() {
 		System.out.println("::: AdminHomeServiceImpl - getCurrentQuestionCountFromFeild :::");
+		System.out.println(adminMapper.selectCurrentQuestionCountFromFeild());
+		System.out.println("size -"+adminMapper.selectCurrentQuestionCountFromFeild().size());
 		return adminMapper.selectCurrentQuestionCountFromFeild();
 	}
 	// 문의사항 답변

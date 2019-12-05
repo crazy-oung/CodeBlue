@@ -24,7 +24,7 @@ public class AdminController {
 	@GetMapping("/adminUserList")
 	public String adminUserList() {
 		System.out.println("::: get - adminUserList :::");
-		return "/codeBlue/admin/userList";
+		return "/codeBlue/admin/adminUserList";
 	}
 	
 	@GetMapping("/adminNoticeBoard")
