@@ -173,9 +173,9 @@
           <!-- Topbar Search -->
           <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
             <div class="input-group">
-              <input type="text" class="form-control bg-light border-1 small" placeholder="항목 검색" aria-label="Search" aria-describedby="basic-addon2">
+              <input type="text" class="form-control bg-light border-1 small" placeholder="항목 검색" aria-label="Search" aria-describedby="basic-addon2" id="searchWord">
               <div class="input-group-append">
-                <button class="btn btn-primary" type="button">
+                <button class="btn btn-primary" type="button" id="search">
                   <i class="fas fa-search fa-sm"></i>
                 </button>
               </div>
@@ -362,8 +362,9 @@
 					<!-- hospital -->
 					<table id="hospitalOne" class="table table-hover text-center m-4"></table>
 					<br>
-					<button type="button" id="listBtn" class="btn btn-primary">목록으로</button>
-					<button type="button" id="deleteBtn" class="btn btn-primary">삭제하기</button>
+					<button type="button" id="listBtn" class="btn btn-primary">목록</button>
+					<button type="button" id="modifyBtn" class="btn btn-primary">수정</button>
+					<button type="button" id="deleteBtn" class="btn btn-primary">삭제</button>
 					
 				</div>
 			<!--  Page Content End -->
@@ -472,6 +473,10 @@ $(document).ready(function(){
 	
 	$("#listBtn").click(function(){
 		location.href="/adminHospital";
+	})
+	
+	$("#modifyBtn").click(function(){
+		location.href="/modifyHospital?hospitalId="+getParam("hospitalId");
 	})
 	
 	$("#deleteBtn").click(function(){

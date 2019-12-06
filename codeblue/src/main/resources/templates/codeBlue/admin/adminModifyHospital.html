@@ -121,7 +121,7 @@
         </a>
         <div id="collapseReports" class="collapse show" aria-labelledby="headingReports" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">제휴 병원 관리</h6>
+            <h6 class="collapse-header">병원 정보수정</h6>
             <a class="collapse-item" href="/adminInquiryBoard">문의 내역</a>
             <a class="collapse-item" href="/adminReportBoard">신고 내역</a>
             <a class="collapse-item" href="/adminFAQBoard">FAQ 관리</a>
@@ -173,9 +173,9 @@
           <!-- Topbar Search -->
           <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
             <div class="input-group">
-              <input type="text" class="form-control bg-light border-1 small" placeholder="항목 검색" aria-label="Search" aria-describedby="basic-addon2" id="searchWord">
+              <input type="text" class="form-control bg-light border-1 small" placeholder="항목 검색" aria-label="Search" aria-describedby="basic-addon2">
               <div class="input-group-append">
-                <button class="btn btn-primary" type="button" id="search">
+                <button class="btn btn-primary" type="button">
                   <i class="fas fa-search fa-sm"></i>
                 </button>
               </div>
@@ -360,9 +360,9 @@
 				<!-- ask Form begin -->
 				<div class="card shadow p-3 mx-5">  
 					<form method="post">
-						<h2 class="text-center">정보 입력</h2>
+						<h2 class="text-center">정보 수정</h2>
 						<label class="text-dark font-weight-bold">병원명</label>
-						<input class="form-control form-control-sm mb-2" placeholder="병원명" id="hospitalName">
+						<input class="form-control form-control-sm mb-2" placeholder="병원명" id="hospitalName" >
 						<label class="text-dark font-weight-bold">전화번호</label>
 						<input class="form-control form-control-sm mb-2" placeholder="내용" id="hospitalNumber">
 						<label class="text-dark font-weight-bold">주소</label>
@@ -375,7 +375,7 @@
 					</form>
 				</div>
 				<!-- ask Form end --> 
-				<button id="submit" class="btn btn-primary shadow mt-3 px-4  ml-5">병원 등록</button>
+				<button id="submit" class="btn btn-primary shadow mt-3 px-4  ml-5">수정</button>
 				<button id="cancel" class="btn btn-primary shadow mt-3 px-4  ml-5">취소</button>
 			</div> 			
 		</div> 
@@ -449,6 +449,23 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	
+	// 파라메터 정보가 저장될 오브젝트
+	// common.js 같은 모든 페이지에서 로딩되는 js 파일에 넣어두면 됨.
+	var getParam = function(key){
+	    var _parammap = {};
+	    document.location.search.replace(/\??(?:([^=]+)=([^&]*)&?)/g, function () {
+	        function decode(s) {
+	            return decodeURIComponent(s.split("+").join(" "));
+	        }
+
+	        _parammap[decode(arguments[1])] = decode(arguments[2]);
+	    });
+
+	    return _parammap[key];
+	};
+	$("#hospitalId").val(getParam("hospitalId"));
+	
+	//지역 리스트 출력.
 	$.ajax({
 		url : "/rest/getRegionList",
 		method : "get",
@@ -466,6 +483,7 @@ $(document).ready(function(){
 		}
 	})
 	
+	//저장버튼
 	$("#submit").click(function(){
 		console.log($("#hospitalName").val());
 		console.log($("#hospitalNumber").val());
@@ -478,21 +496,22 @@ $(document).ready(function(){
 			return;
 		}
 			$.ajax({
-				url:"/rest/adminHospitalAdd",
+				url:"/rest/modifyHospital",
 				method : "post",
-				data : {"hospitalName" : $("#hospitalName").val(),
+				data : {"hospitalId" : getParam("hospitalId"),
+						"hospitalName" : $("#hospitalName").val(),
 						"hospitalNumber" : $("#hospitalNumber").val(),
 						"hospitalAddress" : $("#hospitalAddress").val(),
 						"hospitalAddress2" : $("#hospitalAddress2").val(),
 						"region.regionId" : $("#regionId").val()},
 				success:function(){
 					console.log("성공");
-					location.href="/adminHospital";
+					location.href="/adminHospital"; 
 				}
 			})	
 	});
   
-	
+	//취소버튼
   $("#cancel").click(function(){
 	  location.href="/adminHospital";
   })

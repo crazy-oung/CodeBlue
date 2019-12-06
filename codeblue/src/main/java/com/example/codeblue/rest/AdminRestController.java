@@ -24,11 +24,20 @@ import com.example.codeblue.vo.ServiceCategory;
 @RestController
 public class AdminRestController {
 	@Autowired private AdminService adminService;
+	
 	//서비스 카데고리 리스트 가져오기
 	@GetMapping("/rest/admin/getServiceCategoryList")
 	public List<ServiceCategory> getServiceCategoryList() {
 		System.out.println("::: get - getServiceCategoryList :::"); 
 		return adminService.getServiceCategoryList();
+	}
+	
+	@PostMapping("/rest/modifyHospital")
+	public int postModifyHospital(Hospital hospital) {
+		System.out.println(":::post - postModifyHospital:::");
+		System.out.println("hospital"+hospital);
+		return adminService.modifyHospital(hospital);
+	
 	}
 	//병원 리스트
 		@PostMapping("/rest/adminHospital")

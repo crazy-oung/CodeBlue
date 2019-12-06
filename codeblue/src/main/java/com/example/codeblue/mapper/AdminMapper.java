@@ -18,6 +18,10 @@ import com.example.codeblue.vo.User;
 
 @Mapper
 public interface AdminMapper {
+	
+	//병원정보 수정
+	public int updateHospital(Hospital hospital);
+	
 	public List<Feild> selectAdminFeildList();
 	public int selectAdminBoardTotalCount(Page page);
 	public List<QuestionBoard> selectAdminBoardList(Page page);

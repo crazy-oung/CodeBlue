@@ -27,11 +27,22 @@ import com.example.codeblue.vo.User;
 public class AdminServiceImpl implements AdminService {
 	@Autowired
 	private AdminMapper adminMapper;
+	
+	
 	//서비스 카테고리 리스트 가져오기
 	@Override
 	public List<ServiceCategory> getServiceCategoryList() {
 		return adminMapper.selectServiceCategoryList();
 	}
+	
+	//병원정보 수정
+		@Override
+		public int modifyHospital(Hospital hospital) {
+			System.out.println(":::AdminService - updateHospital:::");
+			System.out.println("hospital "+hospital);
+			return adminMapper.updateHospital(hospital);
+	}
+	
 	//병원 리스트
 		@Override 
 		public Map<String, Object> getHospitalList(int currentPage, int rowPerPage, String searchWord) {

@@ -13,6 +13,14 @@ import com.example.codeblue.service.AdminService;
 public class AdminController {
 	@Autowired AdminService adminService;
 	
+	//병원정보 수정
+	@GetMapping("/modifyHospital")
+	public String getModifyHospital(@RequestParam(value="hospitalId")int hospitalId) {
+		System.out.println(":::get - getModifyHospital:::");
+		System.out.println("hospital"+hospitalId);
+		return "/codeBlue/admin/adminModifyHospital";
+	}
+	
 	//제휴병원 게시판
 	@GetMapping("/adminHospital")
 	public String getHospital() {

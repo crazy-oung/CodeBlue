@@ -15,6 +15,8 @@ import com.example.codeblue.vo.ServiceCategory;
 
 public interface AdminService {
 	
+	//병원정보 수정
+	public int modifyHospital(Hospital hospital);
 	//회원 리스트
 	public Map<String,Object> getAdminUserList(int currentPage, int rowPerPage, String searchWord, String toDate, String fromDate);
 	//공지사항 리스트

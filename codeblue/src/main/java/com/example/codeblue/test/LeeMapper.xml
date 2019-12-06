@@ -1,0 +1,17 @@
+<!-- <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.example.codeblue.test.LeeMapper">
+  
+  	병원정보 수정
+  	<update id="updateHospital"  parameterType="com.example.codeblue.vo.Hospital">
+  		UPDATE hospital SET hospital_name = #{hospitalName}, 
+  							hospital_number = #{hospitalNumber},
+  							hospital_address = #{hospitalAddress},
+  							hospital_address2 = #{hospitalAddress2},
+  							region_id = #{region.regionId}
+  		WHERE hospital_id = #{hospitalId} 
+  	</update>
+  </mapper> -->

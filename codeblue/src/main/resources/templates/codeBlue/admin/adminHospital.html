@@ -157,9 +157,9 @@
           <!-- Topbar Search -->
           <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
             <div class="input-group">
-              <input type="text" class="form-control bg-light border-1 small" placeholder="병원 검색" aria-label="Search" aria-describedby="basic-addon2">
+              <input type="text" class="form-control bg-light border-1 small" placeholder="병원 검색" aria-label="Search" aria-describedby="basic-addon2" id="searchWord">
               <div class="input-group-append">
-                <button class="btn btn-primary" type="button">
+                <button class="btn btn-primary" type="button" id="search">
                   <i class="fas fa-search fa-sm"></i>
                 </button>
               </div>
@@ -513,6 +513,38 @@ $(document).ready(function(){
 			}
 		})
 	})
+	
+	//검색버튼
+	$("#search").click(function(){
+		$.ajax({
+			url:"/rest/adminHospital",
+			method:"POST",
+			data:{"searchWord": $("#searchWord").val()},
+			success: function(json){
+				console.log(json);
+				currentPage = json.currentPage;
+				lastPage = json.lastPage;
+				$("#searchWord").val(json.searchWord);
+				searchWord = json.searchWord;
+				BtnShow(currentPage,lastPage);
+				$("#hospital").empty();
+				let hospital;
+				$(json.list).each(function(index,item){
+					hospital = "<tr><td> 병원명 </td><td>"
+						hospital +="<a href='/getHospitalOne?hospitalId=";
+						hospital +=item.hospitalId;
+						hospital +="'>"+item.hospitalName
+						hospital +="</a></td></tr>";
+						hospital +="<tr><td> 위치  </td><td>" + item.region.regionName;
+						hospital +="</td></tr>";
+						hospital += "<tr><td> 번호 </td><td>" + item.hospitalAddress;
+						hospital += "</td></tr>";
+							$("#hospital").append(hospital)
+				})
+			}
+		})
+	});
+	
 //document
 })
 

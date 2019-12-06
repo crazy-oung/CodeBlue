@@ -137,6 +137,8 @@
 		<result column="service_category_name" property="serviceCategoryName"></result>
 	</resultMap>
 	<!-- 객체정리 끝ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
+	
+	
 	<!-- 서비스 카테고리 리스트 -->
 	<select id="selectServiceCategoryList" resultMap="ServiceCategory">
 		SELECT 
@@ -177,6 +179,7 @@
 			re.region_id 
 			FROM hospital h inner join region re
 			ON h.region_id = re.region_id 
+			WHERE hospital_id =#{hospitalId}
 	</select>
 	
 	<!-- 병원 수 -->
@@ -192,6 +195,16 @@
 			#{hospitalName}, #{hospitalNumber}, #{hospitalAddress}, #{hospitalAddress2}, #{region.regionId}
 		)
 	</insert>
+	
+	<!-- 병원정보 수정 -->
+  	<update id="updateHospital"  parameterType="com.example.codeblue.vo.Hospital">
+  		UPDATE hospital SET hospital_name = #{hospitalName}, 
+  							hospital_number = #{hospitalNumber},
+  							hospital_address = #{hospitalAddress},
+  							hospital_address2 = #{hospitalAddress2},
+  							region_id = #{region.regionId}
+  		WHERE hospital_id = #{hospitalId} 
+  	</update>
 	
 	<!-- 병원 삭제 -->
 	<delete id="deleteHospital" parameterType="int">
