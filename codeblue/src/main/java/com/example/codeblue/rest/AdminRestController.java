@@ -61,15 +61,20 @@ public class AdminRestController {
 			return adminService.getHospitalOne(hospitalId);
 		}
 	
+	// 회원 조회 리스트
 	@PostMapping("/rest/adminUserList")
 	public Map<String,Object> adminUserList(@RequestParam(value="currentPage", defaultValue = "1")int currentPage,
 			 @RequestParam(value="rowPerPage", defaultValue = "10")int rowPerPage,
-			 @RequestParam(value="searchWord", required = false)String searchWord) {
+			 @RequestParam(value="searchWord", required = false)String searchWord,
+			 @RequestParam(value="toDate", required = false)String toDate,
+			 @RequestParam(value="fromDate", required = false)String fromDate) {
 		System.out.println("::: post - /rest/adminuserList :::");
 		System.out.println("currentPage : "+currentPage);
 		System.out.println("rowPerPage : "+rowPerPage);
 		System.out.println("searchWord : "+searchWord);
-		return adminService.getAdminUserList(currentPage, rowPerPage,searchWord);
+		System.out.println("toDate : "+toDate);
+		System.out.println("fromDate : "+fromDate);
+		return adminService.getAdminUserList(currentPage, rowPerPage,searchWord, toDate, fromDate);
 	}
 	
 	@PostMapping("/rest/adminNoticeBoard")

@@ -49,7 +49,7 @@ public interface AdminMapper {
 	//회원리스트
 	public List<User> adminSelectUserList(Page page);
 	//회원 수
-	public int adminSelectUserCount();
+	public int adminSelectUserCount(Page page);
 	//병원 리스트 
 	public List<Hospital> hospitalList(Page page);
 	//병원 수

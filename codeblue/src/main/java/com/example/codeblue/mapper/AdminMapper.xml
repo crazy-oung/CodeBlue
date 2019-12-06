@@ -216,14 +216,24 @@
 			<if test="searchWord != null">
 				and u.user_name like CONCAT('%',#{searchWord},'%')
 			</if>
+			<if test="toDate != null and fromDate != null">
+			AND user_createtime &gt;= #{toDate} AND user_createtime &lt;= #{fromDate}
+			</if>
 		order by u.user_createtime desc
 		limit #{beginRow},#{rowPerPage}
 	</select>
 	
-	<select id="adminSelectUserCount" resultType="int">
-		select
-			count(*)
-		from user
+	<select id="adminSelectUserCount" parameterType="com.example.codeblue.vo.Page" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM user
+		WHERE user_id IS NOT NULL
+		<if test="searchWord != null">
+			AND user_name LIKE CONCAT('%',#{searchWord},'%')
+		</if>
+		<if test="toDate != null and fromDate != null">
+			AND user_createtime &gt;= #{toDate} AND user_createtime &lt;= #{fromDate}
+		</if>
 	</select>
 
 	<select id="selectNoticeBoard" resultMap="NoticeBoard"

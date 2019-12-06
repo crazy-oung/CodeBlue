@@ -16,7 +16,7 @@ import com.example.codeblue.vo.ServiceCategory;
 public interface AdminService {
 	
 	//회원 리스트
-	public Map<String,Object> getAdminUserList(int currentPage, int rowPerPage, String searchWord);
+	public Map<String,Object> getAdminUserList(int currentPage, int rowPerPage, String searchWord, String toDate, String fromDate);
 	//공지사항 리스트
 	public Map<String,Object> getNoticeBoard(int currentPage,int rowPerPage, String searchWord);
 	//공지사항 상세보기

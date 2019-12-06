@@ -357,15 +357,23 @@
 				
 				
 				<div>
-					<input type="date" id=""> ~ <input type="date" id="">
+					<input type="date" id=toDate> ~ <input type="date" id="fromDate">
 					<button type="button" id="searchBtn">검색</button>
 				</div>
 				
 				
 				
 				<!-- user list -->
+				<select id="rowPerPage">
+					<option value="10" selected="selected">10개 보기</option>
+					<option value="20">20개 보기</option>
+					<option value="30">30개 보기</option>
+					<option value="40">40개 보기</option>
+					<option value="50">50개 보기</option>
+				</select>
 				<table border="1" id="userList">
 					<tr>
+						<td>select</td>
 						<td>UserName</td>
 						<td>Rank</td>
 						<td>Region</td>
@@ -445,15 +453,15 @@
 
 </body>
 <script>
-	// select
-	
-	
-	
-	
 	// 페이징
 	var currentPage = 1;
 	var lastPage = 0;
+	var rowPerPage = 10;
 	var searchWord = null;
+	var toDate = null;
+	var fromDate = null;
+	//작성날짜 끝 자동적으로 입력하게하기
+	document.getElementById("fromDate").valueAsDate = new Date();
 	// 기본 홈
 	$.ajax({
 		url : "/rest/adminUserList",
@@ -466,6 +474,7 @@
 			BtnShow(currentPage,lastPage);
 			$(json.list).each(function(index,item){
 				var html = "<tr>";
+				html += "<td><input type='checkbox'></td>"
 				html += "<td>"+item.userName+"</td>";
 				html += "<td>"+item.rank.rankName+"</td>";
 				html += "<td>"+item.region.regionName+"</td>";
@@ -484,7 +493,10 @@
 		$.ajax({
 			url : "/rest/adminUserList",
 			method : "post",
-			data : {"searchWord" : $("#searchContent").val()},
+			data : {"searchWord" : $("#searchContent").val(),
+					"toDate" : $("#toDate").val(),
+					"fromDate" : $("#fromDate").val(),
+					"rowPerPage" : $("#rowPerPage").val()},
 			success : function(json){
 				console.log(json);
 				currentPage = json.currentPage;
@@ -492,6 +504,7 @@
 				BtnShow(currentPage,lastPage);
 				$(json.list).each(function(index,item){
 					var html = "<tr>";
+					html += "<td><input type='checkbox'></td>"
 					html += "<td>"+item.userName+"</td>";
 					html += "<td>"+item.rank.rankName+"</td>";
 					html += "<td>"+item.region.regionName+"</td>";
@@ -511,14 +524,19 @@
 			url : "/rest/adminUserList",
 			method : "post",
 			data : {"currentPage" : currentPage+1,
-					"searchWord" : $("#searchContent").val()},
+					"searchWord" : $("#searchContent").val(),
+					"toDate" : $("#toDate").val(),
+					"fromDate" : $("#fromDate").val(),
+					"rowPerPage" : $("#rowPerPage").val()},
 			success : function(json){
 				console.log(json);
 				currentPage = json.currentPage;
+				rowPerPage = json.rowPerPage;
 				lastPage = json.lastPage;
 				BtnShow(currentPage,lastPage);
 				$(json.list).each(function(index,item){
 					var html = "<tr>";
+					html += "<td><input type='checkbox'></td>"
 					html += "<td>"+item.userName+"</td>";
 					html += "<td>"+item.rank.rankName+"</td>";
 					html += "<td>"+item.region.regionName+"</td>";
@@ -538,14 +556,52 @@
 		$.ajax({
 			url : "/rest/adminUserList",
 			method : "post",
-			data : {"currentPage" : currentPage-1, "searchWord" : $("#searchContent").val()},
+			data : {"currentPage" : currentPage-1,
+					"searchWord" : $("#searchContent").val(),
+					"toDate" : $("#toDate").val(),
+					"fromDate" : $("#fromDate").val(),
+					"rowPerPage" : $("#rowPerPage").val()},
 			success : function(json){
 				console.log(json);
 				currentPage = json.currentPage;
+				rowPerPage = json.rowPerPage;
 				lastPage = json.lastPage;
 				BtnShow(currentPage,lastPage);
 				$(json.list).each(function(index,item){
 					var html = "<tr>";
+					html += "<td><input type='checkbox'></td>"
+					html += "<td>"+item.userName+"</td>";
+					html += "<td>"+item.rank.rankName+"</td>";
+					html += "<td>"+item.region.regionName+"</td>";
+					html += "<td>"+item.userBirthdate+"</td>";
+					html += "<td>"+item.userCreatetime+"</td>";
+					html += "<td>"+item.userAuthority+"</td>";
+					html += "</tr>";
+				$("#userList").append(html);
+				});
+			} 
+		});
+	});
+	// 보기형식 선택
+	$("#rowPerPage").change(function(){
+		$("#userList").empty();
+		$.ajax({
+			url : "/rest/adminUserList",
+			method : "post",
+			data : {"currentPage" : currentPage,
+					"searchWord" : $("#searchContent").val(),
+					"toDate" : $("#toDate").val(),
+					"fromDate" : $("#fromDate").val(),
+					"rowPerPage" : $("#rowPerPage").val()},
+			success : function(json){
+				console.log(json);
+				currentPage = json.currentPage;
+				rowPerPage = json.rowPerPage;
+				lastPage = json.lastPage;
+				BtnShow(currentPage,lastPage);
+				$(json.list).each(function(index,item){
+					var html = "<tr>";
+					html += "<td><input type='checkbox'></td>"
 					html += "<td>"+item.userName+"</td>";
 					html += "<td>"+item.rank.rankName+"</td>";
 					html += "<td>"+item.region.regionName+"</td>";

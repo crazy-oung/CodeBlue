@@ -94,20 +94,26 @@ public class AdminServiceImpl implements AdminService {
 			return adminMapper.hospitalOne(hospitalId);
 		}
 	@Override
-	public Map<String,Object> getAdminUserList(int currentPage, int rowPerPage, String searchWord) {
+	public Map<String,Object> getAdminUserList(int currentPage, int rowPerPage, String searchWord, String toDate, String fromDate) {
 		System.out.println("::: AdminUserServiceImpl - selectUserList :::");
 		int beginRow = (currentPage-1)*rowPerPage;
-		int totalRow = adminMapper.adminSelectUserCount();
-		int lastPage = 0;
-		if(lastPage % rowPerPage == 0 ) {
-			lastPage = totalRow/rowPerPage;
-		} else {
-			lastPage = (totalRow/rowPerPage)+1;
-		}
 		Page page = new Page();
+		page.setSearchWord(searchWord);
+		page.setToDate(toDate);
+		page.setFromDate(fromDate);
+		int totalRow = adminMapper.adminSelectUserCount(page);
+		System.out.println("totalRow"+totalRow);
+		// 마지막 페이지 구하기
+		int lastPage = 0;
+		if(totalRow % rowPerPage != 0 ) {
+			lastPage = (totalRow/rowPerPage)+1;
+		} else {
+			lastPage = totalRow/rowPerPage;
+		}
+		System.out.println("lastPage : "+lastPage);
+		// page에 담아서 보내기
 		page.setBeginRow(beginRow);
 		page.setRowPerPage(rowPerPage);
-		page.setSearchWord(searchWord);
 		System.out.println(page.toString());
 		List<User> list = adminMapper.adminSelectUserList(page);
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -115,6 +121,8 @@ public class AdminServiceImpl implements AdminService {
 		map.put("rowPerPage", rowPerPage);
 		map.put("lastPage", lastPage);
 		map.put("list", list);
+		map.put("toDate", toDate);
+		map.put("fromDate", fromDate);
 		return map;
 	}
 	@Override
