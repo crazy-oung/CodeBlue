@@ -8,6 +8,7 @@ import com.example.codeblue.vo.FaqBoard;
 import com.example.codeblue.vo.Feild;
 import com.example.codeblue.vo.Hospital;
 import com.example.codeblue.vo.InquiryHistory;
+import com.example.codeblue.vo.InquiryHistoryAnswer;
 import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionBoard;
@@ -27,8 +28,6 @@ public interface AdminMapper {
 	public int selectQuestionBoardTotalCount(Page page);
 	//질문 리스트
 	public List<QuestionBoard> selectQuestionBoardList(Page page);
-	//고객센터 답변 삽입
-	public int insertFaqBoard(FaqBoard faqBoard);
 	// 관리자 통계
 	public List<QuestionCount> selectYearlyQuestionCount();
 	public List<QuestionCount> selectCurrentQuestionCountFromFeild();
@@ -66,5 +65,12 @@ public interface AdminMapper {
 	public int deleteHospital(int hospitalId);
 	//병원 상세정보 
 	public List<Hospital> hospitalOne(int hospitalId);
-	
+	// 문의사항 답변 추가하기
+	public int insertInquiryHistoryAnswer(InquiryHistoryAnswer inqruiyHistoryAnswer);
+	// FAQ 전체리스트 가져오기
+	public List<FaqBoard> selectFaqBoardList(Page page);
+	// FAQ 전체리스트 값 가져오기
+	public int selectFaqBoardTotalCount();
+	// FAQ 추가하기
+	public int insertFaqBoard(FaqBoard faqBoard);
 }

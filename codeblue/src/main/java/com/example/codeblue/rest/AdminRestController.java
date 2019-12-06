@@ -14,6 +14,7 @@ import com.example.codeblue.vo.FaqBoard;
 import com.example.codeblue.vo.Feild;
 import com.example.codeblue.vo.Hospital;
 import com.example.codeblue.vo.InquiryHistory;
+import com.example.codeblue.vo.InquiryHistoryAnswer;
 import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionCount;
@@ -24,6 +25,26 @@ import com.example.codeblue.vo.ServiceCategory;
 @RestController
 public class AdminRestController {
 	@Autowired private AdminService adminService;
+	//문의사항 답변 추가하기
+	@PostMapping("/rest/admin/addInquiryHistoryAnswer")
+	public void addInquiryHistoryAnswer(InquiryHistoryAnswer inqruiyHistoryAnswer) {
+		System.out.println("::: post - addInquiryHistoryAnswer :::"); 
+		adminService.addInquiryHistoryAnswer(inqruiyHistoryAnswer);
+	}
+	//FAQ 리스트 바로 가져오기
+	@PostMapping("/rest/admin/getFaqBoardList")
+	public Map<String,Object> getFaqBoardList(@RequestParam(value="currentPage",defaultValue = "1")int currentPage,
+			@RequestParam(value="rowPerPage",defaultValue = "10")int rowPerPage,
+			@RequestParam(value="searchWord", required = false)String searchWord) {
+		System.out.println("::: post - getFaqBoardList :::"); 
+		return adminService.getFaqBoardList(currentPage, rowPerPage, searchWord);
+	}
+	//FAQ 추가하기 
+	@PostMapping("/rest/admin/addFaqBoard")
+	public int addFaqBoard(FaqBoard faqBoard) {
+		System.out.println(":::post - addFaqBoard:::");
+		return adminService.addFaqBoard(faqBoard);
+	}
 	
 	//서비스 카데고리 리스트 가져오기
 	@GetMapping("/rest/admin/getServiceCategoryList")
@@ -40,35 +61,35 @@ public class AdminRestController {
 	
 	}
 	//병원 리스트
-		@PostMapping("/rest/adminHospital")
-		public Map<String, Object>postHospital(@RequestParam(value="currentPage", defaultValue="1")int currentPage,
-											@RequestParam(value="rowPerPage", defaultValue="10")int rowPerPage,
-											   @RequestParam(value="searchWord", required = false)String searchWord) {
-		System.out.println(":::post - postHospital:::");
-		System.out.println("currentPage"+currentPage);
-		System.out.println("rowPerPage"+rowPerPage);
-		System.out.println("searchWord"+searchWord);
+	@PostMapping("/rest/adminHospital")
+	public Map<String, Object>postHospital(@RequestParam(value="currentPage", defaultValue="1")int currentPage,
+										@RequestParam(value="rowPerPage", defaultValue="10")int rowPerPage,
+										   @RequestParam(value="searchWord", required = false)String searchWord) {
+	System.out.println(":::post - postHospital:::");
+	System.out.println("currentPage"+currentPage);
+	System.out.println("rowPerPage"+rowPerPage);
+	System.out.println("searchWord"+searchWord);
+	
+	return adminService.getHospitalList(currentPage, rowPerPage, searchWord);
+	}
+	
+	//병원 입력
+	@PostMapping("/rest/adminHospitalAdd")
+	public int addHospital(Hospital hospital) {
+		System.out.println(":::post - addHospital");
+		System.out.println("hospital"+hospital);
 		
-		return adminService.getHospitalList(currentPage, rowPerPage, searchWord);
-		}
+		return adminService.addHospital(hospital);
+	}
 		
-		//병원 입력
-		@PostMapping("/rest/adminHospitalAdd")
-		public int addHospital(Hospital hospital) {
-			System.out.println(":::post - addHospital");
-			System.out.println("hospital"+hospital);
-			
-			return adminService.addHospital(hospital);
-		}
-			
-		//병원 상세페이지
-		@PostMapping("/rest/adminHospitalOne")
-		public List<Hospital> getHospitalOne(@RequestParam(value="hospitalId")int hospitalId){
-			System.out.println(":::post - getHospitalOne");
-			System.out.println("hospitalId"+hospitalId);
-			
-			return adminService.getHospitalOne(hospitalId);
-		}
+	//병원 상세페이지
+	@PostMapping("/rest/adminHospitalOne")
+	public List<Hospital> getHospitalOne(@RequestParam(value="hospitalId")int hospitalId){
+		System.out.println(":::post - getHospitalOne");
+		System.out.println("hospitalId"+hospitalId);
+		
+		return adminService.getHospitalOne(hospitalId);
+	}
 	
 	// 회원 조회 리스트
 	@PostMapping("/rest/adminUserList")
@@ -173,14 +194,6 @@ public class AdminRestController {
 	public List<QuestionCount> getCurrentQuestionCountFromFeild(){
 		System.out.println("::: get - getCurrentQuestionCountFromFeild :::");
 		return adminService.getCurrentQuestionCountFromFeild();
-	}
-	
-	@PostMapping("/rest/admin/addFaqBoard")
-	public int addFaqBoard(FaqBoard faqBoard) {
-		System.out.println("::: post - addFaqBoard :::");
-		
-		
-		return adminService.addFaqBoard(faqBoard);
 	}
 	
 	@PostMapping("/rest/getFeildList")

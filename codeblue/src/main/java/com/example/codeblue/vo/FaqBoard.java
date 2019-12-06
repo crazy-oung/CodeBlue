@@ -9,6 +9,4 @@ public class FaqBoard {
 	private ServiceCategory serviceCategory;
 	private String faqContent;
 	private String faqDatetime;
-	// 임시 컬럼
-	private int serviceCategoryId;
 }

@@ -7,6 +7,7 @@ import com.example.codeblue.vo.FaqBoard;
 import com.example.codeblue.vo.Feild;
 import com.example.codeblue.vo.Hospital;
 import com.example.codeblue.vo.InquiryHistory;
+import com.example.codeblue.vo.InquiryHistoryAnswer;
 import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionCount;
@@ -34,7 +35,6 @@ public interface AdminService {
 	public ReportHistory getReportHistoryOne(int reportHistoryId);
 	public List<QuestionCount> getYearlyQuestionCount();
 	public List<QuestionCount> getCurrentQuestionCountFromFeild();
-	public int addFaqBoard(FaqBoard faqBoard);
 	//검색 조건 카테고리 리스트 가져오기
 	public List<Feild> getFeildList();
 	//질문 리스트 출력
@@ -49,4 +49,10 @@ public interface AdminService {
 	public int removeHospital(int hospitalId);
 	//병원 상세페이지
 	public List<Hospital> getHospitalOne(int hospitalId);
+	//문의사항 답변 추가하기
+	public int addInquiryHistoryAnswer(InquiryHistoryAnswer inqruiyHistoryAnswer);
+	//FAQ 전체 리스트 가져오기
+	public Map<String,Object> getFaqBoardList(int currentPage, int rowPerPage, String searchWord);
+	//FAQ 추가하기
+	public int addFaqBoard(FaqBoard faqBoard);
 }

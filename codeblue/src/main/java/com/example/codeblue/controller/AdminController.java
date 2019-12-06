@@ -12,7 +12,18 @@ import com.example.codeblue.service.AdminService;
 @Controller
 public class AdminController {
 	@Autowired AdminService adminService;
-	
+	//FaQ 게시판 페이지로 이동
+	@GetMapping("/adminFaqBoard")
+	public String getFaqBoard() {
+		System.out.println(":::get - getFaqBoard:::");
+		return "/codeBlue/admin/adminFaqBoard";
+	}
+	//FaQ 게시판 페이지로 이동
+	@GetMapping("/adminFaqBoardAdd")
+	public String addFaqBoard() {
+		System.out.println(":::get - addFaqBoard:::");
+		return "/codeBlue/admin/adminAddFaqBoard";
+	}
 	//병원정보 수정
 	@GetMapping("/modifyHospital")
 	public String getModifyHospital(@RequestParam(value="hospitalId")int hospitalId) {
@@ -98,7 +109,7 @@ public class AdminController {
 	@GetMapping("/adminNoticeAdd")
 	public String getNoticeAdd() {
 		System.out.println(":::get - getNoticeAdd");
-		return"/codeBlue/admin/adminNoticeInsert";
+		return"/codeBlue/admin/adminAddNotice";
 	}
 	//질문 리스트 가져오기
 	@GetMapping("/adminQuestionBoard")

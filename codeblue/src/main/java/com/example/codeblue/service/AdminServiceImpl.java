@@ -14,6 +14,7 @@ import com.example.codeblue.vo.FaqBoard;
 import com.example.codeblue.vo.Feild;
 import com.example.codeblue.vo.Hospital;
 import com.example.codeblue.vo.InquiryHistory;
+import com.example.codeblue.vo.InquiryHistoryAnswer;
 import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionBoard;
@@ -27,7 +28,56 @@ import com.example.codeblue.vo.User;
 public class AdminServiceImpl implements AdminService {
 	@Autowired
 	private AdminMapper adminMapper;
+	//문의사항 답변 저장
+	@Override
+	public int addInquiryHistoryAnswer(InquiryHistoryAnswer inqruiyHistoryAnswer) {
+		System.out.println(":::InquiryHistoryAnswerServiceImplTest - addInquiryHistoryAnswer:::");
+		return adminMapper.insertInquiryHistoryAnswer(inqruiyHistoryAnswer);
+	}
 	
+	//FAQ 추가하기
+	@Override
+	public int addFaqBoard(FaqBoard faqBoard) {
+		System.out.println(":::InquiryHistoryAnswerServiceImplTest - addFaqBoard:::");
+		return adminMapper.insertFaqBoard(faqBoard);
+	}
+	
+	//FAQ 전체 리스트 가져오기
+	@Override
+	public Map<String, Object> getFaqBoardList(int currentPage, int rowPerPage, String searchWord) {
+		System.out.println(":::InquiryHistoryAnswerServiceImplTest - getInquiryHistoryAnswerList:::");
+		System.out.println("currentPage :"+currentPage+"/rowPerPage :"+rowPerPage);
+
+		Page page = new Page();
+		page.setBeginRow((currentPage-1)*rowPerPage);
+		page.setRowPerPage(rowPerPage);
+		page.setSearchWord(searchWord);
+		System.out.println("setBeginRow" + page.getBeginRow());
+		System.out.println("setRowPerPage" + page.getRowPerPage());
+		System.out.println("setSearchWord" + page.getSearchWord());
+		int totalRow = adminMapper.selectFaqBoardTotalCount();
+		int lastPage = 0;
+		
+		if(totalRow % rowPerPage ==1) {
+			lastPage = (totalRow/rowPerPage)+1;
+		}else {
+			lastPage = totalRow/rowPerPage;
+		}
+		System.out.println("lastPage:"+ lastPage );
+		
+		List<FaqBoard> list = adminMapper.selectFaqBoardList(page);
+		System.out.println(list.toString());
+		
+		Map<String, Object> map = new HashMap<String,Object>();
+		map.put("currentPage", currentPage);
+		map.put("rowPerPage", rowPerPage);
+		map.put("searchWord", searchWord);
+		map.put("totalRow", totalRow);
+		map.put("lastPage", lastPage);
+		map.put("list", list);
+	
+		return map;
+	}	
 	
 	//서비스 카테고리 리스트 가져오기
 	@Override
@@ -263,13 +313,6 @@ public class AdminServiceImpl implements AdminService {
 		System.out.println(adminMapper.selectCurrentQuestionCountFromFeild());
 		System.out.println("size -"+adminMapper.selectCurrentQuestionCountFromFeild().size());
 		return adminMapper.selectCurrentQuestionCountFromFeild();
-	}
-	// 문의사항 답변
-	@Override
-	public int addFaqBoard(FaqBoard faqBoard) {
-		System.out.println("::: AdminFaqBoardServiceImpl - addFaqBoard :::");
-		faqBoard.toString();
-		return adminMapper.insertFaqBoard(faqBoard);
 	}
 	//검색 조건 카테고리 리스트 가져오기
 	@Override

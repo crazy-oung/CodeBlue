@@ -23,7 +23,7 @@
   <!-- Page Wrapper -->
   <div id="wrapper">
 
-        <!-- Sidebar -->
+	 <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
@@ -111,12 +111,12 @@
           </div>
         </div>
       </li>
-      
+
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item active">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReports" aria-expanded="false" aria-controls="collapseReports">
           <i class="fas fa-fw fa-folder"></i>
-          <span>문의 내역</span>
+          <span>공지 및 문의 내역</span>
         </a>
         <div id="collapseReports" class="collapse show" aria-labelledby="headingReports" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
@@ -153,8 +153,8 @@
       </div>
 
     </ul>
-    <!-- End of Sidebar -->
-
+    <!-- End of Sidebar --> 
+   
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
 
@@ -343,32 +343,37 @@
 
         </nav>
         <!-- End of Topbar -->
-
+		
+		 <!-- Begin Page Content -->
+       <div class="container-fluid px-4 pt-4">
+			<div class="card border-0 bg-white p-3 my-2 shadow mx-3"> 
+				<!-- Page Content -->
+				<div class="p-2">
+					<h2>FAQ 리스트</h2>
+					<table class="table table-hover">
+						<thead align="center">
+							<tr>
+								<th>번호</th>
+								<th>제목</th>
+								<th>작성 날짜</th>
+							</tr>
+						</thead>
+						<tbody id="faqBoardList" align="center"></tbody>
+					</table>
+					<button type="button" id="prevBtn" class="btn ml-1 btn-sm btn-primary">이전</button>
+					<button type="button" id="nextBtn" class="btn ml-1 btn-sm btn-primary">다음</button>
+				</div>
+			<!--  Page Content End -->
+		
         <!-- Begin Page Content -->
         <div class="container-fluid p-5"> 
           <!-- Content Row 1 -->
           <div class="row">
-           	<!-- :::::::::::::::::: 내용 출력 시작 :::::::::::: -->
-			<h2 id="inquiryHistoryId"></h2>
-			<table id="inquiryHistoryOne" class="table table-hover">
 
-			</table>
-			<div>
-			<div><h3 id="inquiryAnswer"></h3></div>
-				<div>
-					문의 제목 : <textarea cols="70" rows="1" id="inquiryHistoryAnswerTitle"></textarea>
-					
-				</div>
-				
-				<div>
-					문의 답변 : <textarea cols="100" rows="5" id="inquiryHistoryAnswerContent"></textarea>
-				</div>
-				<button id="inquiryHistoryAnswerBtn" type="button" class="btn ml-1 btn-sm btn-primary">답변</button>
-			</div>
-          </div>
-		<div>
+           	
 			
-		</div>
+          </div>
+		
         </div>
         <!-- /.container-fluid --> 
       </div>
@@ -433,60 +438,112 @@
   <script src="js/demo/chart-pie-demo.js"></script>
 
 </body>
+
 <script type="text/javascript">
-//파라메터 정보가 저장될 오브젝트
-//common.js 같은 모든 페이지에서 로딩되는 js 파일에 넣어두면 됨.
-var getParam = function(key){
- var _parammap = {};
- document.location.search.replace(/\??(?:([^=]+)=([^&]*)&?)/g, function () {
-     function decode(s) {
-         return decodeURIComponent(s.split("+").join(" "));
-     }
-
-     _parammap[decode(arguments[1])] = decode(arguments[2]);
- });
-
- return _parammap[key];
-};
-$("#inquiryHistoryId").append(getParam("inquiryHistoryId"));
-$("#inquiryHistoryId").append("번 문의내역");
-$("#inquiryAnswer").append(getParam("inquiryHistoryId"));
-$("#inquiryAnswer").append("번 문의답변");
-
 $(document).ready(function() {
-	//문의내역 상세정보 가져오기
+	var currentPage = 1;
+	var lastPage = 0;	
+	var rowPerPage = 15 ;
+	
+	
 	$.ajax({
-		url :"/rest/admin/getInquiryHistoryOne",
-		method : "post",
-		data : {"inquiryHistoryId" : getParam("inquiryHistoryId")},
-		success : function(json){
+		url:"/rest/admin/getFaqBoardList",
+		method:"post",
+		success:function(json){
+			$("#faqBoardList").empty();
+			currentPage = json.currentPage;
+			lastPage = json.lastPage;
+			BtnShow(currentPage, lastPage);
 			console.log(json);
 			let html;
-			$(json).each(function(index, item){
-				html = "<tr align='left'><td>문의 제목 : "+item.inquiryTitle+"</td></tr>";
-				html += "<tr align='left'><td>문의 유형 : "+item.inquiry.inquiryName+"</td></tr>";
-				html += "<tr align='left'><td>문의 내역 : "+item.inquiryContent+"</td></tr>";
-				html += "<tr align='left'><td>작성자 : "+item.user.userId+"</td></tr>";
-				html += "<tr align='left'><td>작성 날짜 : "+item.inquiryDatetime+"</td></tr>";
-				$("#inquiryHistoryOne").append(html);
+			$(json.list).each(function(index,item){
+				html="<tr><td>";
+				html += item.faqId;
+				html += "</td><td>";
+				html += "<a href='/adminFaqBoardOne?faqId=";
+				html += item.faqId;
+				html += "'>";
+				html += item.faqTitle;
+				html += "</a>"
+				html += "</td><td>";
+				html += item.faqDatetime;
+				html += "</td></tr>";
+				$("#faqBoardList").append(html);
 			});
 		}
+	})
+	
+	$("#prevBtn").click(function(){
+		$.ajax({
+			url:"/rest/admin/getFaqBoardList",
+			method:"post",
+			data:{"currentPage" : currentPage-1},
+			success: function(json){
+				$("#faqBoardList").empty();
+				console.log(json)
+				currentPage = json.currentPage;
+				lastPage = json.lastPage;
+				BtnShow(currentPage, lastPage);
+				let html;
+				$(json.list).each(function(index,item){
+					html="<tr><td>";
+					html += item.faqId;
+					html += "</td><td>";
+					html += "<a href='/adminFaqBoardOne?faqId=";
+					html += item.faqId;
+					html += "'>";
+					html += item.faqTitle;
+					html += "</a>"
+					html += "</td><td>";
+					html += item.faqDatetime;
+					html += "</td></tr>";
+					$("#faqBoardList").append(html);
+				});
+			}
+		})
+	});
+	$("#nextBtn").click(function(){
+		$.ajax({
+			url:"/rest/admin/getFaqBoardList",
+			method:"post",
+			data:{"currentPage" : currentPage+1},
+			success: function(json){
+				$("#faqBoardList").empty();
+				console.log(json)
+				currentPage = json.currentPage;
+				lastPage = json.lastPage;
+				BtnShow(currentPage, lastPage);
+				let html;
+				$(json.list).each(function(index,item){
+					html="<tr><td>";
+					html += item.faqId;
+					html += "</td><td>";
+					html += "<a href='/adminFaqBoardOne?faqId=";
+					html += item.faqId;
+					html += "'>";
+					html += item.faqTitle;
+					html += "</a>"
+					html += "</td><td>";
+					html += item.faqDatetime;
+					html += "</td></tr>";
+					$("#faqBoardList").append(html);
+				});
+			}
+		})
 	});
 	
-	//답변하기 버튼 누르면 inquiryHistoryAnswer에 저장.
-	$("#inquiryHistoryAnswerBtn").click(function(){
-	 	$.ajax({
-	 		url:"/rest/admin/addInquiryHistoryAnswer",
-			data:{ 	"inquiryHistoryAnswerTitle" : $("#inquiryHistoryAnswerTitle").val() ,
-					"inquiryHistoryAnswerContent" : $("#inquiryHistoryAnswerContent").val(),
-					"inquiryHistory.inquiryHistoryId" : getParam("inquiryHistoryId")
-					},
-			method:"post",
-			success:function(){
-				location.replace("/adminInquiryBoard");	
-			},
-		})
-	})  
+	function BtnShow(currentPage, lastPage){
+		if(currentPage <= 1){
+			$("#prevBtn").hide();
+		}else{
+			$("#prevBtn").show();
+		}
+		if(currentPage >= lastPage){
+			$("#nextBtn").hide();
+		}else{
+			$("#nextBtn").show();
+		}
+	}
 });
 </script>
 

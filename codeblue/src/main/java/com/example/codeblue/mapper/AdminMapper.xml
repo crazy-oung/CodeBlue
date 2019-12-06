@@ -136,6 +136,17 @@
 		<result column="service_category_id" property="serviceCategoryId"></result>
 		<result column="service_category_name" property="serviceCategoryName"></result>
 	</resultMap>
+	
+	<!-- FaqBoard 객체  -->
+	<resultMap type="com.example.codeblue.vo.FaqBoard" id="FaqBoard"> 
+	   	<result column="FAQ_id" property="faqId" ></result>
+	   	<result column="FAQ_title" property="faqTitle" ></result>
+	   	<result column="FAQ_content" property="faqContent" ></result>
+	   	<result column="FAQ_datetime" property="faqDatetime"></result>
+
+	  	<association property="serviceCategory" resultMap="ServiceCategory">
+	   	</association>
+	</resultMap>
 	<!-- 객체정리 끝ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
 	
 	
@@ -387,8 +398,22 @@
 		WHERE YEAR(question_datetime) = YEAR(NOW()) 
 		GROUP BY feild_id
 	</select>
-
-	<insert id="insertFaqBoard" parameterType="com.example.codeblue.vo.ServiceCategory">
+	<!-- 문의사항 답변 추가 -->
+	<insert id="insertInquiryHistoryAnswer" parameterType="com.example.codeblue.vo.InquiryHistoryAnswer">
+		INSERT INTO inquiry_history_answer(
+			inquiry_history_id,
+			inquiry_history_answer_title,
+			inquiry_history_answer_content,
+			inquiry_history_answer_datetime
+		)	VALUES	(
+			#{inquiryHistory.inquiryHistoryId},
+			#{inquiryHistoryAnswerTitle},
+			#{inquiryHistoryAnswerContent},
+			NOW()
+		)
+	</insert>
+	<!--  FAQ 추가하기 -->
+  	<insert id="insertFaqBoard" parameterType="com.example.codeblue.vo.FaqBoard">
 		INSERT INTO faq_board(
 			FAQ_title,
 			service_category_id,
@@ -396,11 +421,25 @@
 			FAQ_datetime
 		)	VALUES	(
 			#{faqTitle},
-			#{serviceCategoryId},
+			#{serviceCategory.serviceCategoryId},
 			#{faqContent},
-			now()
+			NOW()
 		)
 	</insert>
+	<!--  FAQ 리스트 가져오기 -->
+	<select id="selectFaqBoardList" resultMap="FaqBoard" parameterType="com.example.codeblue.vo.Page">
+  	SELECT  FAQ_id, 
+			FAQ_title, 
+			FAQ_datetime 
+    FROM faq_board 
+    ORDER BY FAQ_datetime DESC 
+    LIMIT #{beginRow}, #{rowPerPage}
+  	</select>
+  	<!--  FAQ 전체리스트 행 가져오기 -->
+  	<select id="selectFaqBoardTotalCount" resultType="int">
+  		SELECT COUNT(*) 
+  		FROM faq_board
+  	</select>
 	<!-- 검색조건 카테고리 리스트 뽑기 -->
 	<select id="selectFeildList" resultMap="Feild">
 		SELECT 
