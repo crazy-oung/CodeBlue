@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.example.codeblue.test.hyol.HyolMapper">
+	<!-- User 객체 -->
+	<resultMap type="com.example.codeblue.vo.User" id="User"> 
+		<!-- column은 테이블에서의 칼럼명  property는 클레스의 필드명 -->
+		<result column="user_id" property="userId" ></result>
+		<result column="user_name" property="userName" ></result>
+		<result column="user_pw" property="userPw"></result>
+		<result column="user_birthdate" property="userBirthdate" ></result>
+		<result column="user_createtime" property="userCreatetime"></result>
+		<result column="user_authority" property="userAuthority" ></result>
+		
+		<association property="region" resultMap="Region">
+		</association>
+		<association property="rank" resultMap="Rank">
+		</association>
+	</resultMap>
+	<!-- Rank 객체 -->
+	<resultMap type="com.example.codeblue.vo.Rank" id="Rank">
+		<result column="rank_id" property="rankId"></result>
+		<result column="rank_name" property="rankName"></result>
+	</resultMap>
+	
+	<!-- Region 객체 -->
+	<resultMap type="com.example.codeblue.vo.Region" id="Region">
+		<result column="region_id" property="regionId"></result>
+		<result column="region_name" property="regionName"></result>
+	</resultMap>
+	<select id="adminSelectUserList" parameterType="com.example.codeblue.vo.Page" resultMap="User">
+		select
+			u.user_id,
+			u.user_name,
+			re.region_id,
+			re.region_name,
+			u.user_birthdate,
+			u.user_createtime,
+			ra.rank_id,
+			ra.rank_name,
+			u.user_authority
+		from user u inner join region re INNER JOIN rank ra
+		ON u.region_id = re.region_id AND u.rank_id = ra.rank_id
+		where u.user_authority = 'user'
+			<if test="searchWord != null">
+				and u.user_name like CONCAT('%',#{searchWord},'%')
+			</if>
+			<if test="toDate != null and fromDate != null">
+			AND user_createtime &gt;= #{toDate} AND user_createtime &lt;= #{fromDate}
+			</if>
+		order by u.user_createtime desc
+		limit #{beginRow},#{rowPerPage}
+	</select>
+	
+	<select id="adminSelectUserCount" parameterType="com.example.codeblue.vo.Page" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM user
+		WHERE user_id IS NOT NULL
+		<if test="searchWord != null">
+			AND user_name LIKE CONCAT('%',#{searchWord},'%')
+		</if>
+		<if test="toDate != null and fromDate != null">
+			AND user_createtime &gt;= #{toDate} AND user_createtime &lt;= #{fromDate}
+		</if>
+	</select>
+</mapper>
