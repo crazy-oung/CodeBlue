@@ -259,7 +259,7 @@
 				<table class="table table-hover" id="userList">
 					<tr>
 						<td><div class='custom-control custom-checkbox'>
-							<input class='custom-control-input' type='checkbox' onclick='checkAll()' id='selectAll'><label class='custom-control-label' for='selectAll'></label>
+							<input class='custom-control-input' type='checkbox' onclick="checkAll()" id='selectAll'><label class='custom-control-label' for='selectAll'></label>
 						</div></td>
 						<td>UserName</td>
 						<td>Rank</td>
@@ -491,7 +491,7 @@
 				BtnShow(currentPage,lastPage);
 				$(json.list).each(function(index,item){
 					var html = "<tr>";
-					html += "<td><input type='checkbox'></td>"
+					html += "<td><input type='checkbox' name=''></td>"
 					html += "<td>"+item.userName+"</td>";
 					html += "<td>"+item.rank.rankName+"</td>";
 					html += "<td>"+item.region.regionName+"</td>";
@@ -506,17 +506,17 @@
 		});
 	});
 	
-	/* 
+	 
 	
 	function checkAll() {
-		if ($("#checkAll").prop("checked") === true) {
+		if ($("#selectAll").prop("checked") === true) {
 			alert("체크");
 			$("input[name=chk]").prop("checked", true);
 		} else {
 			alert("해제");
 			$("input[name=chk]").prop("checked", false);
 		}
-	} */
+	} 
 	
 	// 이전,다음버튼 함수
 	function BtnShow(currentPage,lastPage) {

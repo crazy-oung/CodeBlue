@@ -6,7 +6,7 @@ import java.util.Map;
 import com.example.codeblue.vo.Feild;
 import com.example.codeblue.vo.Page;
 
-public interface Service {
+public interface JJWService {
 	
 	public List<Feild> getFeildList();
 	public Map<String,Object> getQuestionBoardList(Page page,int currentPage);

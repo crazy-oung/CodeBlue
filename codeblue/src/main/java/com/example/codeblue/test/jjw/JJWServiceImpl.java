@@ -13,9 +13,9 @@ import com.example.codeblue.vo.QuestionBoard;
 
 @org.springframework.stereotype.Service
 @Transactional
-public class ServiceImpl implements Service{
+public class JJWServiceImpl implements JJWService{
 	@Autowired 
-	private Mapper mapper;
+	private JJWMapper mapper;
 	
 	@Override
 	public List<Feild> getFeildList() {

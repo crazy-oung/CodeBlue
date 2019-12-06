@@ -7,7 +7,7 @@ import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionBoard;
 
 @org.apache.ibatis.annotations.Mapper
-public interface Mapper {
+public interface JJWMapper {
 	
 	public List<Feild> selectFeildList();
 	public int selectQuestionBoardTotalCount(Page page);

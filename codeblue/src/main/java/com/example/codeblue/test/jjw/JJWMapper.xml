@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 
-<mapper namespace="com.example.codeblue.test.jjw.Mapper">
+<mapper namespace="com.example.codeblue.test.jjw.JJWMapper">
 	
 	<!-- User 객체 -->
 	<resultMap type="com.example.codeblue.vo.User" id="User"> 
