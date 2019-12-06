@@ -10,11 +10,14 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>QnA - 코드블루</title>
+<title>최근 질문 - 코드블루</title>
 
 <!-- Custom fonts for this template-->
-<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
+	type="text/css">
+<link
+	href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+	rel="stylesheet">
 
 <!-- Custom styles for this template-->
 <link href="css/sb-admin-2.min.css" rel="stylesheet">
@@ -22,10 +25,11 @@
 <link href="css/codeBlue.css" rel="stylesheet">
 </head>
 
-<body id="page-top" >
+<body id="page-top">
  
 		<!-- Topbar -->
-		<nav class="navbar navbar-expand navbar-light topbar mb-4 shadow fixed-top"
+		<nav
+			class="navbar navbar-expand navbar-light topbar mb-4 shadow fixed-top"
 			style="height: 50px; border-bottom: 1px solid #d9d9d9; border-top: 4px solid #4e73df; background: #f2f2f2;">
 			<div class="container">
 				<!-- topbar codeblue logo -->
@@ -51,11 +55,11 @@
 		<!-- End of Topbar -->
 
 		<!-- Begin Page Content -->
-		<div class="container">
+		<div class="container" height="100%">
 			<div class="row"> 
 			
 				<!-- Side Bar -->
-				<div class="col-sm-1 p-0" style="border-right: 1px solid #d9d9d9;">
+				<div class="col-sm-1 p-0 " style="border-right: 1px solid #d9d9d9;">
 					<nav class="navbar pl-0 sticky-container">
 						<div style="margin-top: 70px">
 							<ul class="nav flex-column">
@@ -77,15 +81,14 @@
 				<!-- Page Content -->
 				<div class="col-sm-8">
 					<!-- Page Heading -->
-					<div class="d-sm-flex align-items-center justify-content-between mb-2" style="margin-top: 80px">
-						<h3 class="text-gray-800 mb-2 font-weight-bold">QnA</h3>
+					<div class="d-sm-flex align-items-center justify-content-between mb-4" style="margin-top: 80px">
+						<h4 class="text-gray-800 mb-0">최근 올라온 질문</h4>
 						<a href="/ask" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow"><i class="mr-2 fas fa-plus fa-sm text-white-50"></i>질문 올리기</a> 
-					</div>
-					<!-- page Heading End -->
-					<div class="card mb-3 border-primary p-1"><ul class="nav" id="feilds"></ul></div>
+					</div><!-- page Heading End -->
 					
-					
-					<table id="questionBoard" class="table table-hover"></table>
+					<table id="questionBoard" class="table table-hover">
+						
+					</table>
 					<br>
 					
 					<button type="button" id="prevBtn" class="btn btn-primary">이전</button>
@@ -136,14 +139,7 @@
 		</div> 
 
 	<!-- Footer -->
-	<br>
-	<footer class="sticky-footer text-light" style="background: #333333">
-		<div class="container my-auto">
-			<div class="copyright text-right my-auto">
-				<span>Copyright &copy; codeBlue 2019</span>
-			</div>
-		</div>
-	</footer>
+	<div id="footer"></div>
 	<!-- End of Footer -->
 
 
@@ -157,46 +153,17 @@
 	<!-- Custom scripts for all pages-->
 	<script src="js/sb-admin-2.min.js"></script>
 
-	<!-- Page level plugins -->
-	<script src="vendor/chart.js/Chart.min.js"></script>
-
-	<!-- Page level custom scripts -->
-	<script src="js/demo/chart-area-demo.js"></script>
-	<script src="js/demo/chart-pie-demo.js"></script>
 </body>
-
 <script type="text/javascript">
 	
-	
+	$("#footer").load("/footer #footer");
+
 	//현재페이지값
 	var currentPage = 1;
 	//마지막페이지값
 	var lastPage = 0;
 	//검색한 단어
 	var searchWord = null;
-
-	// 필드 테이블 출력
-	$.ajax({
-		url : "/rest/getFeildList",
-		method : "GET",
-		success : function(json){
-			console.log(json);
-			
-			$(json).each(function(index, item){
-				html = " <li class='nav-item'> <a class='nav-link p-1 mx-1 hov-p text-primary' onclick='getQuestionList()' value='"+item.feildId+"'>"+
-						item.feildName +
-						"</a></li>";
-				$("#feilds").append(html);
-				
-			})
-		}
-	})
-	
-	// 분야 필터링 
-	function getQuestionList(){
-		console.log(this)
-	}
-	
 	//홈페이지
 	$.ajax({
 		url:"/rest/getBoardList",
@@ -212,7 +179,6 @@
 			})
 		}
 	})
-	
 	//이전버튼
 	$("#prevBtn").click(function(){
 		$.ajax({
@@ -232,7 +198,6 @@
 			}
 		})
 	});
-	
 	//다음버튼
 	$("#nextBtn").click(function(){
 		$.ajax({
@@ -252,7 +217,6 @@
 			}
 		})
 	});
-	
 	//검색버튼
 	$("#search").click(function(){
 		$.ajax({
@@ -268,7 +232,7 @@
 				BtnShow(currentPage,lastPage);
 				$("#questionBoard").empty();
 				$(json.list).each(function(index,item){
-					html = append(item);							
+					html = append(item);
 					$("#questionBoard").append(html);
 				})
 			}
@@ -304,5 +268,6 @@
 		+"</td></tr>";
 	}
 </script>
+
 
 </html>

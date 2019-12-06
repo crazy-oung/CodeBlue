@@ -1,58 +1,26 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="description" content="">
-	<meta name="author" content="">
+ <!DOCTYPE html>
 	
-	<title>관리자 - 코드블루</title>
-	
-	<!-- Custom fonts for this template-->
-	<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-	<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-	
-	<!-- Custom styles for this template-->
-	<link href="css/sb-admin-2.min.css" rel="stylesheet">
-	<!-- Custom styles for codeBlue -->
-	<link href="css/codeBlue.css" rel="stylesheet"> 
-</head>
-
-<body id="page-top"> 
-  <!-- Page Wrapper -->
-  <div id="wrapper">
-
- 	<!-- SideBard load -->
-	<div id="sideBar"></div>
-	
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-
-      <!-- Main Content -->
-      <div id="content">
-
-        <!-- Topbar -->
-        <nav class="navbar navbar-expand navbar-light topbar shadow" style="height: 60px;border-bottom: 1px solid #d9d9d9; border-top: 4px solid #4e73df;">
+	 <!-- Topbar -->
+        <nav class="navbar navbar-expand navbar-light topbar mb-4 shadow fixed-top" 
+        	style="height: 50px;border-bottom: 1px solid #d9d9d9; border-top: 4px solid #4e73df;background: #f2f2f2;"
+        	id="topBar">
+			<div class="container"> 
 			
-          <!-- Sidebar Toggle (Topbar) -->
-          <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-            <i class="fa fa-bars"></i>
-          </button>
-
+		<!-- topbar codeblue logo -->
+		<a class="navbar-brand text-primary mr-0" href="/"><img src="/img/codeBlueLogo.png" width="130px"></a> 
+		<!-- QnA Page link-->
+		<a class="btn btn-sm btn-default mx-2 hov-g text-dark" href="/QnA">QnA</a>
+			
           <!-- Topbar Search -->
-          <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-            <div class="input-group">
-              <input type="text" class="form-control bg-light border-1 small" placeholder="항목 검색" aria-label="Search" aria-describedby="basic-addon2">
+			<div class="input-group">
+              <input type="text" class="form-control form-control-sm bg-light border-1" placeholder="검색어">
               <div class="input-group-append">
-                <button class="btn btn-primary" type="button">
+                <button class="btn btn-primary btn-sm" type="button">
                   <i class="fas fa-search fa-sm"></i>
                 </button>
               </div>
-            </div>
-          </form>
-
+            </div> 
+		
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
 
@@ -212,142 +180,57 @@
             </li>
 
           </ul>
-
+		</div>
         </nav>
         <!-- End of Topbar -->
 
-        <!-- Begin Page Content -->
-        
-       	<!-- Begin Page Content -->
-		<div class="container" style="height: 100%" align="center">  
-			<div class="pt-4 mt-5 text-left" > 
-				<p class="text-center">
-					<a href="/">
-						<img src="/img/codeBlueIcon.png" width="50px"><br>
-						<img class="mb-1" src="/img/codeBlue.png" width="100px">
-					</a> 
-				</p>
-				
-				<!-- ask Form begin -->
-				<div class="card shadow p-3 mx-5">  
-					<form method="post">
+    <!-- Footer -->        
+	<footer class="sticky-footer bg-gray-900 py-4" id="footer">
+		<div class="container my-auto small">
+		<div class='row'>
+			<div class="col-sm-2 text-center">
+				<a class="nav-link p-0 " href="/index"><img src="img/codeBlueIcon.png" width="50px"></a>
+			</div>
+			
+			<div class="col-sm-2 font-weight-bold">
+				<label><a class="nav-link p-0 text-gray-400" href="/index">CODEBLUE</a></label>
+			    <ul class="nav flex-column">
+			        <li class='nav-item'><a class="nav-link p-0 mb-1 text-gray-600" href="/index">질문등록</a></li>
+			        <li class='nav-item'><a class="nav-link p-0 mb-1 text-gray-600" href="/index">정보검색</a></li>
+			        <li class='nav-item'><a class="nav-link p-0 mb-1 text-gray-600" href="/index">이용안내</a></li>
+			        <li class='nav-item'><a class="nav-link p-0 mb-1 text-gray-600" href="/index">문의하기</a></li>
+			        <li class='nav-item'><a class="nav-link p-0 mb-1 text-gray-600" href="/index">자주묻는질문</a></li>
+			        <li class='nav-item'><a class="nav-link p-0 mb-1 text-gray-600" href="/index">이용약관</a></li>
+			    </ul>
+			</div>
+			
+			<div class="col-sm-2 font-weight-bold">
+				<label><a class="nav-link p-0 text-gray-400" href="/index">파트너</a></label>
+			    <ul class="nav flex-column">
+			        <li class='nav-item'><a class="nav-link p-0 mb-1 text-gray-600" href="/index">회사소개</a></li>
+			        <li class='nav-item'><a class="nav-link p-0 mb-1 text-gray-600" href="/index">회사정보</a></li>
+			        <li class='nav-item'><a class="nav-link p-0 mb-1 text-gray-600" href="/index">제휴·제안</a></li>
+			        <li class='nav-item'><a class="nav-link p-0 mb-1 text-gray-600" href="/index">채용안내</a></li>
+			    </ul>
+			</div>
+			
+			<div class="col-sm-3 font-weight-bold">
+				<label><a class="nav-link p-0 text-gray-400" href="/index">연락처</a></label>
+			    <ul class="nav flex-column">
+			        <li class='nav-item'><span class="nnav-link p-0 mb-1 text-gray-600">전화 0000-00000</span></li>
+			        <li class='nav-item '><a class="nav-link p-0 mb-1 text-gray-600" href="/index">이메일 codeblue@codeblue.com</a></li>
+			    </ul>
+			</div>
+			
+			<div class="col-sm-3">				
+				<div class="copyright text-right my-auto">
+					<img src="img/codeBlue.png" width="130px"><br>
+					<p class='mt-1'>Copyright © CodeBlue Corp. <br>All Rights Reserved.</p>
 					
-						<label class="text-dark font-weight-bold">제목</label>
-						<input class="form-control form-control-sm mb-2" placeholder="제목" id="title">
-						<label class="text-dark font-weight-bold">내용</label>
-						<textarea id="contents" rows="15" cols="50" class="form-control form-control-sm mb-2" placeholder="내용" >내용을 입력하세요</textarea>
-					  <hr>
-					</form>
+					<a class='nav-link' href="https://github.com/crazy-oung/codeBlue"><i class='far fa-comment-github mx-1'></i>GitHub</a>
 				</div>
-				<!-- ask Form end --> 
-				<button id="submit" class="btn btn-primary shadow mt-3 px-4  ml-5">질문 등록</button>
-				<button id="cancel" class="btn btn-primary shadow mt-3 px-4  ml-5">취소</button>
-			</div> 			
-		</div> 
-        
-        
-        
-        
-        
-        
-      <!-- End of Main Content -->
-
-      <!-- Footer -->
-      <footer class="sticky-footer">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <img src="./img/codeBlueLogo.png" width="150px">
-          </div>
-        </div>
-      </footer>
-      <!-- End of Footer -->
-
-    </div>
-    <!-- End of Content Wrapper -->
-
-  </div>
-  <!-- End of Page Wrapper -->
-
-<!-- ETC -->
-  <!-- Scroll to Top Button-->
-  <a class="scroll-to-top rounded bg-primary" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-  </a>
-
-  <!-- Logout Modal-->
-  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">로그아웃 하시겠습니까?</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">로그아웃 하고 싶으시면 아래 로그아웃 버튼을 클릭해주세요!</div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
-          <a class="btn btn-primary" href="/logout">로그아웃</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Bootstrap core JavaScript-->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-  <!-- Core plugin JavaScript-->
-  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-  <!-- Custom scripts for all pages-->
-  <script src="js/sb-admin-2.min.js"></script>
-
-  <!-- Page level plugins -->
-  <script src="vendor/chart.js/Chart.min.js"></script>
-
-  <!-- Page level custom scripts -->
-  <script src="js/demo/chart-area-demo.js"></script>
-  <script src="js/demo/chart-pie-demo.js"></script>
-
-</body>
-<script type="text/javascript">
-$(document).ready(function(){
-	
-	$("#sideBar").load("/sideBar #accordionSidebar", function(){
-		$("#sideBarNotice").addClass("active");
-		$("#sideBarNotice").children("a").attr("aria-expanded","false");
-		$("#sideBarNotice").children("div").addClass("show");
-	});
-	
-	$("#submit").click(function(){
-		console.log($("#title").val());
-		console.log($("#contents").val());
-		
-		if($("#title").val() == ""){
-			alert("제목을 입력하시오");
-			return;
-		}else if($("#contents").val()==""){
-			alert("내용을 입력하시오");
-			return;
-		}
-		
-			$.ajax({
-				url:"/rest/adminNoticeAdd",
-				method : "post",
-				data : {"noticeTitle" : $("#title").val(),
-						"noticeContent" : $("#contents").val()},
-				success:function(){
-					console.log("성공");
-					location.href="/adminNotice";
-				}
-			})	
-	});
-  
-  $("#cancel").click(function(){
-	  location.href="/adminNotice";
-  })
-//document
-})
-</script>
-</html>
+			</div>
+		</div>
+		</div>
+	</footer>
+	<!-- End of Footer -->

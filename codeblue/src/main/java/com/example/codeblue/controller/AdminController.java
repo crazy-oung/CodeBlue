@@ -7,11 +7,28 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.codeblue.service.AdminService;
 
-
-
 @Controller
 public class AdminController {
 	@Autowired AdminService adminService;
+	
+	// 코드블루 소개 패이지
+	@GetMapping("index")
+	public String getIndex() {
+		return "/codeblue/index";
+	}
+	
+	// 사이트 하단 부 
+	@GetMapping("footer")
+	public String getFooter() {
+		return "/codeblue/resource/footerCopy";
+	}
+	
+	// 사이트 관리자 메뉴
+	@GetMapping("sideBar")
+	public String getSideBar() {
+		return "/codeblue/admin/resource/sidebarCopy";
+	}
+	
 	//FaQ 게시판 페이지로 이동
 	@GetMapping("/adminFaqBoard")
 	public String getFaqBoard() {

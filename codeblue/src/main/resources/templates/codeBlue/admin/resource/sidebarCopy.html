@@ -1,7 +1,17 @@
  <!DOCTYPE html>
+ <!-- 
+ 	활성화 JS 코드 ---
+ 	
+ 	$("#sideBar").load("/sideBar #accordionSidebar", function(){
+		$("#sideBarNotice").addClass("active");
+		$("#sideBarNotice").children("a").attr("aria-expanded","false");
+		$("#sideBarNotice").children("div").addClass("show");
+	});
  
+-->
+
      <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" style='height:100%'>
 
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/admin"> 
@@ -17,7 +27,7 @@
       <hr class="sidebar-divider my-0">
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item">
+      <li class="nav-item" id="sideBarDashBoard">
         <a class="nav-link" href="/admin">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>관리자 홈</span></a>
@@ -32,7 +42,7 @@
       </div>
 
       <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
+      <li class="nav-item" id="sideBarManage">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
           <i class="fas fa-fw fa-cog"></i>
           <span>글 관리</span>
@@ -49,7 +59,7 @@
       </li>
 
       <!-- Nav Item - Utilities Collapse Menu -->
-      <li class="nav-item">
+      <li class="nav-item" id="sideBarUser"> 
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
           <i class="fas fa-fw fa-wrench"></i>
           <span>회원 관리</span>
@@ -74,7 +84,7 @@
       </div>
 
       <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
+      <li class="nav-item" id="sideBarHospital">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
           <i class="fas fa-fw fa-folder"></i>
           <span>제휴 관리</span>
@@ -82,7 +92,7 @@
         <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">제휴 병원 관리</h6>
-            <a class="collapse-item" href="/adminMemberHospitalList">제휴병원 조회</a>
+            <a class="collapse-item" href="/adminHospitalList">제휴병원 조회</a>
             <a class="collapse-item" href="/addHospital">제휴병원 추가</a>
 <!--        <div class="collapse-divider"></div> -->
           </div>
@@ -90,12 +100,12 @@
       </li>
       
       <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item active">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReports" aria-expanded="false" aria-controls="collapseReports">
+      <li class="nav-item" id="sideBarNotice">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReports" aria-expanded="true" aria-controls="collapseReports">
           <i class="fas fa-fw fa-folder"></i>
           <span>공지 및 문의 내역</span>
         </a>
-        <div id="collapseReports" class="collapse show" aria-labelledby="headingReports" data-parent="#accordionSidebar">
+        <div id="collapseReports" class="collapse" aria-labelledby="headingReports" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">제휴 병원 관리</h6>
             <a class="collapse-item" href="/adminInquiryBoard">문의 내역</a>
@@ -108,14 +118,14 @@
       </li>
 
       <!-- Nav Item - Charts -->
-      <li class="nav-item">
+      <li class="nav-item" id="sideBarChart">
         <a class="nav-link" href="/analysis">
           <i class="fas fa-fw fa-chart-area"></i>
           <span>통계</span></a>
       </li>
 
       <!-- Nav Item - Tables -->
-      <li class="nav-item">
+      <li class="nav-item" id="sideBarSetting">
         <a class="nav-link" href="/manageAdmin">
           <i class="fas fa-fw fa-table"></i>
           <span>관리자 설정</span></a>

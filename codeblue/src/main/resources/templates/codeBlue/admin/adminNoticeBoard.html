@@ -24,137 +24,8 @@
   <!-- Page Wrapper -->
   <div id="wrapper">
 
-        <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-
-      <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/admin"> 
-      	 <div class="sidebar-brand-icon mx-1">
-      	 	<img src="./img/codeBlueIconWhite.png" width="40px">
-      	 </div>
-        <div class="sidebar-brand-text mr-1">
-        	<img src="./img/codeBlueWhite.png" width="100px">
-        </div>
-      </a>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider my-0">
-
-      <!-- Nav Item - Dashboard -->
-      <li class="nav-item">
-        <a class="nav-link" href="/admin">
-          <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>관리자 홈</span></a>
-      </li>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        	게시글 및 유저
-      </div>
-
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fas fa-fw fa-cog"></i>
-          <span>글 관리</span>
-        </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">질문 및 답변 관리</h6>
-            <a class="collapse-item" href="/adminQuestionBoard">질문 관리</a>
-            <a class="collapse-item" href="/adminAnswerBoard">답변 조회</a>
-            <a class="collapse-item" href="/adminCommentBoard">댓글 조회</a>
-            <a class="collapse-item" href="/adminVoteBoard">추천수 조회</a>
-          </div>
-        </div>
-      </li>
-
-      <!-- Nav Item - Utilities Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-          <i class="fas fa-fw fa-wrench"></i>
-          <span>회원 관리</span>
-        </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">회원 조회 및 관리</h6>
-            <a class="collapse-item" href="/adminUserList">회원 조회</a>
-            <a class="collapse-item" href="/adminWithdrawUserList">탈퇴회원 조회</a>
-            <a class="collapse-item" href="/adminReportUserList">신고회원 조회</a>
-            <a class="collapse-item" href="/adminExpertUserList">전문가 조회</a>
-          </div>
-        </div>
-      </li>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        	기타 관리
-      </div>
-
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-          <i class="fas fa-fw fa-folder"></i>
-          <span>제휴 관리</span>
-        </a>
-        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">제휴 병원 관리</h6>
-            <a class="collapse-item" href="/adminMemberHospitalList">제휴병원 조회</a>
-            <a class="collapse-item" href="/addHospital">제휴병원 추가</a>
-<!--        <div class="collapse-divider"></div> -->
-          </div>
-        </div>
-      </li>
-      
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item active">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReports" aria-expanded="false" aria-controls="collapseReports">
-          <i class="fas fa-fw fa-folder"></i>
-          <span>공지 및 문의 내역</span>
-        </a>
-        <div id="collapseReports" class="collapse show" aria-labelledby="headingReports" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">제휴 병원 관리</h6>
-            <a class="collapse-item" href="/adminInquiryBoard">문의 내역</a>
-            <a class="collapse-item" href="/adminReportBoard">신고 내역</a>
-            <a class="collapse-item" href="/adminFAQBoard">FAQ 관리</a>
-            <a class="collapse-item" href="/adminNoticeBoard">공지 관리</a>
-<!--        <div class="collapse-divider"></div> -->
-          </div>
-        </div>
-      </li>
-
-      <!-- Nav Item - Charts -->
-      <li class="nav-item">
-        <a class="nav-link" href="/analysis">
-          <i class="fas fa-fw fa-chart-area"></i>
-          <span>통계</span></a>
-      </li>
-
-      <!-- Nav Item - Tables -->
-      <li class="nav-item">
-        <a class="nav-link" href="/manageAdmin">
-          <i class="fas fa-fw fa-table"></i>
-          <span>관리자 설정</span></a>
-      </li>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider d-none d-md-block">
-
-      <!-- Sidebar Toggler (Sidebar) -->
-      <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle"></button>
-      </div>
-
-    </ul>
-    <!-- End of Sidebar -->
+   	<!-- SideBard load -->
+	<div id="sideBar"></div>
 
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
@@ -434,7 +305,12 @@
 $(document).ready(function(){
 	
 	let currentPage =1;
-
+	
+	$("#sideBar").load("/sideBar #accordionSidebar", function(){
+		$("#sideBarNotice").addClass("active");
+		$("#sideBarNotice").children("a").attr("aria-expanded","false");
+		$("#sideBarNotice").children("div").addClass("show");
+	});
 
 	$.ajax({
 		url : "/rest/adminNoticeBoard",

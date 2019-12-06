@@ -24,123 +24,9 @@
   <!-- Page Wrapper -->
   <div id="wrapper">
 
-    <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-
-      <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/admin"> 
-      	 <div class="sidebar-brand-icon mx-1">
-      	 	<img src="./img/codeBlueIconWhite.png" width="40px">
-      	 </div>
-        <div class="sidebar-brand-text mr-1">
-        	<img src="./img/codeBlueWhite.png" width="100px">
-        </div>
-      </a>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider my-0">
-
-      <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
-        <a class="nav-link" href="/admin">
-          <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>관리자 홈</span></a>
-      </li>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        	게시글 및 유저
-      </div>
-
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fas fa-fw fa-cog"></i>
-          <span>글 관리</span>
-        </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">질문 및 답변 관리</h6>
-            <a class="collapse-item" href="buttons.html">질문 관리</a>
-            <a class="collapse-item" href="cards.html">답변 조회</a>
-            <a class="collapse-item" href="cards.html">댓글 조회</a>
-            <a class="collapse-item" href="cards.html">추천수 조회</a>
-          </div>
-        </div>
-      </li>
-
-      <!-- Nav Item - Utilities Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-          <i class="fas fa-fw fa-wrench"></i>
-          <span>회원 관리</span>
-        </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">회원 조회 및 관리</h6>
-            <a class="collapse-item" href="utilities-color.html">회원 조회</a>
-            <a class="collapse-item" href="utilities-border.html">탈퇴회원 조회</a>
-            <a class="collapse-item" href="utilities-animation.html">신고회원 조회</a>
-            <a class="collapse-item" href="utilities-other.html">전문가 조회</a>
-          </div>
-        </div>
-      </li>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        	기타 관리
-      </div>
-
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-          <i class="fas fa-fw fa-folder"></i>
-          <span>제휴 관리</span>
-        </a>
-        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">제휴 병원 관리</h6>
-            <a class="collapse-item" href="login.html">제휴병원 조회</a>
-            <a class="collapse-item" href="register.html">제휴병원 추가</a>
-<!--             <div class="collapse-divider"></div>
-            <h6 class="collapse-header">Other Pages:</h6>
-            <a class="collapse-item" href="404.html">404 Page</a>
-            <a class="collapse-item" href="blank.html">Blank Page</a> -->
-          </div>
-        </div>
-      </li>
-
-      <!-- Nav Item - Charts -->
-      <li class="nav-item">
-        <a class="nav-link" href="charts.html">
-          <i class="fas fa-fw fa-chart-area"></i>
-          <span>통계</span></a>
-      </li>
-
-      <!-- Nav Item - Tables -->
-      <li class="nav-item">
-        <a class="nav-link" href="tables.html">
-          <i class="fas fa-fw fa-table"></i>
-          <span>관리자 설정</span></a>
-      </li>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider d-none d-md-block">
-
-      <!-- Sidebar Toggler (Sidebar) -->
-      <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle"></button>
-      </div>
-
-    </ul>
-    <!-- End of Sidebar -->
-
+	 <!-- Side Bar load -->
+ 	<div id="sideBar"></div>
+    
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
 
@@ -350,30 +236,31 @@
                <!-- page Heading End -->
                
         		<!-- user search -->
-               <div>
-					검색어 : 
-					<input type="text" id="searchContent">
+               <div class="inline">
+					검색어 : <input class="form-control form-control-sm" type="text" id="searchContent">
 				</div>
 				
 				
 				<div>
-					<input type="date" id=toDate> ~ <input type="date" id="fromDate">
-					<button type="button" id="searchBtn">검색</button>
+					<input class="form-control form-control-sm" type="date" id=toDate> ~ <input class="form-control form-control-sm" type="date" id="fromDate">
+					<button type="button" class="btn btn-primary " id="searchBtn">검색</button>
 				</div>
 				
 				
 				
 				<!-- user list -->
-				<select id="rowPerPage">
+				<select class="form-control form-control-sm" id="rowPerPage">
 					<option value="10" selected="selected">10개 보기</option>
 					<option value="20">20개 보기</option>
 					<option value="30">30개 보기</option>
 					<option value="40">40개 보기</option>
 					<option value="50">50개 보기</option>
 				</select>
-				<table border="1" id="userList">
+				<table class="table table-hover" id="userList">
 					<tr>
-						<td>select</td>
+						<td><div class='custom-control custom-checkbox'>
+							<input class='custom-control-input' type='checkbox' onclick='checkAll()' id='selectAll'><label class='custom-control-label' for='selectAll'></label>
+						</div></td>
 						<td>UserName</td>
 						<td>Rank</td>
 						<td>Region</td>
@@ -392,7 +279,7 @@
       </div> 
       
       <!-- End of Main Content -->
-
+	</div>
       <!-- Footer -->
       <footer class="sticky-footer">
         <div class="container my-auto">
@@ -447,12 +334,15 @@
   <!-- Page level plugins -->
   <script src="vendor/chart.js/Chart.min.js"></script>
 
-  <!-- Page level custom scripts -->
-  <script src="js/demo/chart-area-demo.js"></script>
-  <script src="js/demo/chart-pie-demo.js"></script>
-
 </body>
 <script>
+
+	$("#sideBar").load("/sideBar #accordionSidebar", function(){
+		$("#sideBarUser").addClass("active");
+		$("#sideBarUser").children("a").attr("aria-expanded","false");
+		$("#sideBarUser").children("div").addClass("show");
+	});
+
 	// 페이징
 	var currentPage = 1;
 	var lastPage = 0;
@@ -474,7 +364,7 @@
 			BtnShow(currentPage,lastPage);
 			$(json.list).each(function(index,item){
 				var html = "<tr>";
-				html += "<td><input type='checkbox'></td>"
+				html += "<td><div class='custom-control custom-checkbox'><input class='custom-control-input' type='checkbox' name='chk' id='check"+index+"'><label name='chk' class='custom-control-label' for='check"+index+"'></label></div></td>";
 				html += "<td>"+item.userName+"</td>";
 				html += "<td>"+item.rank.rankName+"</td>";
 				html += "<td>"+item.region.regionName+"</td>";
@@ -609,11 +499,25 @@
 					html += "<td>"+item.userCreatetime+"</td>";
 					html += "<td>"+item.userAuthority+"</td>";
 					html += "</tr>";
+					
 				$("#userList").append(html);
 				});
 			} 
 		});
 	});
+	
+	/* 
+	
+	function checkAll() {
+		if ($("#checkAll").prop("checked") === true) {
+			alert("체크");
+			$("input[name=chk]").prop("checked", true);
+		} else {
+			alert("해제");
+			$("input[name=chk]").prop("checked", false);
+		}
+	} */
+	
 	// 이전,다음버튼 함수
 	function BtnShow(currentPage,lastPage) {
 		if(currentPage == 1){

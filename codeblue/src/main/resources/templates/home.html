@@ -83,7 +83,7 @@
 					<!-- Page Heading -->
 					<div class="d-sm-flex align-items-center justify-content-between mb-4" style="margin-top: 80px">
 						<h4 class="text-gray-800 mb-0">최근 올라온 질문</h4>
-						<a href="/ask" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow"><i class="mr-2 fas fa-plus fa-sm text-white-50"></i>질문 올리기</a> 
+						<a href="/ask" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow"><i class="mr-2 fas fa-plus fa-sm text-white-50"></i>질문 올리기</a>
 					</div><!-- page Heading End -->
 					
 					<table id="questionBoard" class="table table-hover">
@@ -97,40 +97,49 @@
 				</div>
 				<!-- Page rigth side bar -->
 				<div class="col-sm-3 pt-5">
-					<div class="card bg-light border-1 mt-4 shadow">
-					
-						<table class="table table-hover">
-							<thead class="alert-warning">
-								<tr>
-									<td>Featured on Meta</td>
-								</tr>
-							</thead>
-							<tbody class="">
-								<tr>
-									<td><small>Feedback post: Moderator review and reinstatement processes</small></td>
-								</tr>
-								<tr>
-									<td><small>Upvotes on questions will now be worth the same as upvotes on answers</small></td>
-								</tr>
-							</tbody>
-						</table>
-					
+					<div class="card border-1 shadow bg-light border-bottom-primary mt-4">
+						<small class='text-primary font-weight-bold card-header alert-primary px-3 border-0'>
+							New! 새 소식이 있어요
+						</small>
+						<table class=" table table-sm mb-0">
+							<tr>
+								<td><a class='nav-link small px-2' href='#'><i class='far fa-comment-dots mx-1'></i>도와주세용</a></td>
+							</tr>
+							<tr>
+								<td><a class='nav-link small px-2' href='#'><i class='far fa-comment-dots mx-1'></i>도와주세용</a></td>
+							</tr>
+							<tr>
+								<td><a class='nav-link small px-2' href='#'><i class='far fa-comment-dots mx-1'></i>도와주세용</a></td>
+							</tr>
+							<tr>
+								<td><a class='nav-link small px-2' href='#'><i class='far fa-comment-dots mx-1'></i>도와주세용</a></td>
+							</tr>
+						</table>			
+						<small class='text-primary font-weight-bold card-header alert-primary px-3 border-0'>
+							궁금한 것이 있나요?
+						</small>	
+						<table class=" table table-sm mb-0">
+							<tr>
+								<td><a class='nav-link small px-2' href='#'><i class='far fa-comment-dots mx-1'></i>도와주세용</a></td>
+							</tr>
+							<tr>
+								<td><a class='nav-link small px-2' href='#'><i class='far fa-comment-dots mx-1'></i>도와주세용</a></td>
+							</tr>
+							<tr>
+								<td><a class='nav-link small px-2' href='#'><img src='img/codeblueicon.png' width="15px">도와주세용</a></td>
+							</tr>
+							<tr>
+								<td><a class='nav-link small px-2' href='#'><img src='img/codeblueicon.png' width="15px">도와주세용</a></td>
+							</tr>
+						</table>				
 					</div>
-					
 				</div> <!-- rigth side bar end -->
 				
 			</div>
 		</div> 
 
 	<!-- Footer -->
-	<br>
-	<footer class="sticky-footer text-light" style="background: #333333">
-		<div class="container my-auto">
-			<div class="copyright text-right my-auto">
-				<span>Copyright &copy; codeBlue 2019</span>
-			</div>
-		</div>
-	</footer>
+	<div id="footer"></div>
 	<!-- End of Footer -->
 
 
@@ -153,6 +162,7 @@
 </body>
 <script type="text/javascript">
 
+	$("#footer").load("/footer #footer");
 
 	//현재페이지값
 	var currentPage = 1;

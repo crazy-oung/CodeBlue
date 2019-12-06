@@ -119,13 +119,7 @@
 		</div> 
 
 	<!-- Footer -->
-	<footer class="sticky-footer text-light" style="background: #333333">
-		<div class="container my-auto">
-			<div class="copyright text-right my-auto">
-				<span>Copyright &copy; codeBlue 2019</span>
-			</div>
-		</div>
-	</footer>
+	<div id="footer"></div>
 	<!-- End of Footer -->
 
 
@@ -148,6 +142,9 @@
 
 </body>
 <script type="text/javascript">
+
+$("#footer").load("/footer #footer");
+
 $(document).ready(function() {
 	var currentPage = 1;
 	var lastPage = 0;	

@@ -112,13 +112,7 @@
 		</div> 
 
 	<!-- Footer -->
-	<footer class="sticky-footer text-light" style="background: #333333">
-		<div class="container my-auto">
-			<div class="copyright text-right my-auto">
-				<span>Copyright &copy; codeBlue 2019</span>
-			</div>
-		</div>
-	</footer>
+	<div id="footer"></div>
 	<!-- End of Footer -->
 
 
@@ -132,15 +126,8 @@
 	<!-- Custom scripts for all pages-->
 	<script src="js/sb-admin-2.min.js"></script>
 
-	<!-- Page level plugins
-	 <script src="vendor/chart.js/Chart.min.js"></script>-->
-
-	<!-- Page level custom scripts 
-	<script src="js/demo/chart-area-demo.js"></script>
-	<script src="js/demo/chart-pie-demo.js"></script>-->
-
 </body>
-<script type="text/javascript">
-
+<script>
+$("#footer").load("/footer #footer");
 </script>
 </html>

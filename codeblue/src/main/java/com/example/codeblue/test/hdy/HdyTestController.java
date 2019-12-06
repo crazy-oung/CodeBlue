@@ -1,4 +1,4 @@
-package com.example.codeblue.test;
+package com.example.codeblue.test.hdy;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
