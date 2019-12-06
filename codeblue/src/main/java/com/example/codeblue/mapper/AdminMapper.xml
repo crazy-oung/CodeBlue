@@ -313,8 +313,11 @@
   			now()
   		)
   	</insert>
-
-
+  	
+  	<delete id="deleteNoticeBoard" parameterType="int">
+		DELETE FROM notice_board
+		WHERE notice_id = #{noticeId}
+	</delete>
 
 	<!--  문의내역 SQL 문 -->
 	<!--  문의내역 상세페이지 -->

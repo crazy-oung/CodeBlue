@@ -186,6 +186,7 @@ public class AdminServiceImpl implements AdminService {
 		map.put("fromDate", fromDate);
 		return map;
 	}
+	//공지사항 리스트 가져오기
 	@Override
 	public Map<String, Object> getNoticeBoard(int currentPage, int rowPerPage, String searchWord) {
 		System.out.println(":::AdminNoticeServiceImpl - getNoticeBoard:::");
@@ -221,7 +222,7 @@ public class AdminServiceImpl implements AdminService {
 				
 		return map;
 	}
-
+	//공지사항 상세페이지 가져오기
 	@Override
 	public NoticeBoard getNoticeOne(int noticeId) {
 		System.out.println(":::AdminNoticeServiceImpl - getNoticeOne");
@@ -229,13 +230,22 @@ public class AdminServiceImpl implements AdminService {
 		
 		return adminMapper.noticeBoardOne(noticeId);
 	}
-
+	//공지사항 추가
 	@Override
 	public int addNotice(NoticeBoard noticeBoard) {
 		System.out.println(":::AdminNoticeServiceImpl - addNotice");
 		System.out.println("NoticeBoard"+ noticeBoard);
 		return adminMapper.insertNoticeBoard(noticeBoard);
 	}
+	//공지사항 삭제
+	@Override
+	public int removeNoticeBoard(int noticeId) {
+		System.out.println(":::ServiceImpl - removeNoticeBoard:::");
+		System.out.println("notice Id : " + noticeId);
+		
+		return adminMapper.deleteNoticeBoard(noticeId);
+	}
+	
 	//신고내역 상세 페이지 가져오기
 	@Override
 	public ReportHistory getReportHistoryOne(int reportHistoryId) {

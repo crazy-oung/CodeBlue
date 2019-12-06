@@ -362,7 +362,8 @@
 					<!-- Notice Board -->
 					<table id="noticeOne" class="table table-hover text-center m-4"></table>
 					<br>
-					<button type="button" id="listBtn" class="btn btn-primary">목록으로</button>
+					<div><button type="button" id="listBtn" class="btn btn-primary">목록으로</button>
+						 <button type="button" id="delBtn" class="btn btn-primary">게시글 삭제</button></div>
 					
 				</div>
 			<!--  Page Content End -->
@@ -467,8 +468,20 @@ $(document).ready(function(){
 	})
 	
 	$("#listBtn").click(function(){
-		location.href="/adminNotice";
+		location.href="/adminNoticeBoard";
 	})
+	
+	$("#delBtn").click(function(){
+	$.ajax({
+		url:"/rest/removeNoticeBoard",
+		method:"post",
+		data:{"noticeId" : getParam("noticeId")},
+		success : function(){
+			alert("삭제 되었습니다.");
+			location.href="/adminNoticeBoard";
+		}
+		})
+	});
 //document
 })
 

@@ -24,7 +24,10 @@ public interface AdminService {
 	public Map<String,Object> getNoticeBoard(int currentPage,int rowPerPage, String searchWord);
 	//공지사항 상세보기
 	public NoticeBoard getNoticeOne(int noticeId);
+	//공지사항 추가하기
 	public int addNotice(NoticeBoard noticeBoard);
+	//공지사항 삭제
+	public int removeNoticeBoard(int noticeId);
 	//문의 내역 리스트 출력
 	public Map<String, Object> getInquiryHistoryList(int currentPage, int rowPerPage);
 	//문의 내역 상세 페이지 출력

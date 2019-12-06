@@ -133,6 +133,14 @@ public class AdminRestController {
 		System.out.println("NoticeBoard"+noticeBoard);
 		return adminService.addNotice(noticeBoard);
 	}
+	
+	//공지사항 삭제
+	@PostMapping("/rest/removeNoticeBoard")
+	public int removeNoticeBoard(@RequestParam(value="noticeId")int noticeId) {
+		System.out.println(":::post - removeNoticeBoardTest:::");
+		System.out.println("noticeId Remove : " + noticeId);
+		return adminService.removeNoticeBoard(noticeId);
+	}
 
 	//신고내역 상세페이지 가져오기
 	@PostMapping("/rest/admin/getReportHistoryOne")
