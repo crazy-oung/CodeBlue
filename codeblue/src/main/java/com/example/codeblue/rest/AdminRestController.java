@@ -18,12 +18,18 @@ import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionCount;
 import com.example.codeblue.vo.ReportHistory;
+import com.example.codeblue.vo.ServiceCategory;
 
 
 @RestController
 public class AdminRestController {
 	@Autowired private AdminService adminService;
-	
+	//서비스 카데고리 리스트 가져오기
+	@GetMapping("/rest/admin/getServiceCategoryList")
+	public List<ServiceCategory> getServiceCategoryList() {
+		System.out.println("::: get - getServiceCategoryList :::"); 
+		return adminService.getServiceCategoryList();
+	}
 	//병원 리스트
 		@PostMapping("/rest/adminHospital")
 		public Map<String, Object>postHospital(@RequestParam(value="currentPage", defaultValue="1")int currentPage,

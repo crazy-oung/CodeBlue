@@ -131,7 +131,19 @@
 			<result column="region_name" property="regionName"></result>
 		</association>
 	</resultMap>
+	<!-- ServiceCategory 객체 -->
+	<resultMap type="com.example.codeblue.vo.ServiceCategory" id="ServiceCategory">
+		<result column="service_category_id" property="serviceCategoryId"></result>
+		<result column="service_category_name" property="serviceCategoryName"></result>
+	</resultMap>
 	<!-- 객체정리 끝ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
+	<!-- 서비스 카테고리 리스트 -->
+	<select id="selectServiceCategoryList" resultMap="ServiceCategory">
+		SELECT 
+			service_category_id,
+			service_category_name
+		FROM service_category
+	</select>
 	
 	<!-- 병원 리스트 -->
 	<select id="hospitalList" resultMap="Hospital" parameterType="com.example.codeblue.vo.Page">

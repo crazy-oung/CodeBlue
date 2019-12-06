@@ -343,45 +343,34 @@
 
         </nav>
         <!-- End of Topbar -->
-
+		
+		 <!-- Begin Page Content -->
+       <div class="container-fluid px-4 pt-4">
+			<div class="card border-0 bg-white p-3 my-2 shadow mx-3"> 
+				<!-- Page Content -->
+				<div class="p-2">
+					<h2>문의 내역</h2>
+					<table class="table table-hover">
+						<thead align="center">
+							<tr>
+								<th>번호</th>
+								<th>제목</th>
+								<th>작성 날짜</th>
+							</tr>
+						</thead>
+						<tbody id="inquiryHistoryList" align="center">	</tbody>
+					</table>
+					<button type="button" id="inquiryPrevBtn" class="btn ml-1 btn-sm btn-primary">이전</button>
+					<button type="button" id="inquiryNextBtn" class="btn ml-1 btn-sm btn-primary">다음</button>
+				</div>
+			<!--  Page Content End -->
+		
         <!-- Begin Page Content -->
         <div class="container-fluid p-5"> 
           <!-- Content Row 1 -->
           <div class="row">
 
-           	<!-- ::: 내용 출력 시작 ::: -->
-			<div>
-				<h2>문의 내역</h2>
-				<button type="button" id="inquiryBtn" class="btn ml-1 btn-sm btn-primary">문의내역보기</button>
-				<table class="table table-hover">
-					<thead align="center">
-						<tr>
-							<th>번호</th>
-							<th>제목</th>
-							<th>작성 날짜</th>
-						</tr>
-					</thead>
-					<tbody id="inquiryHistoryList" align="center">	</tbody>
-				</table>
-				<button type="button" id="inquiryPrevBtn" class="btn ml-1 btn-sm btn-primary">이전</button>
-				<button type="button" id="inquiryNextBtn" class="btn ml-1 btn-sm btn-primary">다음</button>
-			</div>
-	        <div>
-	        <h2>신고 내역</h2>
-	        <button type="button" id="reportBtn" class="btn ml-1 btn-sm btn-primary">신고내역보기</button>
-				<table class="table table-hover">
-					<thead align="center">
-						<tr>
-							<th>번호</th>
-							<th>제목</th>
-							<th>작성 날짜</th>
-						</tr>
-					</thead>
-					<tbody id="reportHistoryList" align="center">	</tbody>
-				</table>
-				<button type="button" id="reportPrevBtn" class="btn ml-1 btn-sm btn-primary">이전</button>
-				<button type="button" id="reportNextBtn" class="btn ml-1 btn-sm btn-primary">다음</button>
-			</div>
+           	
 			
           </div>
 		
@@ -452,11 +441,9 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-	
-	var reportCurrentPage = 1;
 	var inquiryCurrentPage = 1;
 	var lastPage = 0;	
-	
+	//문의내역 이전 버튼
 	$("#inquiryPrevBtn").click(function(){ 
 		$.ajax({
 			url:"/rest/admin/getInquiryHistoryList",
@@ -486,7 +473,7 @@ $(document).ready(function() {
 			}
 		})
 	});
-	
+	//문의내역 다음 버튼
 	$("#inquiryNextBtn").click(function(){
 		$.ajax({
 			url:"/rest/admin/getInquiryHistoryList",
@@ -515,149 +502,48 @@ $(document).ready(function() {
 			}
 		})
 	});
-	$("#inquiryBtn").click(function(){
-		$.ajax({
-			url:"/rest/admin/getInquiryHistoryList",
-			method:"get",
-			success:function(json){
-				$("#inquiryHistoryList").empty();
-				inquiryCurrentPage = json.currentPage;
-				lastPage = json.lastPage;
-				InquiryBtnShow(inquiryCurrentPage, lastPage);
-				console.log(json);
-				console.log(json.list);
-				let html;
-				$(json.list).each(function(index,item){
-					html="<tr><td>";
-					html += item.inquiryHistoryId;
-					html += "</td><td>";
-					html += "<a href='/adminInquiryOne?inquiryHistoryId=";
-					html += item.inquiryHistoryId;
-					html += "'>";
-					html += item.inquiryTitle;
-					html += "</a>"
-					html += "</td><td>";
-					html += item.inquiryDatetime;
-					html += "</td></tr>";
-					$("#inquiryHistoryList").append(html);
-				});
-				
-				}
-			})
-		})
-		$("#reportPrevBtn").click(function(){ 
-			$.ajax({
-				url:"/rest/admin/getReportHistoryList",
-				method:"post",
-				data:{"currentPage" : reportCurrentPage-1},
-				success: function(json){
-					$("#reportHistoryList").empty();
-					reportCurrentPage = json.currentPage;
-					lastPage = json.lastPage;
-					ReportBtnShow(reportCurrentPage, lastPage);
-					let html;
-					$(json.list).each(function(index,item){
-						html="<tr><td>";
-						html += item.reportHistoryId;
-						html += "</td><td>";
-						html += "<a href='/adminReportOne?reportHistoryId=";
-						html += item.reportHistoryId;
-						html += "'>";
-						html += item.reportTitle;
-						html += "</a>"
-						html += "</td><td>";
-						html += item.reportDatetime;
-						html += "</td></tr>";
-						$("#reportHistoryList").append(html);
-					});
-				}
-			})
-		});
-		
-		$("#reportNextBtn").click(function(){
-			$.ajax({
-				url:"/rest/admin/getReportHistoryList",
-				method:"post",
-				data:{"currentPage" : reportCurrentPage+1},
-				success: function(json){
-					$("#reportHistoryList").empty();
-					reportCurrentPage = json.currentPage;
-					lastPage = json.lastPage;
-					ReportBtnShow(reportCurrentPage, lastPage);
-					let html;
-					$(json.list).each(function(index,item){
-						html="<tr><td>";
-						html += item.reportHistoryId;
-						html += "</td><td>";
-						html += "<a href='/adminReportOne?reportHistoryId=";
-						html += item.reportHistoryId;
-						html += "'>";
-						html += item.reportTitle;
-						html += "</a>"
-						html += "</td><td>";
-						html += item.reportDatetime;
-						html += "</td></tr>";
-						$("#reportHistoryList").append(html);
-					});
-				}
-			})
-		});
-
-		$("#reportBtn").click(function(){
-			$.ajax({
-				url:"/rest/admin/getReportHistoryList",
-				method:"get",
-				success:function(json){
-					$("#reportHistoryList").empty();
-					reportCurrentPage = json.currentPage;
-					lastPage = json.lastPage;
-					ReportBtnShow(reportCurrentPage, lastPage);
-					console.log(json);
-					console.log(json.list);
-					let html;
-					$(json.list).each(function(index,item){
-						html="<tr><td>";
-						html += item.reportHistoryId;
-						html += "</td><td>";
-						html += "<a href='/adminReportOne?reportHistoryId=";
-						html += item.reportHistoryId;
-						html += "'>";
-						html += item.reportTitle;
-						html += "</a>"
-						html += "</td><td>";
-						html += item.reportDatetime;
-						html += "</td></tr>";
-						$("#reportHistoryList").append(html);
-					});
-					}
-				})
-		});
-		
-		function InquiryBtnShow(currentPage, lastPage){
-			if(currentPage == 1){
-				$("#inquiryPrevBtn").hide();
-			}else{
-				$("#inquiryPrevBtn").show();
-			}
-			if(currentPage >= lastPage){
-				$("#inquiryNextBtn").hide();
-			}else{
-				$("#inquiryNextBtn").show();
-			}
+	//페이지 입성 후 바로 문의내역 리스트 출력
+	$.ajax({
+		url:"/rest/admin/getInquiryHistoryList",
+		method:"get",
+		success:function(json){
+			$("#inquiryHistoryList").empty();
+			inquiryCurrentPage = json.currentPage;
+			lastPage = json.lastPage;
+			InquiryBtnShow(inquiryCurrentPage, lastPage);
+			console.log(json);
+			console.log(json.list);
+			let html;
+			$(json.list).each(function(index,item){
+				html="<tr><td>";
+				html += item.inquiryHistoryId;
+				html += "</td><td>";
+				html += "<a href='/adminInquiryOne?inquiryHistoryId=";
+				html += item.inquiryHistoryId;
+				html += "'>";
+				html += item.inquiryTitle;
+				html += "</a>"
+				html += "</td><td>";
+				html += item.inquiryDatetime;
+				html += "</td></tr>";
+				$("#inquiryHistoryList").append(html);
+			});
 		}
-		function ReportBtnShow(currentPage, lastPage){
-			if(currentPage == 1){
-				$("#reportPrevBtn").hide();
-			}else{
-				$("#reportPrevBtn").show();
-			}
-			if(currentPage >= lastPage){
-				$("#reportNextBtn").hide();
-			}else{
-				$("#reportNextBtn").show();
-			}
+	})
+	//다음, 이전버튼 페이징으로 보이게 안보이게
+	function InquiryBtnShow(currentPage, lastPage){
+		if(currentPage == 1){
+			$("#inquiryPrevBtn").hide();
+		}else{
+			$("#inquiryPrevBtn").show();
 		}
-	});
+		if(currentPage >= lastPage){
+			$("#inquiryNextBtn").hide();
+		}else{
+			$("#inquiryNextBtn").show();
+		}
+	}
+});
 </script>
 
 </html>

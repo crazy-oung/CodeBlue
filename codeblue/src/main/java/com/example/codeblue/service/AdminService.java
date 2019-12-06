@@ -11,6 +11,7 @@ import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionCount;
 import com.example.codeblue.vo.ReportHistory;
+import com.example.codeblue.vo.ServiceCategory;
 
 public interface AdminService {
 	
@@ -34,6 +35,8 @@ public interface AdminService {
 	public int addFaqBoard(FaqBoard faqBoard);
 	public List<Feild> getAdminFeildList();
 	public Map<String,Object> getAdminBoardList(Page page,int currentPage);
+	//서비스 카테고리 리스트 가져오기
+	public List<ServiceCategory> getServiceCategoryList();
 	//병원 리스트
 	public Map<String, Object> getHospitalList(int currentPage, int rowPerPage, String searchWord);
 	//병원 추가

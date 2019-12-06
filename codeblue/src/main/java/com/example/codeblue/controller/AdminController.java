@@ -44,17 +44,25 @@ public class AdminController {
 		
 		return"/codeBlue/admin/adminHospitalOne";
 	}
-	
-	@GetMapping({"adminInquiryBoard","adminReportBoard"})
+	//신고내역 리스트 페이지로 이동
+	@GetMapping("adminReportBoard")
+	public String getReport() {
+		System.out.println("::: get - getReport :::");
+		return "/codeBlue/admin/report";
+	}
+	//문의내역 리스트 페이지로 이동
+	@GetMapping("adminInquiryBoard")
 	public String getInquiry() {
 		System.out.println("::: get - adminInquiry :::");
 		return "/codeBlue/admin/inquiry";
 	}
+	//문의내역 상세 페이지로 이동
 	@GetMapping("adminInquiryOne")
 	public String getInquiryOne() {
 		System.out.println("::: get - getInquiryOne :::");
 		return "/codeBlue/admin/inquiryOne";
 	}
+	//신고내역 상세 페이지로 이동
 	@GetMapping("adminReportOne")
 	public String getReportOne() {
 		System.out.println("::: get - getReportOne :::");

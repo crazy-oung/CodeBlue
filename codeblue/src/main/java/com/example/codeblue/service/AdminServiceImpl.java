@@ -19,6 +19,7 @@ import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.QuestionCount;
 import com.example.codeblue.vo.ReportHistory;
+import com.example.codeblue.vo.ServiceCategory;
 import com.example.codeblue.vo.User;
 
 @Service
@@ -26,7 +27,11 @@ import com.example.codeblue.vo.User;
 public class AdminServiceImpl implements AdminService {
 	@Autowired
 	private AdminMapper adminMapper;
-	
+	//서비스 카테고리 리스트 가져오기
+	@Override
+	public List<ServiceCategory> getServiceCategoryList() {
+		return adminMapper.selectServiceCategoryList();
+	}
 	//병원 리스트
 		@Override 
 		public Map<String, Object> getHospitalList(int currentPage, int rowPerPage, String searchWord) {
