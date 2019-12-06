@@ -22,9 +22,11 @@ public interface AdminMapper {
 	//병원정보 수정
 	public int updateHospital(Hospital hospital);
 	
-	public List<Feild> selectAdminFeildList();
-	public int selectAdminBoardTotalCount(Page page);
-	public List<QuestionBoard> selectAdminBoardList(Page page);
+	public List<Feild> selectFeildList();
+	//질문 전체 갯수
+	public int selectQuestionBoardTotalCount(Page page);
+	//질문 리스트
+	public List<QuestionBoard> selectQuestionBoardList(Page page);
 	//고객센터 답변 삽입
 	public int insertFaqBoard(FaqBoard faqBoard);
 	// 관리자 통계

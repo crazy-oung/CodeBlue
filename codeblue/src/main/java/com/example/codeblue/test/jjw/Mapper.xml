@@ -3,7 +3,9 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
-<mapper namespace="com.example.codeblue.mapper.AdminMapper">
+
+<mapper namespace="com.example.codeblue.test.jjw.Mapper">
+	
 	<!-- User 객체 -->
 	<resultMap type="com.example.codeblue.vo.User" id="User"> 
 		<!-- column은 테이블에서의 칼럼명  property는 클레스의 필드명 -->
@@ -138,277 +140,13 @@
 	</resultMap>
 	<!-- 객체정리 끝ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
 	
-	
-	<!-- 서비스 카테고리 리스트 -->
-	<select id="selectServiceCategoryList" resultMap="ServiceCategory">
-		SELECT 
-			service_category_id,
-			service_category_name
-		FROM service_category
-	</select>
-	
-	<!-- 병원 리스트 -->
-	<select id="hospitalList" resultMap="Hospital" parameterType="com.example.codeblue.vo.Page">
-		SELECT
-			h.hospital_id,
-			h.hospital_name, 
-			h.hospital_number, 
-			h.hospital_address,
-			h.hospital_address2,
-			re.region_name,
-			re.region_id 
-			FROM hospital h inner join region re
-			ON h.region_id = re.region_id 
-		<where>
-			<if test="searchWord != null">
-				and h.hospital_name like CONCAT('%',#{searchWord},'%')
-			</if>
-		</where>
-		limit #{beginRow},#{rowPerPage}
-	</select>
-	
-	<!-- 병원 상세페이지 -->
-	<select id="hospitalOne" resultMap="Hospital" parameterType="int">
-		SELECT
-			h.hospital_id,
-			h.hospital_name, 
-			h.hospital_number, 
-			h.hospital_address,
-			h.hospital_address2,
-			re.region_name,
-			re.region_id 
-			FROM hospital h inner join region re
-			ON h.region_id = re.region_id 
-			WHERE hospital_id =#{hospitalId}
-	</select>
-	
-	<!-- 병원 수 -->
-	<select id="hospitalCount" resultType="int">
-		SELECT count(*) FROM hospital
-	</select>
-
-	<!-- 병원 추가 -->
-	<insert id="insertHospital" parameterType="com.example.codeblue.vo.Hospital">
-		INSERT INTO Hospital(
-			hospital_name, hospital_number, hospital_address, hospital_address2,region_Id
-		) VALUES(
-			#{hospitalName}, #{hospitalNumber}, #{hospitalAddress}, #{hospitalAddress2}, #{region.regionId}
-		)
-	</insert>
-	
-	<!-- 병원정보 수정 -->
-  	<update id="updateHospital"  parameterType="com.example.codeblue.vo.Hospital">
-  		UPDATE hospital SET hospital_name = #{hospitalName}, 
-  							hospital_number = #{hospitalNumber},
-  							hospital_address = #{hospitalAddress},
-  							hospital_address2 = #{hospitalAddress2},
-  							region_id = #{region.regionId}
-  		WHERE hospital_id = #{hospitalId} 
-  	</update>
-	
-	<!-- 병원 삭제 -->
-	<delete id="deleteHospital" parameterType="int">
-		DELETE FROM hospital
-		WHERE hospital_id = #{hospitalId} 
-	</delete>
-	
-	<select id="adminSelectUserList" parameterType="com.example.codeblue.vo.Page" resultMap="User">
-		select
-			u.user_id,
-			u.user_name,
-			re.region_id,
-			re.region_name,
-			u.user_birthdate,
-			u.user_createtime,
-			ra.rank_id,
-			ra.rank_name,
-			u.user_authority
-		from user u inner join region re INNER JOIN rank ra
-		ON u.region_id = re.region_id AND u.rank_id = ra.rank_id
-		where u.user_authority = 'user'
-			<if test="searchWord != null">
-				and u.user_name like CONCAT('%',#{searchWord},'%')
-			</if>
-			<if test="toDate != null and fromDate != null">
-			AND user_createtime &gt;= #{toDate} AND user_createtime &lt;= #{fromDate}
-			</if>
-		order by u.user_createtime desc
-		limit #{beginRow},#{rowPerPage}
-	</select>
-	
-	<select id="adminSelectUserCount" parameterType="com.example.codeblue.vo.Page" resultType="int">
-		SELECT
-			COUNT(*)
-		FROM user
-		WHERE user_id IS NOT NULL
-		<if test="searchWord != null">
-			AND user_name LIKE CONCAT('%',#{searchWord},'%')
-		</if>
-		<if test="toDate != null and fromDate != null">
-			AND user_createtime &gt;= #{toDate} AND user_createtime &lt;= #{fromDate}
-		</if>
-	</select>
-
-	<select id="selectNoticeBoard" resultMap="NoticeBoard"
-  									parameterType="com.example.codeblue.vo.Page">
-  		SELECT notice_id,
-  			notice_title,
-  			notice_content,
-  			notice_datetime
-  		FROM
-  			notice_board
-  		<where>
-			<if test="searchWord != null">
-				question_title like CONCAT('%',#{searchWord},'%')
-			</if>
-		</where>
-  		ORDER BY notice_datetime desc
-  		LIMIT #{beginRow}, #{rowPerPage}
-  		<where>
-  		
-  		</where>
-  	</select>
-  	
-  	<select id="noticeBoardCount" resultType="int" parameterType="com.example.codeblue.vo.Page">
-  		SELECT 
-  			COUNT(*) 
-  		FROM notice_board
-  		<where>
-			<if test="searchWord != null">
-				question_title like CONCAT('%',#{searchWord},'%')
-			</if>
-		</where>
-  	</select>
-  	
-  	<select id="noticeBoardOne" resultMap="NoticeBoard" parameterType="int">
-  			SELECT notice_id,
-  			notice_title,
-  			notice_content,
-  			notice_datetime
-  		FROM
-  			notice_board
-  		WHERE 
-  			notice_id = #{noticeId}
-  	</select>
-  	
-  	<insert id ="insertNoticeBoard" parameterType="com.example.codeblue.vo.NoticeBoard">
-  		INSERT INTO notice_board (
-  			notice_title,
-  			notice_content,
-  			notice_datetime
-  		) values(
-  			#{noticeTitle},
-  			#{noticeContent},
-  			now()
-  		)
-  	</insert>
-
-
-
-	<!--  문의내역 SQL 문 -->
-	<!--  문의내역 상세페이지 -->
-	   <select  id="selectInquiryHistoryOne" 
-   			parameterType="int"
-   			resultMap="InquiryHistory">
-	   	SELECT  ih.inquiry_history_id,
-				ih.inquiry_title,
-				ih.inquiry_content, 
-				i.inquiry_name,
-				u.user_id,
-				ih.inquiry_datetime
-	    FROM inquiry_history ih INNER JOIN inquiry i INNER JOIN user u
-	    ON ih.inquiry_id = i.inquiry_id AND ih.user_id = u.user_id 
-	    WHERE ih.inquiry_history_id = #{inquiryHistoryId}
-   	</select>
-   	
-	<!-- 문의내역 전체 리스트 -->
-	<select id="selectInquiryHistoryList" 
-			parameterType="com.example.codeblue.vo.Page" 
-			resultMap="InquiryHistory">
-	
-	SELECT  inquiry_history_id,
-			inquiry_title,
-			inquiry_datetime
-    FROM inquiry_history
-    ORDER BY inquiry_datetime DESC
-    LIMIT #{beginRow},#{rowPerPage}
-   </select>
-   <!--  문의내역 전체 행 -->
-   <select  id="InquiryHistoryTotalRow" 
-			resultType="int">
-	SELECT count(*)
-	FROM inquiry_history
-   </select>
-
-   
-   <!-- 신고내역 SQL 문 -->
-   <select  id="selectReportHistoryOne" 
-   			parameterType="int"
-   			resultMap="ReportHistory">
-		SELECT  rh.report_history_id,
-				rh.report_title,
-				rh.report_content, 
-				r.report_name,
-				u.user_id,
-				rh.report_datetime
-	    FROM report_history rh INNER JOIN report r INNER JOIN user u
-	    ON rh.report_id = r.report_id AND rh.user_id = u.user_id 
-	    WHERE rh.report_history_id = #{reportHistoryId}
-   	</select>
-   
-   <!-- 신고내역 전체 리스트 -->
-	<select id="selectReportHistoryList" 
-			parameterType="com.example.codeblue.vo.Page" 
-			resultMap="ReportHistory">
-	
-	SELECT  report_history_id,
-			report_title,
-			report_datetime
-    FROM report_history
-    ORDER BY report_datetime DESC
-    LIMIT #{beginRow},#{rowPerPage}
-   </select>
-   <!--  신고내역 전체 행 -->
-   <select  id="ReportHistoryTotalRow" 
-			resultType="int">
-	SELECT count(*)
-	FROM report_history
-   </select>   
-
-	<select id="selectYearlyQuestionCount" resultMap="QuestionCount">
-		SELECT MONTH(question_datetime) AS question_month, IFNULL(COUNT(*), 0) as count
-		FROM ( SELECT question_datetime from question_board WHERE YEAR(question_datetime) = YEAR(NOW()) )t
-		GROUP BY question_month
-	</select>
-	
-	<select id="selectCurrentQuestionCountFromFeild" resultMap="QuestionCount">
-		SELECT feild_id, COUNT(*) AS "count"
-		FROM question_board 
-		WHERE YEAR(question_datetime) = YEAR(NOW()) 
-		GROUP BY feild_id
-	</select>
-
-	<insert id="insertFaqBoard" parameterType="com.example.codeblue.vo.ServiceCategory">
-		INSERT INTO faq_board(
-			FAQ_title,
-			service_category_id,
-			FAQ_content,
-			FAQ_datetime
-		)	VALUES	(
-			#{faqTitle},
-			#{serviceCategoryId},
-			#{faqContent},
-			now()
-		)
-	</insert>
-	<!-- 검색조건 카테고리 리스트 뽑기 -->
 	<select id="selectFeildList" resultMap="Feild">
 		SELECT 
 			feild_id,
 			feild_name 
 		FROM feild
 	</select>
-	<!-- 질문 리스트 전체 행수가져오기 -->
+	
 	<select id="selectQuestionBoardTotalCount" resultType="int" parameterType="com.example.codeblue.vo.Page">
 		SELECT 
 			COUNT(*)
@@ -425,7 +163,7 @@
 				AND q.question_datetime &gt;= #{toDate} AND q.question_datetime &lt;= #{fromDate}
 			</if>
 	</select>
-	<!-- 질문 리스트 가져오기 -->
+	
 	<select id="selectQuestionBoardList" resultMap="QuestionBoard" parameterType="com.example.codeblue.vo.Page">
 		SELECT 
 				q.question_id,

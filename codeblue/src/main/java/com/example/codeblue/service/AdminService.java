@@ -35,8 +35,10 @@ public interface AdminService {
 	public List<QuestionCount> getYearlyQuestionCount();
 	public List<QuestionCount> getCurrentQuestionCountFromFeild();
 	public int addFaqBoard(FaqBoard faqBoard);
-	public List<Feild> getAdminFeildList();
-	public Map<String,Object> getAdminBoardList(Page page,int currentPage);
+	//검색 조건 카테고리 리스트 가져오기
+	public List<Feild> getFeildList();
+	//질문 리스트 출력
+	public Map<String,Object> getQuestionBoardList(Page page,int currentPage);
 	//서비스 카테고리 리스트 가져오기
 	public List<ServiceCategory> getServiceCategoryList();
 	//병원 리스트

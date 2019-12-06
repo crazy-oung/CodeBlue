@@ -100,10 +100,10 @@ public class AdminController {
 		System.out.println(":::get - getNoticeAdd");
 		return"/codeBlue/admin/adminNoticeInsert";
 	}
-	
+	//질문 리스트 가져오기
 	@GetMapping("/adminQuestionBoard")
-	public String getAdminBoard() {
-		System.out.println("::: get - getAdminBoard :::");
+	public String getQuestionBoardList() {
+		System.out.println("::: get - getQuestionBoardList :::");
 		return "/codeBlue/admin/adminQuestionBoard";
 	}
 	

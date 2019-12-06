@@ -1,4 +1,4 @@
-package com.example.codeblue.test;
+package com.example.codeblue.test.Lee;
 
 // ** 읽어주세요 **
 // 자신이 만든 코드 테스트용 패키지 입니다. 

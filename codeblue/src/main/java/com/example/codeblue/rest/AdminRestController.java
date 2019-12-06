@@ -183,21 +183,20 @@ public class AdminRestController {
 		return adminService.addFaqBoard(faqBoard);
 	}
 	
-	@PostMapping("/rest/adminFeildList")
-	public List<Feild> adminFeildList() {
-		System.out.println("::: post - adminFeildList :::");
-		return adminService.getAdminFeildList();
+	@PostMapping("/rest/getFeildList")
+	public List<Feild> getFeildList() {
+		System.out.println("::: post - FeildList :::");
+		return adminService.getFeildList();
 	}
-	
-	//검색 조건 vo 가져오기
-	@PostMapping("/rest/adminBoardList")
-	public Map<String,Object> adminBoardList(Page page,@RequestParam(value="currentPage", defaultValue = "1")int currentPage,
+	//검색 조건에 따른 리스트 가져오기
+	@PostMapping("/rest/getQuestionBoardList")
+	public Map<String,Object> questionBoardList(Page page,@RequestParam(value="currentPage", defaultValue = "1")int currentPage,
 												@RequestParam(value="rowPerPage", defaultValue = "10")int rowPerPage) {
-		System.out.println("::: post - adminBoardList :::");
+		System.out.println("::: post - questionBoardList :::");
 		System.out.println("currentPage : "+currentPage);
 		System.out.println("rowPerPage : " +rowPerPage);
 		page.setRowPerPage(rowPerPage);
 		System.out.println(page.toString());
-		return adminService.getAdminBoardList(page,currentPage);
+		return adminService.getQuestionBoardList(page,currentPage);
 	}
 }

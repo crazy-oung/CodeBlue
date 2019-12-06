@@ -270,15 +270,16 @@ public class AdminServiceImpl implements AdminService {
 		System.out.println("::: AdminFaqBoardServiceImpl - addFaqBoard :::");
 		faqBoard.toString();
 		return adminMapper.insertFaqBoard(faqBoard);
-	}	
-	@Override
-	public List<Feild> getAdminFeildList() {
-		System.out.println("::: AdminBoardServiceImpl - getAdminFeildList :::");
-		return adminMapper.selectAdminFeildList();
 	}
-	
+	//검색 조건 카테고리 리스트 가져오기
 	@Override
-	public Map<String,Object> getAdminBoardList(Page page,int currentPage) {
+	public List<Feild> getFeildList() {
+		System.out.println("::: AdminBoardServiceImpl - getAdminFeildList :::");
+		return adminMapper.selectFeildList();
+	}
+	//질문 리스트 가져오기
+	@Override
+	public Map<String,Object> getQuestionBoardList(Page page,int currentPage) {
 		System.out.println("::: AdminBoardServiceImpl - getAdminBoardList :::");
 		
 		//시작값 정하기
@@ -286,7 +287,7 @@ public class AdminServiceImpl implements AdminService {
 		page.setBeginRow(beginRow);
 		System.out.println(page.toString());
 		//질문 리스트 전체 행의 갯수
-		int totalCount = adminMapper.selectAdminBoardTotalCount(page);
+		int totalCount = adminMapper.selectQuestionBoardTotalCount(page);
 		System.out.println("totalCount : "+totalCount);
 		//페이지 마지막값변수선언
 		int lastPage = 0;
@@ -298,7 +299,7 @@ public class AdminServiceImpl implements AdminService {
 		}
 		System.out.println("lastPage : "+lastPage);
 		// 질문 리스트 저장
-		List<QuestionBoard> list = adminMapper.selectAdminBoardList(page);
+		List<QuestionBoard> list = adminMapper.selectQuestionBoardList(page);
 		System.out.println(list.toString());
 		Map<String,Object> map = new HashMap<String, Object>();
 		map.put("lastPage", lastPage);
