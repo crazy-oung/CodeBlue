@@ -127,6 +127,15 @@ public class AdminRestController {
 		System.out.println("fromDate : "+fromDate);
 		return adminService.getAdminUserList(currentPage, rowPerPage,searchWord, toDate, fromDate);
 	}
+	// 회원 삭제(y->n)
+			@PostMapping("/rest/adminUserRemove")
+			public String adminUserRemove(@RequestParam(value="checkBoxArr") List<String> checkBoxArr) {
+				System.out.println("::: post - /rest/adminUserRemoveTest :::");
+				System.out.println(checkBoxArr);
+				int checking = adminService.removeAdminUser(checkBoxArr);
+				System.out.println("1이면 성공 : "+checking);
+				return "adminUserListTest";
+			}
 	
 	@PostMapping("/rest/adminNoticeBoard")
 	public Map<String, Object> postNotice(@RequestParam(value="currentPage",defaultValue = "1")int currentPage,

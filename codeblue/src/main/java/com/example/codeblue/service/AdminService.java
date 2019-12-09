@@ -20,6 +20,8 @@ public interface AdminService {
 	public int modifyHospital(Hospital hospital);
 	//회원 리스트
 	public Map<String,Object> getAdminUserList(int currentPage, int rowPerPage, String searchWord, String toDate, String fromDate);
+	// 회원 업데이트(activity를 y->n으로)
+	public int removeAdminUser(List<String> checkBoxArr);
 	//공지사항 리스트
 	public Map<String,Object> getNoticeBoard(int currentPage,int rowPerPage, String searchWord);
 	//공지사항 상세보기

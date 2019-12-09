@@ -236,19 +236,26 @@
                <!-- page Heading End -->
                
         		<!-- user search -->
-               <div class="inline">
-					검색어 : <input class="form-control form-control-sm" type="text" id="searchContent">
+        	
+                <div class="inline">
+					<span>유저이름 : <input class="form-control form-control-sm" type="text" id="searchContent"></span>
 				</div>
 				
 				
 				<div>
-					<input class="form-control form-control-sm" type="date" id=toDate> ~ <input class="form-control form-control-sm" type="date" id="fromDate">
-					<button type="button" class="btn btn-primary " id="searchBtn">검색</button>
+					<span>회원가입일 :</span>
+					<input class="form-control form-control-sm" type="date" id=toDate> <span>~</span> <input class="form-control form-control-sm" type="date" id="fromDate">
+					<button type="button" class="btn btn-primary" id="searchBtn">검색</button>
+					<button type="button" class="btn btn-primary" id="resetBtn">첫페이지</button>
 				</div>
 				
 				
 				
 				<!-- user list -->
+				<div>
+					<span id="totalRow"></span>
+					<span><button class="btn btn-primary" id="userRemoveBtn">강제탈퇴</button></span>
+				</div>
 				<select class="form-control form-control-sm" id="rowPerPage">
 					<option value="10" selected="selected">10개 보기</option>
 					<option value="20">20개 보기</option>
@@ -257,20 +264,25 @@
 					<option value="50">50개 보기</option>
 				</select>
 				<table class="table table-hover" id="userList">
-					<tr>
-						<td><div class='custom-control custom-checkbox'>
-							<input class='custom-control-input' type='checkbox' onclick="checkAll()" id='selectAll'><label class='custom-control-label' for='selectAll'></label>
-						</div></td>
-						<td>UserName</td>
-						<td>Rank</td>
-						<td>Region</td>
-						<td>birthdate</td>
-						<td>createtime</td>
-						<td>Authority</td>
-					</tr>
+					<thead>
+						<tr>
+							<th><div class='custom-control custom-checkbox'>
+								<input class='custom-control-input' type='checkbox' onclick="checkAll()" id='selectAll'><label class='custom-control-label' for='selectAll'></label>
+							</div></th>
+							<th>유저이름</th>
+							<th>등급</th>
+							<th>Region</th>
+							<th>birthdate</th>
+							<th>createtime</th>
+							<th>Authority</th>
+						</tr>
+					</thead>
+					<tbody id="userListContent">
+					</tbody>
 				</table>
 				
 				<button type="button" id="prevBtn" class="btn btn-primary">이전</button>
+				<span id="pageInfo"></span>
 				<button type="button" id="nextBtn" class="btn btn-primary">다음</button>
                
             </div>
@@ -336,13 +348,37 @@
 
 </body>
 <script>
-
+	//작성날짜 끝 자동적으로 입력하게하기
+	document.getElementById("fromDate").valueAsDate = new Date();
 	$("#sideBar").load("/sideBar #accordionSidebar", function(){
 		$("#sideBarUser").addClass("active");
 		$("#sideBarUser").children("a").attr("aria-expanded","false");
 		$("#sideBarUser").children("div").addClass("show");
 	});
-
+	// 초기화 버튼 (fromDate 빼고 리셋 시킨다)
+	$("#resetBtn").click(function() {
+		location.reload();
+	});
+	var checkBoxArr = [];
+	// 삭제 버튼 클릭
+	$("#userRemoveBtn").click(function(){
+		console.log("선택된 값을 삭제합니다.")
+		$("input[name=chk]:checked").each(function(){
+			checkBoxArr.push($(this).val());
+		});
+		console.log(checkBoxArr);
+		$.ajax({
+			url : "/rest/adminUserRemove",
+			method : "post",
+			traditional : true, //ajax에서 기본적으로 배열을 지원하지않기때문에 설정
+			data : {"checkBoxArr" : checkBoxArr,},
+			success : function(json){
+				alert("탈퇴가 완료되었습니다.");
+				location.reload();
+			}
+		});
+	});
+	// -------------------------------------------------------------------테이블 관련  시작----------------------------------------------
 	// 페이징
 	var currentPage = 1;
 	var lastPage = 0;
@@ -350,8 +386,7 @@
 	var searchWord = null;
 	var toDate = null;
 	var fromDate = null;
-	//작성날짜 끝 자동적으로 입력하게하기
-	document.getElementById("fromDate").valueAsDate = new Date();
+
 	// 기본 홈
 	$.ajax({
 		url : "/rest/adminUserList",
@@ -359,27 +394,17 @@
 		data : {"currentPage" : currentPage},
 		success : function(json){
 			console.log(json);
-			currentPage = json.currentPage;
-			lastPage = json.lastPage;
+			subInfo(json);
 			BtnShow(currentPage,lastPage);
 			$(json.list).each(function(index,item){
-				var html = "<tr>";
-				html += "<td><div class='custom-control custom-checkbox'><input class='custom-control-input' type='checkbox' name='chk' id='check"+index+"'><label name='chk' class='custom-control-label' for='check"+index+"'></label></div></td>";
-				html += "<td>"+item.userName+"</td>";
-				html += "<td>"+item.rank.rankName+"</td>";
-				html += "<td>"+item.region.regionName+"</td>";
-				html += "<td>"+item.userBirthdate+"</td>";
-				html += "<td>"+item.userCreatetime+"</td>";
-				html += "<td>"+item.userAuthority+"</td>";
-				html += "</tr>";
-				$("#userList").append(html);
+				activeView(index, item);
 			});
 			
 		} 
 	});	
 	// 검색 버튼 클릭
 	$("#searchBtn").click(function(){
-		$("#userList").empty();
+		$("#userListContent").empty();
 		$.ajax({
 			url : "/rest/adminUserList",
 			method : "post",
@@ -389,27 +414,17 @@
 					"rowPerPage" : $("#rowPerPage").val()},
 			success : function(json){
 				console.log(json);
-				currentPage = json.currentPage;
-				lastPage = json.lastPage;
+				subInfo(json);
 				BtnShow(currentPage,lastPage);
 				$(json.list).each(function(index,item){
-					var html = "<tr>";
-					html += "<td><input type='checkbox'></td>"
-					html += "<td>"+item.userName+"</td>";
-					html += "<td>"+item.rank.rankName+"</td>";
-					html += "<td>"+item.region.regionName+"</td>";
-					html += "<td>"+item.userBirthdate+"</td>";
-					html += "<td>"+item.userCreatetime+"</td>";
-					html += "<td>"+item.userAuthority+"</td>";
-					html += "</tr>";
-				$("#userList").append(html);
+					activeView(index, item);
 				});
 			} 
 		});
 	});
 	// 다음 버튼 클릭
 	$("#nextBtn").click(function(){
-		$("#userList").empty();
+ 		$("#userListContent").empty();
 		$.ajax({
 			url : "/rest/adminUserList",
 			method : "post",
@@ -420,21 +435,10 @@
 					"rowPerPage" : $("#rowPerPage").val()},
 			success : function(json){
 				console.log(json);
-				currentPage = json.currentPage;
-				rowPerPage = json.rowPerPage;
-				lastPage = json.lastPage;
+				subInfo(json);
 				BtnShow(currentPage,lastPage);
 				$(json.list).each(function(index,item){
-					var html = "<tr>";
-					html += "<td><input type='checkbox'></td>"
-					html += "<td>"+item.userName+"</td>";
-					html += "<td>"+item.rank.rankName+"</td>";
-					html += "<td>"+item.region.regionName+"</td>";
-					html += "<td>"+item.userBirthdate+"</td>";
-					html += "<td>"+item.userCreatetime+"</td>";
-					html += "<td>"+item.userAuthority+"</td>";
-					html += "</tr>";
-				$("#userList").append(html);
+					activeView(index, item);
 				});
 			} 
 		});
@@ -442,7 +446,7 @@
 	
 	// 이전 버튼 클릭
 	$("#prevBtn").click(function(){
-		$("#userList").empty();
+		$("#userListContent").empty();
 		$.ajax({
 			url : "/rest/adminUserList",
 			method : "post",
@@ -453,28 +457,17 @@
 					"rowPerPage" : $("#rowPerPage").val()},
 			success : function(json){
 				console.log(json);
-				currentPage = json.currentPage;
-				rowPerPage = json.rowPerPage;
-				lastPage = json.lastPage;
+				subInfo(json);
 				BtnShow(currentPage,lastPage);
 				$(json.list).each(function(index,item){
-					var html = "<tr>";
-					html += "<td><input type='checkbox'></td>"
-					html += "<td>"+item.userName+"</td>";
-					html += "<td>"+item.rank.rankName+"</td>";
-					html += "<td>"+item.region.regionName+"</td>";
-					html += "<td>"+item.userBirthdate+"</td>";
-					html += "<td>"+item.userCreatetime+"</td>";
-					html += "<td>"+item.userAuthority+"</td>";
-					html += "</tr>";
-				$("#userList").append(html);
+					activeView(index, item);
 				});
 			} 
 		});
 	});
 	// 보기형식 선택
 	$("#rowPerPage").change(function(){
-		$("#userList").empty();
+		$("#userListContent").empty();
 		$.ajax({
 			url : "/rest/adminUserList",
 			method : "post",
@@ -485,29 +478,39 @@
 					"rowPerPage" : $("#rowPerPage").val()},
 			success : function(json){
 				console.log(json);
-				currentPage = json.currentPage;
-				rowPerPage = json.rowPerPage;
-				lastPage = json.lastPage;
+				subInfo(json);
 				BtnShow(currentPage,lastPage);
 				$(json.list).each(function(index,item){
-					var html = "<tr>";
-					html += "<td><input type='checkbox' name=''></td>"
-					html += "<td>"+item.userName+"</td>";
-					html += "<td>"+item.rank.rankName+"</td>";
-					html += "<td>"+item.region.regionName+"</td>";
-					html += "<td>"+item.userBirthdate+"</td>";
-					html += "<td>"+item.userCreatetime+"</td>";
-					html += "<td>"+item.userAuthority+"</td>";
-					html += "</tr>";
-					
-				$("#userList").append(html);
+					activeView(index, item);
 				});
 			} 
 		});
 	});
 	
-	 
-	
+	// ajax html뛰우는 함수
+	function activeView(index, item) {
+		var html = "<tr>";
+		html += "<td><div class='custom-control custom-checkbox'><input class='custom-control-input' type='checkbox' name='chk' id='check"+index+"' value='"+item.userId+"'><label name='chk' class='custom-control-label' for='check"+index+"'></label></div></td>";
+		html += "<td>"+item.userName+"</td>";
+		html += "<td>"+item.rank.rankName+"</td>";
+		html += "<td>"+item.region.regionName+"</td>";
+		html += "<td>"+item.userBirthdate+"</td>";
+		html += "<td>"+item.userCreatetime+"</td>";
+		html += "<td>"+item.userAuthority+"</td>";
+		html += "</tr>";
+		$("#userListContent").append(html);
+	}
+	// 화면뛰울때 필요한 함수(현재,마지막 페이지 등)
+	function subInfo(json){
+		$("#totalRow").empty();
+		$("#pageInfo").empty();
+		currentPage = json.currentPage;
+		rowPerPage = json.rowPerPage;
+		lastPage = json.lastPage;
+		$("#totalRow").append("검색결과"+json.totalRow+"건");
+		$("#pageInfo").append(currentPage+"/"+lastPage);
+	}
+	// 전체선택 함수
 	function checkAll() {
 		if ($("#selectAll").prop("checked") === true) {
 			alert("체크");
@@ -531,5 +534,7 @@
 			$("#nextBtn").hide();
 		}
 	}
+	// -------------------------------------------------------------------테이블 관련  끝----------------------------------------------
+	
 </script>
 </html>

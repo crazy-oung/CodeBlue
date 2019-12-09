@@ -1,5 +1,6 @@
 package com.example.codeblue.test.hyol;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +27,14 @@ public class HyolRestController {
 			System.out.println("toDate : "+toDate);
 			System.out.println("fromDate : "+fromDate);
 			return hyolService.getAdminUserList(currentPage, rowPerPage,searchWord, toDate, fromDate);
+		}
+	// 회원 삭제(y->n)
+		@PostMapping("/rest/adminUserRemoveTest")
+		public String adminUserRemove(@RequestParam(value="checkBoxArr") List<String> checkBoxArr) {
+			System.out.println("::: post - /rest/adminUserRemoveTest :::");
+			System.out.println(checkBoxArr);
+			int checking = hyolService.removeAdminUser(checkBoxArr);
+			System.out.println("1이면 성공 : "+checking);
+			return "adminUserListTest";
 		}
 }

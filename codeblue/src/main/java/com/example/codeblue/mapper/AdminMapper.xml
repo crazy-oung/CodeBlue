@@ -13,6 +13,7 @@
 		<result column="user_birthdate" property="userBirthdate" ></result>
 		<result column="user_createtime" property="userCreatetime"></result>
 		<result column="user_authority" property="userAuthority" ></result>
+		<result column="user_activity" property="userActivity"></result>
 		
 		<association property="region" resultMap="Region">
 		</association>
@@ -243,7 +244,7 @@
 		DELETE FROM hospital
 		WHERE hospital_id = #{hospitalId} 
 	</delete>
-	
+	<!-- 유저 리스트 -->
 	<select id="adminSelectUserList" parameterType="com.example.codeblue.vo.Page" resultMap="User">
 		select
 			u.user_id,
@@ -254,20 +255,21 @@
 			u.user_createtime,
 			ra.rank_id,
 			ra.rank_name,
-			u.user_authority
+			u.user_authority,
+			u.user_activity
 		from user u inner join region re INNER JOIN rank ra
 		ON u.region_id = re.region_id AND u.rank_id = ra.rank_id
-		where u.user_authority = 'user'
+		where u.user_authority = 'user' and u.user_activity = 'Y'
 			<if test="searchWord != null">
 				and u.user_name like CONCAT('%',#{searchWord},'%')
 			</if>
 			<if test="toDate != null and fromDate != null">
 			AND user_createtime &gt;= #{toDate} AND user_createtime &lt;= #{fromDate}
 			</if>
-		order by u.user_createtime desc
+		order by u.user_createtime DESC
 		limit #{beginRow},#{rowPerPage}
 	</select>
-	
+	<!-- 유저리스트 카운팅 -->
 	<select id="adminSelectUserCount" parameterType="com.example.codeblue.vo.Page" resultType="int">
 		SELECT
 			COUNT(*)
@@ -280,7 +282,15 @@
 			AND user_createtime &gt;= #{toDate} AND user_createtime &lt;= #{fromDate}
 		</if>
 	</select>
-
+	<!-- 유저삭제(y->n) -->
+	<update id="adminDeleteUser" parameterType="java.util.List">
+		update user
+		set user_activity = 'N'
+		where user_id in
+		<foreach collection="list" item="type" index="index" open="(" close=")" separator=",">
+			(#{type})
+		</foreach>
+	</update>
 	<select id="selectNoticeBoard" resultMap="NoticeBoard"
   									parameterType="com.example.codeblue.vo.Page">
   		SELECT notice_id,

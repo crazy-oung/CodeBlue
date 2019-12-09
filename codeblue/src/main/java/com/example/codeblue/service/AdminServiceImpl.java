@@ -198,11 +198,20 @@ public class AdminServiceImpl implements AdminService {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("currentPage", currentPage);
 		map.put("rowPerPage", rowPerPage);
+		map.put("totalRow", totalRow);
 		map.put("lastPage", lastPage);
 		map.put("list", list);
 		map.put("toDate", toDate);
 		map.put("fromDate", fromDate);
 		return map;
+	}
+	// 회원 삭제(업데이트y->n)
+	@Override
+	public int removeAdminUser(List<String> checkBoxArr) {
+		// 업데이트 전 체크한 회원 조회
+		System.out.println("::: AdminUserServiceImpl - adminDeleteUser :::");
+		int checking = adminMapper.adminDeleteUser(checkBoxArr);
+		return checking;
 	}
 	//공지사항 리스트 가져오기
 	@Override

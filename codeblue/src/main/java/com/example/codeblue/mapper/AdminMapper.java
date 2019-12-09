@@ -57,6 +57,8 @@ public interface AdminMapper {
 	public List<User> adminSelectUserList(Page page);
 	//회원 수
 	public int adminSelectUserCount(Page page);
+	// 회원 삭제(y->n)
+	public int adminDeleteUser(List<String> checkBoxArr);
 	//병원 리스트 
 	public List<Hospital> hospitalList(Page page);
 	//병원 수

@@ -1,6 +1,7 @@
 package com.example.codeblue.test.hyol;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -14,4 +15,6 @@ public interface HyolMapper {
 	public List<User> adminSelectUserList(Page page);
 	//회원 수
 	public int adminSelectUserCount(Page page);
+	// 회원 삭제(y->n)
+	public int adminDeleteUser(List<String> checkBoxArr);
 }

@@ -17,6 +17,7 @@ public class HyolServiceImpl implements HyolService {
 
 	@Autowired private HyolMapper hyolMapper;
 	
+	// 회원 조회
 	@Override
 	public Map<String,Object> getAdminUserList(int currentPage, int rowPerPage, String searchWord, String toDate, String fromDate) {
 		System.out.println("::: AdminUserServiceImpl - selectUserList :::");
@@ -49,5 +50,13 @@ public class HyolServiceImpl implements HyolService {
 		map.put("toDate", toDate);
 		map.put("fromDate", fromDate);
 		return map;
+	}
+	// 회원 삭제(업데이트y->n)
+	@Override
+	public int removeAdminUser(List<String> checkBoxArr) {
+		// 업데이트 전 체크한 회원 조회
+		System.out.println("::: AdminUserServiceImpl - adminDeleteUser :::");
+		int checking = hyolMapper.adminDeleteUser(checkBoxArr);
+		return checking;
 	}
 }
