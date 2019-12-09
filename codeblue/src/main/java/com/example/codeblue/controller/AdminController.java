@@ -14,7 +14,7 @@ public class AdminController {
 	// 코드블루 소개 패이지
 	@GetMapping("index")
 	public String getIndex() {
-		return "/codeblue/index";
+		return "/index";
 	}
 	
 	// 사이트 하단 부 

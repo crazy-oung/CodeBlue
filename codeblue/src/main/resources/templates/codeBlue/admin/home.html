@@ -460,172 +460,174 @@
 
   <!-- Page level plugins -->
   <script src="vendor/chart.js/Chart.min.js"></script>
+  
+  <!-- codeBlue Admin scripts -->
+  <script src="js/codeBlueAdmin.js"></script>
+  
 	 
 </body>
 <script>
-	$("#sideBar").load("/sideBar #accordionSidebar", function(){
-		console.log("관리자 홈입니다.")
-		$("#sideBarDashBoard").addClass("active");
-	});
 	
+$("#sideBarDashBoard").addClass("active");
 
-var piectx = document.getElementById("feildQuestionCountPieChart"); 
-var piecount = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+	var piectx = document.getElementById("feildQuestionCountPieChart"); 
+	var piecount = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 
-$.ajax({
-	url:"/getCurrentQuestionCountFromFeild",
-	method:"get",
-	success : function(json){
-		console.log(json);			
-		
-		$(json).each(function(index, item){
-			piecount[item.feildId-1] = item.questionCount;
-		})
-		console.log(piecount)
-		feildQuestionCountChart.update();
-	},
-});
-
-
-
-var feildQuestionCountChart = new Chart(piectx, {
-	  type: 'doughnut',
-	  data: {
-	    labels: ["내과", "소아청소년", "정신과","피부과", "신경과", "재활의학","가정의학", "안과", "이비인후과",
-	    	"비뇨기", "신경", "정형외과","성형외과", "외과", "산부인과","흉부외과", "영상의학", "핵의학", 
-	    	"마취통증", "방사선종양", "진단검사의학", "병리학", "응급의학", "직업환경", "예방의학"],
-	    datasets: [{
-	      data: piecount,
-	      backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b', '#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b',
-	    	  '#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b','#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b',
-	    	  '#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b'],
-	      hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'], 
-	      hoverBorderColor: "rgba(234, 236, 244, 1)",
-	    }],
-	  },
-	  options: {
-	    maintainAspectRatio: false,
-	    tooltips: {
-	      backgroundColor: "rgb(255,255,255)",
-	      bodyFontColor: "#858796",
-	      borderColor: '#dddfeb',
-	      borderWidth: 1,
-	      xPadding: 15,
-	      yPadding: 15,
-	      displayColors: false,
-	      caretPadding: 10,
-	    },
-	    legend: {
-	      display: false
-	    },
-	    cutoutPercentage: 90,
-	  },
+	$.ajax({
+		url:"/getCurrentQuestionCountFromFeild",
+		method:"get",
+		success : function(json){
+			console.log(json);			
+			
+			$(json).each(function(index, item){
+				piecount[item.feildId-1] = item.questionCount;
+			})
+			console.log(piecount)
+			feildQuestionCountChart.update();
+		},
 	});
 
 
 
+	var feildQuestionCountChart = new Chart(piectx, {
+		  type: 'doughnut',
+		  data: {
+		    labels: ["내과", "소아청소년", "정신과","피부과", "신경과", "재활의학","가정의학", "안과", "이비인후과",
+		    	"비뇨기", "신경", "정형외과","성형외과", "외과", "산부인과","흉부외과", "영상의학", "핵의학", 
+		    	"마취통증", "방사선종양", "진단검사의학", "병리학", "응급의학", "직업환경", "예방의학"],
+		    datasets: [{
+		      data: piecount,
+		      backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b', '#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b',
+		    	  '#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b','#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b',
+		    	  '#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b'],
+		      hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'], 
+		      hoverBorderColor: "rgba(234, 236, 244, 1)",
+		    }],
+		  },
+		  options: {
+		    maintainAspectRatio: false,
+		    tooltips: {
+		      backgroundColor: "rgb(255,255,255)",
+		      bodyFontColor: "#858796",
+		      borderColor: '#dddfeb',
+		      borderWidth: 1,
+		      xPadding: 15,
+		      yPadding: 15,
+		      displayColors: false,
+		      caretPadding: 10,
+		    },
+		    legend: {
+		      display: false
+		    },
+		    cutoutPercentage: 90,
+		  },
+		});
 
-var linectx = document.getElementById("monthlyQuestionCountLineChart"); 
-var linecount = [0,0,0,0,0,0,0,0,0,0,0,0];
 
-$.ajax({
-	url:"/getYearlyQuestionCount",
-	method:"get",
-	success : function(json){
-		console.log(json);			
-		
-		$(json).each(function(index, item){
-			linecount[item.questionMonth-1] = item.questionCount;
-		})
-		console.log(linecount);
-		yearlyQuestionCountChart.update();
-	},
-});
 
-var yearlyQuestionCountChart = new Chart(linectx, {
-	type: 'line',
-	  data: {
-	    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-	    datasets: [{
-	      label: "질문수",
-	      lineTension: 0.3,
-	      backgroundColor: "rgba(78, 115, 223, 0.05)",
-	      borderColor: "rgba(78, 115, 223, 1)",
-	      pointRadius: 3,
-	      pointBackgroundColor: "rgba(78, 115, 223, 1)",
-	      pointBorderColor: "rgba(78, 115, 223, 1)",
-	      pointHoverRadius: 3,
-	      pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
-	      pointHoverBorderColor: "rgba(78, 115, 223, 1)",
-	      pointHitRadius: 10,
-	      pointBorderWidth: 2,
-	      data: linecount,
-	    }],
-	  },
-	  options: {
-	    maintainAspectRatio: false,
-	    layout: {
-	      padding: {
-	        left: 10,
-	        right: 25,
-	        top: 25,
-	        bottom: 0
-	      }
-	    },
-	    scales: {
-	      xAxes: [{
-	        time: {
-	          unit: 'date'
-	        },
-	        gridLines: {
-	          display: false,
-	          drawBorder: false
-	        },
-	        ticks: {
-	          maxTicksLimit: 7
-	        }
-	      }],
-	      yAxes: [{
-	        ticks: {
-	          maxTicksLimit: 5,
-	          padding: 10,
-	          beginAtZero: true
-	        },
-	        gridLines: {
-	          color: "rgb(234, 236, 244)",
-	          zeroLineColor: "rgb(234, 236, 244)",
-	          drawBorder: false,
-	          borderDash: [2],
-	          zeroLineBorderDash: [2]
-	        }
-	      }],
-	    },
-	    legend: {
-	      display: false
-	    },
-	    tooltips: {
-	      backgroundColor: "rgb(255,255,255)",
-	      bodyFontColor: "#858796",
-	      titleMarginBottom: 10,
-	      titleFontColor: '#6e707e',
-	      titleFontSize: 14,
-	      borderColor: '#dddfeb',
-	      borderWidth: 1,
-	      xPadding: 15,
-	      yPadding: 15,
-	      displayColors: false,
-	      intersect: false,
-	      mode: 'index',
-	      caretPadding: 10,
-	      callbacks: {
-	        label: function(tooltipItem, chart) {
-	          var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-	          return datasetLabel + ': ' + number_format(tooltipItem.yLabel)+"개";
-	        }
-	      }
-	    },
-	  }
-});	
+
+	var linectx = document.getElementById("monthlyQuestionCountLineChart"); 
+	var linecount = [0,0,0,0,0,0,0,0,0,0,0,0];
+
+	$.ajax({
+		url:"/getYearlyQuestionCount",
+		method:"get",
+		success : function(json){
+			console.log(json);			
+			
+			$(json).each(function(index, item){
+				linecount[item.questionMonth-1] = item.questionCount;
+			})
+			console.log(linecount);
+			yearlyQuestionCountChart.update();
+		},
+	});
+
+	var yearlyQuestionCountChart = new Chart(linectx, {
+		type: 'line',
+		  data: {
+		    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+		    datasets: [{
+		      label: "질문수",
+		      lineTension: 0.3,
+		      backgroundColor: "rgba(78, 115, 223, 0.05)",
+		      borderColor: "rgba(78, 115, 223, 1)",
+		      pointRadius: 3,
+		      pointBackgroundColor: "rgba(78, 115, 223, 1)",
+		      pointBorderColor: "rgba(78, 115, 223, 1)",
+		      pointHoverRadius: 3,
+		      pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+		      pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+		      pointHitRadius: 10,
+		      pointBorderWidth: 2,
+		      data: linecount,
+		    }],
+		  },
+		  options: {
+		    maintainAspectRatio: false,
+		    layout: {
+		      padding: {
+		        left: 10,
+		        right: 25,
+		        top: 25,
+		        bottom: 0
+		      }
+		    },
+		    scales: {
+		      xAxes: [{
+		        time: {
+		          unit: 'date'
+		        },
+		        gridLines: {
+		          display: false,
+		          drawBorder: false
+		        },
+		        ticks: {
+		          maxTicksLimit: 7
+		        }
+		      }],
+		      yAxes: [{
+		        ticks: {
+		          maxTicksLimit: 5,
+		          padding: 10,
+		          beginAtZero: true
+		        },
+		        gridLines: {
+		          color: "rgb(234, 236, 244)",
+		          zeroLineColor: "rgb(234, 236, 244)",
+		          drawBorder: false,
+		          borderDash: [2],
+		          zeroLineBorderDash: [2]
+		        }
+		      }],
+		    },
+		    legend: {
+		      display: false
+		    },
+		    tooltips: {
+		      backgroundColor: "rgb(255,255,255)",
+		      bodyFontColor: "#858796",
+		      titleMarginBottom: 10,
+		      titleFontColor: '#6e707e',
+		      titleFontSize: 14,
+		      borderColor: '#dddfeb',
+		      borderWidth: 1,
+		      xPadding: 15,
+		      yPadding: 15,
+		      displayColors: false,
+		      intersect: false,
+		      mode: 'index',
+		      caretPadding: 10,
+		      callbacks: {
+		        label: function(tooltipItem, chart) {
+		          var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+		          return datasetLabel + ': ' + tooltipItem.yLabel+"개";
+		        }
+		      }
+		    },
+		  }
+	});	
+
 
 </script>
 </html>

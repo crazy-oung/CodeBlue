@@ -16,9 +16,13 @@ public class BoardController {
 	@GetMapping("/")
 	public String getHome(HttpSession session) {
 		System.out.println("::: get - codeBlue home :::");
-		if(session.getAttribute("user") == null) {
-			return "/home";
+		System.out.println(session.getAttribute("loginUser"));
+		if(session.getAttribute("loginUser") != null) {
+			if(session.getAttribute("loginManager")!= null) {
+				return "codeblue/admin/home";
+			}
+			return "/codeBlue/today";
 		}
-		return "/codeBlue/today";
+		return "/index";
 	}
 }

@@ -28,38 +28,13 @@
 
 </head>
 
-<body style="background: #ebebeb;" >
+<body id="page-top" style="background: #ebebeb;" >
  		
-		<!-- Topbar -->
-		<nav 
-			class="navbar navbar-expand navbar-light topbar mb-4 shadow fixed-top"
-			style="height: 50px; border-bottom: 1px solid #d9d9d9; border-top: 4px solid #4e73df; background: #f2f2f2;">
-			<div class="container">
-				<!-- topbar codeblue logo -->
-				<a class="navbar-brand text-primary mr-0" href="/">
-					<img src="/img/codeBlueLogo.png" width="130px"> 
-				</a> 
-				<a class="btn btn-sm btn-default mx-2 hov-g text-dark" href="/QnA">QnA</a>
-
-				<!-- Topbar Search -->
-				<div class="input-group">
-					<input type="text" class="form-control  form-control-sm bg-light border-1" placeholder="검색어" style="width: 400px !important">
-					<div class="input-group-append">
-						<button class="btn btn-primary btn-sm" type="button">
-							<i class="fas fa-search fa-sm"></i>
-						</button>
-					</div>
-				</div>
-
-				<div class="d-felx justify-content-end" style="width: 600px">
-					<a class="ml-3 btn btn-sm hov-p text-primary" href="/login">로그인</a>
-					<a class=" btn ml-1 btn-sm btn-primary" href="/register">회원가입</a>
-				</div> 
-			</div>
-		</nav>
-		<!-- End of Topbar -->
+	<!-- Topbar -->
+	<div id="topBar"></div>
+	<!-- End of Topbar -->
 		
-		<div class='content'>
+		<div class='content pb-4'>
 		<!-- Begin Page Content -->
 		<div class="container" style="height: 100%" align="center">  
 			<div class="pt-4 mt-5 text-left" > 
@@ -73,7 +48,7 @@
 				<!-- ask Form begin -->
 				<div class="card shadow p-3 mx-5" style="height: 100%">  
 					<form method="post">
-						<input class="form-control form-control-sm mb-2" placeholder="아이디" id="id">
+						<input class="form-control form-control-sm mb-2" placeholder="아이디" id="id" hidden="hidden">
 						<label class="text-dark font-weight-bold">분야</label>
 						<select id="feild" class="form-control form-control-sm mb-2"></select>
 						<label class="text-dark font-weight-bold">제목</label>
@@ -89,21 +64,40 @@
 					</form>
 				</div>
 				<!-- ask Form end --> 
-				<button id="submit" class="btn btn-primary shadow mt-3 px-4  ml-5">질문 등록</button>
-			</div> 			
+				<button id="submit" class="btn btn-primary shadow mt-3 px-5  ml-5">질문 등록</button>
+			</div> 		
+		</div>	
 		</div> 
 		<!-- Page Content End --> 
 		 
-	<!-- Footer -->
-	<footer class="sticky-footer text-light mt-2" style="background: #333333">
-		<div class="container my-auto">
-			<div class="copyright text-right my-auto">
-				<span>Copyright &copy; codeBlue 2019</span>
-			</div>
-		</div>
-	</footer>
+<!-- ETC -->
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded bg-primary" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">로그아웃 하시겠습니까?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">로그아웃 하고 싶으시면 아래 로그아웃 버튼을 클릭해주세요!</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+          <a class="btn btn-primary" href="/logout">로그아웃</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+	<!-- Footer -->        
+	<div id="footer"></div>
 	<!-- End of Footer -->
-	</div>
 
 	<!-- Bootstrap core JavaScript-->
 	<script src="vendor/jquery/jquery.min.js"></script>
@@ -120,6 +114,8 @@
 	<script src="js/summernote/summernote-ko-KR.js"></script>
 	<script src="js/summernote/summernote.min.js"></script> 
 	
+  	<!-- CodeBlue scripts -->
+  	<script src="js/codeBlueUser.js"></script>
 	
 </body>
 <script> 
