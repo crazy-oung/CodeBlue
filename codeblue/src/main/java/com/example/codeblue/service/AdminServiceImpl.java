@@ -31,21 +31,38 @@ public class AdminServiceImpl implements AdminService {
 	//문의사항 답변 저장
 	@Override
 	public int addInquiryHistoryAnswer(InquiryHistoryAnswer inqruiyHistoryAnswer) {
-		System.out.println(":::InquiryHistoryAnswerServiceImplTest - addInquiryHistoryAnswer:::");
+		System.out.println(":::AdminServiceImpl - addInquiryHistoryAnswer:::");
 		return adminMapper.insertInquiryHistoryAnswer(inqruiyHistoryAnswer);
 	}
-	
+	//FAQ 상세정보 가져오기
+	@Override
+	public FaqBoard getFaqOne(int faqId) {
+		System.out.println(":::AdminServiceImpl - getFaqOne:::");
+		return adminMapper.selectFaqOne(faqId);
+	}
+	//FAQ 삭제하기
+	@Override
+	public int removeFaq(int faqId) {
+		System.out.println(":::AdminServiceImpl - removeFaq:::");
+		return adminMapper.deleteFaq(faqId);
+	}
+	//FAQ 수정하기
+	@Override
+	public int modifyFaq(FaqBoard faqBoard) {
+		System.out.println(":::AdminServiceImpl - modifyFaq:::");
+		return adminMapper.updateFaq(faqBoard);
+	}
 	//FAQ 추가하기
 	@Override
 	public int addFaqBoard(FaqBoard faqBoard) {
-		System.out.println(":::InquiryHistoryAnswerServiceImplTest - addFaqBoard:::");
+		System.out.println(":::AdminServiceImpl - addFaqBoard:::");
 		return adminMapper.insertFaqBoard(faqBoard);
 	}
 	
 	//FAQ 전체 리스트 가져오기
 	@Override
 	public Map<String, Object> getFaqBoardList(int currentPage, int rowPerPage, String searchWord) {
-		System.out.println(":::InquiryHistoryAnswerServiceImplTest - getInquiryHistoryAnswerList:::");
+		System.out.println(":::AdminServiceImpl - getInquiryHistoryAnswerList:::");
 		System.out.println("currentPage :"+currentPage+"/rowPerPage :"+rowPerPage);
 
 		Page page = new Page();
@@ -82,6 +99,7 @@ public class AdminServiceImpl implements AdminService {
 	//서비스 카테고리 리스트 가져오기
 	@Override
 	public List<ServiceCategory> getServiceCategoryList() {
+		System.out.println(":::AdminService - getServiceCategoryList:::");
 		return adminMapper.selectServiceCategoryList();
 	}
 	
@@ -189,7 +207,7 @@ public class AdminServiceImpl implements AdminService {
 	//공지사항 리스트 가져오기
 	@Override
 	public Map<String, Object> getNoticeBoard(int currentPage, int rowPerPage, String searchWord) {
-		System.out.println(":::AdminNoticeServiceImpl - getNoticeBoard:::");
+		System.out.println(":::AdminServiceImpl - getNoticeBoard:::");
 		System.out.println("currentPage :"+currentPage+"/rowPerPage :"+rowPerPage);
 		
 		int beginRow = (currentPage-1)*rowPerPage;
@@ -225,7 +243,7 @@ public class AdminServiceImpl implements AdminService {
 	//공지사항 상세페이지 가져오기
 	@Override
 	public NoticeBoard getNoticeOne(int noticeId) {
-		System.out.println(":::AdminNoticeServiceImpl - getNoticeOne");
+		System.out.println(":::AdminServiceImpl - getNoticeOne");
 		System.out.println("noticeId"+noticeId);
 		
 		return adminMapper.noticeBoardOne(noticeId);
@@ -233,14 +251,14 @@ public class AdminServiceImpl implements AdminService {
 	//공지사항 추가
 	@Override
 	public int addNotice(NoticeBoard noticeBoard) {
-		System.out.println(":::AdminNoticeServiceImpl - addNotice");
+		System.out.println(":::AdminServiceImpl - addNotice");
 		System.out.println("NoticeBoard"+ noticeBoard);
 		return adminMapper.insertNoticeBoard(noticeBoard);
 	}
 	//공지사항 삭제
 	@Override
 	public int removeNoticeBoard(int noticeId) {
-		System.out.println(":::ServiceImpl - removeNoticeBoard:::");
+		System.out.println(":::AdminServiceImpl - removeNoticeBoard:::");
 		System.out.println("notice Id : " + noticeId);
 		
 		return adminMapper.deleteNoticeBoard(noticeId);
@@ -249,19 +267,19 @@ public class AdminServiceImpl implements AdminService {
 	//신고내역 상세 페이지 가져오기
 	@Override
 	public ReportHistory getReportHistoryOne(int reportHistoryId) {
-		System.out.println("::: AdminInquiryServiceImpl - getReportHistoryOne :::");
+		System.out.println("::: AdminServiceImpl - getReportHistoryOne :::");
 		return adminMapper.selectReportHistoryOne(reportHistoryId);
 	}
 	//문의내역 상세페이지 가져오기
 	@Override
 	public InquiryHistory getInquiryHistoryOne(int inquiryHistoryId) {
-		System.out.println("::: AdminInquiryServiceImpl - getInquiryHistoryOne :::");
+		System.out.println("::: AdminServiceImpl - getInquiryHistoryOne :::");
 		return adminMapper.selectInquiryHistoryOne(inquiryHistoryId);
 	}
 	//신고내역 가져오기
 	@Override
 	public Map<String, Object> getReportHistoryList(int currentPage, int rowPerPage) {
-		System.out.println("::: AdminInquiryServiceImpl - getReportHistoryList :::");
+		System.out.println("::: AdminServiceImpl - getReportHistoryList :::");
 		
 		Page page = new Page();
 		page.setRowPerPage(rowPerPage);
@@ -288,7 +306,7 @@ public class AdminServiceImpl implements AdminService {
 	//문의 내역 리스트 가져오기
 	@Override
 	public Map<String, Object> getInquiryHistoryList(int currentPage, int rowPerPage) {
-		System.out.println("::: AdminInquiryServiceImpl - getInquiryHistoryList :::");
+		System.out.println("::: AdminServiceImpl - getInquiryHistoryList :::");
 		
 		Page page = new Page();
 		page.setRowPerPage(rowPerPage);

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -23,9 +24,9 @@
   <!-- Page Wrapper -->
   <div id="wrapper">
 
-    <!-- SideBard load -->
+  	<!-- SideBard load -->
 	<div id="sideBar"></div>
-
+	
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
 
@@ -216,33 +217,37 @@
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
-        <div class="container" style="height: 100%" align="center"> 
-	          <div class="pt-4 mt-5 text-left" >
-	          	<p class="text-center">
+        
+       	<!-- Begin Page Content -->
+		<div class="container" style="height: 100%" align="center">  
+			<div class="pt-4 mt-5 text-left" > 
+				<p class="text-center">
 					<a href="/">
 						<img src="/img/codeBlueIcon.png" width="50px"><br>
 						<img class="mb-1" src="/img/codeBlue.png" width="100px">
 					</a> 
 				</p>
-           	<!-- :::::::::::::::::: 내용 출력 시작 :::::::::::: -->
-			<div class="card shadow p-3 mx-5">
-				<div>
-					<label class="text-dark font-weight-bold">제목</label>
-					<input class="form-control form-control-sm mb-2" placeholder="제목" id="faqTitle">
-					<select id="serviceCategoryList" class="form-control"></select>
+				
+				<!-- ask Form begin -->
+				<div class="card shadow p-3 mx-5">  
+					<form method="post">
+						<h2 class="text-center">정보 수정</h2>
+						<label class="text-dark font-weight-bold">FAQ 제목</label>
+						<textarea class="form-control form-control-sm mb-2" id="faqTitle" rows="1"></textarea>
+						<label class="text-dark font-weight-bold">FAQ 내용</label>
+						<textarea class="form-control form-control-sm mb-2" id="faqContent" rows="5"></textarea>
+						<label class="text-dark font-weight-bold">카테고리</label>
+						<select id="serviceCategoryList" class="form-control"></select>
+					  <hr>
+					</form>
 				</div>
-				<div>
-					<label class="text-dark font-weight-bold">내용</label>
-						<textarea id="faqContent" rows="15" cols="50" class="form-control form-control-sm mb-2" placeholder="내용" >내용을 입력하세요</textarea>
-				</div>
-			</div>
-				<button id="faqBoardInsertBtn" class="btn btn-primary shadow mt-3 px-4  ml-5">FAQ 등록</button>
+				<!-- ask Form end --> 
+				<button id="modifyFaqBtn" class="btn btn-primary shadow mt-3 px-4  ml-5">수정</button>
 				<button id="cancel" class="btn btn-primary shadow mt-3 px-4  ml-5">취소</button>
-          </div>
-        </div>
+			</div> 			
+		</div> 
         
-        <!-- /.container-fluid --> 
-      </div>
+        
       <!-- End of Main Content -->
 
       <!-- Footer -->
@@ -305,14 +310,31 @@
 
 </body>
 <script type="text/javascript">
-$(document).ready(function() {
+$(document).ready(function(){
 	
 	$("#sideBar").load("/sideBar #accordionSidebar", function(){
-		$("#sideBarNotice").addClass("active");
-		$("#sideBarNotice").children("a").attr("aria-expanded","false");
-		$("#sideBarNotice").children("div").addClass("show");
+		$("#sideBarHospital").addClass("active");
+		$("#sideBarHospital").children("a").attr("aria-expanded","false");
+		$("#sideBarHospital").children("div").addClass("show");
 	});
+	
+	// 파라메터 정보가 저장될 오브젝트
+	// common.js 같은 모든 페이지에서 로딩되는 js 파일에 넣어두면 됨.
+	var getParam = function(key){
+	    var _parammap = {};
+	    document.location.search.replace(/\??(?:([^=]+)=([^&]*)&?)/g, function () {
+	        function decode(s) {
+	            return decodeURIComponent(s.split("+").join(" "));
+	        }
 
+	        _parammap[decode(arguments[1])] = decode(arguments[2]);
+	    });
+
+	    return _parammap[key];
+	};
+	$("#faqId").val(getParam("faqId"));
+	
+	//서비스 카테고리 리스트 출력.
 	$.ajax({
 		url : "/rest/admin/getServiceCategoryList",
 		method : "GET",
@@ -325,27 +347,48 @@ $(document).ready(function() {
 			});
 		}
 	});
-	
-	//답변하기 버튼 누르면 inquiryHistoryAnswer에 저장.
-	$("#faqBoardInsertBtn").click(function(){
-		console.log("check");
-	 	$.ajax({
-	 		url:"/rest/admin/addFaqBoard",
-	 		method:"post",
-			data : { "faqTitle" : $("#faqTitle").val() ,
-					"faqContent" : $("#faqContent").val(),
-					"serviceCategory.serviceCategoryId" : $("#serviceCategoryList").val()
-					},
-			success:function(){
-				console.log("check");
-				location.href = "/adminFaqBoard";
-			}
-		});
-	});
-	  $("#cancel").click(function(){
-		  location.href="/adminFaqBoard";
-	  })
-});
-</script>
+	//원래 정보 가져오기
+	$.ajax({
+		url : "/rest/adminFaqOne",
+		method : "post",
+		data : {"faqId" : getParam("faqId")},
+		success : function(json){
+			console.log(json);
+			$("#faqTitle").append(json.faqTitle);
+			$("#faqContent").append(json.faqContent); 
+		}
+	})
+	//수정 버튼
+	$("#modifyFaqBtn").click(function(){
+		if($("#faqTitle").val() == "" || $("#faqContent").val() == ""){
+			alert("빈칸이 존재합니다");
+			return;
+		}
+		console.log("hihihihi");
+		console.log(getParam("faqId"));
+		console.log($("#faqTitle").val());
+		console.log($("#serviceCategoryList").val());
+		console.log($("#faqContent").val());
 
+		$.ajax({
+			url:"/rest/modifyFaqBorad",
+			method : "post",
+			data : {"faqId" : getParam("faqId"),
+					"faqTitle" : $("#faqTitle").val(),
+					"serviceCategory.serviceCategoryId" : $("#serviceCategoryList").val(),
+					"faqContent" : $("#faqContent").val()},
+			success:function(){
+				console.log("성공");
+				location.href="/adminFaqBoard";
+			}
+		})	
+	});
+  
+	//취소버튼
+  $("#cancel").click(function(){
+	  location.href="/adminFaqBoard";
+  })
+//document
+})
+</script>
 </html>

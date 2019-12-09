@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,7 +8,7 @@
 	<meta name="description" content="">
 	<meta name="author" content="">
 	
-	<title>관리자 - 코드블루</title>
+	<title>관리자 공지 - 코드블루</title>
 	
 	<!-- Custom fonts for this template-->
 	<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -23,7 +24,7 @@
   <!-- Page Wrapper -->
   <div id="wrapper">
 
-    <!-- SideBard load -->
+  	<!-- SideBard load -->
 	<div id="sideBar"></div>
 
     <!-- Content Wrapper -->
@@ -216,33 +217,31 @@
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
-        <div class="container" style="height: 100%" align="center"> 
-	          <div class="pt-4 mt-5 text-left" >
-	          	<p class="text-center">
-					<a href="/">
-						<img src="/img/codeBlueIcon.png" width="50px"><br>
-						<img class="mb-1" src="/img/codeBlue.png" width="100px">
-					</a> 
-				</p>
-           	<!-- :::::::::::::::::: 내용 출력 시작 :::::::::::: -->
-			<div class="card shadow p-3 mx-5">
-				<div>
-					<label class="text-dark font-weight-bold">제목</label>
-					<input class="form-control form-control-sm mb-2" placeholder="제목" id="faqTitle">
-					<select id="serviceCategoryList" class="form-control"></select>
+       	<div class="container-fluid px-4 pt-4">
+			<div class="card border-0 bg-white p-3 m-2 shadow"> 
+				
+				<!-- Page Content -->
+				<div class="p-2">
+					<!-- Page Heading -->
+					<div class="d-sm-flex align-items-center justify-content-between mb-3" >
+						<h3 class="text-gray-800 mb-2 font-weight-bold">FAQ</h3>
+						<hr>
+						<a href="adminFaqBoardAdd" class="d-none d-sm-inline-block btn  btn-primary shadow"><i class="mr-2 fas fa-plus fa-sm text-white-50"></i>FAQ 올리기</a> 
+					</div>
+					<!-- page Heading End -->
+					
+					<!-- Notice Board -->
+					<table id="faqOne" class="table table-hover text-center m-4"></table>
+					<br>
+					<div><button type="button" id="faqListBtn" class="btn btn-primary">목록으로</button>
+					<button type="button" id="faqModifyBtn" class="btn btn-primary">수정</button>
+					<button type="button" id="faqDelBtn" class="btn btn-primary">게시글 삭제</button></div>
+					
 				</div>
-				<div>
-					<label class="text-dark font-weight-bold">내용</label>
-						<textarea id="faqContent" rows="15" cols="50" class="form-control form-control-sm mb-2" placeholder="내용" >내용을 입력하세요</textarea>
-				</div>
+			<!--  Page Content End -->
 			</div>
-				<button id="faqBoardInsertBtn" class="btn btn-primary shadow mt-3 px-4  ml-5">FAQ 등록</button>
-				<button id="cancel" class="btn btn-primary shadow mt-3 px-4  ml-5">취소</button>
-          </div>
-        </div>
+		</div>  
         
-        <!-- /.container-fluid --> 
-      </div>
       <!-- End of Main Content -->
 
       <!-- Footer -->
@@ -305,47 +304,69 @@
 
 </body>
 <script type="text/javascript">
-$(document).ready(function() {
+$(document).ready(function(){
 	
+	
+	// 파라메터 정보가 저장될 오브젝트
+	// common.js 같은 모든 페이지에서 로딩되는 js 파일에 넣어두면 됨.
+	var getParam = function(key){
+	    var _parammap = {};
+	    document.location.search.replace(/\??(?:([^=]+)=([^&]*)&?)/g, function () {
+	        function decode(s) {
+	            return decodeURIComponent(s.split("+").join(" "));
+	        }
+	        _parammap[decode(arguments[1])] = decode(arguments[2]);
+	    });
+	    return _parammap[key];
+	};
+	$("#faqId").val(getParam("faqId"));
+
+	$.ajax({
+		url : "/rest/adminFaqOne",
+		method : "post",
+		data : {"faqId": getParam("faqId")},
+		success : function(json){
+			console.log(json);
+			let html  = "<tr><td width='5%'>"+json.faqId+"</td><td>"+json.serviceCategory.serviceCategoryId+"</td>";
+			    html += "<td>"+json.faqTitle+"</td><td width='15%'>"+json.faqDatetime+"</td></tr>" 
+			$(json).each(function(index,item){
+				html += "<tr>";
+				html += "<td class='text-left' colspan='3'>"+item.faqContent+"</td>";
+				html += "</tr>";
+			})
+			$("#faqOne").append(html)
+		}
+	})
+	//목록으로 버튼
+	$("#faqListBtn").click(function(){
+		location.href="/adminFaqBoard";
+	})
+	//삭제하기 버튼
+	$("#faqDelBtn").click(function(){
+	$.ajax({
+		url:"/rest/removeFaqBoard",
+		method:"post",
+		data:{"faqId" : getParam("faqId")},
+		success : function(){
+			alert("삭제 되었습니다.");
+			location.href="/adminFaqBoard";
+		}
+		})
+	}); 
+	// 수정하기 버튼
+	$("#faqModifyBtn").click(function(){
+		location.href="/adminFaqModify?faqId="+getParam("faqId");
+	})
+//document
+
+	//Left 사이드 바
 	$("#sideBar").load("/sideBar #accordionSidebar", function(){
 		$("#sideBarNotice").addClass("active");
 		$("#sideBarNotice").children("a").attr("aria-expanded","false");
 		$("#sideBarNotice").children("div").addClass("show");
 	});
-
-	$.ajax({
-		url : "/rest/admin/getServiceCategoryList",
-		method : "GET",
-		success : function(json){
-			console.log(json);
-			let html;
-			$(json).each(function(index, item){
-				html = "<option value='"+item.serviceCategoryId+"'>"+item.serviceCategoryName+"</option>";
-				$("#serviceCategoryList").append(html);
-			});
-		}
-	});
 	
-	//답변하기 버튼 누르면 inquiryHistoryAnswer에 저장.
-	$("#faqBoardInsertBtn").click(function(){
-		console.log("check");
-	 	$.ajax({
-	 		url:"/rest/admin/addFaqBoard",
-	 		method:"post",
-			data : { "faqTitle" : $("#faqTitle").val() ,
-					"faqContent" : $("#faqContent").val(),
-					"serviceCategory.serviceCategoryId" : $("#serviceCategoryList").val()
-					},
-			success:function(){
-				console.log("check");
-				location.href = "/adminFaqBoard";
-			}
-		});
-	});
-	  $("#cancel").click(function(){
-		  location.href="/adminFaqBoard";
-	  })
-});
-</script>
+})
 
+</script>
 </html>

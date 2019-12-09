@@ -220,7 +220,11 @@
 			<div class="card border-0 bg-white p-3 my-2 shadow mx-3"> 
 				<!-- Page Content -->
 				<div class="p-2">
-					<h2>FAQ 리스트</h2>
+					<div class="d-sm-flex align-items-center justify-content-between mb-3" >
+						<h3 class="text-gray-800 mb-2 font-weight-bold">FAQ 리스트</h3>
+						<hr>
+						<a href="adminFaqBoardAdd" class="d-none d-sm-inline-block btn  btn-primary shadow"><i class="mr-2 fas fa-plus fa-sm text-white-50"></i>FAQ 올리기</a> 
+					</div>
 					<table class="table table-hover">
 						<thead align="center">
 							<tr>
@@ -338,7 +342,7 @@ $(document).ready(function() {
 				html="<tr><td>";
 				html += item.faqId;
 				html += "</td><td>";
-				html += "<a href='/adminFaqBoardOne?faqId=";
+				html += "<a href='/adminFaqOne?faqId=";
 				html += item.faqId;
 				html += "'>";
 				html += item.faqTitle;
@@ -367,7 +371,7 @@ $(document).ready(function() {
 					html="<tr><td>";
 					html += item.faqId;
 					html += "</td><td>";
-					html += "<a href='/adminFaqBoardOne?faqId=";
+					html += "<a href='/adminFaqOne?faqId=";
 					html += item.faqId;
 					html += "'>";
 					html += item.faqTitle;
@@ -396,7 +400,7 @@ $(document).ready(function() {
 					html="<tr><td>";
 					html += item.faqId;
 					html += "</td><td>";
-					html += "<a href='/adminFaqBoardOne?faqId=";
+					html += "<a href='/adminFaqOne?faqId=";
 					html += item.faqId;
 					html += "'>";
 					html += item.faqTitle;

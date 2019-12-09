@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.example.codeblue.test.ljh.LjhMapper">
+	<!--  FaqBoard 객체  
+	<resultMap type="com.example.codeblue.vo.FaqBoard" id="FaqBoard"> 
+	   	<result column="FAQ_id" property="faqId" ></result>
+	   	<result column="FAQ_title" property="faqTitle" ></result>
+	   	<result column="FAQ_content" property="faqContent" ></result>
+	   	<result column="FAQ_datetime" property="faqDatetime"></result>
+
+	  	<association property="serviceCategory" resultMap="ServiceCategory">
+	   	</association>
+	</resultMap>
+	ServiceCategory 객체
+	<resultMap type="com.example.codeblue.vo.ServiceCategory" id="ServiceCategory">
+		<result column="service_category_id" property="serviceCategoryId"></result>
+		<result column="service_category_name" property="serviceCategoryName"></result>
+	</resultMap>
+	<select id="selectFaqOne" resultMap="FaqBoard" parameterType="int">
+  	SELECT  fb.FAQ_id, 
+			fb.FAQ_title, 
+			sc.service_category_id,
+			fb.FAQ_content,
+			fb.FAQ_datetime
+    FROM faq_board fb INNER JOIN service_category sc
+    ON fb.service_category_id = sc.service_category_id AND FAQ_id = #{faqId}
+  	</select>
+  	FAQ 삭제
+	<delete id="deleteFaq" parameterType="int">
+		DELETE FROM faq_board
+		WHERE faq_id = #{faqId} 
+	</delete>
+	FAQ 수정
+  	<update id="updateFaq"  parameterType="com.example.codeblue.vo.FaqBoard">
+  		UPDATE faq_board SET FAQ_title = #{faqTitle},
+  							FAQ_content = #{faqContent},
+  							service_category_id = #{serviceCategory.serviceCategoryId}
+  		WHERE faq_id = #{faqId} 
+  	</update> -->
+</mapper>

@@ -28,7 +28,18 @@ public class AdminController {
 	public String getSideBar() {
 		return "/codeblue/admin/resource/sidebarCopy";
 	}
-	
+	//FAQ 상세 페이지
+	@GetMapping("/adminFaqOne")
+	public String getFaqOne() {
+		System.out.println(":::get - getFaqOne:::");
+		return"/codeBlue/admin/adminFaqOne";
+	}
+	//FAQ 수정페이지
+	@GetMapping("/adminFaqModify")
+	public String modifyFaq() {
+		System.out.println(":::get - modifyFaq:::");
+		return"/codeBlue/admin/adminModifyFaqBoard";
+	}
 	//FaQ 게시판 페이지로 이동
 	@GetMapping("/adminFaqBoard")
 	public String getFaqBoard() {

@@ -19,10 +19,10 @@ import com.example.codeblue.vo.User;
 
 @Mapper
 public interface AdminMapper {
-	
+
 	//병원정보 수정
 	public int updateHospital(Hospital hospital);
-	
+	//
 	public List<Feild> selectFeildList();
 	//질문 전체 갯수
 	public int selectQuestionBoardTotalCount(Page page);
@@ -71,8 +71,14 @@ public interface AdminMapper {
 	public int insertInquiryHistoryAnswer(InquiryHistoryAnswer inqruiyHistoryAnswer);
 	// FAQ 전체리스트 가져오기
 	public List<FaqBoard> selectFaqBoardList(Page page);
-	// FAQ 전체리스트 값 가져오기
+	// FAQ 전체 행 값 가져오기
 	public int selectFaqBoardTotalCount();
 	// FAQ 추가하기
 	public int insertFaqBoard(FaqBoard faqBoard);
+	// FAQ 상세정보가져오기
+	public FaqBoard selectFaqOne(int faqId);
+	// FAQ 삭제하기
+	public int deleteFaq(int faqId);
+	// FAQ 수정하기
+	public int updateFaq(FaqBoard faqBoard);
 }

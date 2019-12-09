@@ -58,4 +58,10 @@ public interface AdminService {
 	public Map<String,Object> getFaqBoardList(int currentPage, int rowPerPage, String searchWord);
 	//FAQ 추가하기
 	public int addFaqBoard(FaqBoard faqBoard);
+	//FAQ 상세정보 가져오기
+	public FaqBoard getFaqOne(int faqId);
+	//FAQ 정보 삭제하기
+	public int removeFaq(int faqId);
+	//FAQ 수정하기
+	public int modifyFaq(FaqBoard faqBoard);
 }

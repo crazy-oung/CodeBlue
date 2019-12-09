@@ -31,6 +31,27 @@ public class AdminRestController {
 		System.out.println("::: post - addInquiryHistoryAnswer :::"); 
 		adminService.addInquiryHistoryAnswer(inqruiyHistoryAnswer);
 	}
+	//FAQ 상세정보 가져오기
+	@PostMapping("/rest/adminFaqOne")
+	public FaqBoard getFaqOne(@RequestParam(value="faqId")int faqId) {
+		System.out.println(":::post - getFaqOne:::");
+		System.out.println("faqId : "+ faqId);
+		return adminService.getFaqOne(faqId);
+	}
+	//FAQ 삭제
+	@PostMapping("/rest/removeFaqBoard")
+	public int removeFaqBoard(@RequestParam(value="faqId")int faqId) {
+		System.out.println(":::post - removeFaqBoard:::");
+		
+		return adminService.removeFaq(faqId);
+	}
+	//FAQ 수정하기
+	@PostMapping("/rest/modifyFaqBorad")
+	public int modifyFaqBoard(FaqBoard faqBoard) {
+		System.out.println(":::post - modifyFaqBoard:::");
+		System.out.println("faqBoard : " + faqBoard.toString());
+		return adminService.modifyFaq(faqBoard);
+	}
 	//FAQ 리스트 바로 가져오기
 	@PostMapping("/rest/admin/getFaqBoardList")
 	public Map<String,Object> getFaqBoardList(@RequestParam(value="currentPage",defaultValue = "1")int currentPage,

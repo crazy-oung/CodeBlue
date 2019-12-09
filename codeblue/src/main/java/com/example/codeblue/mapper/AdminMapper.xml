@@ -148,7 +148,28 @@
 	   	</association>
 	</resultMap>
 	<!-- 객체정리 끝ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
-	
+	<!--  FAQ 상세 정보 가져오기 -->
+	<select id="selectFaqOne" resultMap="FaqBoard" parameterType="int">
+  	SELECT  fb.FAQ_id, 
+			fb.FAQ_title, 
+			sc.service_category_id,
+			fb.FAQ_content,
+			fb.FAQ_datetime
+    FROM faq_board fb INNER JOIN service_category sc
+    ON fb.service_category_id = sc.service_category_id AND FAQ_id = #{faqId}
+  	</select>
+  	<!-- FAQ 삭제 -->
+	<delete id="deleteFaq" parameterType="int">
+		DELETE FROM faq_board
+		WHERE faq_id = #{faqId} 
+	</delete>
+	<!-- FAQ 수정 -->
+  	<update id="updateFaq"  parameterType="com.example.codeblue.vo.FaqBoard">
+  		UPDATE faq_board SET FAQ_title = #{faqTitle},
+  							FAQ_content = #{faqContent},
+  							service_category_id = #{serviceCategory.serviceCategoryId}
+  		WHERE faq_id = #{faqId} 
+  	</update>
 	
 	<!-- 서비스 카테고리 리스트 -->
 	<select id="selectServiceCategoryList" resultMap="ServiceCategory">
