@@ -11,6 +11,12 @@ import com.example.codeblue.service.AdminService;
 public class AdminController {
 	@Autowired AdminService adminService;
 	
+	//삭제된 게시물 리스트 페이지
+	@GetMapping("/adminWithdrawQuestionBoard")
+	public String getWithdramQuestionBoard() {
+		System.out.println("::: get - getWithdramQuestionBoard :::");
+		return "/codeBlue/admin/adminWithdrawQuestionBoard";
+	}
 	// 코드블루 소개 패이지
 	@GetMapping("index")
 	public String getIndex() {

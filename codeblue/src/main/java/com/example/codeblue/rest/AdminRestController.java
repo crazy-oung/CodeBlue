@@ -25,6 +25,27 @@ import com.example.codeblue.vo.ServiceCategory;
 @RestController
 public class AdminRestController {
 	@Autowired private AdminService adminService;
+	
+	//검색 조건에 따른 삭제된 게시글 가져오기
+	@PostMapping("/rest/getWithdrawQuestionBoardList")
+	public Map<String,Object> getWithdrawQuestionBoardList(Page page,@RequestParam(value="currentPage", defaultValue = "1")int currentPage,
+												@RequestParam(value="rowPerPage", defaultValue = "10")int rowPerPage) {
+		System.out.println("::: post - questionBoardList :::");
+		System.out.println("currentPage : "+currentPage);
+		System.out.println("rowPerPage : " +rowPerPage);
+		page.setRowPerPage(rowPerPage);
+		System.out.println(page.toString());
+		return adminService.getWithdrawQuestionBoardList(page,currentPage);
+	}
+	
+	//체크박스로 선택한 questionId 배열 가져오기
+	@PostMapping("/rest/removeQuestionBoardList")
+	public String removeQuestionBoardList(@RequestParam(value="checkBoxArr")List<String> questionBoardIdList) {
+		System.out.println("::: post - removeQuestionBoardList :::");
+		System.out.println(questionBoardIdList.toString());
+		adminService.removeQeustionBoardList(questionBoardIdList);
+		return "삭제성공";
+	}
 	//문의사항 답변 추가하기
 	@PostMapping("/rest/admin/addInquiryHistoryAnswer")
 	public void addInquiryHistoryAnswer(InquiryHistoryAnswer inqruiyHistoryAnswer) {

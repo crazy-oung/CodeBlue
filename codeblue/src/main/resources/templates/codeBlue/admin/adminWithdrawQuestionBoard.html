@@ -52,8 +52,8 @@
 						class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
 						<div class="input-group">
 							<input type="text" class="form-control bg-light border-1 small"
-								placeholder="항목 검색" aria-label="Search"
-								aria-describedby="basic-addon2">
+								placeholder="병원 검색" aria-label="Search"
+								aria-describedby="basic-addon2" id="searchHospital"> <!-- searchWord 에서 searchHospital로 변경 -->
 							<div class="input-group-append">
 								<button class="btn btn-primary" type="button" id="search">
 									<i class="fas fa-search fa-sm"></i>
@@ -245,7 +245,7 @@
 								<div class="p-2">
 									<!-- Page Heading -->
 									<div class="d-sm-flex align-items-center justify-content-between mb-2">
-										<h3 class="text-gray-800 mb-2 font-weight-bold">질문 조회</h3>
+										<h3 class="text-gray-800 mb-2 font-weight-bold">삭제된 질문 조회</h3>
 									</div>
 									<!-- page Heading End -->
 
@@ -280,8 +280,7 @@
 									<!-- 검색한것에따른 보여주는 부분 -->
 									<div>
 										<div>
-											<span>검색결과 : </span>
-											<button type="button" id="removeQuestionBoard" class="btn btn-primary">게시글 삭제</button>
+											<span>검색결과</span>
 											<select class="form-control form-control-sm" id="rowPerPage">
 												<option value="10" selected="selected">10개 보기</option>
 												<option value="20">20개 보기</option>
@@ -295,13 +294,9 @@
 											<table id="boardList" class="table table-hover">
 												<thead class="font-weight-bold ">
 													<tr>
-														<th><div class='custom-control custom-checkbox'><input class='custom-control-input' type='checkbox' onclick="checkAll()" id='selectAll'>
-														<label class='custom-control-label' for='selectAll'></label>
-														</div></th>
 														<th>질문 번호</th>
 														<th>카테고리</th>
 														<th>제목</th>
-														<th>답변수</th>
 														<th>작성자 아이디</th>
 														<th>작성일자</th>
 													</tr>
@@ -408,7 +403,7 @@
 	});
 	//테이블 값 넣어주기 기본적으로
 	$.ajax({
-			url: "/rest/getQuestionBoardList",
+			url: "/rest/getWithdrawQuestionBoardList",
 			method:"post",
 			data:{"searchCategory":searchCategory,"searchWord":searchWord,"toDate":toDate,"fromDate":fromDate},
 			success: function(json){
@@ -430,10 +425,10 @@
 					$("#boardList").append(html);
 				})
 			}
-	});
+		});
 	$("#rowPerPage").change(function(){
 		$.ajax({
-			url: "/rest/getQuestionBoardList",
+			url: "/rest/getWithdrawQuestionBoardList",
 			method:"post",
 			data:{"searchCategory":searchCategory,"searchWord":searchWord,"toDate":toDate,"fromDate":fromDate,"rowPerPage":$("#rowPerPage").val()},
 			success: function(json){
@@ -471,33 +466,7 @@
 	var toDate = undefined;
 	//작성기간끝
 	var fromDate = undefined;
-	//체크 박스에 선택된 값을 저장
-	var checkBoxArr = [];
 	
-	//삭제 버튼 누를시 체크박스가 선택되어있는 값을 가져와 배열에 저장
-	$("#removeQuestionBoard").click(function() {
-		$("input[name=chk]:checked").each(function(){
-				
-			checkBoxArr.push($(this).val());
-		
-		});
-		console.log("::: checkBoxArr배열 :::")
-		console.log(checkBoxArr);
-		if(checkBoxArr.length == 0){
-			alert("체크 항목이 없습니다.");
-		} else {
-			$.ajax({
-				url:"/rest/removeQuestionBoardList",
-				traditional : true, //ajax에서 기본적으로 배열을 지원하지않기때문에 설정
-				method:"post",
-				data:{"checkBoxArr":checkBoxArr},
-				success:function(json){
-					console.log(json);
-					location.reload();
-				}
-			})
-		}
-	})
 	//검색하기
 	$("#getBoard").click(function() {
 		//전체 체크 풀어주기
@@ -518,8 +487,6 @@
 		//id 값이 searchWord 인 html를 가져와서 value 값이 null이 아닐경우 저장한다.
  		if(document.getElementById("searchWord").value){
  			searchWord = $("#searchWord").val();
- 		} else {
- 			searchWord = undefined;
  		}
  		//html태그중에 input에 id값이 toDate 인  value데이터를 Date형식으로 변환한 값이 null이 아닐경우 저장한다.
 		if(document.querySelector("input[id='toDate']").valueAsDate){
@@ -535,7 +502,7 @@
 		console.log("작성 날짜 끝 : "+fromDate);
 		//검색조건에 따른 질문 리스트를 뽑기
 		$.ajax({
-			url: "/rest/getQuestionBoardList",
+			url: "/rest/getWithdrawQuestionBoardList",
 			method:"post",
 			data:{"searchCategory":searchCategory,"searchWord":searchWord,"toDate":toDate,"fromDate":fromDate,"rowPerPage":$("#rowPerPage").val()},
 			success: function(json){
@@ -564,7 +531,7 @@
 		//전체 체크 풀어주기
 		$("#selectAll").prop("checked",false);
 		$.ajax({
-			url:"/rest/getQuestionBoardList",
+			url:"/rest/getWithdrawQuestionBoardList",
 			method:"POST",
 			data:{"currentPage" : currentPage-1,"searchCategory":searchCategory,"searchWord":searchWord,"toDate":toDate,"fromDate":fromDate,"rowPerPage":$("#rowPerPage").val()},
 			success: function(json){
@@ -592,7 +559,7 @@
 		//전체 체크 풀어주기
 		$("#selectAll").prop("checked",false);
 		$.ajax({
-			url:"/rest/getQuestionBoardList",
+			url:"/rest/getWithdrawQuestionBoardList",
 			method:"POST",
 			data:{"currentPage" : currentPage+1,"searchCategory":searchCategory,"searchWord":searchWord,"toDate":toDate,"fromDate":fromDate,"rowPerPage":$("#rowPerPage").val()},
 			success: function(json){
@@ -629,21 +596,14 @@
 		}
 	}
 	//전체 체크박스 버튼을 누를경우 타입이 checkbox인것은 전부 체크해주기
-	function checkAll() {
-		if( $("#selectAll").is(':checked') ){
-	        $("input[name=chk]").prop("checked", true);
-	    }else{
-	        $("input[name=chk]").prop("checked", false);
-	    }
-	}
+
 	function append(item,index){
 		return "<tr>"+
 // 		"<td><input type='checkbox' value="+item.questionId+" name='chk'></td>"+
-		"<td><div class='custom-control custom-checkbox'><input class='custom-control-input' type='checkbox' name='chk' value="+item.questionId+" id='check"+index+"'><label name='chk' class='custom-control-label' for='check"+index+"'></label></div></td>"+
+// 		"<td><div class='custom-control custom-checkbox'><input class='custom-control-input' type='checkbox' name='chk' value="+item.questionId+" id='check"+index+"'><label name='chk' class='custom-control-label' for='check"+index+"'></label></div></td>"+
 		"<td>"+item.questionId+"</td>"+
 		"<td>"+item.feild.feildName+"</td>"+
 		"<td>"+item.questionTitle+"</td>"+
-		"<td>"+item.answerCount+"</td>"+
 		"<td>"+item.user.userId+"</td>"+
 		"<td>"+item.questionDatetime+"</td>"+
 		"<tr>";
