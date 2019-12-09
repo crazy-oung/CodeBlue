@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.codeblue.service.UserService;
 import com.example.codeblue.vo.Expert;
+import com.example.codeblue.vo.Hospital;
 import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.QuestionComment;
@@ -166,4 +167,25 @@ public class UserRestController {
 		System.out.println("영향을 받은행: "+userService.addExpert(expert)); 
 		return true;
 	}
+	
+	//병원 리스트
+	@PostMapping("/rest/hospital")
+	public Map<String, Object>postHospital(@RequestParam(value="currentPage", defaultValue="1")int currentPage,
+										@RequestParam(value="rowPerPage", defaultValue="10")int rowPerPage,
+										   @RequestParam(value="searchWord", required = false)String searchWord) {
+	System.out.println(":::post - postHospital:::");
+	System.out.println("currentPage"+currentPage + " //rowPerPage"+rowPerPage + " //searchWord"+searchWord);
+	
+	return userService.getHospitalList(currentPage, rowPerPage, searchWord);
+	}
+	
+	//병원 상세페이지
+	@PostMapping("/rest/hospitalOne")
+	public List<Hospital> hospitalOne(@RequestParam(value="hospitalId")int hospitalId){
+		System.out.println(":::post - getHospitalOne");
+		System.out.println("hospitalId"+hospitalId);
+		
+		return userService.getHospitalOne(hospitalId);
+	}
+	
 }

@@ -6,6 +6,7 @@ import org.apache.catalina.Manager;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.example.codeblue.vo.Expert;
+import com.example.codeblue.vo.Hospital;
 import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionBoard;
@@ -45,6 +46,13 @@ public interface UserMapper {
 	public List<QuestionBoard> selectQuestionBoardList(Page page);
 	public QuestionBoard selectQuestionBoardOne(int questionId);
 	public List<QuestionComment> selectQuestionCommentList(int questionId);
+	
+	//병원 리스트 
+	public List<Hospital> hospitalList(Page page);
+	//병원 수
+	public int hospitalCount();
+	//병원 상세정보 
+	public List<Hospital> hospitalOne(int hospitalId);
 	
 	//최신순 
 	public List<Tag> selectTagListDate(Page page);

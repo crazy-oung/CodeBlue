@@ -15,6 +15,19 @@
 		<result column="rank_name" property="rankName"></result>
 	</resultMap>
 	
+	<!-- Hospital 객체 -->
+	<resultMap type="com.example.codeblue.vo.Hospital" id="Hospital">
+		<result column="hospital_id" property="hospitalId"></result>
+		<result column="hospital_name" property="hospitalName"></result>
+		<result column="hospital_number" property="hospitalNumber"></result>
+		<result column="hospital_address" property="hospitalAddress"></result>
+		<result column="hospital_address2" property="hospitalAddress2"></result>
+		<association property="region" javaType="com.example.codeblue.vo.Region">
+			<result column="region_id" property="regionId"></result>
+			<result column="region_name" property="regionName"></result>
+		</association>
+	</resultMap>
+	
 	<!-- Tag 객체 -->
 	<resultMap type="com.example.codeblue.vo.Tag" id="Tag">
 		<result column="tag_id" property="tagId"></result>
@@ -252,6 +265,44 @@
 	<update id="updateUserPw" parameterType="com.example.codeblue.vo.User">
 		UPDATE user SET user_pw = #{userPw} WHERE user_id = #{userId}
 	</update>
+	
+	<select id="hospitalList" resultMap="Hospital" parameterType="com.example.codeblue.vo.Page">
+	SELECT
+		h.hospital_id,
+		h.hospital_name, 
+		h.hospital_number, 
+		h.hospital_address,
+		h.hospital_address2,
+		re.region_name,
+		re.region_id 
+		FROM hospital h inner join region re
+		ON h.region_id = re.region_id 
+	<where>
+		<if test="searchWord != null">
+			and h.hospital_name like CONCAT('%',#{searchWord},'%')
+		</if>
+	</where>
+		limit #{beginRow},#{rowPerPage}
+	</select>
+	
+	<select id="hospitalCount" resultType="int">
+		SELECT count(*) FROM hospital
+	</select>
+	
+	<select id="hospitalOne" resultMap="Hospital" parameterType="int">
+		SELECT
+			h.hospital_id,
+			h.hospital_name, 
+			h.hospital_number, 
+			h.hospital_address,
+			h.hospital_address2,
+			re.region_name,
+			re.region_id 
+		FROM hospital h inner join region re
+		ON h.region_id = re.region_id 
+		WHERE hospital_id =#{hospitalId}
+	</select>
+	
 </mapper>
 
 

@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.catalina.Manager;
 
 import com.example.codeblue.vo.Expert;
+import com.example.codeblue.vo.Hospital;
 import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.QuestionComment;
@@ -25,6 +26,10 @@ public interface UserService {
 	public Manager verifyManager(User user);
 	public int addUser(User user); 
 	public int addExpert(Expert expert); 
+	
+	//제휴병원 리스트
+	public Map<String, Object> getHospitalList(int currentPage, int rowPerPage, String searchWord);
+	public List<Hospital> getHospitalOne(int hospitalId);
 	
 	public String sendCodeToMail(User user);
 	public String resetPassword(User user);

@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.codeblue.mapper.UserMapper;
 import com.example.codeblue.vo.Expert;
+import com.example.codeblue.vo.Hospital;
 import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionBoard;
@@ -206,5 +207,48 @@ public class UserServiceImpl implements UserService{
 		System.out.println("::: UserServluceImpl - modifyUserPw :::");
 		return userMapper.updateUserPw(user);
 	}
+	
+	@Override 
+	public Map<String, Object> getHospitalList(int currentPage, int rowPerPage, String searchWord) {
+		System.out.println(":::UserServiceImpl - getHospitalList:::");
+				
+		int totalRow = userMapper.hospitalCount();
+		int lastPage = 0;
+		int beginRow = (currentPage-1)*rowPerPage;
+		Page page = new Page();
+		page.setBeginRow(beginRow);
+		page.setRowPerPage(rowPerPage);
+		page.setSearchWord(searchWord);
+		
+		
+		
+		if(totalRow % rowPerPage ==0) {
+			lastPage = totalRow/rowPerPage;
+		}else {
+			lastPage = (totalRow/rowPerPage)+1;
+		}		
+		List<Hospital> list = new ArrayList<Hospital>();
+		list = userMapper.hospitalList(page);
+		
+		
+		Map<String,Object> map = new  HashMap<String, Object>();
+		map.put("currentPage", currentPage);
+		map.put("rowPerPage", rowPerPage);
+		map.put("searchWord", searchWord);
+		map.put("totalRow", totalRow);
+		map.put("lastPage", lastPage);
+		map.put("list", list);
+		
+		System.out.println(list.toString());
+		return map;
+	}
+	
+	@Override
+	public List<Hospital> getHospitalOne(int hospitalId) {
+		System.out.println(":::HospitalServiceImpl - getHospitalOne:::");
+		System.out.println("hospitalId"+hospitalId);
 
+		return userMapper.hospitalOne(hospitalId);
+	}
+	
 }

@@ -67,4 +67,19 @@ public class UserController {
 		userService.addQuestion(questionBoard);
 		return "/QnA";
 	}
+	
+	//제휴병원 게시판
+	@GetMapping("/hospital")
+	public String getHospital() {
+		System.out.println(":::get - getHospital:::");
+		return "hospital";
+	}
+	
+	//제휴병원 상세보기
+	@GetMapping("/hospitalOne")
+	public String getHospitalOne() {
+		System.out.println(":::get - getHospitalOne:::");
+		return "hospitalOne";
+	}
+	
 }	
