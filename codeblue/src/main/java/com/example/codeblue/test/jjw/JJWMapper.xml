@@ -138,19 +138,20 @@
 		<result column="service_category_id" property="serviceCategoryId"></result>
 		<result column="service_category_name" property="serviceCategoryName"></result>
 	</resultMap>
+	<!-- Answer 객체 -->
+	<resultMap type="com.example.codeblue.vo.Answer" id="Answer">
+		<result column="answer_id"></result>
+		<result column="answer_content"></result>
+		<result column="answer_datetime"></result>
+		<association property="questionBoard" resultMap="QuestionBoard"></association>
+		<association property="user" resultMap="User"></association>
+	</resultMap>
 	<!-- 객체정리 끝ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
-	
-	<select id="selectFeildList" resultMap="Feild">
-		SELECT 
-			feild_id,
-			feild_name 
-		FROM feild
-	</select>
-	
-	<select id="selectQuestionBoardTotalCount" resultType="int" parameterType="com.example.codeblue.vo.Page">
+	<!-- 삭제된 게시글 전체행수 -->
+	<select id="selectWithdrawQuestionBoardTotalCount" resultType="int" parameterType="com.example.codeblue.vo.Page">
 		SELECT 
 			COUNT(*)
-		FROM question_board q INNER JOIN feild fe
+		FROM withdraw_question_board q INNER JOIN feild fe
 		ON q.feild_id = fe.feild_id
 		WHERE question_id is not null
 			<if test="searchWord != null">
@@ -164,20 +165,17 @@
 			</if>
 	</select>
 	
-	<select id="selectQuestionBoardList" resultMap="QuestionBoard" parameterType="com.example.codeblue.vo.Page">
+	<!-- 삭제된 게시글 가져오기 -->
+	<select id="selectWithdrawQuestionBoardList" resultMap="QuestionBoard" parameterType="com.example.codeblue.vo.Page">
 		SELECT 
 				q.question_id,
 				q.question_title,
 				q.question_datetime,
+				q.question_content,
 				q.user_id,
-				CASE WHEN a.answer_count IS NULL then 0 ELSE a.answer_count END AS answer_count,
 				fe.feild_name,
 				fe.feild_id
-		FROM question_board q left JOIN (SELECT COUNT(*) AS answer_count,question_id FROM
-		answer
-		GROUP BY question_id) a
-		ON q.question_id = a.question_id
-		LEFT JOIN feild fe
+		FROM withdraw_question_board q LEFT JOIN feild fe
 		ON q.feild_id = fe.feild_id
 		WHERE q.question_id IS NOT NULL
 			<if test="searchWord != null">
@@ -191,4 +189,164 @@
 			</if>
 		LIMIT #{beginRow},#{rowPerPage}
 	</select>
+
+	<!-- 질문 삭제 -->
+	<delete id="deleteQuestionBoard" parameterType="java.util.List">
+		DELETE FROM question_board
+		WHERE question_id IN
+		<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+			(#{item})
+		</foreach>
+	</delete>
+	<!-- 질문에 해당하는 quesiton_board_img 삭제 -->
+	<delete id="deleteQuestionBoardImg" parameterType="java.util.List">
+		DELETE FROM question_board_img
+		WHERE question_id IN
+		<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+			(#{item})
+		</foreach>	
+	</delete>
+	<!-- 질문에 해당하는 question_comment 삭제 -->
+	<delete id="deleteQuestionComment" parameterType="java.util.List">
+		DELETE FROM question_comment
+		WHERE question_id IN
+		<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+			(#{item})
+		</foreach>	
+	</delete>
+	<!-- 질문에 해당하는 question_vote 삭제 -->
+	<delete id="deleteQuestionVote" parameterType="java.util.List">
+		DELETE FROM question_vote
+		WHERE question_id IN
+		<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+			(#{item})
+		</foreach>	
+	</delete>
+	<!-- 질문 지우는조건에 해당하는 answer 삭제 -->
+	<delete id="deleteQuestionBoardAnswer" parameterType="java.util.List">
+		DELETE FROM answer
+		WHERE answer_id IN
+		<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+			(#{item})
+		</foreach>	
+	</delete>
+	<!-- 질문 지우는조건에 해당하는 answer_comment 삭제 -->
+	<delete id="deleteQuestionBoardAnswerComment" parameterType="java.util.List">
+		DELETE FROM answer_comment
+		WHERE answer_id IN
+		<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+			(#{item})
+		</foreach>
+	</delete>
+	<!-- 질문 지우는조건에 해당하는 answer_vote 삭제 -->
+	<delete id="deleteQuestionBoardAnswerVote" parameterType="java.util.List">
+		DELETE FROM answer_vote
+		WHERE answer_id IN
+		<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+			(#{item})
+		</foreach>
+	</delete>
+	<!-- 체크한 질문 리스트 다른 테이블에 저장 -->
+	<insert id="insertWithdrawQuestionBoard" parameterType="java.util.List">
+		INSERT INTO withdraw_question_board
+			(
+				question_id,
+				question_title,
+				question_content,
+				question_datetime,
+				feild_id,
+				user_id,
+				tag_id
+			) VALUES
+			<foreach collection="list" item="item" index="index" separator=",">
+				(
+					#{item.questionId},
+					#{item.questionTitle},
+					#{item.questionContent},
+					#{item.questionDatetime},
+					#{item.feild.feildId},
+					#{item.user.userId},
+					#{item.tag.tagId}
+				)
+			</foreach>
+	</insert>
+	<!-- 질문에 해당되는 답변Id 값 가져오기 -->
+	<select id="selectQuestionBoardAnswerList" resultType="String" parameterType="java.util.List">
+		SELECT 
+			answer_id
+		FROM answer
+		WHERE question_id IN
+		<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+			(#{item})
+		</foreach>	
+	</select>
+	<!-- 체크한 질문 리스트 값 가져오기 -->
+	<select id="selectQuestionBoardCheckList" resultMap="QuestionBoard" parameterType="java.util.List">
+		SELECT
+			question_id,
+			question_title,
+			question_content,
+			question_datetime,
+			feild_id,
+			user_id,
+			tag_id
+		FROM question_board
+		WHERE question_id IN
+		<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+			(#{item})
+		</foreach>
+	</select>
+	
+<!-- 	<select id="selectFeildList" resultMap="Feild"> -->
+<!-- 		SELECT  -->
+<!-- 			feild_id, -->
+<!-- 			feild_name  -->
+<!-- 		FROM feild -->
+<!-- 	</select> -->
+	
+<!-- 	<select id="selectQuestionBoardTotalCount" resultType="int" parameterType="com.example.codeblue.vo.Page"> -->
+<!-- 		SELECT  -->
+<!-- 			COUNT(*) -->
+<!-- 		FROM question_board q INNER JOIN feild fe -->
+<!-- 		ON q.feild_id = fe.feild_id -->
+<!-- 		WHERE question_id is not null -->
+<!-- 			<if test="searchWord != null"> -->
+<!-- 				AND question_title like CONCAT('%',#{searchWord},'%') -->
+<!-- 			</if> -->
+<!-- 			<if test="searchCategory != null"> -->
+<!-- 				AND fe.feild_id = #{searchCategory} -->
+<!-- 			</if> -->
+<!-- 			<if test="toDate != null and fromDate != null"> -->
+<!-- 				AND q.question_datetime &gt;= #{toDate} AND q.question_datetime &lt;= #{fromDate} -->
+<!-- 			</if> -->
+<!-- 	</select> -->
+	
+<!-- 	<select id="selectQuestionBoardList" resultMap="QuestionBoard" parameterType="com.example.codeblue.vo.Page"> -->
+<!-- 		SELECT  -->
+<!-- 				q.question_id, -->
+<!-- 				q.question_title, -->
+<!-- 				q.question_datetime, -->
+<!-- 				q.question_content, -->
+<!-- 				q.user_id, -->
+<!-- 				CASE WHEN a.answer_count IS NULL then 0 ELSE a.answer_count END AS answer_count, -->
+<!-- 				fe.feild_name, -->
+<!-- 				fe.feild_id -->
+<!-- 		FROM question_board q left JOIN (SELECT COUNT(*) AS answer_count,question_id FROM -->
+<!-- 		answer -->
+<!-- 		GROUP BY question_id) a -->
+<!-- 		ON q.question_id = a.question_id -->
+<!-- 		LEFT JOIN feild fe -->
+<!-- 		ON q.feild_id = fe.feild_id -->
+<!-- 		WHERE q.question_id IS NOT NULL -->
+<!-- 			<if test="searchWord != null"> -->
+<!-- 				AND	question_title like CONCAT('%',#{searchWord},'%') -->
+<!-- 			</if> -->
+<!-- 			<if test="searchCategory != null"> -->
+<!-- 				AND fe.feild_id = #{searchCategory} -->
+<!-- 			</if> -->
+<!-- 			<if test="toDate != null and fromDate != null"> -->
+<!-- 				AND q.question_datetime &gt;= #{toDate} AND q.question_datetime &lt;= #{fromDate} -->
+<!-- 			</if> -->
+<!-- 		LIMIT #{beginRow},#{rowPerPage} -->
+<!-- 	</select> -->
 </mapper>

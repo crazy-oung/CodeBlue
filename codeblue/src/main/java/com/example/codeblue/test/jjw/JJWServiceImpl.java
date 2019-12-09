@@ -15,27 +15,22 @@ import com.example.codeblue.vo.QuestionBoard;
 @Transactional
 public class JJWServiceImpl implements JJWService{
 	@Autowired 
-	private JJWMapper mapper;
+	private JJWMapper jjwMapper;
 	
+	//삭제된 게시글 가져오기
 	@Override
-	public List<Feild> getFeildList() {
-		System.out.println("::: AdminBoardServiceImpl - getAdminFeildList :::");
-		return mapper.selectFeildList();
-	}
-	
-	@Override
-	public Map<String,Object> getQuestionBoardList(Page page,int currentPage) {
-		System.out.println("::: AdminBoardServiceImpl - getAdminBoardList :::");
+	public Map<String,Object> getWithdrawQuestionBoardList(Page page,int currentPage) {
+		System.out.println("::: AdminBoardServiceImpl - getWithdrawQuestionBoardList :::");
 		
 		//시작값 정하기
 		int beginRow = (currentPage -1) * page.getRowPerPage();
 		page.setBeginRow(beginRow);
 		System.out.println(page.toString());
 		//질문 리스트 전체 행의 갯수
-		int totalCount = mapper.selectQuestionBoardTotalCount(page);
+		int totalCount = jjwMapper.selectWithdrawQuestionBoardTotalCount(page);
 		System.out.println("totalCount : "+totalCount);
 		//페이지 마지막값변수선언
-		int lastPage = 0;
+		int lastPage = 1;
 		//페이지갯수값 저장
 		if(totalCount%page.getRowPerPage() == 0) {
 			lastPage = totalCount/page.getRowPerPage();
@@ -44,7 +39,7 @@ public class JJWServiceImpl implements JJWService{
 		}
 		System.out.println("lastPage : "+lastPage);
 		// 질문 리스트 저장
-		List<QuestionBoard> list = mapper.selectQuestionBoardList(page);
+		List<QuestionBoard> list = jjwMapper.selectWithdrawQuestionBoardList(page);
 		System.out.println(list.toString());
 		Map<String,Object> map = new HashMap<String, Object>();
 		map.put("lastPage", lastPage);
@@ -54,4 +49,79 @@ public class JJWServiceImpl implements JJWService{
 		map.put("searchWord",page.getSearchWord());
 		return map;
 	}
+	
+	@Override
+	public void removeQeustionBoardList(List<String> questionBoardIdList) {
+		System.out.println("::: AdminBoardServiceImpl - removeQeustionBoardList :::");
+		//질문 상세한정보 가져오기
+		List<QuestionBoard> questionBoardList = jjwMapper.selectQuestionBoardCheckList(questionBoardIdList);
+		System.out.println(questionBoardList.toString());
+		//질문에 해당하는 답변 id 값 가져오기
+		List<String> answerIdList = jjwMapper.selectQuestionBoardAnswerList(questionBoardIdList);
+		System.out.println(answerIdList.toString());
+		System.out.println(questionBoardIdList.toString());
+		// 맨처음으로 질문을 삭제된 질문테이블로 저장
+		jjwMapper.insertWithdrawQuestionBoard(questionBoardList);
+		if(answerIdList.size() != 0) { //답변이 있을시 반응한다.
+			// 1번째로 답변의 추천수 지우기
+			jjwMapper.deleteQuestionBoardAnswerVote(answerIdList);
+			System.out.println("답변의 추천수지우기성공");
+			// 2번째로 답변에 해당하는 댓글 지우기
+			jjwMapper.deleteQuestionBoardAnswerComment(answerIdList);
+			System.out.println("답변의 댓글지우기성공");
+			// 3번째로 질문에 해당하는 답변 지우기
+			jjwMapper.deleteQuestionBoardAnswer(answerIdList);
+			System.out.println("답변 지우기 성공");
+		}
+		// 4번째로 질문에 해당되는 추천수 지우기
+		jjwMapper.deleteQuestionVote(questionBoardIdList);
+		System.out.println("질문 추천수 지우기 성공");
+		// 5번째로 질문에 해당되는 댓글 지우기
+		jjwMapper.deleteQuestionComment(questionBoardIdList);
+		System.out.println("질문 댓글 지우기 성공");
+		// 6번째로 질문에 해당되는 이미지 지우기
+		jjwMapper.deleteQuestionBoardImg(questionBoardIdList);
+		System.out.println("질문 이미지 지우기 성공");
+		// 7번째로 질문테이블에서 지운다.
+		jjwMapper.deleteQuestionBoard(questionBoardIdList);
+		System.out.println("질문 지우기 성공");
+	}
+	
+//	@Override
+//	public List<Feild> getFeildList() {
+//		System.out.println("::: AdminBoardServiceImpl - getAdminFeildList :::");
+//		return jjwMapper.selectFeildList();
+//	}
+//	
+//	@Override
+//	public Map<String,Object> getQuestionBoardList(Page page,int currentPage) {
+//		System.out.println("::: AdminBoardServiceImpl - getAdminBoardList :::");
+//		
+//		//시작값 정하기
+//		int beginRow = (currentPage -1) * page.getRowPerPage();
+//		page.setBeginRow(beginRow);
+//		System.out.println(page.toString());
+//		//질문 리스트 전체 행의 갯수
+//		int totalCount = jjwMapper.selectQuestionBoardTotalCount(page);
+//		System.out.println("totalCount : "+totalCount);
+//		//페이지 마지막값변수선언
+//		int lastPage = 1;
+//		//페이지갯수값 저장
+//		if(totalCount%page.getRowPerPage() == 0) {
+//			lastPage = totalCount/page.getRowPerPage();
+//		} else {
+//			lastPage = (totalCount/page.getRowPerPage())+1;
+//		}
+//		System.out.println("lastPage : "+lastPage);
+//		// 질문 리스트 저장
+//		List<QuestionBoard> list = jjwMapper.selectQuestionBoardList(page);
+//		System.out.println(list.toString());
+//		Map<String,Object> map = new HashMap<String, Object>();
+//		map.put("lastPage", lastPage);
+//		map.put("currentPage",currentPage);
+//		map.put("list",list);
+//		map.put("totalCount",totalCount);
+//		map.put("searchWord",page.getSearchWord());
+//		return map;
+//	}
 }

@@ -16,6 +16,10 @@ import com.example.codeblue.vo.ServiceCategory;
 
 public interface AdminService {
 	
+	//삭제된 게시물 리스트 가져오기
+	public Map<String,Object> getWithdrawQuestionBoardList(Page page,int currentPage);
+	//게시물 삭제하기
+	public void removeQeustionBoardList(List<String> questionBoardIdList);
 	//병원정보 수정
 	public int modifyHospital(Hospital hospital);
 	//회원 리스트
