@@ -32,6 +32,7 @@ console.log("관리자");
 	+ '          <div class="bg-white py-2 collapse-inner rounded">'
 	+ '            <h6 class="collapse-header">질문 및 답변 관리</h6>'
 	+ '            <a class="collapse-item" href="/adminQuestionBoard">질문 관리</a>'
+	+ '            <a class="collapse-item" href="/adminWithdrawQuestionBoard">삭제된 질문</a>'
 	+ '            <a class="collapse-item" href="/adminAnswerBoard">답변 조회</a>'
 	+ '            <a class="collapse-item" href="/adminCommentBoard">댓글 조회</a>'
 	+ '            <a class="collapse-item" href="/adminVoteBoard">추천수 조회</a>'
