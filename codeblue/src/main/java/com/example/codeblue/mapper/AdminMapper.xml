@@ -157,9 +157,145 @@
 	  	<association property="serviceCategory" resultMap="ServiceCategory">
 	   	</association>
 	</resultMap>
+		<!-- Answer 객체 -->
+	<resultMap type="com.example.codeblue.vo.Answer" id="Answer">
+		<result column="answer_id"  property="answerId"></result>
+		<result column="answer_content" property="answerContent"></result>
+		<result column="answer_datetime" property="answerDatetime"></result>
+		<association property="questionBoard" resultMap="QuestionBoard"></association>
+		<association property="user" resultMap="User"></association>
+	</resultMap>
 	<!-- 객체정리 끝ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
-	
-		<!-- 삭제된 게시글 전체행수 -->
+		<!-- 답변 상세정보 -->
+	<select id="selectAnswerOne" resultMap="Answer" parameterType="String">
+		SELECT 
+			a.answer_id,
+			qb.question_id,
+			qb.question_title,
+			a.user_id,
+			u.user_name,
+			a.answer_content,
+			a.answer_datetime,
+			CASE WHEN ac.comment_count IS NULL then 0 ELSE ac.comment_count END AS comment_count,
+			CASE WHEN av.vote_count IS NULL then 0 ELSE av.vote_count END AS vote_count
+		FROM answer a INNER JOIN question_board qb
+		ON a.question_id = qb.question_id
+		LEFT JOIN (SELECT COUNT(*) AS comment_count,answer_id FROM
+				answer_comment
+				GROUP BY answer_id) ac
+		ON a.answer_id = ac.answer_id
+		LEFT JOIN (SELECT COUNT(*) AS vote_count,answer_id FROM
+				answer_vote
+				GROUP BY answer_id) av
+		ON a.answer_id = av.answer_id
+		INNER JOIN user u
+		ON qb.user_id = u.user_id
+		WHERE a.answer_id = #{answerId}
+	</select>
+	<!-- 답변 전체행수 가져오기 -->
+	<select id="selectAnswerTotalCount" resultType="int">
+		SELECT COUNT(*) 
+		FROM answer a INNER JOIN question_board q
+		ON a.question_id = q.question_id
+		INNER JOIN feild f
+		ON q.feild_id = f.feild_id
+		WHERE a.answer_id IS NOT NULL
+			<if test="searchWord != null">
+				AND	a.answer_content like CONCAT('%',#{searchWord},'%')
+			</if>
+			<if test="searchCategory != null">
+				AND f.feild_id = #{searchCategory}
+			</if>
+			<if test="toDate != null and fromDate != null">
+				AND a.answer_datetime &gt;= #{toDate} AND a.answer_datetime &lt;= #{fromDate}
+			</if>
+	</select>
+	<!-- 답변 리스트 가져오기 -->
+	<select id="selectAnswerList" resultMap="Answer" parameterType="com.example.codeblue.vo.Page">
+		SELECT 
+			a.answer_id,
+			qb.question_id,
+			CONCAT(SUBSTRING(qb.question_title,1,20),'...')as question_title,
+			a.user_id,
+			CONCAT(SUBSTRING(a.answer_content,1,20),'...') as answer_content,
+			a.answer_datetime,
+			f.feild_name,
+			CASE WHEN ac.comment_count IS NULL then 0 ELSE ac.comment_count END AS comment_count
+		FROM answer a INNER JOIN question_board qb
+		ON a.question_id = qb.question_id
+		LEFT JOIN feild f
+		ON qb.feild_id = f.feild_id
+		LEFT JOIN (SELECT COUNT(*) AS comment_count,answer_id FROM
+				answer_comment
+				GROUP BY answer_id) ac
+		ON a.answer_id = ac.answer_id
+		WHERE a.answer_id IS NOT NULL
+			<if test="searchWord != null">
+				AND	a.answer_content like CONCAT('%',#{searchWord},'%')
+			</if>
+			<if test="searchCategory != null">
+				AND f.feild_id = #{searchCategory}
+			</if>
+			<if test="toDate != null and fromDate != null">
+				AND a.answer_datetime &gt;= #{toDate} AND a.answer_datetime &lt;= #{fromDate}
+			</if>
+		LIMIT #{beginRow},#{rowPerPage}
+	</select>
+	<!-- 삭제된 게시글 상세정보 -->
+	<select id="selectWithdrawQuestionBoardOne" resultMap="QuestionBoard" parameterType="String">
+		SELECT 
+				q.question_id,
+				q.question_title,
+				q.question_datetime,
+				q.question_content,
+				q.user_id,
+				u.user_name,
+				CASE WHEN a.answer_count IS NULL then 0 ELSE a.answer_count END AS answer_count,
+				CASE WHEN qc.comment_count IS NULL then 0 ELSE qc.comment_count END AS comment_count,
+				CASE WHEN qv.vote_count IS NULL then 0 ELSE qv.vote_count END AS vote_count
+		FROM withdraw_question_board q left JOIN (SELECT COUNT(*) AS answer_count,question_id FROM
+		answer
+		GROUP BY question_id) a
+		ON q.question_id = a.question_id
+		LEFT JOIN (SELECT COUNT(*) AS comment_count,question_id FROM
+		question_comment
+		GROUP BY question_id) qc
+		ON q.question_id = qc.question_id
+		LEFT JOIN (SELECT COUNT(*) AS vote_count,question_id FROM
+		question_vote) qv
+		ON q.question_id = qv.question_id
+		INNER JOIN user u
+		ON u.user_id = q.user_id
+		WHERE q.question_id = #{questionId}
+	</select>
+	<!-- 게시글 상세정보 -->
+	<select id="selectQuestionBoardOne" resultMap="QuestionBoard" parameterType="String">
+		SELECT 
+				q.question_id,
+				q.question_title,
+				q.question_datetime,
+				q.question_content,
+				q.user_id,
+				u.user_name,
+				CASE WHEN a.answer_count IS NULL then 0 ELSE a.answer_count END AS answer_count,
+				CASE WHEN qc.comment_count IS NULL then 0 ELSE qc.comment_count END AS comment_count,
+				CASE WHEN qv.vote_count IS NULL then 0 ELSE qv.vote_count END AS vote_count
+		FROM question_board q left JOIN (SELECT COUNT(*) AS answer_count,question_id FROM
+		answer
+		GROUP BY question_id) a
+		ON q.question_id = a.question_id
+		LEFT JOIN (SELECT COUNT(*) AS comment_count,question_id FROM
+		question_comment
+		GROUP BY question_id) qc
+		ON q.question_id = qc.question_id
+		LEFT JOIN (SELECT COUNT(*) AS vote_count,question_id FROM
+		question_vote) qv
+		ON q.question_id = qv.question_id
+		INNER JOIN user u
+		ON u.user_id = q.user_id
+		WHERE q.question_id = #{questionId}
+	</select>
+	<!-- 삭제된 게시글 전체행수 -->
 	<select id="selectWithdrawQuestionBoardTotalCount" resultType="int" parameterType="com.example.codeblue.vo.Page">
 		SELECT 
 			COUNT(*)

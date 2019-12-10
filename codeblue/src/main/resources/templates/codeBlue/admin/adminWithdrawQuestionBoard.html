@@ -64,7 +64,7 @@
 		        			 	<tr>
 		        			 		<td>카테고리</td>
 		        			 		<td>
-		        			 			<select id="searchCategory" class="form-control" style="width: 40%">
+		        			 			<select id="searchCategory" class="form-control form-control-sm" style="width: 40%">
 											<option value="All">전체</option>
 										</select>
 									</td>
@@ -109,24 +109,33 @@
 				<table class="table table-hover table-bordered" id="boardList">
 					<thead>
 						<tr class="text-center">
-							<th>질문 번호</th>
-							<th>카테고리</th>
+							<th width="5%">번호</th>
+							<th width="10%">카테고리</th>
 							<th>제목</th>
-							<th>작성자 아이디</th>
-							<th>작성일자</th>
+							<th width="13%">작성자 아이디</th>
+							<th width="13%">작성일자</th>
 						</tr>
 					</thead>
 					<tbody id="boardListBody">
 					</tbody>
 				</table>
-				<div class="d-flex ">
+				<div class="d-flex justify-content-between">
 					<div class="p-2">
 						<button type="button" id="prevBtn" class="btn btn-primary">이전</button>
 						<span id="pageInfo"></span>
 						<button type="button" id="nextBtn" class="btn btn-primary">다음</button>
 					</div>
+					<div class="text-right p-2">
+						<button type="button" id="close" class="btn btn-primary">닫기</button>
+					</div>
 				</div>
+				<br>
+               	<div class="d-flex ">
+               
+					<table id="boardOne" class="table table-borderless ">
 				
+					</table>
+               	</div>
                
             </div>
          <!--  Page Content End -->
@@ -272,6 +281,10 @@
 	var checkBoxArr = [];
 	//페이지에 출력할 행 갯수
 	var rowPerPage = 10;
+	//닫기 버튼 누를시 상세정보 창을 삭제
+	$("#close").click(function() {
+		$("#boardOne").empty();
+	})
 	//검색하기
 	$("#getBoard").click(function() {
 		//전체 체크 풀어주기
@@ -381,16 +394,45 @@
 			$("#nextBtn").hide();
 		}
 	}
+	// 질문의 내용 출력하기
+	function content(questionId){
+		$("#boardOne").empty();
+		console.log(questionId+" 상세정보 가져오기");
+		$.ajax({
+			url:"/rest/getWithdrawQuestionBoardOne",
+			method:"post",
+			data:{"questionId":questionId},
+			success:function(json){
+				console.log(json)
+				var html = 	"<thead  class='card bg-light my-2'>"+
+								"<tr class='bg-gray-200'>"+
+									"<td>"+json.questionTitle+"</td>"+
+								"</tr>"+
+								"<tr class='d-flex justify-content-between'>"+
+									"<th class='small'>작성자 아이디 : "+json.user.userId+
+									" 닉네임 : "+json.user.userName+"</th>"+
+									"<th class='small text-right'>답변 수 : "+json.answerCount+"건"+
+									" 추천 수 : "+json.voteCount+"회"+
+									" 댓글 수 : "+json.commentCount+"건</th>"+
+								"</tr>"+
+							"</thead><br>"+
+							"<tbody class='card bg-light my-2'>"+
+								"<tr><td>"+json.questionContent+"</td></tr>"
+							"</tbody>";
+				$("#boardOne").append(html);
+			}
+		})
+	}
 	//html 추가
 	function append(item,index){
 		return "<tr>"+
 	//		"<td><input type='checkbox' value="+item.questionId+" name='chk'></td>"+
 // 		"<td><div class='custom-control custom-checkbox text-center'><input class='custom-control-input' type='checkbox' name='chk' value="+item.questionId+" id='check"+index+"'><label name='chk' class='custom-control-label' for='check"+index+"'></label></div></td>"+
-		"<td>"+item.questionId+"</td>"+
+		"<td class='text-center'>"+item.questionId+"</td>"+
 		"<td>"+item.feild.feildName+"</td>"+
-		"<td>"+item.questionTitle+"</td>"+
-		"<td>"+item.user.userId+"</td>"+
-		"<td>"+item.questionDatetime+"</td>"+
+		"<td onclick='content("+item.questionId+")' style='cursor:pointer'>"+item.questionTitle+"</td>"+
+		"<td class='text-center'>"+item.user.userId+"</td>"+
+		"<td class='text-center'>"+item.questionDatetime+"</td>"+
 		"<tr>";
 	}
 	function subInfo(json){

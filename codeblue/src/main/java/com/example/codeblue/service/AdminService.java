@@ -3,6 +3,7 @@ package com.example.codeblue.service;
 import java.util.List;
 import java.util.Map;
 
+import com.example.codeblue.vo.Answer;
 import com.example.codeblue.vo.FaqBoard;
 import com.example.codeblue.vo.Feild;
 import com.example.codeblue.vo.Hospital;
@@ -10,12 +11,24 @@ import com.example.codeblue.vo.InquiryHistory;
 import com.example.codeblue.vo.InquiryHistoryAnswer;
 import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.Page;
+import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.QuestionCount;
 import com.example.codeblue.vo.ReportHistory;
 import com.example.codeblue.vo.ServiceCategory;
 
 public interface AdminService {
 	
+	
+	//답변 상세정보 가져오기
+	public Answer getAnswerOne(String answerId);
+	//답변 삭제하기
+	public void removeAnswerList(List<String> answerIdList);
+	//답변 리스트 가져오기
+	public Map<String,Object> getAnswerList(Page page,int currentPage);
+	//삭제된 게시글 상세정보 가져오기
+	public QuestionBoard getWithdrawQuestionBoardOne(String questionId);
+	//게시글 상세정보 가져오기
+	public QuestionBoard getQuestionBoardOne(String questionId);
 	//삭제된 게시물 리스트 가져오기
 	public Map<String,Object> getWithdrawQuestionBoardList(Page page,int currentPage);
 	//게시물 삭제하기

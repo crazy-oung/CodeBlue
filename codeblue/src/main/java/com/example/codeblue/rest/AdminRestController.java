@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.codeblue.service.AdminService;
+import com.example.codeblue.vo.Answer;
 import com.example.codeblue.vo.FaqBoard;
 import com.example.codeblue.vo.Feild;
 import com.example.codeblue.vo.Hospital;
@@ -17,6 +18,7 @@ import com.example.codeblue.vo.InquiryHistory;
 import com.example.codeblue.vo.InquiryHistoryAnswer;
 import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.Page;
+import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.QuestionCount;
 import com.example.codeblue.vo.ReportHistory;
 import com.example.codeblue.vo.ServiceCategory;
@@ -26,6 +28,46 @@ import com.example.codeblue.vo.ServiceCategory;
 public class AdminRestController {
 	@Autowired private AdminService adminService;
 	
+	//답변 상세정보
+	@PostMapping("/rest/getAnswerOne")
+	public Answer getAnswerOne(@RequestParam(value="answerId")String answerId) {
+		System.out.println("::: post - getAnswerOne :::");
+		System.out.println("answerId : "+answerId);
+		return adminService.getAnswerOne(answerId);
+	}
+	//답변 삭제 하기
+	@PostMapping("/rest/removeAnswerList")
+	public String removeAnswerList(@RequestParam(value="checkBoxArr")List<String> answerIdList) {
+		System.out.println("::: post - removeAnswerList :::");
+		System.out.println(answerIdList.toString());
+		adminService.removeAnswerList(answerIdList);
+		return "답변 삭제 성공";
+	}
+	//답변 리스트 가져오기
+	@PostMapping("/rest/getAnswerList")
+	public Map<String,Object> getAnswerList(Page page,@RequestParam(value="currentPage", defaultValue = "1")int currentPage,
+												@RequestParam(value="rowPerPage", defaultValue = "10")int rowPerPage) {
+		System.out.println("::: post - getAnswerList :::");
+		System.out.println(page.toString());
+		System.out.println("currentPage : "+currentPage);
+		System.out.println("rowPerPage : "+rowPerPage);
+		page.setRowPerPage(rowPerPage);
+		return adminService.getAnswerList(page, currentPage);
+	}
+	//삭제된 게시글 상세정보 가져오기
+	@PostMapping("/rest/getWithdrawQuestionBoardOne")
+	public QuestionBoard getWithdrawQuestionBoardOne(@RequestParam(value="questionId")String questionId) {
+		System.out.println("::: post - getWithdrawQuestionBoardOne :::");
+		System.out.println("questionId "+questionId);
+		return adminService.getWithdrawQuestionBoardOne(questionId);
+	}
+	//게시글 상세정보 가져오기
+	@PostMapping("/rest/getQuestionBoardOne")
+	public QuestionBoard getQuestionBoardOne(@RequestParam(value="questionId")String questionId) {
+		System.out.println("::: post - getQuestionBoardOne :::");
+		System.out.println("questionId "+questionId);
+		return adminService.getQuestionBoardOne(questionId);
+	}
 	//검색 조건에 따른 삭제된 게시글 가져오기
 	@PostMapping("/rest/getWithdrawQuestionBoardList")
 	public Map<String,Object> getWithdrawQuestionBoardList(Page page,@RequestParam(value="currentPage", defaultValue = "1")int currentPage,

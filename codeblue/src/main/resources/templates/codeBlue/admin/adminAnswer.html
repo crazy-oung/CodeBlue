@@ -50,7 +50,7 @@
             
                <!-- Page Heading -->
                <div class="d-sm-flex align-items-center justify-content-between mb-3" >
-                  <h3 class="text-gray-800 mb-2 font-weight-bold">게시글 관리</h3>
+                  <h3 class="text-gray-800 mb-2 font-weight-bold">답변 관리</h3>
                </div>
                
                <!-- page Heading End -->
@@ -94,7 +94,7 @@
 						<p id="totalRow" class="py-1 m-0"></p>
 					</div>
 					<div class="col-sm-9">
-						<button type="button" class="btn btn-outline-primary btn-sm px-4" id="removeQuestionBoard">게시글 삭제</button>
+						<button type="button" class="btn btn-outline-primary btn-sm px-4" id="removeAnswer">답변 삭제</button>
 					</div>
 					<div class="col-sm-1">
 						<select class="form-control form-control-sm" id="rowPerPage">
@@ -107,7 +107,7 @@
 					</div>
 				</div>
 				
-				<table class="table table-hover table-bordered" id="boardList">
+				<table class="table table-hover table-bordered" id="answerList">
 					<thead>
 						<tr class="text-center">
 							<th width="4%"><div class='custom-control custom-checkbox'>
@@ -115,16 +115,17 @@
 							</div></th>
 							<th width="5%">번호</th>
 							<th width="10%">카테고리</th>
-							<th>제목</th>
-							<th width="5%">답변수</th>
-							<th width="13%">작성자 아이디</th>
+							<th>질문 제목</th>
+							<th>답변 내용</th>
+							<th width="5%">댓글수</th>
+							<th width="15%">작성자 아이디</th>
 							<th width="13%">작성일자</th>
 						</tr>
 					</thead>
-					<tbody id="boardListBody">
+					<tbody id="answerListBody">
 					</tbody>
 				</table>
-				<div class="d-flex justify-content-between">
+				<div class="d-flex justify-content-between mb-3">
 					<div class="p-2">
 						<button type="button" id="prevBtn" class="btn btn-primary">이전</button>
 						<span id="pageInfo"></span>
@@ -134,13 +135,10 @@
 						<button type="button" id="close" class="btn btn-primary">닫기</button>
 					</div>
 				</div>
-				<br>
-               	<div class="d-flex ">
-               
-					<table id="boardOne" class="table table-borderless ">
-				
-					</table>
-               	</div>
+				<!-- 질문 & 답변 -->
+				<table id="boardOne" class="table table-borderless"></table>
+				<hr class='m-0 pb-3'>
+				<table id="answerOne" class="table table-borderless"></table>
             </div>
          <!--  Page Content End -->
   
@@ -232,7 +230,7 @@
 	});
 	//테이블 값 넣어주기 기본적으로
 	$.ajax({
-			url: "/rest/getQuestionBoardList",
+			url: "/rest/getAnswerList",
 			method:"post",
 			data:{"searchCategory":searchCategory,"searchWord":searchWord,"toDate":toDate,"fromDate":fromDate},
 			success: function(json){
@@ -241,16 +239,16 @@
 				checkBoxArr = new Array();
 				subInfo(json);
 				BtnShow(currentPage,lastPage);
-				$("#boardListBody").empty();
+				$("#answerListBody").empty();
 				$(json.list).each(function(index,item) {
 					var html = append(item,index)
-					$("#boardList").append(html);
+					$("#answerList").append(html);
 				})
 			}
 	});
 	$("#rowPerPage").change(function(){
 		$.ajax({
-			url: "/rest/getQuestionBoardList",
+			url: "/rest/getAnswerList",
 			method:"post",
 			data:{"searchCategory":searchCategory,"searchWord":searchWord,"toDate":toDate,"fromDate":fromDate,"rowPerPage":$("#rowPerPage").val()},
 			success: function(json){
@@ -259,10 +257,10 @@
 				checkBoxArr = new Array();
 				subInfo(json);
 				BtnShow(currentPage,lastPage);
-				$("#boardListBody").empty();
+				$("#answerListBody").empty();
 				$(json.list).each(function(index,item) {
 					var html = append(item,index)
-					$("#boardList").append(html);
+					$("#answerList").append(html);
 				})
 			}
 		});
@@ -288,9 +286,10 @@
 	//닫기 버튼 누를시 상세정보 창을 삭제
 	$("#close").click(function() {
 		$("#boardOne").empty();
+		$("#answerOne").empty();
 	})
 	//삭제 버튼 누를시 체크박스가 선택되어있는 값을 가져와 배열에 저장
-	$("#removeQuestionBoard").click(function() {
+	$("#removeAnswer").click(function() {
 		$("input[name=chk]:checked").each(function(){
 				
 			checkBoxArr.push($(this).val());
@@ -302,7 +301,7 @@
 			alert("체크 항목이 없습니다.");
 		} else {
 			$.ajax({
-				url:"/rest/removeQuestionBoardList",
+				url:"/rest/removeAnswerList",
 				traditional : true, //ajax에서 기본적으로 배열을 지원하지않기때문에 설정
 				method:"post",
 				data:{"checkBoxArr":checkBoxArr},
@@ -350,7 +349,7 @@
 		console.log("작성 날짜 끝 : "+fromDate);
 		//검색조건에 따른 질문 리스트를 뽑기
 		$.ajax({
-			url: "/rest/getQuestionBoardList",
+			url: "/rest/getAnswerList",
 			method:"post",
 			data:{"searchCategory":searchCategory,"searchWord":searchWord,"toDate":toDate,"fromDate":fromDate,"rowPerPage":$("#rowPerPage").val()},
 			success: function(json){
@@ -359,10 +358,10 @@
 				checkBoxArr = new Array();
 				subInfo(json);
 				BtnShow(currentPage,lastPage);
-				$("#boardListBody").empty();
+				$("#answerListBody").empty();
 				$(json.list).each(function(index,item) {
 					var html = append(item,index)
-					$("#boardList").append(html);
+					$("#answerList").append(html);
 				})
 			}
 		});
@@ -372,7 +371,7 @@
 		//전체 체크 풀어주기
 		$("#selectAll").prop("checked",false);
 		$.ajax({
-			url:"/rest/getQuestionBoardList",
+			url:"/rest/getAnswerList",
 			method:"POST",
 			data:{"currentPage" : currentPage-1,"searchCategory":searchCategory,"searchWord":searchWord,"toDate":toDate,"fromDate":fromDate,"rowPerPage":$("#rowPerPage").val()},
 			success: function(json){
@@ -380,10 +379,10 @@
 				checkBoxArr = new Array();
 				subInfo(json);
 				BtnShow(currentPage,lastPage);
-				$("#boardListBody").empty();
+				$("#answerListBody").empty();
 				$(json.list).each(function(index,item) {
 					var html = append(item,index)
-					$("#boardList").append(html);
+					$("#answerList").append(html);
 				})
 			}
 		})
@@ -393,7 +392,7 @@
 		//전체 체크 풀어주기
 		$("#selectAll").prop("checked",false);
 		$.ajax({
-			url:"/rest/getQuestionBoardList",
+			url:"/rest/getAnswerList",
 			method:"POST",
 			data:{"currentPage" : currentPage+1,"searchCategory":searchCategory,"searchWord":searchWord,"toDate":toDate,"fromDate":fromDate,"rowPerPage":$("#rowPerPage").val()},
 			success: function(json){
@@ -401,10 +400,10 @@
 				checkBoxArr = new Array();
 				subInfo(json);
 				BtnShow(currentPage,lastPage);
-				$("#boardListBody").empty();
+				$("#answerListBody").empty();
 				$(json.list).each(function(index,item) {
 					var html = append(item,index)
-					$("#boardList").append(html);
+					$("#answerList").append(html);
 				})
 			}
 		})
@@ -423,7 +422,7 @@
 		}
 	}
 	// 질문의 내용 출력하기
-	function content(questionId){
+	function boardContent(questionId){
 		$("#boardOne").empty();
 		console.log(questionId+" 상세정보 가져오기");
 		$.ajax({
@@ -451,6 +450,35 @@
 			}
 		})
 	}
+	// 답변 내용 출력하기
+	function answerContent(answerId) {
+		$("#answerOne").empty();
+		console.log(answerId+" 상세정보 가져오기");
+		$.ajax({
+			url:"/rest/getAnswerOne",
+			method:"post",
+			data:{"answerId":answerId},
+			success:function(json){
+				console.log(json)
+				var html = 	"<thead class='card card bg-light my-2'>"+
+								"<tr class='bg-gray-200'>"+
+									"<td>"+json.questionBoard.questionTitle+" 에 대한 답변</td>"+
+								"</tr>"+
+								"<tr class='d-flex justify-content-between'>"+
+									"<th class='small'>작성자 아이디 : "+json.questionBoard.user.userId+
+									" 닉네임 : "+json.questionBoard.user.userName+"</th>"+
+									"<th class='small text-right'>"+
+									" 추천 수 : "+json.questionBoard.voteCount+"회"+
+									" 댓글 수 : "+json.questionBoard.commentCount+"건</th>"+
+								"</tr>"+
+							"</thead><br>"+
+							"<tbody class='card bg-light my-2'>"+
+								"<tr><td>"+json.answerContent+"</td></tr>"
+							"</tbody>";
+				$("#answerOne").append(html);
+			}
+		})
+	}
 	//전체 체크박스 버튼을 누를경우 타입이 checkbox인것은 전부 체크해주기
 	function checkAll() {
 		if( $("#selectAll").is(':checked') ){
@@ -462,14 +490,14 @@
 	//html 추가
 	function append(item,index){
 		return "<tr>"+
-	//		"<td><input type='checkbox' value="+item.questionId+" name='chk'></td>"+
-		"<td><div class='custom-control custom-checkbox text-center'><input class='custom-control-input' type='checkbox' name='chk' value="+item.questionId+" id='check"+index+"'><label name='chk' class='custom-control-label' for='check"+index+"'></label></div></td>"+
-		"<td class='text-center'>"+item.questionId+"</td>"+
-		"<td>"+item.feild.feildName+"</td>"+
-		"<td onclick='content("+item.questionId+")' style='cursor:pointer'>"+item.questionTitle+"</td>"+
-		"<td class='text-center'>"+item.answerCount+"</td>"+
-		"<td class='text-center'>"+item.user.userId+"</td>"+
-		"<td class='text-center'>"+item.questionDatetime+"</td>"+
+		"<td><div class='custom-control custom-checkbox text-center'><input class='custom-control-input' type='checkbox' name='chk' value="+item.answerId+" id='check"+index+"'><label name='chk' class='custom-control-label' for='check"+index+"'></label></div></td>"+
+		"<td class='text-center'>"+item.answerId+"</td>"+
+		"<td>"+item.questionBoard.feild.feildName+"</td>"+
+		"<td onclick='boardContent("+item.questionBoard.questionId+")' style='cursor:pointer'>"+item.questionBoard.questionTitle+"</td>"+
+		"<td onclick='answerContent("+item.answerId+")' style='cursor:pointer'>"+item.answerContent+"</td>"+
+		"<td class='text-center'>"+item.questionBoard.commentCount+"</td>"+
+		"<td class='text-center'>"+item.questionBoard.user.userId+"</td>"+
+		"<td class='text-center'>"+item.answerDatetime+"</td>"+
 		"<tr>";
 	}
 	// 서브 값 추가

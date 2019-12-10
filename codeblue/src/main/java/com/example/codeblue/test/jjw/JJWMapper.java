@@ -2,6 +2,7 @@ package com.example.codeblue.test.jjw;
 
 import java.util.List;
 
+import com.example.codeblue.vo.Answer;
 import com.example.codeblue.vo.Feild;
 import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionBoard;
@@ -10,6 +11,16 @@ import com.example.codeblue.vo.QuestionBoard;
 public interface JJWMapper {
 	
 	
+	//답변  상세정보
+	public Answer selectAnswerOne(String answerId);
+	//답변 행수 가져오기
+	public int selectAnswerTotalCount(Page page);
+	//답변 리스트 가져오기
+	public List<Answer> selectAnswerList(Page page);
+	//삭제된 게시글 상세정보
+	public QuestionBoard selectWithdrawQuestionBoardOne(String questionId);
+	//게시글 상세정보
+	public QuestionBoard selectQuestionBoardOne(String questionId);
 	//삭제된 게시글 전체행수
 	public int selectWithdrawQuestionBoardTotalCount(Page page);
 	//삭제된 게시글 가져오기
@@ -34,7 +45,7 @@ public interface JJWMapper {
 	public List<String> selectQuestionBoardAnswerList(List<String> list);
 	//질문Id 값으로 전체값 가져오기(삭제를 위한)
 	public List<QuestionBoard> selectQuestionBoardCheckList(List<String> list);
-//	public List<Feild> selectFeildList();
-//	public int selectQuestionBoardTotalCount(Page page);
-//	public List<QuestionBoard> selectQuestionBoardList(Page page);
+	public List<Feild> selectFeildList();
+	public int selectQuestionBoardTotalCount(Page page);
+	public List<QuestionBoard> selectQuestionBoardList(Page page);
 }
