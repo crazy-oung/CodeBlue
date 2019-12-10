@@ -1,17 +1,107 @@
-<!-- <?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
-  <mapper namespace="com.example.codeblue.test.LeeMapper">
   
-  	병원정보 수정
-  	<update id="updateHospital"  parameterType="com.example.codeblue.vo.Hospital">
-  		UPDATE hospital SET hospital_name = #{hospitalName}, 
-  							hospital_number = #{hospitalNumber},
-  							hospital_address = #{hospitalAddress},
-  							hospital_address2 = #{hospitalAddress2},
-  							region_id = #{region.regionId}
-  		WHERE hospital_id = #{hospitalId} 
-  	</update>
-  </mapper> -->
+<mapper namespace="com.example.codeblue.test.Lee.LeeMapper">
+	<!-- User 객체 -->
+	<resultMap type="com.example.codeblue.vo.User" id="User">
+		<result column="user_id" property="userId"></result>
+		<result column="user_name" property="userName"></result>
+		<result column="user_pw" property="userPw"></result>
+		<result column="user_birthdate" property="userBirthdate"></result>
+		<result column="user_createtime" property="userCreatetime"></result>
+		<result column="user_authority" property="userAuthority"></result>
+		
+		<association property="region" resultMap="Region"></association>
+		<association property="rank" resultMap="Rank"></association>
+	</resultMap>
+	<!-- Region 객체 -->
+	<resultMap type="com.example.codeblue.vo.Region" id="Region">
+		<result column="region_id" property="regionId"></result>
+		<result column="region_name" property="regionName"></result>
+	</resultMap>
+	<!-- Rank 객체 -->
+	<resultMap type="com.example.codeblue.vo.Rank" id="Rank">
+		<result column="rank_id" property="rankId"></result>
+		<result column="rank_name" property="rankName"></result>
+	</resultMap>
+	
+		<!-- QuestionComment 객체 -->
+	<resultMap type="com.example.codeblue.vo.QuestionComment" id="QuestionComment">
+		<result column="question_comment_id" property="questionCommentId"></result>
+		<result column="question_comment_content" property="questionCommentContent"></result>
+		<result column="question_comment__datetime" property="questionCommentDatetime"></result>
+		
+		<association property="user" resultMap="User"></association>
+		<association property="questionBoard" resultMap="QuestionBoard"></association>
+	</resultMap>
+	
+	<!-- QuestionBoard 객체 -->
+	<resultMap type="com.example.codeblue.vo.QuestionBoard" id="QuestionBoard">
+		<result column="question_id" property="questionId"></result>
+		<result column="question_title" property="questionTitle"></result>
+		<result column="question_content" property="questionContent"></result>
+		<result column="question_datetime" property="questionDatetime"></result>
+		<result column="answer_count" property="answerCount"></result>
+		<result column="vote_count" property="voteCount"></result>
+		<result column="comment_count" property="commentCount"></result>
+		
+		<association property="feild" resultMap="Feild"></association>
+		<association property="user" resultMap="User"></association>
+		<association property="tag" resultMap="Tag"></association>
+	</resultMap>
+	
+	<!-- Tag 객체 -->
+	<resultMap type="com.example.codeblue.vo.Tag" id="Tag">
+		<result column="tag_id" property="tagId"></result>
+		<result column="tag_name" property="tagName"></result>
+	</resultMap>
+	
+	<!-- Feild 객체 -->
+	<resultMap type="com.example.codeblue.vo.Feild" id="Feild">
+		<result column="feild_id" property="feildId"></result>
+		<result column="feild_name" property="feildName"></result>
+	</resultMap>
+	
+	<select id="selectQuestionBoardList" resultMap="QuestionBoard" parameterType="String">
+		SELECT 
+			qb.question_id,
+			qb.question_title,
+			u.user_id,
+			qb.question_datetime
+		FROM question_board qb INNER JOIN user u
+		ON qb.user_id = u.user_id
+		WHERE 
+			u.user_id = #{userId}
+		ORDER BY qb.question_datetime DESC  
+	</select>
+	
+	<select id="selectQuestionCommentList" parameterType="String" resultMap="QuestionComment">
+		SELECT	
+			qc.question_comment_id,
+			u.user_id,
+			qc.question_comment_content,
+			qc.question_id,
+			qc.question_comment_datetime
+		FROM question_comment qc INNER JOIN user u
+		ON qc.user_id = u.user_id AND u.user_id = #{userId}
+		ORDER BY question_comment_datetime DESC 
+	</select>
+	
+	
+	<select id="selectUserOne" parameterType="String"
+			resultMap="User">
+      SELECT 
+          u.user_id,
+          u.user_name,
+          r.region_name,
+          u.user_birthdate,
+          u.user_createtime
+      FROM user u INNER JOIN region r
+      ON u.region_id = r.region_id AND user_id = ${userId}
+	</select>
+	
+	
+</mapper>

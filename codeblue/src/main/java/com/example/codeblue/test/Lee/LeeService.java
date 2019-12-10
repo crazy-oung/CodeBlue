@@ -1,10 +1,15 @@
 package com.example.codeblue.test.Lee;
-/*
- * package com.example.codeblue.test;
- * 
- * import com.example.codeblue.vo.Hospital;
- * 
- * public interface LeeService {
- * 
- * //병원정보 수정 public int modifyHospital(Hospital hospital); }
- */
+
+
+import java.util.List;
+
+import com.example.codeblue.vo.QuestionBoard;
+import com.example.codeblue.vo.QuestionComment;
+import com.example.codeblue.vo.User;
+
+public interface LeeService {
+	public User getUserOne(String userId);
+	
+	public List<QuestionBoard> getQuestionBoard(String userId);
+	public List<QuestionComment> getQuestionComment(String userId);
+	}

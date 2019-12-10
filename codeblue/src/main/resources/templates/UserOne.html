@@ -30,7 +30,7 @@
 	<!-- End of Topbar -->
 
 		<!-- Begin Page Content -->
-		<div class="container">
+		<div class="container" height="100%">
 			<div class="row"> 
 			
 				<!-- Side Bar -->
@@ -57,20 +57,92 @@
 				<div class="col-sm-8">
 					<!-- Page Heading -->
 					<div class="d-sm-flex align-items-center justify-content-between mb-4" style="margin-top: 80px">
-						<h4 class="text-gray-800 mb-0" id="aaaa"></h4>
+						<h4 class="text-gray-800 mb-0">프로필</h4>
+						
 					</div><!-- page Heading End -->
-					<hr>
-					<!-- 프로필 정보 -->
+					<!-- 1/4 (user)-->
 					<div>
-						<table id="userOne" class="table table-hover">
-								
-						</table>
+						<div class="row">
+							<div class="col-md-2" id="img">
+								<img src="/img/profile.svg" width="100px">
+							</div>
+							<div class="col-md-6" id="introduce"></div>
+							<div class="col-md-4" id="information"></div>
+						</div>
 					</div>
+					<hr>
+					<!-- 2/4 (tag)-->
+					<div>
+						<div style="text-align: center">
+							<div><h3>태그</h3></div>
+							<div id="tag">태그 </div>
+						</div>
+					</div>
+					<!-- 3/4 (list) -->
+					<hr>
+					<div>
+						<div  style="text-align: center">
+							<div> 
+									<h3>내 게시글</h3> 
+									<button type="button" id="questionBoard">내 질문</button> 
+									<button type="button" id="questionComment">내 답글</button>
+							 </div>
+							<div id="list"></div>
+						</div>
+					</div>
+					<hr>
+					<!-- 4/4 (rank) -->
+					<div>
+						<div style="text-align: center"><h3>랭크</h3></div>
+					</div>					
+					<br>
+					
+					<button type="button" id="prevBtn" class="btn btn-primary">이전</button>
+					<button type="button" id="nextBtn" class="btn btn-primary">다음</button>
+					
 				</div>
-				<!-- Page Content End -->
-	
+				
+				<!-- Page rigth side bar -->
+				<div class="col-sm-3 pt-5">
+					<div class="card border-1 shadow bg-light border-bottom-primary mt-4">
+						<small class='text-primary font-weight-bold card-header alert-primary px-3 border-0'>
+							New! 새 소식이 있어요
+						</small>
+						<table class=" table table-sm mb-0">
+							<tr>
+								<td><a class='nav-link small px-2' href='#'><i class='far fa-comment-dots mx-1'></i>도와주세용</a></td>
+							</tr>
+							<tr>
+								<td><a class='nav-link small px-2' href='#'><i class='far fa-comment-dots mx-1'></i>도와주세용</a></td>
+							</tr>
+							<tr>
+								<td><a class='nav-link small px-2' href='#'><i class='far fa-comment-dots mx-1'></i>도와주세용</a></td>
+							</tr>
+							<tr>
+								<td><a class='nav-link small px-2' href='#'><i class='far fa-comment-dots mx-1'></i>도와주세용</a></td>
+							</tr>
+						</table>			
+						<small class='text-primary font-weight-bold card-header alert-primary px-3 border-0'>
+							궁금한 것이 있나요?
+						</small>	
+						<table class=" table table-sm mb-0">
+							<tr>
+								<td><a class='nav-link small px-2' href='#'><i class='far fa-comment-dots mx-1'></i>도와주세용</a></td>
+							</tr>
+							<tr>
+								<td><a class='nav-link small px-2' href='#'><i class='far fa-comment-dots mx-1'></i>도와주세용</a></td>
+							</tr>
+							<tr>
+								<td><a class='nav-link small px-2' href='#'><img src='img/codeblueicon.png' width="15px">도와주세용</a></td>
+							</tr>
+							<tr>
+								<td><a class='nav-link small px-2' href='#'><img src='img/codeblueicon.png' width="15px">도와주세용</a></td>
+							</tr>
+						</table>				
+					</div>
+				</div> <!-- rigth side bar end -->
+				
 			</div>
-			
 		</div> 
 
 	<!-- Footer -->
@@ -88,9 +160,11 @@
 	<!-- Custom scripts for all pages-->
 	<script src="js/sb-admin-2.min.js"></script>
 
+	<!-- Page level plugins -->
+	<script src="vendor/chart.js/Chart.min.js"></script>
   	<!-- CodeBlue scripts -->
   	<script src="js/codeBlueUser.js"></script>
-
+	
 </body>
 <script type="text/javascript">
 
@@ -110,36 +184,74 @@ var getParam = function(key){
  return _parammap[key];
 };
 $("#userId").val(getParam("userId"));
-$("#aaaa").append(getParam("userId"));
-$("#aaaa").append("님의 프로필");
 
 $(document).ready(function() {
 	$.ajax({
-		url :"/rest/userOne",
+		url :"/rest/profile",
 		method : "post",
 		data : {"userId" : getParam("userId")},
 		success : function(json){
+			console.log(json);
+		
 			$(json).each(function(index, item){
-				html = "<tr>";
-				html += "<td>유저 아이디 : </td>";
-				html += "<td>"+item.userId+"</td>";
-				html += "</tr><tr>"
-				html += "<td>유저 이름 : </td>";
-				html += "<td>"+item.userName+"</td>";
-				html += "</tr><tr>"
-				html += "<td>활동 지역</td>"		 
-				html += "<td>"+item.regionId+"</td>" 
-				html += "</tr><tr>";
-				html += "<td>유저 생년월일 : </td>";
-				html += "<td>"+item.userBirthDate+"</td>";
-				html += "</tr><tr>";
-				html += "<td>유저 생성일자 : </td>";
-				html += "<td>"+item.userCreatetime+"</td>";
-				html += "</tr><tr>"
-				$("#userOne").append(html);
+			
+			let	introduce = "<div><h2>"+item.userName+"</h2></div>";
+				introduce += "<div>"+item.userId+"</div>";
+				$("#introduce").append(introduce);
+			
+			let information = "<div>🚩"+item.region.regionName+"</div>";
+				information += "<div>💓"+item.userBirthdate+"</div>";
+				information += "<div>⏱"+item.userCreatetime+"</div>";
+				
+				$("#information").append(information);
+				
 			});
 		}
 	});
+
+	
+	$("#questionBoard").click(function(){
+		
+	$.ajax({
+		url :"/rest/profileQuestionBoard",
+		method : "post",
+		data : {"userId" : getParam("userId")},
+		success : function(json){
+			console.log(json);
+			$("#list").empty();
+			$(json).each(function(index, item){
+				
+			let board =  "<div>"+item.questionId+"</div>";
+				board += "<div>"+item.questionTitle+"</div>";
+				board += "<div>"+item.questionDatetime+"</div>";
+				
+				$("#list").append(board);
+			});
+		}
+	});
+	})
+	
+	$("questionComment").click(function(){
+		
+	$.ajax({
+		url :"/rest/profileQuestionComment",
+		method : "post",
+		data : {"userId" : getParam("userId")},
+		success : function(json){
+			console.log(json);
+		
+			$(json).each(function(index, item){
+			
+				let comment =  "<div>"+item.questionId+"</div>";
+					comment += "<div>"+item.questionTitle+"</div>";
+					comment += "<div>"+item.questionDatetime+"</div>";
+				
+				$("#list").append(comment);
+			});
+		}
+	});
+})
+	
 });
 </script>
 </html>
