@@ -10,4 +10,5 @@ public class InquiryHistory {
 	private Inquiry inquiry;
 	private User user;
 	private String inquiryDatetime;
+	private String inquiryAnswer;
 }

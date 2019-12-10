@@ -78,7 +78,7 @@ public interface AdminService {
 	//병원 상세페이지
 	public List<Hospital> getHospitalOne(int hospitalId);
 	//문의사항 답변 추가하기
-	public int addInquiryHistoryAnswer(InquiryHistoryAnswer inqruiyHistoryAnswer);
+	public void addInquiryHistoryAnswer(InquiryHistoryAnswer inqruiyHistoryAnswer);
 	//FAQ 전체 리스트 가져오기
 	public Map<String,Object> getFaqBoardList(int currentPage, int rowPerPage, String searchWord);
 	//FAQ 추가하기

@@ -27,7 +27,7 @@
 		<result column="inquiry_title" property="inquiryTitle" ></result>
 		<result column="inquiry_content" property="inquiryContent" ></result>
 		<result column="inquiry_datetime" property="inquiryDatetime"></result>
-	   
+	   <result column="inquiry_answer" property="inquiryAnswer"></result>
 		<association property="inquiry" resultMap="Inquiry">
 	   	</association>
 	   	<association property="user" resultMap="User">
@@ -751,7 +751,8 @@
 	
 	SELECT  inquiry_history_id,
 			inquiry_title,
-			inquiry_datetime
+			inquiry_datetime,
+			inquiry_answer
     FROM inquiry_history
     ORDER BY inquiry_datetime DESC
     LIMIT #{beginRow},#{rowPerPage}
@@ -824,6 +825,12 @@
 			NOW()
 		)
 	</insert>
+	<!--문의사항 답변 추가 성공하면. -->
+	<update id="updateInquiryHistory" parameterType="int">
+	UPDATE inquiry_history 
+	SET inquiry_answer = "Y" 
+	WHERE inquiry_history_id = #{inquiryHistoryId}
+	</update>
 	<!--  FAQ 추가하기 -->
   	<insert id="insertFaqBoard" parameterType="com.example.codeblue.vo.FaqBoard">
 		INSERT INTO faq_board(

@@ -169,9 +169,12 @@ public class AdminServiceImpl implements AdminService {
 	}
 	//문의사항 답변 저장
 	@Override
-	public int addInquiryHistoryAnswer(InquiryHistoryAnswer inqruiyHistoryAnswer) {
+	public void addInquiryHistoryAnswer(InquiryHistoryAnswer inqruiyHistoryAnswer) {
 		System.out.println(":::AdminServiceImpl - addInquiryHistoryAnswer:::");
-		return adminMapper.insertInquiryHistoryAnswer(inqruiyHistoryAnswer);
+		int row = adminMapper.insertInquiryHistoryAnswer(inqruiyHistoryAnswer);
+		if(row != 0 ) {
+			adminMapper.updateInquiryHistory(inqruiyHistoryAnswer.getInquiryHistory().getInquiryHistoryId());
+		}
 	}
 	//FAQ 상세정보 가져오기
 	@Override

@@ -116,6 +116,8 @@ public interface AdminMapper {
 	public List<Hospital> hospitalOne(int hospitalId);
 	// 문의사항 답변 추가하기
 	public int insertInquiryHistoryAnswer(InquiryHistoryAnswer inqruiyHistoryAnswer);
+	// 문의사항 답변 추가시 (N->Y)
+	public int updateInquiryHistory(int inquiryHistoryId);
 	// FAQ 전체리스트 가져오기
 	public List<FaqBoard> selectFaqBoardList(Page page);
 	// FAQ 전체 행 값 가져오기
