@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class LeeController {
 
+	//사용하지않음 
 	@GetMapping("/profile")
 	public String getProfile(@RequestParam(value="userId") int userId) {
 		System.out.println(":::get - getProfile:::");

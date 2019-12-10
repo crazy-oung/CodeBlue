@@ -32,7 +32,7 @@
 	<resultMap type="com.example.codeblue.vo.QuestionComment" id="QuestionComment">
 		<result column="question_comment_id" property="questionCommentId"></result>
 		<result column="question_comment_content" property="questionCommentContent"></result>
-		<result column="question_comment__datetime" property="questionCommentDatetime"></result>
+		<result column="question_comment_datetime" property="questionCommentDatetime"></result>
 		
 		<association property="user" resultMap="User"></association>
 		<association property="questionBoard" resultMap="QuestionBoard"></association>
@@ -70,12 +70,13 @@
 			qb.question_id,
 			qb.question_title,
 			u.user_id,
-			qb.question_datetime
-		FROM question_board qb INNER JOIN user u
-		ON qb.user_id = u.user_id
+			qb.question_datetime 
+		FROM question_board qb INNER JOIN user u 
+		ON qb.user_id = u.user_id 
 		WHERE 
-			u.user_id = #{userId}
+			u.user_id = #{userId} 
 		ORDER BY qb.question_datetime DESC  
+		LIMIT 0, 10;
 	</select>
 	
 	<select id="selectQuestionCommentList" parameterType="String" resultMap="QuestionComment">
@@ -84,10 +85,10 @@
 			u.user_id,
 			qc.question_comment_content,
 			qc.question_id,
-			qc.question_comment_datetime
-		FROM question_comment qc INNER JOIN user u
-		ON qc.user_id = u.user_id AND u.user_id = #{userId}
-		ORDER BY question_comment_datetime DESC 
+			qc.question_comment_datetime 
+		FROM question_comment qc INNER JOIN user u 
+		ON qc.user_id = u.user_id AND u.user_id = #{userId} 
+		ORDER BY qc.question_comment_datetime DESC 
 	</select>
 	
 	
@@ -100,7 +101,7 @@
           u.user_birthdate,
           u.user_createtime
       FROM user u INNER JOIN region r
-      ON u.region_id = r.region_id AND user_id = ${userId}
+      ON u.region_id = r.region_id AND user_id = #{userId}
 	</select>
 	
 	

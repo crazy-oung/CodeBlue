@@ -54,12 +54,13 @@
 				<!-- Side Bar End -->
 				
 				<!-- Page Content -->
-				<div class="col-sm-8">
+				<div class="col-sm-10">
+					
 					<!-- Page Heading -->
 					<div class="d-sm-flex align-items-center justify-content-between mb-4" style="margin-top: 80px">
-						<h4 class="text-gray-800 mb-0">프로필</h4>
-						
+						<h4 class="text-gray-800 mb-0">프로필</h4>		
 					</div><!-- page Heading End -->
+
 					<!-- 1/4 (user)-->
 					<div>
 						<div class="row">
@@ -72,75 +73,43 @@
 					</div>
 					<hr>
 					<!-- 2/4 (tag)-->
+					<div class="col-sm-3">
+					</div>
 					<div>
 						<div style="text-align: center">
 							<div><h3>태그</h3></div>
 							<div id="tag">태그 </div>
 						</div>
-					</div>
+					
 					<!-- 3/4 (list) -->
 					<hr>
-					<div>
+					
 						<div  style="text-align: center">
 							<div> 
 									<h3>내 게시글</h3> 
-									<button type="button" id="questionBoard">내 질문</button> 
-									<button type="button" id="questionComment">내 답글</button>
+									<button type="button" id="questionBoardBtn">내 질문</button> 
+									<button type="button" id="questionCommentBtn">내 답글</button>
 							 </div>
-							<div id="list"></div>
+							<table class="table table-hover">
+								<thead align="center" id="headlist">
+									
+								</thead>
+								<tbody id="list">
+								
+								</tbody>
+							</table>
 						</div>
-					</div>
+					
 					<hr>
 					<!-- 4/4 (rank) -->
-					<div>
+					
 						<div style="text-align: center"><h3>랭크</h3></div>
 					</div>					
 					<br>
 					
-					<button type="button" id="prevBtn" class="btn btn-primary">이전</button>
-					<button type="button" id="nextBtn" class="btn btn-primary">다음</button>
 					
 				</div>
 				
-				<!-- Page rigth side bar -->
-				<div class="col-sm-3 pt-5">
-					<div class="card border-1 shadow bg-light border-bottom-primary mt-4">
-						<small class='text-primary font-weight-bold card-header alert-primary px-3 border-0'>
-							New! 새 소식이 있어요
-						</small>
-						<table class=" table table-sm mb-0">
-							<tr>
-								<td><a class='nav-link small px-2' href='#'><i class='far fa-comment-dots mx-1'></i>도와주세용</a></td>
-							</tr>
-							<tr>
-								<td><a class='nav-link small px-2' href='#'><i class='far fa-comment-dots mx-1'></i>도와주세용</a></td>
-							</tr>
-							<tr>
-								<td><a class='nav-link small px-2' href='#'><i class='far fa-comment-dots mx-1'></i>도와주세용</a></td>
-							</tr>
-							<tr>
-								<td><a class='nav-link small px-2' href='#'><i class='far fa-comment-dots mx-1'></i>도와주세용</a></td>
-							</tr>
-						</table>			
-						<small class='text-primary font-weight-bold card-header alert-primary px-3 border-0'>
-							궁금한 것이 있나요?
-						</small>	
-						<table class=" table table-sm mb-0">
-							<tr>
-								<td><a class='nav-link small px-2' href='#'><i class='far fa-comment-dots mx-1'></i>도와주세용</a></td>
-							</tr>
-							<tr>
-								<td><a class='nav-link small px-2' href='#'><i class='far fa-comment-dots mx-1'></i>도와주세용</a></td>
-							</tr>
-							<tr>
-								<td><a class='nav-link small px-2' href='#'><img src='img/codeblueicon.png' width="15px">도와주세용</a></td>
-							</tr>
-							<tr>
-								<td><a class='nav-link small px-2' href='#'><img src='img/codeblueicon.png' width="15px">도와주세용</a></td>
-							</tr>
-						</table>				
-					</div>
-				</div> <!-- rigth side bar end -->
 				
 			</div>
 		</div> 
@@ -186,6 +155,10 @@ var getParam = function(key){
 $("#userId").val(getParam("userId"));
 
 $(document).ready(function() {
+	
+	var currentPage  = 1;
+	var rowPerPage = 10;
+	
 	$.ajax({
 		url :"/rest/profile",
 		method : "post",
@@ -210,8 +183,7 @@ $(document).ready(function() {
 	});
 
 	
-	$("#questionBoard").click(function(){
-		
+	$("#questionBoardBtn").click(function(){
 	$.ajax({
 		url :"/rest/profileQuestionBoard",
 		method : "post",
@@ -219,33 +191,41 @@ $(document).ready(function() {
 		success : function(json){
 			console.log(json);
 			$("#list").empty();
+			$("#headlist").empty();
+			let boardHead  = "<tr><th>질문 번호</th>";
+				boardHead += "<th>질문 제목</th>";
+				boardHead += "<th>질문 날짜</th></tr>";
+				$("#headlist").append(boardHead);
 			$(json).each(function(index, item){
 				
-			let board =  "<div>"+item.questionId+"</div>";
-				board += "<div>"+item.questionTitle+"</div>";
-				board += "<div>"+item.questionDatetime+"</div>";
+			let board =  "<tr><td>"+item.questionId+"</td>";
+				board += "<td><a href='/questionBoardOne?questionId="+item.questionId+"'>"+item.questionTitle+"</a></td>";
+				board += "<td>"+item.questionDatetime+"</td></tr>";
 				
 				$("#list").append(board);
 			});
 		}
 	});
 	})
-	
-	$("questionComment").click(function(){
-		
+	 
+	$("#questionCommentBtn").click(function(){
 	$.ajax({
 		url :"/rest/profileQuestionComment",
 		method : "post",
 		data : {"userId" : getParam("userId")},
 		success : function(json){
 			console.log(json);
-		
+			$("#list").empty();
+			$("#headlist").empty();
+			let commentHead  = "<tr><th>댓글 번호</th>";
+				commentHead += "<th>댓글 내용</th>";
+				commentHead += "<th>댓글 날짜</th></tr>";
+				$("#headlist").append(commentHead);
 			$(json).each(function(index, item){
 			
-				let comment =  "<div>"+item.questionId+"</div>";
-					comment += "<div>"+item.questionTitle+"</div>";
-					comment += "<div>"+item.questionDatetime+"</div>";
-				
+				let comment =  "<tr><td>"+item.questionCommentId+"</td>";
+					comment += "<td>"+item.questionCommentContent+"</td>";
+					comment += "<td>"+item.questionCommentDatetime+"</td></tr>";
 				$("#list").append(comment);
 			});
 		}

@@ -15,6 +15,7 @@ import com.example.codeblue.vo.User;
 public class LeeRestController {
 	@Autowired LeeService leeService;
 	
+	//프로필 정보 가져오기 
 	@PostMapping("/rest/profile")
 	public User postProfile(@RequestParam(value="userId")String userId){
 		System.out.println(":::post - postProfile:::");
