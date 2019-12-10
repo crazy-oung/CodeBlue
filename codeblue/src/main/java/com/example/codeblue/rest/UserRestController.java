@@ -22,7 +22,12 @@ import com.example.codeblue.vo.User;
 public class UserRestController {
 	@Autowired UserService userService;
 	
-	
+	//분야별 질문 리스트 출력
+	@GetMapping("getBoardListByFeild")
+	public List<QuestionBoard> getBoardListByFeild(){
+		
+		return null;
+	}
 	
 	@GetMapping("/rest/getLoginUser")
 	public User getLoginUser(HttpSession session) {
@@ -48,14 +53,17 @@ public class UserRestController {
 	
 	// 질문 리스트 가져오기
 	@PostMapping("/rest/getBoardList")
-	public Map<String,Object> getBoardList(@RequestParam(value="currentPage",defaultValue = "1")int currentPage,
+	public Map<String,Object> getBoardList(	@RequestParam(value="currentPage",defaultValue = "1")int currentPage,
 											@RequestParam(value="rowPerPage",defaultValue = "10")int rowPerPage,
-											@RequestParam(value="searchWord", required = false)String searchWord) {
+											@RequestParam(value="searchWord", required = false)String searchWord,
+											@RequestParam(value="feildId", defaultValue = "99")int feildId) {
 		System.out.println("::: post - getBoardList :::");
 		System.out.println("currentPage : "+ currentPage);
 		System.out.println("rowPerPage : "+ rowPerPage);
 		System.out.println("searchWord : "+ searchWord);
-		return userService.getQuestBoardList(currentPage, rowPerPage,searchWord);
+		System.out.println("feildId : "+ feildId);
+		
+		return userService.getQuestBoardList(currentPage, rowPerPage,searchWord, feildId);
 	}
 	@PostMapping("/rest/questionBoardOne")
 	public QuestionBoard QuestionBoardOne(@RequestParam(value="questionId" , required=true)int questionId) {

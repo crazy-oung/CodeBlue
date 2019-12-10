@@ -80,13 +80,13 @@
 						</small>
 						<table class=" table table-sm mb-0">
 							<tr>
-								<td><a class='nav-link small px-2' href='#'><i class='far fa-comment-dots mx-1'></i>도와주세용</a></td>
+								<td><a class='nav-link small px-2' href='/noticeBoard'><i class='far fa-comment-dots mx-1'></i>공지사항 보러가기 ></a></td>
 							</tr>
 							<tr>
-								<td><a class='nav-link small px-2' href='#'><i class='far fa-comment-dots mx-1'></i>도와주세용</a></td>
+								<td><a class='nav-link small px-2' href='#'><i class='far fa-comment-dots mx-1'></i>공지2</a></td>
 							</tr>
 							<tr>
-								<td><a class='nav-link small px-2' href='#'><i class='far fa-comment-dots mx-1'></i>도와주세용</a></td>
+								<td><a class='nav-link small px-2' href='#'><i class='far fa-comment-dots mx-1'></i>공지3</a></td>
 							</tr>
 							<tr>
 								<td><a class='nav-link small px-2' href='#'><i class='far fa-comment-dots mx-1'></i>도와주세용</a></td>
@@ -133,119 +133,4 @@
   	<script src="js/codeBlueUser.js"></script>
 	
 </body>
-<script type="text/javascript">
-
-
-	//현재페이지값
-	var currentPage = 1;
-	//마지막페이지값
-	var lastPage = 0;
-	//검색한 단어
-	var searchWord = null;
-	//홈페이지
-	$.ajax({
-		url:"/rest/getBoardList",
-		method:"POST",
-		data:{"currentPage" : currentPage},
-		success: function(json){
-			currentPage = json.currentPage;
-			lastPage = json.lastPage;
-			BtnShow(currentPage,lastPage);
-			$(json.list).each(function(index,item){
-				html = append(item);
-				$("#questionBoard").append(html);
-			})
-		}
-	})
-	//이전버튼
-	$("#prevBtn").click(function(){
-		$.ajax({
-			url:"/rest/getBoardList",
-			method:"POST",
-			data:{"currentPage" : currentPage-1,"searchWord": searchWord},
-			success: function(json){
-				currentPage = json.currentPage;
-				lastPage = json.lastPage;
-				$("#searchWord").val(json.searchWord);
-				BtnShow(currentPage,lastPage);
-				$("#questionBoard").empty();
-				$(json.list).each(function(index,item){
-					html = append(item);
-					$("#questionBoard").append(html);
-				})
-			}
-		})
-	});
-	//다음버튼
-	$("#nextBtn").click(function(){
-		$.ajax({
-			url:"/rest/getBoardList",
-			method:"POST",
-			data:{"currentPage" : currentPage+1,"searchWord": searchWord},
-			success: function(json){
-				currentPage = json.currentPage;
-				lastPage = json.lastPage;
-				$("#searchWord").val(json.searchWord);
-				BtnShow(currentPage,lastPage);
-				$("#questionBoard").empty();
-				$(json.list).each(function(index,item){
-					html = append(item);
-					$("#questionBoard").append(html);
-				})
-			}
-		})
-	});
-	//검색버튼
-	$("#search").click(function(){
-		$.ajax({
-			url:"/rest/getBoardList",
-			method:"POST",
-			data:{"searchWord": $("#searchWord").val()},
-			success: function(json){
-				console.log(json);
-				currentPage = json.currentPage;
-				lastPage = json.lastPage;
-				$("#searchWord").val(json.searchWord);
-				searchWord = json.searchWord;
-				BtnShow(currentPage,lastPage);
-				$("#questionBoard").empty();
-				$(json.list).each(function(index,item){
-					html = append(item);
-					$("#questionBoard").append(html);
-				})
-			}
-		})
-	});
-	
-	//이전 다음 버튼이 숨기는지 안숨기는지 함수로변경
-	function BtnShow(currentPage,lastPage) {
-		if(currentPage == 1){
-			$("#prevBtn").hide();
-		} else {
-			$("#prevBtn").show();
-		}
-		if(currentPage <lastPage) {
-			$("#nextBtn").show();
-		} else {
-			$("#nextBtn").hide();
-		}
-	}
-	
-	function append(item){
-		return "<tr>"+
-		"<td width='9%' class=><div class='text-center pt-1'>"+item.voteCount+"<br>"+
-		"<small class='my-1'>추천</small>"+
-		"</div></td>"+
-		"<td width='11%' class='px-1'><div class='card border-success text-center pt-1' >"+item.answerCount+"<br>"+
-		"<small class='text-success my-1'>답변</small>"+
-		"</div></td>"+
-		"<td><a class='nav-link' href='/questionBoardOne?questionId="+item.questionId+"'>"+item.questionTitle+"</a>" +
-		"<div class='d-flex justify-content-between'>"+
-		"<small class='p-2'>태그들...</small>"+
-		"<small class='p-2'>uploaded at"+item.questionDatetime +" by " + item.userId+"</small></div>"
-		+"</td></tr>";
-	}
-</script>
-
-
 </html>

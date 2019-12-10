@@ -2,13 +2,13 @@ package com.example.codeblue.controller;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.catalina.Manager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.codeblue.service.UserService;
+import com.example.codeblue.vo.Manager;
 import com.example.codeblue.vo.User;
 
 
@@ -33,11 +33,11 @@ public class LoginController {
 	public String getLogin(HttpSession session) {
 		System.out.println("::: get - login :::");
 		if(session.getAttribute("user") != null) {
-			return "/codeBlue/today";
+			return "/home";
 		} 
 		return "login";
 	} 
-	
+	// 세션 추가
 	@PostMapping("/login")
 	public String postLogin(HttpSession session, User user) {
 		System.out.println("::: post - login :::"); 
@@ -47,7 +47,7 @@ public class LoginController {
 		// 세션 검사
 		if(session.getAttribute("loginUser") != null) {
 			System.out.println("already loged in Back to user Home");
-			return "/codeBlue/today";
+			return "/home";
 		}  
 		
 		// 매니저 검사
@@ -55,6 +55,7 @@ public class LoginController {
 		if(loginManager != null) {
 			System.out.println("manager Login"); 
 			session.setAttribute("loginManager", loginManager);
+			session.setAttribute("authority", "manager");
 			return "/codeblue/admin/home";
 		}
 		
@@ -63,9 +64,11 @@ public class LoginController {
 		if(loginUser != null) {
 			System.out.println("user Login"); 
 			session.setAttribute("loginUser", loginUser);
-			return "/codeBlue/today";
+			session.setAttribute("authority", "user");
+			
+			return "/home";
 		}
-		
+		System.out.println("계정 정보 불일치");
 		return "/login";
 	}
 	

@@ -18,13 +18,18 @@ public class UserController {
 	public String QuestionBoardOne(@RequestParam(value="questionId")String questionId) {
 		System.out.println("::: get - QuestionBoardOne :::");
 		System.out.println("questionId : "+questionId);
-		
 		return "questionBoardOne";
 	}
 	
 	@GetMapping("/QnA")
 	public String getQnA() {
+		System.out.println("::: get - getQnA :::"); 
 		return "/QnA";
+	}
+	@GetMapping("/today")
+	public String getToday() {
+		System.out.println("::: get - getToday :::"); 
+		return "/home";
 	}
 	
 	@GetMapping("/notice")

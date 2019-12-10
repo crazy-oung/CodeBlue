@@ -10,4 +10,5 @@ public class Page {
 	public String searchCategory;
 	public String toDate;
 	public String fromDate;
+	public int feildId;
 }

@@ -147,23 +147,28 @@
 			}
 		})
 		
-	  $('#summernote').summernote({
+		$('#summernote').summernote({
 		  toolbar: [
-			  ['style', ['style']],
-			  ['font', ['bold', 'underline', 'clear']],
-			  ['color', ['color']],
-			  ['para', ['ul', 'ol', 'paragraph']],
-			  ['table', ['table']],
-			  ['insert', ['link', 'picture', 'video']],
-			  ['view', ['fullscreen', 'help']],
+				['style', ['style']],
+				['style', ['bold', 'italic', 'underline', 'clear']],
+				['font', ['strikethrough', 'superscript', 'subscript']],
+				['fontsize', ['fontsize']],
+				['color', ['color']],
+				['para', ['ul', 'ol', 'paragraph']],
+				['height', ['height']],
+				['fontsize', ['8','10','10','10','10']],
+				['para', ['ul', 'ol', 'paragraph']],
+				['table', ['table']],
+				['insert', ['link', 'picture', 'video']]
 			],
 		lang : 'ko-KR',
 		placeholder: '내용을 입력해주세요',
 		tabsize: 4,
 		height: 500
-	  });
+	});
 	  
 		$("#submit").click(function(){
+			console.log($("#summernote").val());
 			if(confirm( '질문을 등록하시겠습니까?' )){
 				console.log($("#id").val());
 				$.ajax({
@@ -172,10 +177,10 @@
 					data : {"user.userId" : $("#id").val(),
 							"feild.feildId" :$("#feild").val(),
 							"questionTitle" : $("#title").val(),
-							"questionContent" : $("#summernote").val()},
+							"questionContent" : $('#summernote').summernote('code')},
 					success:function(){
 						console.log("성공");
-						alert("질문 등록을 완료 했습니다! <br> 답변이 달리면 알려드리겠습니다! 🙂");
+						alert("질문 등록을 완료 했습니다! \n답변이 달리면 알려드리겠습니다! 🙂");
 						location.href="/QnA";
 					}
 				})

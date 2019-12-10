@@ -3,10 +3,9 @@ package com.example.codeblue.service;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.catalina.Manager;
-
 import com.example.codeblue.vo.Expert;
 import com.example.codeblue.vo.Hospital;
+import com.example.codeblue.vo.Manager;
 import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.QuestionComment;
@@ -15,7 +14,7 @@ import com.example.codeblue.vo.User;
 public interface UserService {
 	
 	public User selectUserOne(String UserId);
-	public Map<String,Object> getQuestBoardList(int currentpage,int rowPerPage,String searchWord);
+	public Map<String,Object> getQuestBoardList(int currentpage,int rowPerPage,String searchWord, int feildId);
 	public QuestionBoard getQuestionBoardOne(int questionId);
 	public List<QuestionComment> getQuestionCommentList(int questionId);
 	public Map<String, Object> getNoticeBoardList(int currentPage, int rowPerPage);

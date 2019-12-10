@@ -12,6 +12,11 @@ import com.example.codeblue.service.BoardService;
 @Controller
 public class BoardController {
 	@Autowired BoardService boardService;
+	// 코드블루 소개 패이지
+	@GetMapping("index")
+	public String getIndex(HttpSession session) {
+		return "/index";
+	}
 	
 	@GetMapping("/")
 	public String getHome(HttpSession session) {

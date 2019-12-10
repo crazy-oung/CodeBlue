@@ -141,19 +141,24 @@
 	
 	<select id="selectQuestionBoardList" resultMap="QuestionBoard" parameterType="com.example.codeblue.vo.Page">
 		SELECT 
-			question_id,
-			question_title,
-			user_id,
-			question_datetime
-		FROM question_board 
+			qb.question_id,
+			qb.question_title,
+			u.user_name,
+			qb.question_datetime
+		FROM question_board qb inner join user u
+		ON qb.user_id = u.user_id
 		<where>
 			<if test="searchWord != null">
-				question_title like CONCAT('%',#{searchWord},'%')
+				qb.question_title like CONCAT('%',#{searchWord},'%')
+			</if>
+			<if test="feildId != 99">
+				qb.feild_id = #{feildId}
 			</if>
 		</where>
-			ORDER BY question_datetime DESC 
+			ORDER BY qb.question_datetime DESC 
 			LIMIT #{beginRow},#{rowPerPage}
 	</select>
+	
 	<select id="selectQuestionBoardTotalCount" resultType="int" parameterType="com.example.codeblue.vo.Page">
 		SELECT 
 			COUNT(*)

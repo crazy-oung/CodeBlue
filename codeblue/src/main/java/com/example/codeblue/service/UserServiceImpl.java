@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.catalina.Manager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -15,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.codeblue.mapper.UserMapper;
 import com.example.codeblue.vo.Expert;
 import com.example.codeblue.vo.Hospital;
+import com.example.codeblue.vo.Manager;
 import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionBoard;
@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	@Override
-	public Map<String,Object> getQuestBoardList(int currentPage, int rowPerPage,String searchWord) {
+	public Map<String,Object> getQuestBoardList(int currentPage, int rowPerPage, String searchWord, int feildId) {
 		System.out.println("::: QuestionBoardServiceImpl - getQuestBoardList :::");
 		//페이징객체 생성
 		Page page = new Page();
@@ -76,7 +76,10 @@ public class UserServiceImpl implements UserService{
 		} else {
 			lastPage = (totalCount/rowPerPage)+1;
 		}
+		page.setFeildId(feildId);
+		
 		System.out.println(page.toString());
+		
 		// 질문 리스트 저장
 		List<QuestionBoard> list = userMapper.selectQuestionBoardList(page);
 		// 각질문에 해당하는 갯수 뽑기

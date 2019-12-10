@@ -2,11 +2,11 @@ package com.example.codeblue.mapper;
 
 import java.util.List;
 
-import org.apache.catalina.Manager;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.example.codeblue.vo.Expert;
 import com.example.codeblue.vo.Hospital;
+import com.example.codeblue.vo.Manager;
 import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionBoard;
