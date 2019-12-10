@@ -8,7 +8,7 @@
 	<meta name="description" content="">
 	<meta name="author" content="">
 	
-	<title>유저 관리 - 코드블루</title>
+	<title>탈퇴유저 관리 - 코드블루</title>
 	
 	<!-- Custom fonts for this template-->
 	<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -50,7 +50,7 @@
             
                <!-- Page Heading -->
                <div class="d-sm-flex align-items-center justify-content-between mb-3" >
-                  <h3 class="text-gray-800 mb-2 font-weight-bold">유저관리</h3>
+                  <h3 class="text-gray-800 mb-2 font-weight-bold">탈퇴유저관리</h3>
                </div>
                
                <!-- page Heading End -->
@@ -84,7 +84,7 @@
 						<p id="totalRow" class="py-1 m-0"></p>
 					</div>
 					<div class="col-sm-9">
-						<button type="button" class="btn btn-outline-primary btn-sm px-4" id="userRemoveBtn">강제 탈퇴</button>
+						<button type="button" class="btn btn-outline-primary btn-sm px-4" id="userRestoreBtn">회원 복구</button>
 					</div>
 					<div class="col-sm-1">
 						<select class="form-control form-control-sm" id="rowPerPage">
@@ -202,15 +202,15 @@
 		location.reload();
 	});
 	var checkBoxArr = [];
-	// 삭제 버튼 클릭
-	$("#userRemoveBtn").click(function(){
-		console.log("선택된 값을 삭제합니다.")
+	// 복구 버튼 클릭
+	$("#userRestoreBtn").click(function(){
+		console.log("선택된 값을 복구합니다.")
 		$("input[name=chk]:checked").each(function(){
 			checkBoxArr.push($(this).val());
 		});
 		console.log(checkBoxArr);
 		$.ajax({
-			url : "/rest/adminUserRemove",
+			url : "/rest/adminWithdrawUserRestore",
 			method : "post",
 			traditional : true, //ajax에서 기본적으로 배열을 지원하지않기때문에 설정
 			data : {"checkBoxArr" : checkBoxArr,},
@@ -231,7 +231,7 @@
 
 	// 기본 홈
 	$.ajax({
-		url : "/rest/adminUserList",
+		url : "/rest/adminWithdrawUserList",
 		method : "post",
 		data : {"currentPage" : currentPage},
 		success : function(json){
@@ -248,7 +248,7 @@
 	$("#searchBtn").click(function(){
 		$("#userListContent").empty();
 		$.ajax({
-			url : "/rest/adminUserList",
+			url : "/rest/adminWithdrawUserList",
 			method : "post",
 			data : {"searchWord" : $("#searchContent").val(),
 					"toDate" : $("#toDate").val(),
@@ -268,7 +268,7 @@
 	$("#nextBtn").click(function(){
  		$("#userListContent").empty();
 		$.ajax({
-			url : "/rest/adminUserList",
+			url : "/rest/adminWithdrawUserList",
 			method : "post",
 			data : {"currentPage" : currentPage+1,
 					"searchWord" : $("#searchContent").val(),
@@ -290,7 +290,7 @@
 	$("#prevBtn").click(function(){
 		$("#userListContent").empty();
 		$.ajax({
-			url : "/rest/adminUserList",
+			url : "/rest/adminWithdrawUserList",
 			method : "post",
 			data : {"currentPage" : currentPage-1,
 					"searchWord" : $("#searchContent").val(),
@@ -311,7 +311,7 @@
 	$("#rowPerPage").change(function(){
 		$("#userListContent").empty();
 		$.ajax({
-			url : "/rest/adminUserList",
+			url : "/rest/adminWithdrawUserList",
 			method : "post",
 			data : {"currentPage" : currentPage,
 					"searchWord" : $("#searchContent").val(),

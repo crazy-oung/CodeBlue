@@ -11,6 +11,5 @@ public class User {
 	private String userBirthdate;
 	private String userCreatetime;
 	private Rank rank;
-	private String userAuthority;
 	private String userActivity;
 }

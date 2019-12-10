@@ -37,4 +37,43 @@ public class HyolRestController {
 			System.out.println("1이면 성공 : "+checking);
 			return "adminUserListTest";
 		}
+	// 탈퇴회원 조회 리스트
+		@PostMapping("/rest/adminWithdrawUserListTest")
+		public Map<String,Object> adminWithdrawUserList(@RequestParam(value="currentPage", defaultValue = "1")int currentPage,
+				 @RequestParam(value="rowPerPage", defaultValue = "10")int rowPerPage,
+				 @RequestParam(value="searchWord", required = false)String searchWord,
+				 @RequestParam(value="toDate", required = false)String toDate,
+				 @RequestParam(value="fromDate", required = false)String fromDate) {
+			System.out.println("::: post - /rest/adminWithdrawUserListTest :::");
+			System.out.println("currentPage : "+currentPage);
+			System.out.println("rowPerPage : "+rowPerPage);
+			System.out.println("searchWord : "+searchWord);
+			System.out.println("toDate : "+toDate);
+			System.out.println("fromDate : "+fromDate);
+			return hyolService.getAdminWithdrawUserList(currentPage, rowPerPage,searchWord, toDate, fromDate);
+		}
+	// 회원 복구(n->Y)
+		@PostMapping("/rest/adminWithdrawUserRestoreTest")
+		public String adminWithdrawUserModify(@RequestParam(value="checkBoxArr") List<String> checkBoxArr) {
+			System.out.println("::: post - /rest/adminWithdrawUserRestoreTest :::");
+			System.out.println(checkBoxArr);
+			int checking = hyolService.modifyAdminWithdrawUser(checkBoxArr);
+			System.out.println("1이면 성공 : "+checking);
+			return "adminUserListTest";
+		}
+	// 전문가 유저 조회
+		@PostMapping("/rest/adminExpertUserListTest")
+		public Map<String,Object> adminExpertUserList(@RequestParam(value="currentPage", defaultValue = "1")int currentPage,
+				 @RequestParam(value="rowPerPage", defaultValue = "10")int rowPerPage,
+				 @RequestParam(value="searchWord", required = false)String searchWord,
+				 @RequestParam(value="toDate", required = false)String toDate,
+				 @RequestParam(value="fromDate", required = false)String fromDate) {
+			System.out.println("::: post - /rest/adminExpertUserListTest :::");
+			System.out.println("currentPage : "+currentPage);
+			System.out.println("rowPerPage : "+rowPerPage);
+			System.out.println("searchWord : "+searchWord);
+			System.out.println("toDate : "+toDate);
+			System.out.println("fromDate : "+fromDate);
+			return hyolService.getAdminExpertUserList(currentPage, rowPerPage,searchWord, toDate, fromDate);
+		}
 }

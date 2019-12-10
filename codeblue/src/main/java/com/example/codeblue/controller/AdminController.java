@@ -164,6 +164,7 @@ public class AdminController {
 		return "/codeBlue/admin/reportOne";
 	}
 	
+	// 유저 조회
 	@GetMapping("/adminUserList")
 	public String adminUserList(HttpSession session) {
 		System.out.println("::: get - adminUserList :::");
@@ -172,6 +173,19 @@ public class AdminController {
 			return "/home";
 		}
 		return "/codeBlue/admin/adminUserList";
+	}
+	// 탈퇴 유저 조회
+	@GetMapping("/adminWithdrawUserList")
+	public String adminWithdrawUserList() {
+		System.out.println("::: get - adminWithdrawUserList :::");
+		return "/codeBlue/admin/adminWithdrawUserList";
+	}
+	
+	// 전문가 유저 조회
+	@GetMapping("/adminExpertUserList")
+	public String adminExpertUserList() {
+		System.out.println("::: get - adminExpertUserList :::");
+		return "/codeBlue/admin/adminExpertUserList";
 	}
 	
 	@GetMapping("/adminNoticeBoard")

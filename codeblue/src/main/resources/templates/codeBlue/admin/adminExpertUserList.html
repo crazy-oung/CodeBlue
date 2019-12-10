@@ -8,7 +8,7 @@
 	<meta name="description" content="">
 	<meta name="author" content="">
 	
-	<title>유저 관리 - 코드블루</title>
+	<title>전문가 관리 - 코드블루</title>
 	
 	<!-- Custom fonts for this template-->
 	<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -50,7 +50,7 @@
             
                <!-- Page Heading -->
                <div class="d-sm-flex align-items-center justify-content-between mb-3" >
-                  <h3 class="text-gray-800 mb-2 font-weight-bold">유저관리</h3>
+                  <h3 class="text-gray-800 mb-2 font-weight-bold">전문가관리</h3>
                </div>
                
                <!-- page Heading End -->
@@ -231,7 +231,7 @@
 
 	// 기본 홈
 	$.ajax({
-		url : "/rest/adminUserList",
+		url : "/rest/adminExpertUserList",
 		method : "post",
 		data : {"currentPage" : currentPage},
 		success : function(json){
@@ -248,7 +248,7 @@
 	$("#searchBtn").click(function(){
 		$("#userListContent").empty();
 		$.ajax({
-			url : "/rest/adminUserList",
+			url : "/rest/adminExpertUserList",
 			method : "post",
 			data : {"searchWord" : $("#searchContent").val(),
 					"toDate" : $("#toDate").val(),
@@ -268,7 +268,7 @@
 	$("#nextBtn").click(function(){
  		$("#userListContent").empty();
 		$.ajax({
-			url : "/rest/adminUserList",
+			url : "/rest/adminExpertUserList",
 			method : "post",
 			data : {"currentPage" : currentPage+1,
 					"searchWord" : $("#searchContent").val(),
@@ -290,7 +290,7 @@
 	$("#prevBtn").click(function(){
 		$("#userListContent").empty();
 		$.ajax({
-			url : "/rest/adminUserList",
+			url : "/rest/adminExpertUserList",
 			method : "post",
 			data : {"currentPage" : currentPage-1,
 					"searchWord" : $("#searchContent").val(),
@@ -311,7 +311,7 @@
 	$("#rowPerPage").change(function(){
 		$("#userListContent").empty();
 		$.ajax({
-			url : "/rest/adminUserList",
+			url : "/rest/adminExpertUserList",
 			method : "post",
 			data : {"currentPage" : currentPage,
 					"searchWord" : $("#searchContent").val(),

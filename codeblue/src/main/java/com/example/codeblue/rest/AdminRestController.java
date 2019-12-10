@@ -149,14 +149,53 @@ public class AdminRestController {
 		return adminService.getAdminUserList(currentPage, rowPerPage,searchWord, toDate, fromDate);
 	}
 	// 회원 삭제(y->n)
-			@PostMapping("/rest/adminUserRemove")
-			public String adminUserRemove(@RequestParam(value="checkBoxArr") List<String> checkBoxArr) {
-				System.out.println("::: post - /rest/adminUserRemoveTest :::");
-				System.out.println(checkBoxArr);
-				int checking = adminService.removeAdminUser(checkBoxArr);
-				System.out.println("1이면 성공 : "+checking);
-				return "adminUserListTest";
-			}
+	@PostMapping("/rest/adminUserRemove")
+	public String adminUserRemove(@RequestParam(value="checkBoxArr") List<String> checkBoxArr) {
+		System.out.println("::: post - /rest/adminUserRemoveTest :::");
+		System.out.println(checkBoxArr);
+		int checking = adminService.removeAdminUser(checkBoxArr);
+		System.out.println("1이면 성공 : "+checking);
+		return "adminUserListTest";
+	}
+	// 탈퇴회원 조회 리스트
+	@PostMapping("/rest/adminWithdrawUserList")
+	public Map<String,Object> adminWithdrawUserList(@RequestParam(value="currentPage", defaultValue = "1")int currentPage,
+			 @RequestParam(value="rowPerPage", defaultValue = "10")int rowPerPage,
+			 @RequestParam(value="searchWord", required = false)String searchWord,
+			 @RequestParam(value="toDate", required = false)String toDate,
+			 @RequestParam(value="fromDate", required = false)String fromDate) {
+		System.out.println("::: post - /rest/adminWithdrawUserList :::");
+		System.out.println("currentPage : "+currentPage);
+		System.out.println("rowPerPage : "+rowPerPage);
+		System.out.println("searchWord : "+searchWord);
+		System.out.println("toDate : "+toDate);
+		System.out.println("fromDate : "+fromDate);
+		return adminService.getAdminWithdrawUserList(currentPage, rowPerPage,searchWord, toDate, fromDate);
+	}
+// 회원 복구(n->Y)
+	@PostMapping("/rest/adminWithdrawUserRestore")
+	public String adminWithdrawUserModify(@RequestParam(value="checkBoxArr") List<String> checkBoxArr) {
+		System.out.println("::: post - /rest/adminWithdrawUserRestore :::");
+		System.out.println(checkBoxArr);
+		int checking = adminService.modifyAdminWithdrawUser(checkBoxArr);
+		System.out.println("1이면 성공 : "+checking);
+		return "adminUserListTest";
+	}
+// 전문가 유저 조회
+	@PostMapping("/rest/adminExpertUserList")
+	public Map<String,Object> adminExpertUserList(@RequestParam(value="currentPage", defaultValue = "1")int currentPage,
+			 @RequestParam(value="rowPerPage", defaultValue = "10")int rowPerPage,
+			 @RequestParam(value="searchWord", required = false)String searchWord,
+			 @RequestParam(value="toDate", required = false)String toDate,
+			 @RequestParam(value="fromDate", required = false)String fromDate) {
+		System.out.println("::: post - /rest/adminExpertUserList :::");
+		System.out.println("currentPage : "+currentPage);
+		System.out.println("rowPerPage : "+rowPerPage);
+		System.out.println("searchWord : "+searchWord);
+		System.out.println("toDate : "+toDate);
+		System.out.println("fromDate : "+fromDate);
+		return adminService.getAdminExpertUserList(currentPage, rowPerPage,searchWord, toDate, fromDate);
+	}
 	
 	@PostMapping("/rest/adminNoticeBoard")
 	public Map<String, Object> postNotice(@RequestParam(value="currentPage",defaultValue = "1")int currentPage,
