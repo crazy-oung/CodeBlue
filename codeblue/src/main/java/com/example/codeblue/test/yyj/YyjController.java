@@ -1,19 +1,17 @@
 package com.example.codeblue.test.yyj;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import com.example.codeblue.vo.Manager;
 @Controller
 public class YyjController {
-	//제휴병원 게시판
-//	@GetMapping("/hospital")
-//	public String getHospital() {
-//		System.out.println(":::get - getHospital:::");
-//		return "hospital";
-//	}
+	@Autowired YyjService yyjService;
 //	
-//	@GetMapping("/hospitalOne")
-//	public String getHospitalOne() {
-//		System.out.println(":::get - getHospitalOne:::");
-//		return "hospitalOne";
+//	@GetMapping("/manageAdmin")
+//	public String addAdministrator(Manager manager) {
+//			System.out.println("::get - addAdministrator:::");
+//		return "/codeBlue/admin/adminAddAdministrator";
 //	}
+
 }

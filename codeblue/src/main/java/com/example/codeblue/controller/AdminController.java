@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.codeblue.service.AdminService;
+import com.example.codeblue.vo.Manager;
 
 @Controller
 public class AdminController {
@@ -241,5 +242,11 @@ public class AdminController {
 			return "/home";
 		}
 		return "/codeBlue/admin/home";
+	}
+	//관리자 계정 추가
+	@GetMapping("/manageAdmin")
+	public String addAdministrator(Manager manager) {
+			System.out.println("::get - addAdministrator:::");
+		return "/codeBlue/admin/adminAddAdministrator";
 	}
 }

@@ -9,6 +9,7 @@ import com.example.codeblue.vo.Feild;
 import com.example.codeblue.vo.Hospital;
 import com.example.codeblue.vo.InquiryHistory;
 import com.example.codeblue.vo.InquiryHistoryAnswer;
+import com.example.codeblue.vo.Manager;
 import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionBoard;
@@ -89,4 +90,9 @@ public interface AdminService {
 	public int removeFaq(int faqId);
 	//FAQ 수정하기
 	public int modifyFaq(FaqBoard faqBoard);
+	//관리자 추가
+	public int addAdministrator(Manager manager);
+	//관리자 추가 인증 메일
+	public String sendCodeToMail(Manager manager);
+	
 }

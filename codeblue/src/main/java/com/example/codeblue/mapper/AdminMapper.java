@@ -10,6 +10,7 @@ import com.example.codeblue.vo.Feild;
 import com.example.codeblue.vo.Hospital;
 import com.example.codeblue.vo.InquiryHistory;
 import com.example.codeblue.vo.InquiryHistoryAnswer;
+import com.example.codeblue.vo.Manager;
 import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionBoard;
@@ -21,6 +22,8 @@ import com.example.codeblue.vo.User;
 @Mapper
 public interface AdminMapper {
 
+	//관리자 추가
+	public int insertAdministrator(Manager manager);	
 	//답변  상세정보
 	public Answer selectAnswerOne(String answerId);
 	//답변 행수 가져오기

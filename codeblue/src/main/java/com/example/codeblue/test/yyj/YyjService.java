@@ -1,7 +1,10 @@
 package com.example.codeblue.test.yyj;
 
-import java.util.Map;
+import com.example.codeblue.vo.Manager;
 
 public interface YyjService {
-//	public Map<String, Object> getHospitalListTest(int currentPage, int rowPerPage, String searchWord);
+//	//관리자 추가
+//	public int addAdministrator(Manager manager);
+//	//메일
+//	public String sendCodeToMail(Manager manager);
 }

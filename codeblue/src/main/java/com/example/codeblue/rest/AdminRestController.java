@@ -3,6 +3,8 @@ package com.example.codeblue.rest;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +18,7 @@ import com.example.codeblue.vo.Feild;
 import com.example.codeblue.vo.Hospital;
 import com.example.codeblue.vo.InquiryHistory;
 import com.example.codeblue.vo.InquiryHistoryAnswer;
+import com.example.codeblue.vo.Manager;
 import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionBoard;
@@ -352,4 +355,51 @@ public class AdminRestController {
 		System.out.println(page.toString());
 		return adminService.getQuestionBoardList(page,currentPage);
 	}
+	
+	//인증메일 전송
+	@PostMapping("/rest/adminSendEmailToConfirm")
+	public String adminSendEmailToConfirm(HttpSession session, Manager manager) {
+		System.out.println("::: post - adminSendEmailToConfirm :::");
+		
+		System.out.println(manager.toString());		
+		String code = adminService.sendCodeToMail(manager);
+		session.setAttribute("verifyCode", code);
+		
+		return "success";
+	}
+	
+	// 인증메일 확인
+	@PostMapping("/rest/adminVerifyCode")
+	public boolean adminVerifyCode(Manager manager, HttpSession session, String code) {
+		System.out.println("::: post - adminVerifyCode :::");
+		System.out.println(manager.toString() + "입력받은 코드:" +code);
+		System.out.println("verifyCode : " + session.getAttribute("veriftCode"));
+		
+		if(session.getAttribute("verifyCode").equals(code) != true) {
+			
+			System.out.println("!password not correct");
+			return false;
+		}
+		
+		System.out.println("code correct!");
+		adminService.addAdministrator(manager);
+		
+		return true;
+	}
+	
+	//재전송
+	@PostMapping("/rest/adminVerifyCodeForRest")
+	public boolean adminVerifyCodeForRest(HttpSession session, String code) {
+		System.out.println("::: post - adminVerifyCodeForRest :::");
+		
+		if(session.getAttribute("verifyCode").equals(code) != true) {
+			System.out.println("!password not correct");
+			System.out.println("code : "+code+", verifyCode: "+session.getAttribute("verifyCode"));
+			return false;
+		}
+		
+		System.out.println("code correct!");	
+		return true;
+	}
+	
 }
