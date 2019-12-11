@@ -16,6 +16,6 @@ public interface LeeMapper {
 	public int selectQuestionCommentCount();
 	public List<QuestionComment> selectQuestionCommentList(String userId);
 	public List<QuestionBoard> selectQuestionBoardList(String userId);
-	public int selectQuestionBoardTotalCount();
-
+	public int selectQuestionBoardCount(String userId);
+	public int selectQuestionChart(String userId);
 }

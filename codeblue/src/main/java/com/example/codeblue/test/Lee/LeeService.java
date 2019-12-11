@@ -14,4 +14,8 @@ public interface LeeService {
 	public List<QuestionBoard> getQuestionBoard(String userId);
 	//해당 유저 댓글 리스트 가져오기.
 	public List<QuestionComment> getQuestionComment(String userId);
+	
+	public int questionBoardCount(String userId);
+	
+	public int getQuestionChart(String userId);
 	}

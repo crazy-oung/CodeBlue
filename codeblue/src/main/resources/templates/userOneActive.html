@@ -60,73 +60,48 @@
 					<div class="d-sm-flex align-items-center justify-content-between mb-4" style="margin-top: 80px">
 						<ul class="nav nav-tabs">
 						    <li class="nav-item">
-						      <a class="nav-link active" href="#">profile</a>
+						      <a class="nav-link active" href="#"> profile</a>
 						    </li>
 						    <li class="nav-item">
-						      <a class="nav-link" href="/userOneActive" id="active">active</a>
+						      <a class="nav-link" href="#">Link</a>
 						    </li>
 						</ul>		
-					</div><!-- page Heading End -->
+					</div>
+					<!-- page Heading End -->
 
 					<!-- 1/4 (user)-->
 					<div>
-						<div class="row">
-							<div class="col-md-2" id="img">
-								<img src="/img/profile.svg" width="100px">
-							</div>
-							<div class="col-md-6" id="introduce"></div>
-							<div class="col-md-4" id="information"></div>
+						<div>통계</div>
+
+					</div>
+					<hr>
+					<div> 선랙리스트</div>
+					<hr>
+					<!-- 2/4 -->
+					<div class="row">
+						<div class="col-md-6">
+							<label>question</label><h5 id="questionCount"></h5>
+							<div id="questionList"></div>
+						</div>
+						<div class="col-md-6">
+							<label>reputation</label>
 						</div>
 					</div>
 					<hr>
-					<!-- 2/4 (tag)-->
-					<div class="col-sm-3">
+					<!-- 3/4 -->
+					<div class="row">
+						<div class="col-md-6">
+							<label>answer</label>
+							<div id="answerList"></div>
+						</div>
+						<div class="col-md-6">
+							<label>tag</label>
+						</div>
 					</div>
-					<div>
-						<div style="text-align: center">
-							<div><h3>태그</h3></div>
-							<div id="tag">태그 </div>
-						</div>
-					
-					<!-- 3/4 (list) -->
 					<hr>
 					
-						<div class="row" >
-							<div class="col-md-2">
-								<Label>Community</Label>
-							</div>
-							<div class="col-md-8">
-									<label style="text-align: left; font-size: medium;" id="count">내 게시글</label><label id="count" style="font-size: small;"></label>
-							 </div>
-							 <div class="col-md-2" style="font-size: small;">
-							 		<button type="button" id="questionCommentBtn" style="float: right;">내 답글</button>
-							 		<button type="button" id="questionBoardBtn" style="float: right;">내 질문</button> 		
-							 </div>
-						</div>
-						<div class="row">
-							<div class="col-md-2"></div>
-							<div class="col-md-10">
-								<table class="table table-hover">
-									<thead align="center" id="headlist">
-										
-									</thead>
-									<!-- 내 질문/답변 list 출력 -->
-									<tbody id="list"></tbody>
-								</table>
-							</div>
-						</div>
+					<!-- 4/4 -->
 					
-					<hr>
-					<!-- 4/4 (rank) -->
-					
-						<div style="text-align: center"><h3>랭크</h3></div>
-						
-					<br>
-					
-					
-				</div>
-				
-				
 			</div>
 		</div> 
 	</div>
@@ -151,8 +126,9 @@
   	<script src="js/codeBlueUser.js"></script>
 	
 </body>
+<!-- 구글차트 js -->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
-
 
 //파라메터 정보가 저장될 오브젝트
 //common.js 같은 모든 페이지에서 로딩되는 js 파일에 넣어두면 됨.
@@ -175,6 +151,7 @@ $(document).ready(function() {
 	var currentPage  = 1;
 	var rowPerPage = 10;
 	
+	//이름출력.
 	$.ajax({
 		url :"/rest/profile",
 		method : "post",
@@ -185,20 +162,12 @@ $(document).ready(function() {
 			$(json).each(function(index, item){
 			
 			let	introduce = "<div><h2>"+item.userName+"</h2></div>";
-				introduce += "<div>"+item.userId+"</div>";
-				$("#introduce").append(introduce);
-			
-			let information = "<div>🚩"+item.region.regionName+"</div>";
-				information += "<div>💓"+item.userBirthdate+"</div>";
-				information += "<div>⏱"+item.userCreatetime+"</div>";
-				information += "<div>🏆"+item.rank.rankName+"</div>";
-				$("#information").append(information);
-				
+				$("#userName").append(introduce);
 			});
 		}
 	});
 	
-	//클릭하지 않아도 기본적으로 내 질문 리스트 출력.
+	//내 질문 리스트 출력.
 	$.ajax({
 		url :"/rest/profileQuestionBoard",
 		method : "post",
@@ -217,39 +186,12 @@ $(document).ready(function() {
 				board += "<td><a href='/questionBoardOne?questionId="+item.questionId+"'>"+item.questionTitle+"</a></td>";
 				board += "<td>"+item.questionDatetime+"</td></tr>";
 		
-				$("#list").append(board);
+				$("#questionList").append(board);
 			});
 		}
 	});
 	
-	//내 질문버튼 클릭시 리스트 출력.
-	$("#questionBoardBtn").click(function(){
-	$.ajax({
-		url :"/rest/profileQuestionBoard",
-		method : "post",
-		data : {"userId" : getParam("userId")},
-		success : function(json){
-			console.log(json);
-			$("#list").empty();
-			$("#headlist").empty();
-			let boardHead  = "<tr><th>질문 번호</th>";
-				boardHead += "<th>질문 제목</th>";
-				boardHead += "<th>질문 날짜</th></tr>";
-				$("#headlist").append(boardHead);
-			$(json).each(function(index, item){
-				
-			let board =  "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionId+"</td>";
-				board += "<td><a href='/questionBoardOne?questionId="+item.questionId+"'>"+item.questionTitle+"</a></td>";
-				board += "<td>"+item.questionDatetime+"</td></tr>";
-				
-				$("#list").append(board);
-			});
-		}
-	});
-	})
-	
-	//클릭시 내 답변 리스트 출력.
-	$("#questionCommentBtn").click(function(){
+	// 답변 리스트 출력.
 	$.ajax({
 		url :"/rest/profileQuestionComment",
 		method : "post",
@@ -267,11 +209,11 @@ $(document).ready(function() {
 				let comment =  "<tr><td>"+item.questionCommentId+"</td>";
 					comment += "<td>"+item.questionCommentContent+"</td>";
 					comment += "<td>"+item.questionCommentDatetime+"</td></tr>";
-				$("#list").append(comment);
+				$("#answerList").append(comment);
 			});
 		}
 	});
-})
+
 	
 	$.ajax({
 		url : "/rest/QuestionCount",
@@ -280,23 +222,12 @@ $(document).ready(function() {
 		success : function(json){
 			console.log(json);
 			$(json).each(function(index, item){
-				$("#count").append(item);
+				$("#questionCount").append(item);
 			})
 		} 
 	
 	})
-	
-	$("#active").click(function(){
-		$.ajax({
-			url : "/userOneActive",
-			method : "get",
-			data :  {"userId" : getParam("userId")},
-			success :function(){
-				console.log("성공");
-			}
-		})
-	})
-	
+		
 });
 </script>
 </html>

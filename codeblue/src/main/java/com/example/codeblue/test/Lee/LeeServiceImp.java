@@ -43,5 +43,18 @@ public class LeeServiceImp implements LeeService{
 		System.out.println("userId"+userId);
 		System.out.println(leeMapper.selectQuestionCommentList(userId));
 		return leeMapper.selectQuestionCommentList(userId);
+	}
+	@Override
+	public int questionBoardCount(String userId) {
+		System.out.println(":::UserServiceImp - questionBoardCount:::");
+		System.out.println("userId"+userId);
+		return leeMapper.selectQuestionBoardCount(userId);
+	}
+	
+	@Override
+	public int getQuestionChart(String userId) {
+		System.out.println("::::UserServiceImp - getQuestionChart");
+		System.out.println("userId"+userId);
+		return leeMapper.selectQuestionChart(userId);
 	}	
 }

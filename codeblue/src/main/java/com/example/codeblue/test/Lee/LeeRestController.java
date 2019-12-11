@@ -36,4 +36,18 @@ public class LeeRestController {
 		System.out.println("userId"+userId);
 		return leeService.getQuestionComment(userId);
 	}
+	
+	@PostMapping("/rest/QuestionCount")
+	public int postQuestionCount(@RequestParam(value="userId")String userId){
+		System.out.println(":::post - postQuestionCount:::");
+		System.out.println("userId"+userId);
+		return leeService.questionBoardCount(userId);
+	}
+	
+	@PostMapping("/rest/questionChart")
+	public int postQuestionChart(@RequestParam(value="userId")String userId) {
+		System.out.println(":::post - postQuestionChart :::");
+		System.out.println("userId"+userId);
+		return leeService.getQuestionChart(userId);
+	}
 }

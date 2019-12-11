@@ -8,11 +8,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class LeeController {
 
 	//사용하지않음 
-	@GetMapping("/profile")
-	public String getProfile(@RequestParam(value="userId") int userId) {
+	@GetMapping("/kakao")
+	public String getProfile() {
 		System.out.println(":::get - getProfile:::");
-		System.out.println("userId"+userId);
-		return "/UserOne";
+		return "/codeBlue/kakaoLogin";
+	}
+	
+	@GetMapping("/userOneActive")
+	public String getUserOneProfile() {
+		System.out.println(":::get - getUserOneProfile:::");
+		return "userOneActive";
 	}
 	
 }

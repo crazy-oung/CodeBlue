@@ -65,6 +65,7 @@
 		<result column="feild_name" property="feildName"></result>
 	</resultMap>
 	
+	<!-- 해당유저 질문게시글 출력 -->
 	<select id="selectQuestionBoardList" resultMap="QuestionBoard" parameterType="String">
 		SELECT 
 			qb.question_id,
@@ -79,6 +80,7 @@
 		LIMIT 0, 10;
 	</select>
 	
+	<!-- 해당유저 답글 리스트 출력 -->
 	<select id="selectQuestionCommentList" parameterType="String" resultMap="QuestionComment">
 		SELECT	
 			qc.question_comment_id,
@@ -91,7 +93,7 @@
 		ORDER BY qc.question_comment_datetime DESC 
 	</select>
 	
-	
+	<!-- 회원 상세정보 -->
 	<select id="selectUserOne" parameterType="String"
 			resultMap="User">
       SELECT 
@@ -99,10 +101,30 @@
           u.user_name,
           r.region_name,
           u.user_birthdate,
-          u.user_createtime
-      FROM user u INNER JOIN region r
-      ON u.region_id = r.region_id AND user_id = #{userId}
+          u.user_createtime,
+          k.rank_name
+      FROM user u INNER JOIN region r INNER JOIN rank k
+      ON u.region_id = r.region_id and
+		u.rank_id = k.rank_id  
+	  WHERE u.user_id = #{userId}
 	</select>
 	
+	<!-- 해당유저 질문수 -->
+	<select id="selectQuestionBoardCount" resultType="int" parameterType="String">
+		SELECT 
+			COUNT(*)
+		FROM question_board q Inner Join user u
+		ON q.user_id = u.user_id
+		WHERE u.user_id = #{userId}
+	</select>
 	
+	<!-- 해당유저 연도별 게시글 수 차트 -->
+	<select id="selectQuestionChart" resultMap="QuestionBoard" parameterType="String">
+		SELECT YEAR(q.question_datetime), 
+			COUNT(*)
+		FROM question_board q INNER JOIN user u
+		ON q.user_id = u.user_id
+		WHERE u.user_id = #{userId}
+		GROUP BY YEAR(q.question_datetime)
+	</select>
 </mapper>
