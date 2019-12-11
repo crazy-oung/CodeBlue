@@ -135,5 +135,12 @@ public interface AdminMapper {
 	public int updateFaq(FaqBoard faqBoard);
 	// 관리자 정보 확인
 	public Manager selectManagerId(User user);
-	
+	// 관리자 전체 리스트 가져오기
+	public List<Manager> selectManagerList(Page page);
+	// 관리자 테이블 총 행의 수 가져오기
+	public int selectManagerTotalCount(Page page);
+	// 관리자 삭제하기
+	public int deleteManager(String managerId);
+	// 관리자 상세보기 정보 가져오기
+	public Manager selectManagerOne(String managerId);
 }

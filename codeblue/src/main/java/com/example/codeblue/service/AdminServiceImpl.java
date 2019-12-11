@@ -646,5 +646,55 @@ public class AdminServiceImpl implements AdminService {
 		System.out.println("::: UserServluceImpl - verifyManager :::"); 
 		return adminMapper.selectManagerId(user);
 	}
+	// 관리자 전체 리스트 가져오기
+	@Override
+	public Map<String, Object> getManagerList(int currentPage, int rowPerPage){
+		System.out.println("::: AdminServiceImpl - getManagerList :::");
+		
+		Page page = new Page();
+		
+		
+		
+		rowPerPage = 10;
+		int beginRow = (currentPage -1)* rowPerPage;
+		page.setRowPerPage(rowPerPage);
+		page.setBeginRow(beginRow);
+	
+		int totalCount = adminMapper.selectManagerTotalCount(page);
+		System.out.println("totalCount : "+totalCount);
+		
+		int lastPage = totalCount/rowPerPage;
+		
+		if(totalCount % rowPerPage != 0) {
+			lastPage++;
+		}
+		System.out.println(page);
+		System.out.println("lastPage : "+lastPage);
+		List<Manager> list = adminMapper.selectManagerList(page);
+		System.out.println("list to string : "+list.toString());
+		
+		Map<String, Object> map = new HashMap<>();	
+		map.put("rowPerPage", rowPerPage);
+		map.put("beginRow", beginRow);
+		map.put("lastPage", lastPage);
+		map.put("currentPage",currentPage);
+		map.put("list",list);
+		map.put("totalCount",totalCount);		
+		return map;
+	}
+	// 관리자 삭제하기
+	@Override
+	public int removeManager(String managerId) {
+		System.out.println("::: AdminServiceImpl - removeManager :::");
+		System.out.println("YyjService ManagerId   :  " + managerId);
+		
+		return adminMapper.deleteManager(managerId);
+	}
+	// 관리자 상세보기 정보 가져오기
+	@Override
+	public Manager getManagerOne(String managerId) {
+		System.out.println("::: AdminServiceImpl - getManagerOne :::");
+		return adminMapper.selectManagerOne(managerId);
+	}
 
 }

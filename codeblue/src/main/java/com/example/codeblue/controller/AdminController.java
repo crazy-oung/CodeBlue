@@ -249,4 +249,17 @@ public class AdminController {
 			System.out.println("::get - addAdministrator:::");
 		return "/codeBlue/admin/adminAddAdministrator";
 	}
+	//관리자 전체 리스트 가져오기
+	@GetMapping("/adminManagerList")
+	public String getAdminManagerList() {
+		System.out.println("::: get - getAdminManagerList :::");
+		return "/codeBlue/admin/adminManagerList";
+	}
+	//관리자 상세정보 페이지
+	@GetMapping("/adminManagerOne")
+	public String getAdminManagerOne() {
+		System.out.println("::: get - getAdminManagerOne :::");
+		return"/codeBlue/admin/adminManagerOne";
+	}
+	
 }

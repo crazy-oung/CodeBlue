@@ -409,5 +409,29 @@ public class AdminRestController {
 		System.out.println("code correct!");	
 		return true;
 	}
+	// 관리자 전체 리스트 가져오기
+	@PostMapping("/rest/adminManagerList")
+	public Map<String,Object> getAdminManagerList(@RequestParam(value="currentPage", defaultValue = "1")int currentPage,
+			 										@RequestParam(value="rowPerPage", defaultValue = "10")int rowPerPage){
+		System.out.println("::: post - getAdminManagerList :::");
+		System.out.println("currentPage : "+currentPage);
+		System.out.println("rowPerPage : "+rowPerPage);
+		return adminService.getManagerList(currentPage, rowPerPage);
+	}
+	// 관리자 삭제하기
+	@PostMapping("/rest/adminRemoveManager")
+	public int removeManager(@RequestParam(value="managerId")String managerId) {
+		System.out.println("::: post - removeManager :::");
+		System.out.println("YyjService ManagerId   :  " + managerId);
+		
+		return adminService.removeManager(managerId);
+	}
+	// 관리자 상세보기 정보 가져오기
+	@PostMapping("/rest/adminManagerOne")
+	public Manager postManagerOne(@RequestParam(value="managerId")String managerId) {
+		System.out.println(":::post - postManagerOne:::");
+		System.out.println("managerId"+managerId);
+		return adminService.getManagerOne(managerId);
+	}
 	
 }

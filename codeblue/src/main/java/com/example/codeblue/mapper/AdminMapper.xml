@@ -174,6 +174,39 @@
 		<association property="user" resultMap="User"></association>
 	</resultMap>
 	<!-- 객체정리 끝ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
+	
+	<!-- 관리자 전체 리스트 가져오기 -->	
+	<select id="selectManagerList"
+			resultMap="Manager"
+			parameterType="com.example.codeblue.vo.Page">
+		SELECT 
+			manager_id,
+			manager_name,
+			manager_createdate
+		FROM manager
+		LIMIT #{beginRow},#{rowPerPage}
+	</select>
+	<!-- 관리자 테이블 총 행의 수 가져오기 -->
+	<select id="selectManagerTotalCount" resultType="int">
+  		SELECT COUNT(*) FROM manager
+  	</select>
+  	<!-- 관리자 삭제하기 -->
+  	<delete id="deleteManager"	parameterType="String">
+  		DELETE FROM manager
+  			WHERE manager_id = #{managerId}
+  	</delete>
+  	<!-- 관리자 상세페이지 정보 가져오기 -->
+  	<select id="selectManagerOne"
+  			resultMap="Manager"
+			parameterType="String">
+  		SELECT 
+			manager_id,
+			manager_name,
+			manager_createdate
+		FROM manager
+		WHERE manager_id = #{managerId}
+  	</select>		
+		
 		<!-- 관리자 계정 추가 -->
 		<insert id="insertAdministrator"
 			parameterType="com.example.codeblue.vo.Manager">
@@ -189,7 +222,8 @@
 						#{managerName},
 						NOW()
 					)
-		</insert>		
+		</insert>
+				
 		<!-- 답변 상세정보 -->
 	<select id="selectAnswerOne" resultMap="Answer" parameterType="String">
 		SELECT 

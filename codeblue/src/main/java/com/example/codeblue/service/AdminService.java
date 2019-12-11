@@ -97,5 +97,11 @@ public interface AdminService {
 	public String sendCodeToMail(Manager manager);
 	// 관리자 확인
 	public Manager verifyManager(User user);
+	// 관리자 전체 리스트 가져오기
+	public Map<String, Object> getManagerList(int currentPage, int rowPerPage);
+	// 관리자 삭제하기
+	public int removeManager(String managerId);
+	// 관리자 상세보기 정보 가져오기
+	public Manager getManagerOne(String managerId);
 	
 }

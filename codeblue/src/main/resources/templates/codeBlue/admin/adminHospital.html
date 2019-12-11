@@ -8,7 +8,7 @@
 	<meta name="description" content="">
 	<meta name="author" content="">
 	
-	<title>관리자 - 코드블루</title>
+	<title>유저 관리 - 코드블루</title>
 	
 	<!-- Custom fonts for this template-->
 	<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -24,233 +24,106 @@
   <!-- Page Wrapper -->
   <div id="wrapper">
 
-    <!-- SideBard load -->
-	<div id="sideBar"></div>
-
+	 <!-- Side Bar load -->
+ 	<div id="sideBar"></div>
+    
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
 
       <!-- Main Content -->
       <div id="content">
 
-        <!-- Topbar -->
-        <nav class="navbar navbar-expand navbar-light topbar shadow" style="height: 60px;border-bottom: 1px solid #d9d9d9; border-top: 4px solid #4e73df;">
-			
-          <!-- Sidebar Toggle (Topbar) -->
-          <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-            <i class="fa fa-bars"></i>
-          </button>
-
-          <!-- Topbar Search -->
-          <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-            <div class="input-group">
-              <input type="text" class="form-control bg-light border-1 small" placeholder="병원 검색" aria-label="Search" aria-describedby="basic-addon2" id="searchWord">
-              <div class="input-group-append">
-                <button class="btn btn-primary" type="button" id="search">
-                  <i class="fas fa-search fa-sm"></i>
-                </button>
-              </div>
-            </div>
-          </form>
-
-          <!-- Topbar Navbar -->
-          <ul class="navbar-nav ml-auto">
-
-            <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-            <li class="nav-item dropdown no-arrow d-sm-none">
-              <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-search fa-fw"></i>
-              </a>
-              <!-- Dropdown - Messages -->
-              <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
-                <form class="form-inline mr-auto w-100 navbar-search">
-                  <div class="input-group">
-                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-                    <div class="input-group-append">
-                      <button class="btn btn-primary" type="button">
-                        <i class="fas fa-search fa-sm"></i>
-                      </button>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </li>
-
-            <!-- Nav Item - Alerts -->
-            <li class="nav-item dropdown no-arrow mx-1">
-              <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-bell fa-fw"></i>
-                <!-- Counter - Alerts -->
-                <span class="badge badge-danger badge-counter">3+</span>
-              </a>
-              <!-- Dropdown - Alerts -->
-              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
-                <h6 class="dropdown-header">
-                  Alerts Center
-                </h6>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="mr-3">
-                    <div class="icon-circle bg-primary">
-                      <i class="fas fa-file-alt text-white"></i>
-                    </div>
-                  </div>
-                  <div>
-                    <div class="small text-gray-500">December 12, 2019</div>
-                    <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                  </div>
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="mr-3">
-                    <div class="icon-circle bg-success">
-                      <i class="fas fa-donate text-white"></i>
-                    </div>
-                  </div>
-                  <div>
-                    <div class="small text-gray-500">December 7, 2019</div>
-                    $290.29 has been deposited into your account!
-                  </div>
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="mr-3">
-                    <div class="icon-circle bg-warning">
-                      <i class="fas fa-exclamation-triangle text-white"></i>
-                    </div>
-                  </div>
-                  <div>
-                    <div class="small text-gray-500">December 2, 2019</div>
-                    Spending Alert: We've noticed unusually high spending for your account.
-                  </div>
-                </a>
-                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-              </div>
-            </li>
-
-            <!-- Nav Item - Messages -->
-            <li class="nav-item dropdown no-arrow mx-1">
-              <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-envelope fa-fw"></i>
-                <!-- Counter - Messages -->
-                <span class="badge badge-danger badge-counter">7</span>
-              </a>
-              <!-- Dropdown - Messages -->
-              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
-                <h6 class="dropdown-header">
-                  Message Center
-                </h6>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="https://source.unsplash.com/fn_BT9fwg_E/60x60" alt="">
-                    <div class="status-indicator bg-success"></div>
-                  </div>
-                  <div class="font-weight-bold">
-                    <div class="text-truncate">Hi there! I am wondering if you can help me with a problem I've been having.</div>
-                    <div class="small text-gray-500">Emily Fowler · 58m</div>
-                  </div>
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="https://source.unsplash.com/AU4VPcFN4LE/60x60" alt="">
-                    <div class="status-indicator"></div>
-                  </div>
-                  <div>
-                    <div class="text-truncate">I have the photos that you ordered last month, how would you like them sent to you?</div>
-                    <div class="small text-gray-500">Jae Chun · 1d</div>
-                  </div>
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="https://source.unsplash.com/CS2uCrpNzJY/60x60" alt="">
-                    <div class="status-indicator bg-warning"></div>
-                  </div>
-                  <div>
-                    <div class="text-truncate">Last month's report looks great, I am very happy with the progress so far, keep up the good work!</div>
-                    <div class="small text-gray-500">Morgan Alvarez · 2d</div>
-                  </div>
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60" alt="">
-                    <div class="status-indicator bg-success"></div>
-                  </div>
-                  <div>
-                    <div class="text-truncate">Am I a good boy? The reason I ask is because someone told me that people say this to all dogs, even if they aren't good...</div>
-                    <div class="small text-gray-500">Chicken the Dog · 2w</div>
-                  </div>
-                </a>
-                <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
-              </div>
-            </li>
-
-            <div class="topbar-divider d-none d-sm-block"></div>
-
-            <!-- Nav Item - User Information -->
-            <li class="nav-item dropdown no-arrow">
-              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
-                <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
-              </a>
-              <!-- Dropdown - User Information -->
-              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Profile
-                </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Settings
-                </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Activity Log
-                </a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Logout
-                </a>
-              </div>
-            </li>
-
-          </ul>
-
-        </nav>
-        <!-- End of Topbar -->
+      <!-- topBar load -->
+      <div id="topBar"></div>
 
         <!-- Begin Page Content -->
-        <div class="container-fluid px-4 pt-4">
-			<div class="card border-0 bg-white p-3 m-2 shadow"> 
         
-	       	<div class="container">
-				<div class="row"> 
-					
-					<!-- Page Content -->
-					<div class="col-sm-8">
-						<!-- Page Heading -->
-						<div class="d-sm-flex align-items-center justify-content-between mb-2" style="margin-top: 80px">
-							<h3 class="text-gray-800 mb-2 font-weight-bold">제휴 병원</h3>
-							<a href="/addHospital" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow"><i class="mr-2 fas fa-plus fa-sm text-white-50"></i>병원등록</a> 
-						</div>
-						<!-- page Heading End -->
-						
-						<!-- hospital Board -->
-						<table id="hospital" class="table table-hover table-bordered"></table>
-						<br>
-						
-						<button type="button" id="prevBtn" class="btn btn-primary">이전</button>
-						<button type="button" id="nextBtn" class="btn btn-primary">다음</button>
-						
+       	<div class="container-fluid px-4 pt-4">
+		<div class="card border-0 bg-white p-3 m-2 shadow"> 
+				
+		<!-- Begin Page Content -->
+       <div class="container-fluid px-4 pt-4">
+ 
+         
+            <!-- Page Content -->
+            <div class="p-2">
+            
+               <!-- Page Heading -->
+               <div class="d-sm-flex align-items-center justify-content-between mb-3" >
+                  <h3 class="text-gray-800 mb-2 font-weight-bold">유저관리</h3>
+               </div>
+               
+               <!-- page Heading End -->
+               
+        		<!-- user search -->
+        		<div class="card bg-gray-200 border-0 mb-3">
+	        		<div class="row p-4">
+		        		<div class="col-sm-9">
+		        			 <table class="table table-sm table-borderless">
+								<tr>
+									<td width="15%">유저이름 </td>
+									<td> <input class="form-control form-control-sm" type="text" id="searchContent" style="width: 40%"></td>
+								</tr>
+								<tr>
+									<td>회원가입일 </td>
+									<td><div class='d-flex'>
+										<input class="form-control form-control-sm" type="date" id=toDate style="width: 30%">&nbsp;~&nbsp;<input class="form-control form-control-sm" type="date" id="fromDate" style="width: 30%">
+									</div></td>
+								</tr>
+							</table>
+		        		</div>
+		        		<div class="col-sm-3 text-right">
+		        			<button type="button" class="btn btn-primary btn-sm px-5 my-1 mt-3" id="searchBtn">검색</button><br>
+							<button type="button" class="btn btn-outline-primary btn-sm px-5 " id="resetBtn">초기화</button>
+		        		</div>
 					</div>
-				<!--  Page Content End -->
 				</div>
-			</div> 
-        
-        
-        
-        
-        
-        
+				
+				<div class="row my-2 mt-4">
+					<div class="col-sm-2">
+						<p id="totalRow" class="py-1 m-0"></p>
+					</div>
+					<div class="col-sm-9">
+						<button type="button" class="btn btn-outline-primary btn-sm px-4" id="userRemoveBtn">강제 탈퇴</button>
+					</div>
+					<div class="col-sm-1">
+						<select class="form-control form-control-sm" id="rowPerPage">
+							<option value="10" selected="selected">10개 보기</option>
+							<option value="20">20개 보기</option>
+							<option value="30">30개 보기</option>
+							<option value="40">40개 보기</option>
+							<option value="50">50개 보기</option>
+						</select>
+					</div>
+				</div>
+				
+				<table class="table table-hover table-bordered" id="userList">
+					<thead>
+						<tr class="text-center">
+							<th>관리자 아이디</th>
+							<th>관리자 이름</th>
+							<th>관리자 생성일자</th>
+						</tr>
+					</thead>
+					<tbody id="ManagerList">
+					</tbody>
+				</table>
+				<div class="d-flex ">
+					<div class="p-2">
+						<button type="button" id="prevBtn" class="btn btn-primary">이전</button>
+						<span id="pageInfo"></span>
+						<button type="button" id="nextBtn" class="btn btn-primary">다음</button>
+					</div>
+				</div>
+				
+               
+            </div>
+         <!--  Page Content End -->
+  
+      </div> 
+      
       <!-- End of Main Content -->
-
+	</div>
       <!-- Footer -->
       <footer class="sticky-footer">
         <div class="container my-auto">
@@ -284,7 +157,7 @@
           </button>
         </div>
         <div class="modal-body">로그아웃 하고 싶으시면 아래 로그아웃 버튼을 클릭해주세요!</div>
-        <div class="modal-footer">
+        <div class="modal-footer">	
           <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
           <a class="btn btn-primary" href="/logout">로그아웃</a>
         </div>
@@ -304,158 +177,131 @@
 
   <!-- Page level plugins -->
   <script src="vendor/chart.js/Chart.min.js"></script>
-
-  <!-- Page level custom scripts -->
-  <script src="js/demo/chart-area-demo.js"></script>
-  <script src="js/demo/chart-pie-demo.js"></script>
+  
+  <!-- codeBlue admin scripts -->
+  <script src="js/codeBlueAdmin.js"></script>
 
 </body>
-<script type="text/javascript">
-$(document).ready(function(){
-	
-	$("#sideBar").load("/sideBar #accordionSidebar", function(){
-		$("#sideBarHospital").addClass("active");
-		$("#sideBarHospital").children("a").attr("aria-expanded","false");
-		$("#sideBarHospital").children("div").addClass("show");
-	});
- 
-	
-	let currentPage = 1;
-	let searchWord = null;
-	let rowPerPage =10;	
+<script>
+	var currentPage = 1;
+	var lastPage = 0;
+	var rowPerPage = 10;
+	var searchWord = null;
+	var toDate = null;
+	var fromDate = null;
 
+	// 기본 홈
 	$.ajax({
-		url : "/rest/adminHospital",
+		url : "/rest/adminUserList",
 		method : "post",
-		data : {"currentPage" : currentPage,
-				"rowPerPage" : rowPerPage},
+		data : {"currentPage" : currentPage},
 		success : function(json){
 			console.log(json);
-			let hospital;
+			subInfo(json);
+			BtnShow(currentPage,lastPage);
 			$(json.list).each(function(index,item){
-				hospital = "<tr><td> 병원명 </td><td>"
-				hospital +="<a href='/getHospitalOne?hospitalId=";
-				hospital +=item.hospitalId;
-				hospital +="'>"+item.hospitalName
-				hospital +="</a></td></tr>";
-				hospital +="<tr><td> 위치  </td><td>" + item.region.regionName;
-				hospital +="</td></tr>";
-				hospital += "<tr><td> 번호 </td><td>" + item.hospitalAddress;
-				hospital += "</td></tr>";
-				
-					$("#hospital").append(hospital)
-			})
+				append(index, item);
+			});
 			
-		}
-	})
-	
-	$("#prevBtn").click(function(){
-	
+		} 
+	});	
+	// 검색 버튼 클릭
+	$("#searchBtn").click(function(){
+		$("#userListContent").empty();
 		$.ajax({
-			url : "/rest/adminHospital",
+			url : "/rest/adminUserList",
 			method : "post",
-			data : {"currentPage": currentPage-1},
+			data : {"searchWord" : $("#searchContent").val(),
+					"toDate" : $("#toDate").val(),
+					"fromDate" : $("#fromDate").val(),
+					"rowPerPage" : $("#rowPerPage").val()},
 			success : function(json){
-				$("#hospital").empty();
-				currentPage = json.currentPage;
-				lastPage = json.lastPage;
-				BtnShow(currentPage, lastPage);
 				console.log(json);
-				let hospital;
-				$(json.list).each(function(index,item){
-					hospital = "<tr><td> 병원명 </td><td>"
-						hospital +="<a href='/getHospitalOne?hospitalId=";
-						hospital +=item.hospitalId;
-						hospital +="'>"+item.hospitalName
-						hospital +="</a></td></tr>";
-						hospital +="<tr><td> 위치  </td><td>" + item.region.regionName;
-						hospital +="</td></tr>";
-						hospital += "<tr><td> 번호 </td><td>" + item.hospitalAddress;
-						hospital += "</td></tr>";
-						
-							$("#hospital").append(hospital)
-				})
-			}
-		})
-	})
-	
-		$("#nextBtn").click(function(){
-	
-		$.ajax({
-			url : "/rest/adminHospital",
-			method : "post",
-			data : {"currentPage": currentPage+1},
-			success : function(json){
-				$("#hospital").empty();
-				currentPage = json.currentPage;
-				lastPage = json.lastPage;
-				BtnShow(currentPage, lastPage);
-				console.log(json);
-				let hospital;
-				$(json.list).each(function(index,item){
-					hospital = "<tr><td> 병원명 </td><td>"
-						hospital +="<a href='/getHospitalOne?hospitalId=";
-						hospital +=item.hospitalId;
-						hospital +="'>"+item.hospitalName
-						hospital +="</a></td></tr>";
-						hospital +="<tr><td> 위치  </td><td>" + item.region.regionName;
-						hospital +="</td></tr>";
-						hospital += "<tr><td> 번호 </td><td>" + item.hospitalAddress;
-						hospital += "</td></tr>";
-							$("#hospital").append(hospital)
-				})
-			}
-		})
-	})
-	
-	//검색버튼
-	$("#search").click(function(){
-		$.ajax({
-			url:"/rest/adminHospital",
-			method:"POST",
-			data:{"searchWord": $("#searchWord").val()},
-			success: function(json){
-				console.log(json);
-				currentPage = json.currentPage;
-				lastPage = json.lastPage;
-				$("#searchWord").val(json.searchWord);
-				searchWord = json.searchWord;
+				subInfo(json);
 				BtnShow(currentPage,lastPage);
-				$("#hospital").empty();
-				let hospital;
 				$(json.list).each(function(index,item){
-					hospital = "<tr><td> 병원명 </td><td>"
-						hospital +="<a href='/getHospitalOne?hospitalId=";
-						hospital +=item.hospitalId;
-						hospital +="'>"+item.hospitalName
-						hospital +="</a></td></tr>";
-						hospital +="<tr><td> 위치  </td><td>" + item.region.regionName;
-						hospital +="</td></tr>";
-						hospital += "<tr><td> 번호 </td><td>" + item.hospitalAddress;
-						hospital += "</td></tr>";
-							$("#hospital").append(hospital)
-				})
-			}
-		})
+					append(index, item);
+				});
+			} 
+		});
+	});
+	// 다음 버튼 클릭
+	$("#nextBtn").click(function(){
+ 		$("#userListContent").empty();
+		$.ajax({
+			url : "/rest/adminUserList",
+			method : "post",
+			data : {"currentPage" : currentPage+1,
+					"searchWord" : $("#searchContent").val(),
+					"toDate" : $("#toDate").val(),
+					"fromDate" : $("#fromDate").val(),
+					"rowPerPage" : $("#rowPerPage").val()},
+			success : function(json){
+				console.log(json);
+				subInfo(json);
+				BtnShow(currentPage,lastPage);
+				$(json.list).each(function(index,item){
+					append(index, item);
+				});
+			} 
+		});
 	});
 	
-//document
-})
-
+	// 이전 버튼 클릭
+	$("#prevBtn").click(function(){
+		$("#userListContent").empty();
+		$.ajax({
+			url : "/rest/adminUserList",
+			method : "post",
+			data : {"currentPage" : currentPage-1,
+					"searchWord" : $("#searchContent").val(),
+					"toDate" : $("#toDate").val(),
+					"fromDate" : $("#fromDate").val(),
+					"rowPerPage" : $("#rowPerPage").val()},
+			success : function(json){
+				console.log(json);
+				subInfo(json);
+				BtnShow(currentPage,lastPage);
+				$(json.list).each(function(index,item){
+					append(index, item);
+				});
+			} 
+		});
+	});
+	// 보기형식 선택
 	
-	function BtnShow(currentPage, lastPage){
-	console.log("currentPage"+currentPage+"/ lastPage"+lastPage);
-		if(currentPage <= 1){
+	// ajax html뛰우는 함수
+	function append(index, item) {
+		var html = "<tr>";
+		html += "<td>"+item.managerId"</td>";
+		html += "<td>"+item.managerName+"</td>";
+		html += "<td>"+item.managerCreatetime+"</td>";
+		html += "</tr>";
+		$("#ManagerList").append(html);
+	}
+	// 화면뛰울때 필요한 함수(현재,마지막 페이지 등)
+	function subInfo(json){
+		$("#totalRow").empty();
+		$("#pageInfo").empty();
+		currentPage = json.currentPage;
+		rowPerPage = json.rowPerPage;
+		lastPage = json.lastPage;
+		$("#totalRow").append("검색결과"+json.totalRow+"건");
+		$("#pageInfo").append(currentPage+"/"+lastPage);
+	}
+	
+	// 이전,다음버튼 함수
+	function BtnShow(currentPage,lastPage) {
+		if(currentPage == 1){
 			$("#prevBtn").hide();
-		}else{
+		} else {
 			$("#prevBtn").show();
 		}
-		if(currentPage >= lastPage){
-			$("#nextBtn").hide();
-		}else{
+		if(currentPage <lastPage) {
 			$("#nextBtn").show();
+		} else {
+			$("#nextBtn").hide();
 		}
-}
-
+	}	
 </script>
 </html>
