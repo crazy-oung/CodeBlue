@@ -5,6 +5,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 @org.springframework.stereotype.Controller
 public class JJWController {
 
+//	//질문댓글 리스트 페이지
+//	@GetMapping("/adminQuestionComment")
+//	public String getQuestionComment() {
+//		System.out.println("::: get - adminQuestionComment :::");
+//		return "/codeblue/admin/adminQuestionComment";
+//	}
+//
+//	//답변댓글 리스트 페이지
+//	@GetMapping("/adminAnswerComment")
+//	public String getAnswerComment() {
+//		System.out.println("::: get - adminAnswerComment :::");
+//		return "/codeblue/admin/adminAnswerComment";
+//	}
 //	//답변 리스트 페이지
 //	@GetMapping("/adminAnswer")
 //	public String getAnswer() {

@@ -20,6 +20,44 @@ public class JJWRestController {
 	@Autowired
 	private JJWService service;
 	
+//	//답변 댓글 지우기
+//	@PostMapping("/rest/admin/removeAnswerCommentList")
+//	public String removeAnswerCommentList(@RequestParam(value="checkBoxArr")List<String> answerCommentIdList) {
+//		System.out.println("::: post - removeAnswerCommentList :::");
+//		System.out.println(answerCommentIdList.toString());
+//		service.removeAnswerCommentList(answerCommentIdList);
+//		return "답변 댓글 삭제 성공";
+//	}
+//	//답변 댓글 리스트 가져오기
+//	@PostMapping("/rest/admin/getAnswerCommentList")
+//	public Map<String,Object> getAnswerCommentList(Page page,@RequestParam(value="currentPage", defaultValue = "1")int currentPage,
+//													@RequestParam(value="rowPerPage", defaultValue = "10")int rowPerPage){
+//		System.out.println("::: post - getAnswerCommentList :::");
+//		System.out.println(page.toString());
+//		System.out.println("currentPage : "+currentPage);
+//		System.out.println("rowPerPage : "+rowPerPage);
+//		page.setRowPerPage(rowPerPage);
+//		return service.getAnswerCommentList(page, currentPage);
+//	}
+//	//질문 댓글 지우기
+//	@PostMapping("/rest/admin/removeQuestionCommentList")
+//	public String removeQuestionCommentList(@RequestParam(value="checkBoxArr")List<String> questionCommentIdList) {
+//		System.out.println("::: post - removeQuestionCommentList :::");
+//		System.out.println(questionCommentIdList.toString());
+//		service.removeQuestionCommentList(questionCommentIdList);
+//		return "질문 댓글 삭제 성공";
+//	}
+//	//질문 댓글 리스트 가져오기
+//	@PostMapping("/rest/admin/getQuestionCommentList")
+//	public Map<String,Object> getQuestionCommentList(Page page,@RequestParam(value="currentPage", defaultValue = "1")int currentPage,
+//														@RequestParam(value="rowPerPage", defaultValue = "10")int rowPerPage){
+//		System.out.println("::: post - getQuestionCommentList :::");
+//		System.out.println(page.toString());
+//		System.out.println("currentPage : "+currentPage);
+//		System.out.println("rowPerPage : "+rowPerPage);
+//		page.setRowPerPage(rowPerPage);
+//		return service.getQuestionCommentList(page, currentPage);
+//	}
 //	//답변 상세정보
 //	@PostMapping("/rest/getAnswerOne")
 //	public Answer getAnswerOne(@RequestParam(value="answerId")String answerId) {

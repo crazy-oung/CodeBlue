@@ -218,7 +218,7 @@
 	});
 	
 	$.ajax({
-		url:"/rest/getFeildList",
+		url:"/rest/admin/getFeildList",
 		method:"post",
 		success:function(json) {
 			console.log(json);
@@ -230,7 +230,7 @@
 	});
 	//테이블 값 넣어주기 기본적으로
 	$.ajax({
-			url: "/rest/getAnswerList",
+			url: "/rest/admin/getAnswerList",
 			method:"post",
 			data:{"searchCategory":searchCategory,"searchWord":searchWord,"toDate":toDate,"fromDate":fromDate},
 			success: function(json){
@@ -248,7 +248,7 @@
 	});
 	$("#rowPerPage").change(function(){
 		$.ajax({
-			url: "/rest/getAnswerList",
+			url: "/rest/admin/getAnswerList",
 			method:"post",
 			data:{"searchCategory":searchCategory,"searchWord":searchWord,"toDate":toDate,"fromDate":fromDate,"rowPerPage":$("#rowPerPage").val()},
 			success: function(json){
@@ -301,7 +301,7 @@
 			alert("체크 항목이 없습니다.");
 		} else {
 			$.ajax({
-				url:"/rest/removeAnswerList",
+				url:"/rest/admin/removeAnswerList",
 				traditional : true, //ajax에서 기본적으로 배열을 지원하지않기때문에 설정
 				method:"post",
 				data:{"checkBoxArr":checkBoxArr},
@@ -330,18 +330,22 @@
 			searchCategory = undefined;
 		}
 		//id 값이 searchWord 인 html를 가져와서 value 값이 null이 아닐경우 저장한다.
-			if(document.getElementById("searchWord").value){
-				searchWord = $("#searchWord").val();
-			} else {
-				searchWord = undefined;
-			}
-			//html태그중에 input에 id값이 toDate 인  value데이터를 Date형식으로 변환한 값이 null이 아닐경우 저장한다.
+		if(document.getElementById("searchWord").value){
+			searchWord = $("#searchWord").val();
+		} else {
+			searchWord = undefined;
+		}
+		//html태그중에 input에 id값이 toDate 인  value데이터를 Date형식으로 변환한 값이 null이 아닐경우 저장한다.
 		if(document.querySelector("input[id='toDate']").valueAsDate){
 			toDate = document.querySelector("input[id='toDate']").valueAsDate.toISOString().slice(0, 10);	
+		} else {
+			toDate = undefined;
 		}
 		//html태그중에 input에 id값이 fromDate 인  value데이터를 Date형식으로 변환한 값이 null이 아닐경우 저장한다.
 		if(document.querySelector("input[id='fromDate']").valueAsDate){
 			fromDate = document.querySelector("input[id='fromDate']").valueAsDate.toISOString().slice(0, 10);
+		} else {
+			toDate = undefined;
 		}
 		console.log("카테고리 값 : " +searchCategory);
 		console.log("검색어 : "+ searchWord)
@@ -349,7 +353,7 @@
 		console.log("작성 날짜 끝 : "+fromDate);
 		//검색조건에 따른 질문 리스트를 뽑기
 		$.ajax({
-			url: "/rest/getAnswerList",
+			url: "/rest/admin/getAnswerList",
 			method:"post",
 			data:{"searchCategory":searchCategory,"searchWord":searchWord,"toDate":toDate,"fromDate":fromDate,"rowPerPage":$("#rowPerPage").val()},
 			success: function(json){
@@ -371,7 +375,7 @@
 		//전체 체크 풀어주기
 		$("#selectAll").prop("checked",false);
 		$.ajax({
-			url:"/rest/getAnswerList",
+			url:"/rest/admin/getAnswerList",
 			method:"POST",
 			data:{"currentPage" : currentPage-1,"searchCategory":searchCategory,"searchWord":searchWord,"toDate":toDate,"fromDate":fromDate,"rowPerPage":$("#rowPerPage").val()},
 			success: function(json){
@@ -392,7 +396,7 @@
 		//전체 체크 풀어주기
 		$("#selectAll").prop("checked",false);
 		$.ajax({
-			url:"/rest/getAnswerList",
+			url:"/rest/admin/getAnswerList",
 			method:"POST",
 			data:{"currentPage" : currentPage+1,"searchCategory":searchCategory,"searchWord":searchWord,"toDate":toDate,"fromDate":fromDate,"rowPerPage":$("#rowPerPage").val()},
 			success: function(json){
@@ -426,7 +430,7 @@
 		$("#boardOne").empty();
 		console.log(questionId+" 상세정보 가져오기");
 		$.ajax({
-			url:"/rest/getQuestionBoardOne",
+			url:"/rest/admin/getQuestionBoardOne",
 			method:"post",
 			data:{"questionId":questionId},
 			success:function(json){
@@ -455,7 +459,7 @@
 		$("#answerOne").empty();
 		console.log(answerId+" 상세정보 가져오기");
 		$.ajax({
-			url:"/rest/getAnswerOne",
+			url:"/rest/admin/getAnswerOne",
 			method:"post",
 			data:{"answerId":answerId},
 			success:function(json){

@@ -20,7 +20,14 @@ import com.example.codeblue.vo.User;
 
 public interface AdminService {
 	
-	
+	//답변 댓글 삭제하기
+	public void removeAnswerCommentList(List<String> answerCommentIdList);
+	//답변 댓글 리스트 가져오기
+	public Map<String,Object> getAnswerCommentList(Page page,int currentPage);
+	//질문 댓글 삭제하기
+	public void removeQuestionCommentList(List<String> questionCommentIdList);
+	//질문 댓글 리스트 가져오기
+	public Map<String,Object> getQuestionCommentList(Page page,int currentPage);
 	//답변 상세정보 가져오기
 	public Answer getAnswerOne(String answerId);
 	//답변 삭제하기

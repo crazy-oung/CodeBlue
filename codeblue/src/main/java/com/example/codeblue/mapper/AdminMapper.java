@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.example.codeblue.vo.Answer;
+import com.example.codeblue.vo.AnswerComment;
 import com.example.codeblue.vo.FaqBoard;
 import com.example.codeblue.vo.Feild;
 import com.example.codeblue.vo.Hospital;
@@ -14,6 +15,7 @@ import com.example.codeblue.vo.Manager;
 import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionBoard;
+import com.example.codeblue.vo.QuestionComment;
 import com.example.codeblue.vo.QuestionCount;
 import com.example.codeblue.vo.ReportHistory;
 import com.example.codeblue.vo.ServiceCategory;
@@ -22,6 +24,18 @@ import com.example.codeblue.vo.User;
 @Mapper
 public interface AdminMapper {
 
+	//답변 댓글 Id 값으로 삭제하기
+	public void deleteAnswerCommentId(List<String> list);
+	//답변 댓글 행수 가져오기
+	public int selectAnswerCommentTotalCount(Page page);
+	//답변 댓글 리스트 가져오기
+	public List<AnswerComment> selectAnswerCommentList(Page page);
+	//질문 댓글 Id 값으로 삭제하기
+	public void deleteQuestionCommentId(List<String> list);
+	//질문 댓글 행수 가져오기
+	public int selectQuestionCommentTotalCount(Page page);
+	//질문 댓글 리스트 가져오기
+	public List<QuestionComment> selectQuestionCommentList(Page page);
 	//관리자 추가
 	public int insertAdministrator(Manager manager);	
 	//답변  상세정보

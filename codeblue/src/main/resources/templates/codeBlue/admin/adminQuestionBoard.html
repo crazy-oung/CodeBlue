@@ -220,7 +220,7 @@
 	});
 	
 	$.ajax({
-		url:"/rest/getFeildList",
+		url:"/rest/admin/getFeildList",
 		method:"post",
 		success:function(json) {
 			console.log(json);
@@ -232,7 +232,7 @@
 	});
 	//테이블 값 넣어주기 기본적으로
 	$.ajax({
-			url: "/rest/getQuestionBoardList",
+			url: "/rest/admin/getQuestionBoardList",
 			method:"post",
 			data:{"searchCategory":searchCategory,"searchWord":searchWord,"toDate":toDate,"fromDate":fromDate},
 			success: function(json){
@@ -243,14 +243,13 @@
 				BtnShow(currentPage,lastPage);
 				$("#boardListBody").empty();
 				$(json.list).each(function(index,item) {
-					var html = append(item,index)
-					$("#boardList").append(html);
+					append(item,index)
 				})
 			}
 	});
 	$("#rowPerPage").change(function(){
 		$.ajax({
-			url: "/rest/getQuestionBoardList",
+			url: "/rest/admin/getQuestionBoardList",
 			method:"post",
 			data:{"searchCategory":searchCategory,"searchWord":searchWord,"toDate":toDate,"fromDate":fromDate,"rowPerPage":$("#rowPerPage").val()},
 			success: function(json){
@@ -261,8 +260,7 @@
 				BtnShow(currentPage,lastPage);
 				$("#boardListBody").empty();
 				$(json.list).each(function(index,item) {
-					var html = append(item,index)
-					$("#boardList").append(html);
+					append(item,index)
 				})
 			}
 		});
@@ -302,7 +300,7 @@
 			alert("체크 항목이 없습니다.");
 		} else {
 			$.ajax({
-				url:"/rest/removeQuestionBoardList",
+				url:"/rest/admin/removeQuestionBoardList",
 				traditional : true, //ajax에서 기본적으로 배열을 지원하지않기때문에 설정
 				method:"post",
 				data:{"checkBoxArr":checkBoxArr},
@@ -331,18 +329,22 @@
 			searchCategory = undefined;
 		}
 		//id 값이 searchWord 인 html를 가져와서 value 값이 null이 아닐경우 저장한다.
-			if(document.getElementById("searchWord").value){
-				searchWord = $("#searchWord").val();
-			} else {
-				searchWord = undefined;
-			}
-			//html태그중에 input에 id값이 toDate 인  value데이터를 Date형식으로 변환한 값이 null이 아닐경우 저장한다.
+		if(document.getElementById("searchWord").value){
+			searchWord = $("#searchWord").val();
+		} else {
+			searchWord = undefined;
+		}
+		//html태그중에 input에 id값이 toDate 인  value데이터를 Date형식으로 변환한 값이 null이 아닐경우 저장한다.
 		if(document.querySelector("input[id='toDate']").valueAsDate){
 			toDate = document.querySelector("input[id='toDate']").valueAsDate.toISOString().slice(0, 10);	
+		} else {
+			toDate = undefined;
 		}
 		//html태그중에 input에 id값이 fromDate 인  value데이터를 Date형식으로 변환한 값이 null이 아닐경우 저장한다.
 		if(document.querySelector("input[id='fromDate']").valueAsDate){
 			fromDate = document.querySelector("input[id='fromDate']").valueAsDate.toISOString().slice(0, 10);
+		} else {
+			fromDate = undefined;
 		}
 		console.log("카테고리 값 : " +searchCategory);
 		console.log("검색어 : "+ searchWord)
@@ -350,7 +352,7 @@
 		console.log("작성 날짜 끝 : "+fromDate);
 		//검색조건에 따른 질문 리스트를 뽑기
 		$.ajax({
-			url: "/rest/getQuestionBoardList",
+			url: "/rest/admin/getQuestionBoardList",
 			method:"post",
 			data:{"searchCategory":searchCategory,"searchWord":searchWord,"toDate":toDate,"fromDate":fromDate,"rowPerPage":$("#rowPerPage").val()},
 			success: function(json){
@@ -361,8 +363,7 @@
 				BtnShow(currentPage,lastPage);
 				$("#boardListBody").empty();
 				$(json.list).each(function(index,item) {
-					var html = append(item,index)
-					$("#boardList").append(html);
+					append(item,index)
 				})
 			}
 		});
@@ -372,7 +373,7 @@
 		//전체 체크 풀어주기
 		$("#selectAll").prop("checked",false);
 		$.ajax({
-			url:"/rest/getQuestionBoardList",
+			url:"/rest/admin/getQuestionBoardList",
 			method:"POST",
 			data:{"currentPage" : currentPage-1,"searchCategory":searchCategory,"searchWord":searchWord,"toDate":toDate,"fromDate":fromDate,"rowPerPage":$("#rowPerPage").val()},
 			success: function(json){
@@ -382,8 +383,7 @@
 				BtnShow(currentPage,lastPage);
 				$("#boardListBody").empty();
 				$(json.list).each(function(index,item) {
-					var html = append(item,index)
-					$("#boardList").append(html);
+					append(item,index)
 				})
 			}
 		})
@@ -393,7 +393,7 @@
 		//전체 체크 풀어주기
 		$("#selectAll").prop("checked",false);
 		$.ajax({
-			url:"/rest/getQuestionBoardList",
+			url:"/rest/admin/getQuestionBoardList",
 			method:"POST",
 			data:{"currentPage" : currentPage+1,"searchCategory":searchCategory,"searchWord":searchWord,"toDate":toDate,"fromDate":fromDate,"rowPerPage":$("#rowPerPage").val()},
 			success: function(json){
@@ -403,8 +403,8 @@
 				BtnShow(currentPage,lastPage);
 				$("#boardListBody").empty();
 				$(json.list).each(function(index,item) {
-					var html = append(item,index)
-					$("#boardList").append(html);
+					append(item,index)
+					
 				})
 			}
 		})
@@ -427,7 +427,7 @@
 		$("#boardOne").empty();
 		console.log(questionId+" 상세정보 가져오기");
 		$.ajax({
-			url:"/rest/getQuestionBoardOne",
+			url:"/rest/admin/getQuestionBoardOne",
 			method:"post",
 			data:{"questionId":questionId},
 			success:function(json){
@@ -461,7 +461,7 @@
 	}
 	//html 추가
 	function append(item,index){
-		return "<tr>"+
+		var html = "<tr>"+
 	//		"<td><input type='checkbox' value="+item.questionId+" name='chk'></td>"+
 		"<td><div class='custom-control custom-checkbox text-center'><input class='custom-control-input' type='checkbox' name='chk' value="+item.questionId+" id='check"+index+"'><label name='chk' class='custom-control-label' for='check"+index+"'></label></div></td>"+
 		"<td class='text-center'>"+item.questionId+"</td>"+
@@ -471,6 +471,7 @@
 		"<td class='text-center'>"+item.user.userId+"</td>"+
 		"<td class='text-center'>"+item.questionDatetime+"</td>"+
 		"<tr>";
+		$("#boardList").append(html)
 	}
 	// 서브 값 추가
 	function subInfo(json){

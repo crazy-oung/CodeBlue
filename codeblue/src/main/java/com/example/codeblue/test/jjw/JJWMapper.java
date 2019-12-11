@@ -3,14 +3,27 @@ package com.example.codeblue.test.jjw;
 import java.util.List;
 
 import com.example.codeblue.vo.Answer;
+import com.example.codeblue.vo.AnswerComment;
 import com.example.codeblue.vo.Feild;
 import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionBoard;
+import com.example.codeblue.vo.QuestionComment;
 
 @org.apache.ibatis.annotations.Mapper
 public interface JJWMapper {
 	
-	
+	//답변 댓글 Id 값으로 삭제하기
+	public void deleteAnswerCommentId(List<String> list);
+	//답변 댓글 행수 가져오기
+	public int selectAnswerCommentTotalCount(Page page);
+	//답변 댓글 리스트 가져오기
+	public List<AnswerComment> selectAnswerCommentList(Page page);
+	//질문 댓글 Id 값으로 삭제하기
+	public void deleteQuestionCommentId(List<String> list);
+	//질문 댓글 행수 가져오기
+	public int selectQuestionCommentTotalCount(Page page);
+	//질문 댓글 리스트 가져오기
+	public List<QuestionComment> selectQuestionCommentList(Page page);
 	//답변  상세정보
 	public Answer selectAnswerOne(String answerId);
 	//답변 행수 가져오기

@@ -31,8 +31,47 @@ import com.example.codeblue.vo.ServiceCategory;
 public class AdminRestController {
 	@Autowired private AdminService adminService;
 	
+	//답변 댓글 지우기
+	@PostMapping("/rest/admin/removeAnswerCommentList")
+	public String removeAnswerCommentList(@RequestParam(value="checkBoxArr")List<String> answerCommentIdList) {
+		System.out.println("::: post - removeAnswerCommentList :::");
+		System.out.println(answerCommentIdList.toString());
+		adminService.removeAnswerCommentList(answerCommentIdList);
+		return "답변 댓글 삭제 성공";
+	}
+	//답변 댓글 리스트 가져오기
+	@PostMapping("/rest/admin/getAnswerCommentList")
+	public Map<String,Object> getAnswerCommentList(Page page,@RequestParam(value="currentPage", defaultValue = "1")int currentPage,
+													@RequestParam(value="rowPerPage", defaultValue = "10")int rowPerPage){
+		System.out.println("::: post - getAnswerCommentList :::");
+		System.out.println(page.toString());
+		System.out.println("currentPage : "+currentPage);
+		System.out.println("rowPerPage : "+rowPerPage);
+		page.setRowPerPage(rowPerPage);
+		return adminService.getAnswerCommentList(page, currentPage);
+	}
+	//질문 댓글 지우기
+	@PostMapping("/rest/admin/removeQuestionCommentList")
+	public String removeQuestionCommentList(@RequestParam(value="checkBoxArr")List<String> questionCommentIdList) {
+		System.out.println("::: post - removeQuestionCommentList :::");
+		System.out.println(questionCommentIdList.toString());
+		adminService.removeQuestionCommentList(questionCommentIdList);
+		return "질문 댓글 삭제 성공";
+	}
+	//질문 댓글 리스트 가져오기
+	@PostMapping("/rest/admin/getQuestionCommentList")
+	public Map<String,Object> getQuestionCommentList(Page page,@RequestParam(value="currentPage", defaultValue = "1")int currentPage,
+														@RequestParam(value="rowPerPage", defaultValue = "10")int rowPerPage){
+		System.out.println("::: post - getQuestionCommentList :::");
+		System.out.println(page.toString());
+		System.out.println("currentPage : "+currentPage);
+		System.out.println("rowPerPage : "+rowPerPage);
+		page.setRowPerPage(rowPerPage);
+		return adminService.getQuestionCommentList(page, currentPage);
+	}
+	
 	// 관리자 정보 가져오기
-	@GetMapping("/rest/getLoginManager")
+	@GetMapping("/rest/admin/getLoginManager")
 	public Manager getLoginUser(HttpSession session) {
 		System.out.println("::: get - getLoginManager :::"); 
 		System.out.println(session.getAttribute("loginManager"));
@@ -40,14 +79,14 @@ public class AdminRestController {
 	}
 	
 	//답변 상세정보
-	@PostMapping("/rest/getAnswerOne")
+	@PostMapping("/rest/admin/getAnswerOne")
 	public Answer getAnswerOne(@RequestParam(value="answerId")String answerId) {
 		System.out.println("::: post - getAnswerOne :::");
 		System.out.println("answerId : "+answerId);
 		return adminService.getAnswerOne(answerId);
 	}
 	//답변 삭제 하기
-	@PostMapping("/rest/removeAnswerList")
+	@PostMapping("/rest/admin/removeAnswerList")
 	public String removeAnswerList(@RequestParam(value="checkBoxArr")List<String> answerIdList) {
 		System.out.println("::: post - removeAnswerList :::");
 		System.out.println(answerIdList.toString());
@@ -55,7 +94,7 @@ public class AdminRestController {
 		return "답변 삭제 성공";
 	}
 	//답변 리스트 가져오기
-	@PostMapping("/rest/getAnswerList")
+	@PostMapping("/rest/admin/getAnswerList")
 	public Map<String,Object> getAnswerList(Page page,@RequestParam(value="currentPage", defaultValue = "1")int currentPage,
 												@RequestParam(value="rowPerPage", defaultValue = "10")int rowPerPage) {
 		System.out.println("::: post - getAnswerList :::");
@@ -66,21 +105,21 @@ public class AdminRestController {
 		return adminService.getAnswerList(page, currentPage);
 	}
 	//삭제된 게시글 상세정보 가져오기
-	@PostMapping("/rest/getWithdrawQuestionBoardOne")
+	@PostMapping("/rest/admin/getWithdrawQuestionBoardOne")
 	public QuestionBoard getWithdrawQuestionBoardOne(@RequestParam(value="questionId")String questionId) {
 		System.out.println("::: post - getWithdrawQuestionBoardOne :::");
 		System.out.println("questionId "+questionId);
 		return adminService.getWithdrawQuestionBoardOne(questionId);
 	}
 	//게시글 상세정보 가져오기
-	@PostMapping("/rest/getQuestionBoardOne")
+	@PostMapping("/rest/admin/getQuestionBoardOne")
 	public QuestionBoard getQuestionBoardOne(@RequestParam(value="questionId")String questionId) {
 		System.out.println("::: post - getQuestionBoardOne :::");
 		System.out.println("questionId "+questionId);
 		return adminService.getQuestionBoardOne(questionId);
 	}
 	//검색 조건에 따른 삭제된 게시글 가져오기
-	@PostMapping("/rest/getWithdrawQuestionBoardList")
+	@PostMapping("/rest/admin/getWithdrawQuestionBoardList")
 	public Map<String,Object> getWithdrawQuestionBoardList(Page page,@RequestParam(value="currentPage", defaultValue = "1")int currentPage,
 												@RequestParam(value="rowPerPage", defaultValue = "10")int rowPerPage) {
 		System.out.println("::: post - questionBoardList :::");
@@ -92,7 +131,7 @@ public class AdminRestController {
 	}
 	
 	//체크박스로 선택한 questionId 배열 가져오기
-	@PostMapping("/rest/removeQuestionBoardList")
+	@PostMapping("/rest/admin/removeQuestionBoardList")
 	public String removeQuestionBoardList(@RequestParam(value="checkBoxArr")List<String> questionBoardIdList) {
 		System.out.println("::: post - removeQuestionBoardList :::");
 		System.out.println(questionBoardIdList.toString());
@@ -347,13 +386,13 @@ public class AdminRestController {
 		return adminService.getCurrentQuestionCountFromFeild();
 	}
 	
-	@PostMapping("/rest/getFeildList")
+	@PostMapping("/rest/admin/getFeildList")
 	public List<Feild> getFeildList() {
 		System.out.println("::: post - FeildList :::");
 		return adminService.getFeildList();
 	}
 	//검색 조건에 따른 리스트 가져오기
-	@PostMapping("/rest/getQuestionBoardList")
+	@PostMapping("/rest/admin/getQuestionBoardList")
 	public Map<String,Object> questionBoardList(Page page,@RequestParam(value="currentPage", defaultValue = "1")int currentPage,
 												@RequestParam(value="rowPerPage", defaultValue = "10")int rowPerPage) {
 		System.out.println("::: post - questionBoardList :::");

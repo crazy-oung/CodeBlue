@@ -216,7 +216,7 @@
 	});
 	
 	$.ajax({
-		url:"/rest/getFeildList",
+		url:"/rest/admin/getFeildList",
 		method:"post",
 		success:function(json) {
 			console.log(json);
@@ -228,7 +228,7 @@
 	});
 	//테이블 값 넣어주기 기본적으로
 	$.ajax({
-			url: "/rest/getWithdrawQuestionBoardList",
+			url: "/rest/admin/getWithdrawQuestionBoardList",
 			method:"post",
 			data:{"searchCategory":searchCategory,"searchWord":searchWord,"toDate":toDate,"fromDate":fromDate},
 			success: function(json){
@@ -246,7 +246,7 @@
 	});
 	$("#rowPerPage").change(function(){
 		$.ajax({
-			url: "/rest/getWithdrawQuestionBoardList",
+			url: "/rest/admin/getWithdrawQuestionBoardList",
 			method:"post",
 			data:{"searchCategory":searchCategory,"searchWord":searchWord,"toDate":toDate,"fromDate":fromDate,"rowPerPage":$("#rowPerPage").val()},
 			success: function(json){
@@ -322,7 +322,7 @@
 		console.log("작성 날짜 끝 : "+fromDate);
 		//검색조건에 따른 질문 리스트를 뽑기
 		$.ajax({
-			url: "/rest/getWithdrawQuestionBoardList",
+			url: "/rest/admin/getWithdrawQuestionBoardList",
 			method:"post",
 			data:{"searchCategory":searchCategory,"searchWord":searchWord,"toDate":toDate,"fromDate":fromDate,"rowPerPage":$("#rowPerPage").val()},
 			success: function(json){
@@ -344,7 +344,7 @@
 		//전체 체크 풀어주기
 		$("#selectAll").prop("checked",false);
 		$.ajax({
-			url:"/rest/getWithdrawQuestionBoardList",
+			url:"/rest/admin/getWithdrawQuestionBoardList",
 			method:"POST",
 			data:{"currentPage" : currentPage-1,"searchCategory":searchCategory,"searchWord":searchWord,"toDate":toDate,"fromDate":fromDate,"rowPerPage":$("#rowPerPage").val()},
 			success: function(json){
@@ -365,7 +365,7 @@
 		//전체 체크 풀어주기
 		$("#selectAll").prop("checked",false);
 		$.ajax({
-			url:"/rest/getWithdrawQuestionBoardList",
+			url:"/rest/admin/getWithdrawQuestionBoardList",
 			method:"POST",
 			data:{"currentPage" : currentPage+1,"searchCategory":searchCategory,"searchWord":searchWord,"toDate":toDate,"fromDate":fromDate,"rowPerPage":$("#rowPerPage").val()},
 			success: function(json){
@@ -399,7 +399,7 @@
 		$("#boardOne").empty();
 		console.log(questionId+" 상세정보 가져오기");
 		$.ajax({
-			url:"/rest/getWithdrawQuestionBoardOne",
+			url:"/rest/admin/getWithdrawQuestionBoardOne",
 			method:"post",
 			data:{"questionId":questionId},
 			success:function(json){

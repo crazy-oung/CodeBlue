@@ -173,8 +173,107 @@
 		<association property="questionBoard" resultMap="QuestionBoard"></association>
 		<association property="user" resultMap="User"></association>
 	</resultMap>
+	<!-- AnswerComment 객체 -->
+	<resultMap type="com.example.codeblue.vo.AnswerComment" id="AnswerComment">
+		<result column="answer_comment_id" property="answerCommentId"></result>
+		<result column="answer_comment_content" property="answerCommentContent"></result>
+		<result column="answer_comment_datetime" property="answerCommentDatetime"></result>
+		<association property="user" resultMap="User"></association>
+		<association property="answer" resultMap="Answer"></association>
+	</resultMap>
+	<!-- QuestionComment 객체 -->
+	<resultMap type="com.example.codeblue.vo.QuestionComment" id="QuestionComment">
+		<result column="question_comment_id" property="questionCommentId"></result>
+		<result column="question_comment_content" property="questionCommentContent"></result>
+		<result column="question_comment_datetime" property="questionCommentDatetime"></result>
+		<association property="user" resultMap="User"></association>
+		<association property="questionBoard" resultMap="QuestionBoard"></association>
+	</resultMap>
 	<!-- 객체정리 끝ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
 	
+	<!-- 답변에 해당하는 answer_comment 삭제 -->
+	<delete id="deleteAnswerCommentId" parameterType="java.util.List">
+		DELETE FROM answer_comment
+		WHERE answer_comment_id IN
+		<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+			(#{item})
+		</foreach>	
+	</delete>
+	<!-- 답변 댓글 전체행수 -->
+	<select id="selectAnswerCommentTotalCount" resultType="int" parameterType="com.example.codeblue.vo.Page">
+		SELECT COUNT(*) FROM answer_comment
+		<where>
+			<if test="searchWord != null">
+				AND	answer_comment_content like CONCAT('%',#{searchWord},'%')
+			</if>
+			<if test="toDate != null and fromDate != null">
+				AND DATE(answer_comment_datetime) &gt;= DATE(#{toDate}) AND DATE(answer_comment_datetime) &lt;= DATE(#{fromDate})
+			</if>
+		</where>
+	</select>
+	<!-- 답변 댓글 리스트 -->
+	<select id="selectAnswerCommentList" resultMap="AnswerComment" parameterType="com.example.codeblue.vo.Page">
+		SELECT 
+			ac.answer_comment_id,
+			ac.user_id,
+			ac.answer_id,
+			CONCAT(substring(a.answer_content,1,20),'...') AS answer_content,
+			ac.answer_comment_content,
+			ac.answer_comment_datetime 
+		FROM answer_comment ac INNER JOIN answer a
+		ON ac.answer_id = a.answer_id
+		<where>
+			<if test="searchWord != null">
+				AND	ac.answer_comment_content like CONCAT('%',#{searchWord},'%')
+			</if>
+			<if test="toDate != null and fromDate != null">
+				AND DATE(ac.answer_comment_datetime) &gt;= DATE(#{toDate}) AND DATE(ac.answer_comment_datetime) &lt;= DATE(#{fromDate})
+			</if>
+		</where>
+		ORDER BY ac.answer_comment_datetime DESC
+		LIMIT #{beginRow},#{rowPerPage} 
+	</select>
+	<!-- 질문에 해당하는 question_comment 삭제 -->
+	<delete id="deleteQuestionCommentId" parameterType="java.util.List">
+		DELETE FROM question_comment
+		WHERE question_comment_id IN
+		<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+			(#{item})
+		</foreach>	
+	</delete>
+	<!-- 질문 댓글 전체행수 -->
+	<select id="selectQuestionCommentTotalCount" resultType="int" parameterType="com.example.codeblue.vo.Page">
+		SELECT COUNT(*) FROM question_comment
+		WHERE question_comment_id IS NOT NULL
+		<if test="searchWord != null">
+			AND	question_comment_content like CONCAT('%',#{searchWord},'%')
+		</if>
+		<if test="toDate != null and fromDate != null">
+			AND DATE(question_comment_datetime) &gt;= DATE(#{toDate}) AND DATE(question_comment_datetime) &lt;= DATE(#{fromDate})
+		</if>
+	</select>
+	<!-- 질문 댓글 리스트  -->
+	<select id="selectQuestionCommentList" resultMap="QuestionComment" parameterType="com.example.codeblue.vo.Page">
+		SELECT 
+			qc.question_comment_id,
+			qc.user_id,
+			qc.question_id,
+			CONCAT(substring(qb.question_title,1,20),'...') AS question_title,
+			qc.question_comment_content,
+			qc.question_comment_datetime
+		FROM question_comment qc INNER JOIN question_board qb
+		ON qc.question_id = qb.question_id
+		<where>
+			<if test="searchWord != null">
+				AND	qc.question_comment_content like CONCAT('%',#{searchWord},'%')
+			</if>
+			<if test="toDate != null and fromDate != null">
+				AND DATE(qc.question_comment_datetime) &gt;= DATE(#{toDate}) AND DATE(qc.question_comment_datetime) &lt;= DATE(#{fromDate})
+			</if>
+		</where>
+		ORDER BY qc.question_comment_datetime DESC
+		LIMIT #{beginRow},#{rowPerPage} 
+	</select>
 	<!-- 관리자 전체 리스트 가져오기 -->	
 	<select id="selectManagerList"
 			resultMap="Manager"
@@ -257,7 +356,7 @@
 		ON a.question_id = q.question_id
 		INNER JOIN feild f
 		ON q.feild_id = f.feild_id
-		WHERE a.answer_id IS NOT NULL
+		<where>
 			<if test="searchWord != null">
 				AND	a.answer_content like CONCAT('%',#{searchWord},'%')
 			</if>
@@ -265,8 +364,9 @@
 				AND f.feild_id = #{searchCategory}
 			</if>
 			<if test="toDate != null and fromDate != null">
-				AND a.answer_datetime &gt;= #{toDate} AND a.answer_datetime &lt;= #{fromDate}
+				AND DATE(a.answer_datetime) &gt;= DATE(#{toDate}) AND DATE(a.answer_datetime) &lt;= DATE(#{fromDate})
 			</if>
+		</where>
 	</select>
 	<!-- 답변 리스트 가져오기 -->
 	<select id="selectAnswerList" resultMap="Answer" parameterType="com.example.codeblue.vo.Page">
@@ -287,7 +387,7 @@
 				answer_comment
 				GROUP BY answer_id) ac
 		ON a.answer_id = ac.answer_id
-		WHERE a.answer_id IS NOT NULL
+		<where>
 			<if test="searchWord != null">
 				AND	a.answer_content like CONCAT('%',#{searchWord},'%')
 			</if>
@@ -295,8 +395,10 @@
 				AND f.feild_id = #{searchCategory}
 			</if>
 			<if test="toDate != null and fromDate != null">
-				AND a.answer_datetime &gt;= #{toDate} AND a.answer_datetime &lt;= #{fromDate}
+				AND DATE(a.answer_datetime) &gt;= DATE(#{toDate}) AND DATE(a.answer_datetime) &lt;= DATE(#{fromDate})
 			</if>
+		</where>
+		ORDER BY a.answer_datetime DESC
 		LIMIT #{beginRow},#{rowPerPage}
 	</select>
 	<!-- 삭제된 게시글 상세정보 -->
@@ -359,7 +461,7 @@
 			COUNT(*)
 		FROM withdraw_question_board q INNER JOIN feild fe
 		ON q.feild_id = fe.feild_id
-		WHERE question_id is not null
+		<where>
 			<if test="searchWord != null">
 				AND question_title like CONCAT('%',#{searchWord},'%')
 			</if>
@@ -367,8 +469,9 @@
 				AND fe.feild_id = #{searchCategory}
 			</if>
 			<if test="toDate != null and fromDate != null">
-				AND q.question_datetime &gt;= #{toDate} AND q.question_datetime &lt;= #{fromDate}
+				AND DATE(q.question_datetime) &gt;= DATE(#{toDate}) AND DATE(q.question_datetime) &lt;= DATE(#{fromDate})
 			</if>
+		</where>
 	</select>
 	
 	<!-- 삭제된 게시글 가져오기 -->
@@ -383,7 +486,7 @@
 				fe.feild_id
 		FROM withdraw_question_board q LEFT JOIN feild fe
 		ON q.feild_id = fe.feild_id
-		WHERE q.question_id IS NOT NULL
+		<where>
 			<if test="searchWord != null">
 				AND	question_title like CONCAT('%',#{searchWord},'%')
 			</if>
@@ -391,8 +494,10 @@
 				AND fe.feild_id = #{searchCategory}
 			</if>
 			<if test="toDate != null and fromDate != null">
-				AND q.question_datetime &gt;= #{toDate} AND q.question_datetime &lt;= #{fromDate}
+				AND DATE(q.question_datetime) &gt;= DATE(#{toDate}) AND DATE(q.question_datetime) &lt;= DATE(#{fromDate})
 			</if>
+		</where>
+		ORDER BY q.question_datetime DESC
 		LIMIT #{beginRow},#{rowPerPage}
 	</select>
 
@@ -616,7 +721,7 @@
 				and u.user_name like CONCAT('%',#{searchWord},'%')
 			</if>
 			<if test="toDate != null and fromDate != null">
-			AND user_createtime &gt;= #{toDate} AND user_createtime &lt;= #{fromDate}
+				AND DATE(user_createtime) &gt;= DATE(#{toDate}) AND DATE(user_createtime) &lt;= DATE(#{fromDate})
 			</if>
 		order by u.user_createtime DESC
 		limit #{beginRow},#{rowPerPage}
@@ -631,7 +736,7 @@
 			AND user_name LIKE CONCAT('%',#{searchWord},'%')
 		</if>
 		<if test="toDate != null and fromDate != null">
-			AND user_createtime &gt;= #{toDate} AND user_createtime &lt;= #{fromDate}
+			AND DATE(user_createtime) &gt;= DATE(#{toDate}) AND DATE(user_createtime) &lt;= DATE(#{fromDate})
 		</if>
 	</select>
 	<!-- 유저삭제(y->n) -->
@@ -662,7 +767,7 @@
 				AND u.user_name like CONCAT('%',#{searchWord},'%')
 			</if>
 			<if test="toDate != null and fromDate != null">
-			AND user_createtime &gt;= #{toDate} AND user_createtime &lt;= #{fromDate}
+				AND DATE(user_createtime) &gt;= DATE(#{toDate}) AND DATE(user_createtime) &lt;= DATE(#{fromDate})
 			</if>
 		ORDER BY u.user_createtime DESC
 		LIMIT #{beginRow},#{rowPerPage}
@@ -677,7 +782,7 @@
 			AND user_name LIKE CONCAT('%',#{searchWord},'%')
 		</if>
 		<if test="toDate != null and fromDate != null">
-			AND user_createtime &gt;= #{toDate} AND user_createtime &lt;= #{fromDate}
+			AND DATE(user_createtime) &gt;= DATE(#{toDate}) AND DATE(user_createtime) &lt;= DATE(#{fromDate})
 		</if>
 	</select>
 	<!-- 회원 복구 -->
@@ -708,7 +813,7 @@
 				and u.user_name like CONCAT('%',#{searchWord},'%')
 			</if>
 			<if test="toDate != null and fromDate != null">
-			AND user_createtime &gt;= #{toDate} AND user_createtime &lt;= #{fromDate}
+			AND DATE(user_createtime) &gt;= DATE(#{toDate}) AND DATE(user_createtime) &lt;= DATE(#{fromDate})
 			</if>
 		order by u.user_createtime DESC
 		limit #{beginRow},#{rowPerPage}
@@ -724,7 +829,7 @@
 			AND u.user_name LIKE CONCAT('%',#{searchWord},'%')
 		</if>
 		<if test="toDate != null and fromDate != null">
-			AND u.user_createtime &gt;= #{toDate} AND u.user_createtime &lt;= #{fromDate}
+			AND DATE(u.user_createtime) &gt;= DATE(#{toDate}) AND DATE(u.user_createtime) &lt;= DATE(#{fromDate})
 		</if>
 	</select>
 	<select id="selectNoticeBoard" resultMap="NoticeBoard"
@@ -930,7 +1035,7 @@
 			COUNT(*)
 		FROM question_board q INNER JOIN feild fe
 		ON q.feild_id = fe.feild_id
-		WHERE question_id is not null
+		<where>
 			<if test="searchWord != null">
 				AND question_title like CONCAT('%',#{searchWord},'%')
 			</if>
@@ -938,8 +1043,9 @@
 				AND fe.feild_id = #{searchCategory}
 			</if>
 			<if test="toDate != null and fromDate != null">
-				AND q.question_datetime &gt;= #{toDate} AND q.question_datetime &lt;= #{fromDate}
+				AND DATE(q.question_datetime) &gt;= DATE(#{toDate}) AND DATE(q.question_datetime) &lt;= DATE(#{fromDate})
 			</if>
+		</where>
 	</select>
 	<!-- 질문 리스트 가져오기 -->
 	<select id="selectQuestionBoardList" resultMap="QuestionBoard" parameterType="com.example.codeblue.vo.Page">
@@ -957,7 +1063,7 @@
 		ON q.question_id = a.question_id
 		LEFT JOIN feild fe
 		ON q.feild_id = fe.feild_id
-		WHERE q.question_id IS NOT NULL
+		<where>
 			<if test="searchWord != null">
 				AND	question_title like CONCAT('%',#{searchWord},'%')
 			</if>
@@ -965,8 +1071,10 @@
 				AND fe.feild_id = #{searchCategory}
 			</if>
 			<if test="toDate != null and fromDate != null">
-				AND q.question_datetime &gt;= #{toDate} AND q.question_datetime &lt;= #{fromDate}
+				AND DATE(q.question_datetime) &gt;= DATE(#{toDate}) AND DATE(q.question_datetime) &lt;= DATE(#{fromDate})
 			</if>
+		</where>
+		ORDER BY q.question_datetime DESC
 		LIMIT #{beginRow},#{rowPerPage}
 	</select>
 	
