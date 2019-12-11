@@ -42,33 +42,10 @@
 		<!-- Begin Page Content -->
 		<div class="container">
 			<div class="row">
+			
 				<!-- Side Bar -->
 				<div class="col-sm-1 p-0 " style="border-right: 1px solid #d9d9d9;">
-					<nav class="navbar pl-0 sticky-container">
-						<div style="margin-top: 70px">
-							<ul class="nav flex-column">
-								<li class="pl-0"><small>질문</small></li>
-								<li class="nav-item pl-1"><a
-									class="nav-link pl-2 font-weight-bold pt-1 pb-0" href="/">today</a></li>
-								<li class="nav-item pl-1"><a
-									class="nav-link pl-2 text-danger font-weight-bold pt-1 pb-0"
-									href="/">hot 🔥</a></li>
-								<li class="nav-item pl-1"><a
-									class="nav-link pl-2 text-warning font-weight-bold pt-1 pb-0"
-									href="/">help!</a></li>
-								<li class="nav-item pl-1"><a
-									class="nav-link pl-2 text-success font-weight-bold pt-1 pb-0"
-									href="/">ongoing</a></li>
-								<li class="mt-2"><small>조회</small></li>
-								<li class="nav-item"><a
-									class="nav-link text-dark pl-2 pt-1 pb-0" href="/">유저</a></li>
-								<li class="nav-item"><a
-									class="nav-link text-dark pl-2 pt-1 pb-0" href="/">태그</a></li>
-								<li class="nav-item"><a
-									class="nav-link text-dark pl-2 pt-1 pb-0" href="/">랭킹</a></li>
-							</ul>
-						</div>
-					</nav>
+					<div id="leftSideBar"></div>
 				</div>
 				<!-- Side Bar End -->
 
@@ -85,22 +62,27 @@
 					<div class="row">
 						<div class='col-sm-9'>
 							<div id="tableBody" class='text-dark'></div>
-							<div class="text-right mt-4">
-								<a id="commentBtn"><i class='far fa-comment-dots mx-1'></i></a>
-								<a id="reportBtn" class='mx-2 text-danger'>신고</a>
+							<div class="d-flex justify-content-between mt-4">
+								<div class="p-2">
+									<a id="commentBtn"><i class='far fa-comment-dots mx-1'></i></a>
+									<a id="reportBtn" class='mx-2 text-danger'>신고</a>
+								</div>
+								<div class="p-2">
+									<div class="card bg-gray-200 text-dark d-flex p-2" id="questionUserName">
+										<small>작성자</small> 
+									</div>
+								</div>
 							</div>
 
 							<div style="display: none;" id="questionComment">
 								<form method="post">
 									<div>
-										<textarea class="form-control form-control-sm"
-											maxlength="1000"
+										<textarea class="form-control form-control-sm" maxlength="1000"
 											placeholder="개인정보를 공유 및 요청하거나, 명예 훼손, 무단 광고, 불법 정보 유포시 모니터링 후 삭제될 수 있으며, 이에 대한 민형사상 책임은 게시자에게 있습니다."></textarea>
 									</div>
 									<div>
 										<div class="text-right m-1">
-											<button type="button" id="commentAdd"
-												class="btn btn-sm btn-primary text-right px-3">등록</button>
+											<button type="button" id="commentAdd" class="btn btn-sm btn-primary text-right px-3">등록</button>
 										</div>
 									</div>
 								</form>
@@ -108,33 +90,26 @@
 								</table>
 							</div>
 							<hr>
-							<!-- 덧글 입력란 -->
+							<div class="card bg-gray-200 text-dark border-0 p-3"> 
+								<div id="answerList"  class='table table-hover table-sm'>
+									<!-- questionId 값 숨기기 -->
+									<input type="text" id="questionId" hidden="hidden">
+									<table id="bodyTable"></table>
+								</div>
+							</div>
+							<hr>
+							<!-- 답변 입력란 -->
 							<label for='summernote' class='text-dark'>도움을 줄 수 있는 사람을
 								알고 계신가요? 질문에 링크를 공유해주세요!</label>
 							<div id="summernote" class="mb-3"></div>
 							<button class='btn btn-sm btn-primary m-1 px-4' id="addAnswerBtn">답변게시</button>
-								<div class="container" style="height: 100%" align="center">
-									<div class="pt-4 mt-5 text-left card shadow p-3 mx-5"> 
-									<div id="answerList"  class='table table-hover text-center m-4'>
-
-										
-									</div>
-											
-									</div>
-								</div>
 							
-							
-							<!-- questionId 값 숨기기 -->
-							<input type="text" id="questionId" hidden="hidden">
-
-							<table id="bodyTable"></table>
 						</div>
-
+						
 						<!-- Page rigth side bar -->
 						<div class="col-sm-3 mb-4" id="rightSideBar"></div>
 						<!-- rigth side bar end -->
-
-
+						
 					</div>
 
 				</div>
@@ -202,50 +177,38 @@
 			$("#answerList").empty();
 			console.log("AnswerListTest : ",json)
 			$(json).each(function(index, item){
-				let answerhtml  = "<div>"+item.user.userId+"님의 답변</div>";
-					answerhtml += "<input type='text' id='answerId' hidden='hidden' value='";
-					answerhtml += item.answerId+"'>";
-					answerhtml += "<div>답변 내용 "+item.answerContent+"</div>";
-					answerhtml += "<div>작성날짜 : "+item.answerDatetime+"</div>";
-					answerhtml += "<div><hr class='one'></div>";
-					
-					//버튼 생성
-				 	answerhtml += "<div><a id='answerCommentBtn'><i class='far fa-comment-dots mx-1'></i></a></div>";
-					answerhtml += "<div style='display: none;' id='answerComment'><div id='answerCommentList'>";
-					answerhtml += "</div></div>";
-					
-					answerhtml += "<div><hr class='one'></div>";
-					$("#answerList").append(answerhtml);
+				$("#answerList").append(appendItem(item));
 			})
 		}	
 	});
 	
-	// 질문 답변의 댓글 리스트 출력
-	  $(document).on("click",'#answerCommentBtn', function(){
-		/* if($("#answerComment").css("display") == "none"){   
-	        jQuery('#answerComment').css("display", "block");   
-	    } else {  
-	        jQuery('#answerComment').css("display", "none");   
-	    } */
-		console.log("answerId : ", $("#answerId").val());
+	// 질문 답변 추가하기
+	$("#addAnswerBtn").click(function(){
+		console.log($("#summernote").summernote('code'));
+		//alert("준비중입니다.")
 		$.ajax({
-			url : "/rest/getAnswerCommentList",
+			url : "/rest/answerAdd",
 			method : "post",
-			data : {"answerId" : $("#answerId").val()},
-			success :function(json){
-				$("#answerCommentHtml").empty();
-				console.log("answerComment",json);
-				$(json).each(function(index, item){
-					let answerCommentHtml  = "<div>"+item.user.userId+"</div>";
-						answerCommentHtml += "<div>"+item.answerCommentContent+"</div>";
-						answerCommentHtml += "<div>"+item.answerCommentDatetime+"</div>";
-					$(document).on('event', '#answerCommentList', function() {
-						$("#answerCommentList").append(answerCommentHtml);
-					})
-				})
-			}
-		});  
-	  });  
+			data : {"questionBoard.questionId" : getParam("questionId"),
+					"answerContent" : $("#summernote").summernote('code')},
+			success : function(json){
+				console.log(json)
+				$.ajax({
+					url : "/rest/getAnswerList",
+					method : "post",
+					data : {"questionId" : getParam("questionId")},
+					success : function(json){
+						$("#answerList").empty();
+						console.log("AnswerListTest : ",json)
+						$(json).each(function(index, item){
+							$("#answerList").append(appendItem(item));
+						})
+					}	
+				});
+			}	
+		})
+	});
+	
 	//질문 댓글출력
 	$("#commentBtn").click(function(){
 		if($("#questionComment").css("display") == "none"){   
@@ -272,6 +235,7 @@
 		
 		});
 	});
+	
 	//질문 상세 정보 가져오기
 	$.ajax({
 		url : "/rest/questionBoardOne",
@@ -283,50 +247,58 @@
 			$("#datetime").append(json.questionDatetime);
 			$("#commentBtn").append(json.commentCount);
 			$("#tableBody").append(json.questionContent);
-			
+			$("#questionUserName").append('<a href="/userOne?userId='+json.user.userId+'">'+json.user.userName+'</a>');
 		}
 	});
 	
-// 질문 답변 추가하기
-$("#addAnswerBtn").click(function(){
-	console.log($("#summernote").summernote('code'));
-	//alert("준비중입니다.")
 
+
+function appendItem(item){
+	let answerhtml = "<div>"+item.answerContent+"</div>";
+	answerhtml += "<div class='d-flex justify-content-between small'><div class='p-2'>날짜 "+item.answerDatetime+"</div>";
+	//버튼 생성
+ 	answerhtml += "<div class='p-2 d-felx'><div class='mb-2 mx-2'>작성자 <a href='/userOne?userId="+item.user.userId+"'>"+item.user.userName+"</a></div><a id='answerCommentBtn' onclick='openComment("+item.answerId+")'><i class='far fa-comment-dots mx-1'></i>댓글 보기</a></div>";
+	answerhtml += "</div><div style='display: none;' id='answerComment"+item.answerId+"'><table id='answerCommentList"+item.answerId+"'>";
+	answerhtml += "</table></div>";
+	
+	answerhtml += "<hr class='m-0'>";
+	return answerhtml;
+}
+
+// 질문 답변의 댓글 리스트 출력
+function openComment(value){
+	if($("#answerComment"+value).css("display") == "none"){   
+        jQuery('#answerComment'+value).css("display", "block");   
+    } else {  
+        jQuery('#answerComment'+value).css("display", "none");   
+    } 
+	
+	//console.log("댓글을 봅니다.");
+	//console.log("answerId : ", value);
+	
 	$.ajax({
-		url : "/rest/answerAdd",
+		url : "/rest/getAnswerCommentList",
 		method : "post",
-		data : {"questionBoard.questionId" : $("#questionId").val(),
-				"answerContent" : $("#summernote").summernote('code')},
-		success : function(json){
-			console.log(json)
-			$.ajax({
-				url : "/rest/getAnswerList",
-				method : "post",
-				data : {"questionId" : $("#questionId").val()},
-				success : function(json){
-					$("#answerList").empty();
-					console.log("AnswerListTest : ",json)
-					$(json).each(function(index, item){
-						let answerhtml  = "<div>"+item.user.userId+"님의 답변</div>";
-						answerhtml += "<input type='text' id='answerId' hidden='hidden' value='";
-						answerhtml += item.answerId+"'>";
-						answerhtml += "<div>답변 내용 "+item.answerContent+"</div>";
-						answerhtml += "<div>작성날짜 : "+item.answerDatetime+"</div>";
-						answerhtml += "<div><hr class='one'></div>";
-						
-						//버튼 생성
-					 	answerhtml += "<div><a id='answerCommentBtn'><i class='far fa-comment-dots mx-1'></i></a></div>";
-						answerhtml += "<div style='display: none;' id='answerComment'><div id='answerCommentList'>";
-						answerhtml += "</div></div>";
-						
-						answerhtml += "<div><hr class='one'></div>";
-						$("#answerList").append(answerhtml);
-					})
-				}	
-			});
-		}	
-	})
-});
+		data : {"answerId" : value},
+		success :function(json){
+			$("#answerCommentHtml").empty();
+			$("#answerCommentList"+value).empty();
+			console.log("answerComment",json);
+			$(json).each(function(index, item){
+				let answerCommentHtml  = "<tr><td>"+item.user.userName+"</td>"
+					+ "<td>"+item.answerCommentContent+"</td>"
+					+ "<td>"+item.answerCommentDatetime+"</td></tr>";
+					
+					/* alert("#answerCommentList"+value); */
+					$("#answerCommentList"+value).append(answerCommentHtml);
+				})
+				
+				
+			}
+		})
+	}
+
+
 </script>
 
 

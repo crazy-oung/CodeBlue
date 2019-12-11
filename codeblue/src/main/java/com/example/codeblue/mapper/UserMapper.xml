@@ -93,14 +93,16 @@
 	</resultMap>
 	<!-- 질문 답변 댓글 리스트 가져오기 -->
 	<select id="selectAnswerCommentList" parameterType="int" resultMap="AnswerComment">
-		SELECT	answer_comment_id,
-				answer_id,
-				user_id,
-				answer_comment_content,
-				answer_comment_datetime
-		FROM answer_comment
-		WHERE answer_id = #{answerId}
-		ORDER BY answer_comment_datetime DESC
+		SELECT	ac.answer_comment_id,
+				ac.answer_id,
+				u.user_id,
+				u.user_name,
+				ac.answer_comment_content,
+				ac.answer_comment_datetime
+		FROM answer_comment ac INNER JOIN user u
+		ON ac.user_id = u.user_id
+		WHERE ac.answer_id = #{answerId}
+		ORDER BY ac.answer_comment_datetime DESC
 	</select>
 	<!--질문 답변 추가하기  -->
 	<insert id="insertAnswer" parameterType="com.example.codeblue.vo.Answer">
@@ -118,14 +120,16 @@
 	<!--질문 답변 리스트 가져오기 -->
 	<select id="selectAnswerList" parameterType="int" 
 	resultMap="Answer">
-		SELECT answer_id,
-			answer_content,
-			answer_datetime,
-			user_id,
-			question_id
-		FROM answer
-		WHERE question_id =  #{questionId}
-		ORDER BY answer_datetime DESC
+		SELECT a.answer_id,
+			a.answer_content,
+			a.answer_datetime,
+			u.user_id,
+			u.user_name,
+			a.question_id
+		FROM answer a INNER JOIN user u
+		ON a.user_id = u.user_id
+		WHERE a.question_id =  #{questionId}
+		ORDER BY a.answer_datetime DESC
 	</select>
 	
 	<select id="selectUserOne" parameterType="com.example.codeblue.vo.User"
@@ -150,14 +154,16 @@
 
 	<select id="selectQuestionCommentList" parameterType="int" resultMap="QuestionComment">
 		SELECT	
-			question_comment_id,
-			user_id,
-			question_comment_content,
-			question_id,
-			question_comment_datetime
-		FROM question_comment
-		WHERE question_id = #{qestionId}
-		ORDER BY question_comment_datetime DESC
+			qc.question_comment_id,
+			u.user_id,
+			u.user_name,
+			qc.question_comment_content,
+			qc.question_id,
+			qc.question_comment_datetime
+		FROM question_comment qc INNER JOIN user u
+		ON u.user_id = qc.user_id
+		WHERE qc.question_id = #{qestionId}
+		ORDER BY qc.question_comment_datetime DESC
 	</select>
 	
 	<select id="selectQuestionCommentCount" resultType="int" parameterType="int">
@@ -169,15 +175,17 @@
 	
 	<select id="selectQuestionBoardOne" parameterType="int" resultMap="QuestionBoard">
 		SELECT 
-			question_id,
-			question_title,
-			question_content,
-			question_datetime,
-			feild_id,
-			user_id,
-			tag_id
-		FROM question_board
-		WHERE question_id = #{questionId}
+			qb.question_id,
+			qb.question_title,
+			qb.question_content,
+			qb.question_datetime,
+			qb.feild_id,
+			u.user_id,
+			u.user_name,
+			qb.tag_id
+		FROM question_board qb INNER JOIN user u 
+		ON u.user_id = qb.user_id
+		WHERE qb.question_id = #{questionId}
 	</select>
 	<select id="selectQuestionBoardVotes" resultType="int" parameterType="com.example.codeblue.vo.QuestionBoard">
 		SELECT 
