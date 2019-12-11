@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,7 +7,7 @@
 	<meta name="description" content="">
 	<meta name="author" content="">
 	
-	<title>관리자 공지 - 코드블루</title>
+	<title>관리자 - 코드블루</title>
 	
 	<!-- Custom fonts for this template-->
 	<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -24,42 +23,48 @@
   <!-- Page Wrapper -->
   <div id="wrapper">
 
-   	<!-- SideBard load -->
+  	<!-- SideBard load -->
 	<div id="sideBar"></div>
-
+   
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
 
       <!-- Main Content -->
       <div id="content">
-
-        <!-- topBar load -->
+	<!-- topBar load -->
       <div id="topBar"></div>
-		
-        <!-- Begin Page Content -->
+        
+		 <!-- Begin Page Content -->
        <div class="container-fluid px-4 pt-4">
 			<div class="card border-0 bg-white p-3 my-2 shadow mx-3"> 
 				<!-- Page Content -->
 				<div class="p-2">
-					<!-- Page Heading -->
-					<div class="d-sm-flex align-items-center justify-content-between mb-3" >
-						<h3 class="text-gray-800 mb-2 font-weight-bold">공지사항</h3>
-						<a href="/adminNoticeAdd" class="d-none d-sm-inline-block btn btn-primary shadow"><i class="mr-2 fas fa-plus fa-sm text-white-50"></i>공지 올리기</a> 
-					</div>
-					<!-- page Heading End -->
-					
-					<!-- Notice Board -->
-					<table id="notice" class="table table-hover"></table>
-					<br>
-					
-					<button type="button" id="prevBtn" class="btn btn-primary">이전</button>
-					<button type="button" id="nextBtn" class="btn btn-primary">다음</button>
-					
+			        <h2>신고 내역</h2>
+						<table class="table table-hover">
+							<thead align="center">
+								<tr>
+									<th>번호</th>
+									<th>제목</th>
+									<th>작성 날짜</th>
+								</tr>
+							</thead>
+							<tbody id="reportHistoryList" align="center">	</tbody>
+						</table>
+				<button type="button" id="reportPrevBtn" class="btn ml-1 btn-sm btn-primary">이전</button>
+				<button type="button" id="reportNextBtn" class="btn ml-1 btn-sm btn-primary">다음</button>
 				</div>
 			<!--  Page Content End -->
-			</div>
-		</div> 
-        
+        <!-- Begin Page Content -->
+        <div class="container-fluid p-5"> 
+          <!-- Content Row 1 -->
+          <div class="row">
+
+           	
+          </div>
+		
+        </div>
+        <!-- /.container-fluid --> 
+      </div>
       <!-- End of Main Content -->
 
       <!-- Footer -->
@@ -115,122 +120,119 @@
 
   <!-- Page level plugins -->
   <script src="vendor/chart.js/Chart.min.js"></script>
-
-  <!-- Page level plugins -->
-  <script src="vendor/chart.js/Chart.min.js"></script>
   <!-- codeBlue Admin scripts -->
   <script src="js/codeBlueAdmin.js"></script>
-
 </body>
+
 <script type="text/javascript">
-$(document).ready(function(){
-	
-	let currentPage =1;
+$(document).ready(function() {
 	
 	$("#sideBarNotice").addClass("active");
 	$("#sideBarNotice").children("a").attr("aria-expanded","false");
 	$("#sideBarNotice").children("div").addClass("show");
 
-
+	
+	var reportCurrentPage = 1;
+	var lastPage = 0;	
+	//신고내역  이전버튼
+	$("#reportPrevBtn").click(function(){ 
+		$.ajax({
+			url:"/rest/admin/getReportHistoryList",
+			method:"post",
+			data:{"currentPage" : reportCurrentPage-1},
+			success: function(json){
+				$("#reportHistoryList").empty();
+				reportCurrentPage = json.currentPage;
+				lastPage = json.lastPage;
+				ReportBtnShow(reportCurrentPage, lastPage);
+				let html;
+				$(json.list).each(function(index,item){
+					html="<tr><td>";
+					html += item.reportHistoryId;
+					html += "</td><td>";
+					html += "<a href='/adminReportOne?reportHistoryId=";
+					html += item.reportHistoryId;
+					html += "'>";
+					html += item.reportTitle;
+					html += "</a>"
+					html += "</td><td>";
+					html += item.reportDatetime;
+					html += "</td></tr>";
+					$("#reportHistoryList").append(html);
+				});
+			}
+		})
+	});
+	//신고내역 다음버튼
+	$("#reportNextBtn").click(function(){
+		$.ajax({
+			url:"/rest/admin/getReportHistoryList",
+			method:"post",
+			data:{"currentPage" : reportCurrentPage+1},
+			success: function(json){
+				$("#reportHistoryList").empty();
+				reportCurrentPage = json.currentPage;
+				lastPage = json.lastPage;
+				ReportBtnShow(reportCurrentPage, lastPage);
+				let html;
+				$(json.list).each(function(index,item){
+					html="<tr><td>";
+					html += item.reportHistoryId;
+					html += "</td><td>";
+					html += "<a href='/adminReportOne?reportHistoryId=";
+					html += item.reportHistoryId;
+					html += "'>";
+					html += item.reportTitle;
+					html += "</a>"
+					html += "</td><td>";
+					html += item.reportDatetime;
+					html += "</td></tr>";
+					$("#reportHistoryList").append(html);
+				});
+			}
+		})
+	});
+	//페이지 들어오면 신고내역 리스트 바로 출력
 	$.ajax({
-		url : "/rest/adminNoticeBoard",
-		method : "post",
-		success : function(json){
-			$("#notice").empty();
-			currentPage = json.currentPage;
+		url:"/rest/admin/getReportHistoryList",
+		method:"get",
+		success:function(json){
+			$("#reportHistoryList").empty();
+			reportCurrentPage = json.currentPage;
 			lastPage = json.lastPage;
-			BtnShow(currentPage, lastPage);
+			ReportBtnShow(reportCurrentPage, lastPage);
 			console.log(json);
-			let notice;
-				notice = "<tr><td>순번</td><td>제목</td><td>날짜</td></tr>" 
+			console.log(json.list);
+			let html;
 			$(json.list).each(function(index,item){
-				notice += "<tr>";
-				notice += "<td>"+item.noticeId+"</td>";
-				notice += "<td><a href='/adminNoticeOne?noticeId="
-				notice += item.noticeId
-				notice += "'>"
-				notice += item.noticeTitle+"</td>";
-				notice += "<td>"+item.noticeDatetime+"</td>";
-				notice += "</tr>";
-			})
-			$("#notice").append(notice)
-		}
-	})
-	
-	$("#prevBtn").click(function(){
-	
-		$.ajax({
-			url : "/rest/adminNoticeBoard",
-			method : "post",
-			data : {"currentPage": currentPage-1},
-			success : function(json){
-				$("#notice").empty();
-				currentPage = json.currentPage;
-				lastPage = json.lastPage;
-				BtnShow(currentPage, lastPage);
-				console.log(json);
-				let notice;
-					notice = "<tr><td>순번</td><td>제목</td><td>날짜</td></tr>" 
-				$(json.list).each(function(index,item){
-					notice += "<tr>";
-					notice += "<td>"+item.noticeId+"</td>";
-					notice += "<td><a href='/adminNoticeOne?noticeId="
-					notice += item.noticeId
-					notice += "'>"
-					notice += item.noticeTitle+"</td>";
-					notice += "<td>"+item.noticeDatetime+"</td>";
-					notice += "</tr>";
-				})
-				$("#notice").append(notice)
+				html="<tr><td>";
+				html += item.reportHistoryId;
+				html += "</td><td>";
+				html += "<a href='/adminReportOne?reportHistoryId=";
+				html += item.reportHistoryId;
+				html += "'>";
+				html += item.reportTitle;
+				html += "</a>"
+				html += "</td><td>";
+				html += item.reportDatetime;
+				html += "</td></tr>";
+				$("#reportHistoryList").append(html);
+			});
 			}
 		})
-	})
-	
-		$("#nextBtn").click(function(){
-	
-		$.ajax({
-			url : "/rest/adminNoticeBoard",
-			method : "post",
-			data : {"currentPage": currentPage+1},
-			success : function(json){
-				$("#notice").empty();
-				currentPage = json.currentPage;
-				lastPage = json.lastPage;
-				BtnShow(currentPage, lastPage);
-				console.log(json);
-				let notice;
-					notice = "<tr><td>순번</td><td>제목</td><td>날짜</td></tr>" 
-				$(json.list).each(function(index,item){
-					notice += "<tr>";
-					notice += "<td>"+item.noticeId+"</td>";
-					notice += "<td><a href='/adminNoticeOne?noticeId="
-					notice += item.noticeId
-					notice += "'>"
-					notice += item.noticeTitle+"</td>";
-					notice += "<td>"+item.noticeDatetime+"</td>";
-					notice += "</tr>";
-				})
-				$("#notice").append(notice)
-			}
-		})
-	})
-//document
-})
-
-	
-	function BtnShow(currentPage, lastPage){
-	console.log("currentPage"+currentPage+"/ lastPage"+lastPage);
-		if(currentPage <= 1){
-			$("#prevBtn").hide();
+	//페이징 메서드화
+	function ReportBtnShow(currentPage, lastPage){
+		if(currentPage == 1){
+			$("#reportPrevBtn").hide();
 		}else{
-			$("#prevBtn").show();
+			$("#reportPrevBtn").show();
 		}
 		if(currentPage >= lastPage){
-			$("#nextBtn").hide();
+			$("#reportNextBtn").hide();
 		}else{
-			$("#nextBtn").show();
+			$("#reportNextBtn").show();
 		}
-}
-
+	}
+});
 </script>
 </html>

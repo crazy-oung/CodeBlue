@@ -53,7 +53,7 @@
 	<resultMap type="com.example.codeblue.vo.QuestionComment" id="QuestionComment">
 		<result column="question_comment_id" property="questionCommentId"></result>
 		<result column="question_comment_content" property="questionCommentContent"></result>
-		<result column="question_comment__datetime" property="questionCommentDatetime"></result>
+		<result column="question_comment_datetime" property="questionCommentDatetime"></result>
 		
 		<association property="user" resultMap="User"></association>
 		<association property="questionBoard" resultMap="QuestionBoard"></association>
@@ -73,6 +73,60 @@
 		<association property="user" resultMap="User"></association>
 		<association property="tag" resultMap="Tag"></association>
 	</resultMap>
+	<!-- Answer 객체 -->
+	<resultMap type="com.example.codeblue.vo.Answer" id="Answer">
+		<result column="answer_id" property="answerId"></result>
+		<result column="answer_content" property="answerContent"></result>
+		<result column="answer_datetime" property="answerDatetime"></result>
+		
+		<association property="user" resultMap="User"></association>
+		<association property="questionBoard" resultMap="QuestionBoard"></association>
+	</resultMap>
+	<!-- AnswerComment 객체 -->
+	<resultMap type="com.example.codeblue.vo.AnswerComment" id="AnswerComment">
+		<result column="answer_comment_id" property="answerCommentId"></result>
+		<result column="answer_comment_content" property="answerCommentContent"></result>
+		<result column="answer_comment_datetime" property="answerCommentDatetime"></result>
+		
+		<association property="user" resultMap="User"></association>
+		<association property="answer" resultMap="Answer"></association>
+	</resultMap>
+	<!-- 질문 답변 댓글 리스트 가져오기 -->
+	<select id="selectAnswerCommentList" parameterType="int" resultMap="AnswerComment">
+		SELECT	answer_comment_id,
+				answer_id,
+				user_id,
+				answer_comment_content,
+				answer_comment_datetime
+		FROM answer_comment
+		WHERE answer_id = #{answerId}
+		ORDER BY answer_comment_datetime DESC
+	</select>
+	<!--질문 답변 추가하기  -->
+	<insert id="insertAnswer" parameterType="com.example.codeblue.vo.Answer">
+		INSERT INTO answer  (
+			question_id,
+			answer_content,
+			answer_datetime
+		)
+		VALUES (
+			#{questionBoard.questionId},
+			#{answerContent},
+			NOW()
+		)		
+	</insert>
+	<!--질문 답변 리스트 가져오기 -->
+	<select id="selectAnswerList" parameterType="int" 
+	resultMap="Answer">
+		SELECT answer_id,
+			answer_content,
+			answer_datetime,
+			user_id,
+			question_id
+		FROM answer
+		WHERE question_id =  #{questionId}
+		ORDER BY answer_datetime DESC
+	</select>
 	
 	<select id="selectUserOne" parameterType="com.example.codeblue.vo.User"
 			resultMap="User">

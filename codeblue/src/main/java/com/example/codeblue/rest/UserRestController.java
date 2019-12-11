@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.codeblue.service.UserService;
+import com.example.codeblue.vo.Answer;
+import com.example.codeblue.vo.AnswerComment;
 import com.example.codeblue.vo.Expert;
 import com.example.codeblue.vo.Hospital;
 import com.example.codeblue.vo.NoticeBoard;
@@ -21,6 +23,27 @@ import com.example.codeblue.vo.User;
 @RestController
 public class UserRestController {
 	@Autowired UserService userService;
+	//질문 답변 추가하기
+	@PostMapping("/rest/answerAdd")
+	public int answerAdd(Answer answer) {
+		System.out.println("::: post - answerAdd :::");
+		System.out.println(answer.toString());
+		return userService.addAnswer(answer);
+	}
+	//질문 답변 리스트 가져오기 
+	@PostMapping("/rest/getAnswerList")
+	public List<Answer> getAnswerList(int questionId){
+		System.out.println("::: post - getAnswerList :::");
+		System.out.println("questionId : "+ questionId);
+		return userService.getAnswerList(questionId);
+	}
+	//질문 답변 댓글 리스트 가져오기
+	@PostMapping("/rest/getAnswerCommentList")
+	public List<AnswerComment> getAnswerCommentList(int answerId){
+		System.out.println("::: post - getAnswerCommentList :::");
+		System.out.println("answerId : "+ answerId);
+		return userService.getAnswerCommentList(answerId);
+	}
 	
 	//분야별 질문 리스트 출력
 	@GetMapping("getBoardListByFeild")

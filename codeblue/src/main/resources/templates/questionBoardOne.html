@@ -107,16 +107,23 @@
 								<table id="questionCommentList">
 								</table>
 							</div>
-							<table id='answers'>
-
-							</table>
 							<hr>
 							<!-- 덧글 입력란 -->
 							<label for='summernote' class='text-dark'>도움을 줄 수 있는 사람을
 								알고 계신가요? 질문에 링크를 공유해주세요!</label>
 							<div id="summernote" class="mb-3"></div>
-							<button class='btn btn-sm btn-primary m-1 px-4' id="addCommentBtn">답변게시</button>
+							<button class='btn btn-sm btn-primary m-1 px-4' id="addAnswerBtn">답변게시</button>
+								<div class="container" style="height: 100%" align="center">
+									<div class="pt-4 mt-5 text-left card shadow p-3 mx-5"> 
+									<div id="answerList"  class='table table-hover text-center m-4'>
 
+										
+									</div>
+											
+									</div>
+								</div>
+							
+							
 							<!-- questionId 값 숨기기 -->
 							<input type="text" id="questionId" hidden="hidden">
 
@@ -161,20 +168,6 @@
 
 </body>
 <script>
-var getParam = function(key){
-	 var _parammap = {};
-	 document.location.search.replace(/\??(?:([^=]+)=([^&]*)&?)/g, function () {
-	     function decode(s) {
-	         return decodeURIComponent(s.split("+").join(" "));
-	     }
-
-	     _parammap[decode(arguments[1])] = decode(arguments[2]);
-	 });
-
-	 return _parammap[key];
-	};
-	$("#questionId").val(getParam("questionId"));
-	
 	
 	$('#summernote').summernote({
 		  toolbar: [
@@ -197,22 +190,63 @@ var getParam = function(key){
 	});
 		
 	
-
 	
+	
+	$("#questionId").val(getParam("questionId"));
+	//질문 답변 리스트 출력
 	$.ajax({
-		url : "/rest/questionBoardOne",
+		url : "/rest/getAnswerList",
 		method : "post",
 		data : {"questionId" : $("#questionId").val()},
-		success: function(json) {
-			console.log(json);
-			$("#title").append(json.questionTitle);
-			$("#datetime").append(json.questionDatetime);
-			$("#commentBtn").append(json.commentCount);
-			$("#tableBody").append(json.questionContent);
-			
-		}
+		success : function(json){
+			$("#answerList").empty();
+			console.log("AnswerListTest : ",json)
+			$(json).each(function(index, item){
+				let answerhtml  = "<div>"+item.user.userId+"님의 답변</div>";
+					answerhtml += "<input type='text' id='answerId' hidden='hidden' value='";
+					answerhtml += item.answerId+"'>";
+					answerhtml += "<div>답변 내용 "+item.answerContent+"</div>";
+					answerhtml += "<div>작성날짜 : "+item.answerDatetime+"</div>";
+					answerhtml += "<div><hr class='one'></div>";
+					
+					//버튼 생성
+				 	answerhtml += "<div><a id='answerCommentBtn'><i class='far fa-comment-dots mx-1'></i></a></div>";
+					answerhtml += "<div style='display: none;' id='answerComment'><div id='answerCommentList'>";
+					answerhtml += "</div></div>";
+					
+					answerhtml += "<div><hr class='one'></div>";
+					$("#answerList").append(answerhtml);
+			})
+		}	
 	});
 	
+	// 질문 답변의 댓글 리스트 출력
+	  $(document).on("click",'#answerCommentBtn', function(){
+		/* if($("#answerComment").css("display") == "none"){   
+	        jQuery('#answerComment').css("display", "block");   
+	    } else {  
+	        jQuery('#answerComment').css("display", "none");   
+	    } */
+		console.log("answerId : ", $("#answerId").val());
+		$.ajax({
+			url : "/rest/getAnswerCommentList",
+			method : "post",
+			data : {"answerId" : $("#answerId").val()},
+			success :function(json){
+				$("#answerCommentHtml").empty();
+				console.log("answerComment",json);
+				$(json).each(function(index, item){
+					let answerCommentHtml  = "<div>"+item.user.userId+"</div>";
+						answerCommentHtml += "<div>"+item.answerCommentContent+"</div>";
+						answerCommentHtml += "<div>"+item.answerCommentDatetime+"</div>";
+					$(document).on('event', '#answerCommentList', function() {
+						$("#answerCommentList").append(answerCommentHtml);
+					})
+				})
+			}
+		});  
+	  });  
+	//질문 댓글출력
 	$("#commentBtn").click(function(){
 		if($("#questionComment").css("display") == "none"){   
 	        jQuery('#questionComment').css("display", "block");   
@@ -228,7 +262,7 @@ var getParam = function(key){
 				console.log(json);
 				$(json).each(function(index,item){
 					html =  "<tr>"+
-							"<td>"+item.userId+"</td>"+
+							"<td>"+item.user.userId+"</td>"+
 							"<td>"+item.questionCommentContent+"</td>"+
 							"<td>"+item.questionCommentDatetime+"</td>"+
 							"</tr>";
@@ -238,19 +272,61 @@ var getParam = function(key){
 		
 		});
 	});
+	//질문 상세 정보 가져오기
+	$.ajax({
+		url : "/rest/questionBoardOne",
+		method : "post",
+		data : {"questionId" : $("#questionId").val()},
+		success: function(json) {
+			console.log(json);
+			$("#title").append(json.questionTitle);
+			$("#datetime").append(json.questionDatetime);
+			$("#commentBtn").append(json.commentCount);
+			$("#tableBody").append(json.questionContent);
+			
+		}
+	});
 	
-// 댓글 입력
-$("#addCommentBtn").click(function(){
+// 질문 답변 추가하기
+$("#addAnswerBtn").click(function(){
 	console.log($("#summernote").summernote('code'));
-	alert("준비중입니다.")
-	/* url : "/rest/commentAdd",
-	method : "post",
-	data : {"questionId" : $("#questionId").val()},
-	success : function(json){
-		console.log(json)
-	} */
-});
+	//alert("준비중입니다.")
 
+	$.ajax({
+		url : "/rest/answerAdd",
+		method : "post",
+		data : {"questionBoard.questionId" : $("#questionId").val(),
+				"answerContent" : $("#summernote").summernote('code')},
+		success : function(json){
+			console.log(json)
+			$.ajax({
+				url : "/rest/getAnswerList",
+				method : "post",
+				data : {"questionId" : $("#questionId").val()},
+				success : function(json){
+					$("#answerList").empty();
+					console.log("AnswerListTest : ",json)
+					$(json).each(function(index, item){
+						let answerhtml  = "<div>"+item.user.userId+"님의 답변</div>";
+						answerhtml += "<input type='text' id='answerId' hidden='hidden' value='";
+						answerhtml += item.answerId+"'>";
+						answerhtml += "<div>답변 내용 "+item.answerContent+"</div>";
+						answerhtml += "<div>작성날짜 : "+item.answerDatetime+"</div>";
+						answerhtml += "<div><hr class='one'></div>";
+						
+						//버튼 생성
+					 	answerhtml += "<div><a id='answerCommentBtn'><i class='far fa-comment-dots mx-1'></i></a></div>";
+						answerhtml += "<div style='display: none;' id='answerComment'><div id='answerCommentList'>";
+						answerhtml += "</div></div>";
+						
+						answerhtml += "<div><hr class='one'></div>";
+						$("#answerList").append(answerhtml);
+					})
+				}	
+			});
+		}	
+	})
+});
 </script>
 
 

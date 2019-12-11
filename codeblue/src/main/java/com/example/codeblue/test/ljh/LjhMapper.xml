@@ -4,40 +4,84 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="com.example.codeblue.test.ljh.LjhMapper">
-	<!--  FaqBoard 객체  
-	<resultMap type="com.example.codeblue.vo.FaqBoard" id="FaqBoard"> 
-	   	<result column="FAQ_id" property="faqId" ></result>
-	   	<result column="FAQ_title" property="faqTitle" ></result>
-	   	<result column="FAQ_content" property="faqContent" ></result>
-	   	<result column="FAQ_datetime" property="faqDatetime"></result>
 
-	  	<association property="serviceCategory" resultMap="ServiceCategory">
-	   	</association>
+	<!-- User 객체 -->
+	<resultMap type="com.example.codeblue.vo.User" id="User">
+		<result column="user_id" property="userId"></result>
+		<result column="user_name" property="userName"></result>
+		<result column="user_pw" property="userPw"></result>
+		<result column="user_birthdate" property="userBirthdate"></result>
+		<result column="user_createtime" property="userCreatetime"></result>
+		<result column="user_authority" property="userAuthority"></result>
+		
+		<association property="region" resultMap="Region"></association>
+		<association property="rank" resultMap="Rank"></association>
 	</resultMap>
-	ServiceCategory 객체
-	<resultMap type="com.example.codeblue.vo.ServiceCategory" id="ServiceCategory">
-		<result column="service_category_id" property="serviceCategoryId"></result>
-		<result column="service_category_name" property="serviceCategoryName"></result>
+	
+	<!-- Region 객체 -->
+	<resultMap type="com.example.codeblue.vo.Region" id="Region">
+		<result column="region_id" property="regionId"></result>
+		<result column="region_name" property="regionName"></result>
 	</resultMap>
-	<select id="selectFaqOne" resultMap="FaqBoard" parameterType="int">
-  	SELECT  fb.FAQ_id, 
-			fb.FAQ_title, 
-			sc.service_category_id,
-			fb.FAQ_content,
-			fb.FAQ_datetime
-    FROM faq_board fb INNER JOIN service_category sc
-    ON fb.service_category_id = sc.service_category_id AND FAQ_id = #{faqId}
-  	</select>
-  	FAQ 삭제
-	<delete id="deleteFaq" parameterType="int">
-		DELETE FROM faq_board
-		WHERE faq_id = #{faqId} 
-	</delete>
-	FAQ 수정
-  	<update id="updateFaq"  parameterType="com.example.codeblue.vo.FaqBoard">
-  		UPDATE faq_board SET FAQ_title = #{faqTitle},
-  							FAQ_content = #{faqContent},
-  							service_category_id = #{serviceCategory.serviceCategoryId}
-  		WHERE faq_id = #{faqId} 
-  	</update> -->
+	<!-- Rank 객체 -->
+	<resultMap type="com.example.codeblue.vo.Rank" id="Rank">
+		<result column="rank_id" property="rankId"></result>
+		<result column="rank_name" property="rankName"></result>
+	</resultMap>
+	
+	<!-- QuestionComment 객체 -->
+	<resultMap type="com.example.codeblue.vo.QuestionComment" id="QuestionComment">
+		<result column="question_comment_id" property="questionCommentId"></result>
+		<result column="question_comment_content" property="questionCommentContent"></result>
+		<result column="question_comment__datetime" property="questionCommentDatetime"></result>
+		
+		<association property="user" resultMap="User"></association>
+		<association property="questionBoard" resultMap="QuestionBoard"></association>
+	</resultMap>
+	
+		<!-- QuestionBoard 객체 -->
+	<resultMap type="com.example.codeblue.vo.QuestionBoard" id="QuestionBoard">
+		<result column="question_id" property="questionId"></result>
+		<result column="question_title" property="questionTitle"></result>
+		<result column="question_content" property="questionContent"></result>
+		<result column="question_datetime" property="questionDatetime"></result>
+		<result column="answer_count" property="answerCount"></result>
+		<result column="vote_count" property="voteCount"></result>
+		<result column="comment_count" property="commentCount"></result>
+		
+		<association property="feild" resultMap="Feild"></association>
+		<association property="user" resultMap="User"></association>
+		<association property="tag" resultMap="Tag"></association>
+	</resultMap>
+		<!-- Tag 객체 -->
+	<resultMap type="com.example.codeblue.vo.Tag" id="Tag">
+		<result column="tag_id" property="tagId"></result>
+		<result column="tag_name" property="tagName"></result>
+	</resultMap>
+	
+	<!-- Feild 객체 -->
+	<resultMap type="com.example.codeblue.vo.Feild" id="Feild">
+		<result column="feild_id" property="feildId"></result>
+		<result column="feild_name" property="feildName"></result>
+	</resultMap>
+	<!-- Answer 객체 (원본)-->
+	<resultMap type="com.example.codeblue.vo.Answer" id="Answer">
+		<result column="answer_id" property="answerId"></result>
+		<result column="answer_content" property="answerContent"></result>
+		<result column="answer_datetime" property="answerDatetime"></result>
+		
+		<association property="user" resultMap="User"></association>
+		<association property="questionBoard" resultMap="QuestionBoard"></association>
+	</resultMap>
+	<!-- AnswerComment 객체(원본) -->
+	<resultMap type="com.example.codeblue.vo.AnswerComment" id="AnswerComment">
+		<result column="answer_comment_id" property="answerCommentId"></result>
+		<result column="answer_comment_content" property="answerCommentContent"></result>
+		<result column="answer_comment_datetime" property="answerCommentDatetime"></result>
+		
+		<association property="user" resultMap="User"></association>
+		<association property="answer" resultMap="Answer"></association>
+	</resultMap>
+	
+	
 </mapper>

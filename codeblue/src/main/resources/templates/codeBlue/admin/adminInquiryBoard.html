@@ -23,8 +23,8 @@
   <!-- Page Wrapper -->
   <div id="wrapper">
 
-	 <!-- SideBard load -->
-	<div id="sideBar"></div>
+	 <!-- Side Bar load -->
+ 	<div id="sideBar"></div>
    
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
@@ -40,23 +40,20 @@
 			<div class="card border-0 bg-white p-3 my-2 shadow mx-3"> 
 				<!-- Page Content -->
 				<div class="p-2">
-					<div class="d-sm-flex align-items-center justify-content-between mb-3" >
-						<h3 class="text-gray-800 mb-2 font-weight-bold">FAQ 리스트</h3>
-						<hr>
-						<a href="adminFaqBoardAdd" class="d-none d-sm-inline-block btn  btn-primary shadow"><i class="mr-2 fas fa-plus fa-sm text-white-50"></i>FAQ 올리기</a> 
-					</div>
+					<h2>문의 내역</h2>
 					<table class="table table-hover">
 						<thead align="center">
 							<tr>
 								<th>번호</th>
 								<th>제목</th>
 								<th>작성 날짜</th>
+								<th>답변 여부</th>
 							</tr>
 						</thead>
-						<tbody id="faqBoardList" align="center"></tbody>
+						<tbody id="inquiryHistoryList" align="center">	</tbody>
 					</table>
-					<button type="button" id="prevBtn" class="btn ml-1 btn-sm btn-primary">이전</button>
-					<button type="button" id="nextBtn" class="btn ml-1 btn-sm btn-primary">다음</button>
+					<button type="button" id="inquiryPrevBtn" class="btn ml-1 btn-sm btn-primary">이전</button>
+					<button type="button" id="inquiryNextBtn" class="btn ml-1 btn-sm btn-primary">다음</button>
 				</div>
 			<!--  Page Content End -->
 		
@@ -125,11 +122,11 @@
   <!-- Custom scripts for all pages-->
   <script src="js/sb-admin-2.min.js"></script>
 
-
   <!-- Page level plugins -->
   <script src="vendor/chart.js/Chart.min.js"></script>
   <!-- codeBlue Admin scripts -->
-  <script src="js/codeBlueAdmin.js"></script>>
+  <script src="js/codeBlueAdmin.js"></script>
+	
 
 </body>
 
@@ -141,107 +138,112 @@ $(document).ready(function() {
 	$("#sideBarNotice").children("div").addClass("show");
 
 	
-	var currentPage = 1;
+	var inquiryCurrentPage = 1;
 	var lastPage = 0;	
-	var rowPerPage = 15 ;
-	
-	
+	//문의내역 이전 버튼
+	$("#inquiryPrevBtn").click(function(){ 
+		$.ajax({
+			url:"/rest/admin/getInquiryHistoryList",
+			method:"post",
+			data:{"currentPage" : inquiryCurrentPage-1},
+			success: function(json){
+				$("#inquiryHistoryList").empty();
+				console.log(json)
+				inquiryCurrentPage = json.currentPage;
+				lastPage = json.lastPage;
+				InquiryBtnShow(inquiryCurrentPage, lastPage);
+				let html;
+				$(json.list).each(function(index,item){
+					html="<tr><td>";
+					html += item.inquiryHistoryId;
+					html += "</td><td>";
+					html += "<a href='/adminInquiryOne?inquiryHistoryId=";
+					html += item.inquiryHistoryId;
+					html += "'>";
+					html += item.inquiryTitle;
+					html += "</a>"
+					html += "</td><td>";
+					html += item.inquiryDatetime;
+					html += "</td><td>";
+					html += item.inquiryAnswer;
+					html += "</td></tr>";
+					$("#inquiryHistoryList").append(html);
+				});
+			}
+		})
+	});
+	//문의내역 다음 버튼
+	$("#inquiryNextBtn").click(function(){
+		$.ajax({
+			url:"/rest/admin/getInquiryHistoryList",
+			method:"post",
+			data:{"currentPage" : inquiryCurrentPage+1},
+			success: function(json){
+				$("#inquiryHistoryList").empty();
+				inquiryCurrentPage = json.currentPage;
+				lastPage = json.lastPage;
+				InquiryBtnShow(inquiryCurrentPage, lastPage);
+				let html;
+				$(json.list).each(function(index,item){
+					html="<tr><td>";
+					html += item.inquiryHistoryId;
+					html += "</td><td>";
+					html += "<a href='/adminInquiryOne?inquiryHistoryId=";
+					html += item.inquiryHistoryId;
+					html += "'>";
+					html += item.inquiryTitle;
+					html += "</a>"
+					html += "</td><td>";
+					html += item.inquiryDatetime;
+					html += "</td><td>";
+					html += item.inquiryAnswer;
+					html += "</td></tr>";
+					$("#inquiryHistoryList").append(html);
+				});
+			}
+		})
+	});
+	//페이지 입성 후 바로 문의내역 리스트 출력
 	$.ajax({
-		url:"/rest/admin/getFaqBoardList",
+		url:"/rest/admin/getInquiryHistoryList",
 		method:"post",
 		success:function(json){
-			$("#faqBoardList").empty();
-			currentPage = json.currentPage;
+			$("#inquiryHistoryList").empty();
+			inquiryCurrentPage = json.currentPage;
 			lastPage = json.lastPage;
-			BtnShow(currentPage, lastPage);
+			InquiryBtnShow(inquiryCurrentPage, lastPage);
 			console.log(json);
+			console.log(json.list);
 			let html;
 			$(json.list).each(function(index,item){
 				html="<tr><td>";
-				html += item.faqId;
+				html += item.inquiryHistoryId;
 				html += "</td><td>";
-				html += "<a href='/adminFaqOne?faqId=";
-				html += item.faqId;
+				html += "<a href='/adminInquiryOne?inquiryHistoryId=";
+				html += item.inquiryHistoryId;
 				html += "'>";
-				html += item.faqTitle;
+				html += item.inquiryTitle;
 				html += "</a>"
 				html += "</td><td>";
-				html += item.faqDatetime;
+				html += item.inquiryDatetime;
+				html += "</td><td>";
+				html += item.inquiryAnswer;
 				html += "</td></tr>";
-				$("#faqBoardList").append(html);
+				$("#inquiryHistoryList").append(html);
 			});
 		}
 	})
-	
-	$("#prevBtn").click(function(){
-		$.ajax({
-			url:"/rest/admin/getFaqBoardList",
-			method:"post",
-			data:{"currentPage" : currentPage-1},
-			success: function(json){
-				$("#faqBoardList").empty();
-				console.log(json)
-				currentPage = json.currentPage;
-				lastPage = json.lastPage;
-				BtnShow(currentPage, lastPage);
-				let html;
-				$(json.list).each(function(index,item){
-					html="<tr><td>";
-					html += item.faqId;
-					html += "</td><td>";
-					html += "<a href='/adminFaqOne?faqId=";
-					html += item.faqId;
-					html += "'>";
-					html += item.faqTitle;
-					html += "</a>"
-					html += "</td><td>";
-					html += item.faqDatetime;
-					html += "</td></tr>";
-					$("#faqBoardList").append(html);
-				});
-			}
-		})
-	});
-	$("#nextBtn").click(function(){
-		$.ajax({
-			url:"/rest/admin/getFaqBoardList",
-			method:"post",
-			data:{"currentPage" : currentPage+1},
-			success: function(json){
-				$("#faqBoardList").empty();
-				console.log(json)
-				currentPage = json.currentPage;
-				lastPage = json.lastPage;
-				BtnShow(currentPage, lastPage);
-				let html;
-				$(json.list).each(function(index,item){
-					html="<tr><td>";
-					html += item.faqId;
-					html += "</td><td>";
-					html += "<a href='/adminFaqOne?faqId=";
-					html += item.faqId;
-					html += "'>";
-					html += item.faqTitle;
-					html += "</a>"
-					html += "</td><td>";
-					html += item.faqDatetime;
-					html += "</td></tr>";
-					$("#faqBoardList").append(html);
-				});
-			}
-		})
-	});
-	
-	function BtnShow(currentPage, lastPage){
-		if(currentPage <= 1){
-			$("#prevBtn").hide();
+	//다음, 이전버튼 페이징으로 보이게 안보이게
+	function InquiryBtnShow(currentPage, lastPage){
+		if(currentPage == 1){
+			$("#inquiryPrevBtn").hide();
 		}else{
-			$("#prevBtn").show();
+			$("#inquiryPrevBtn").show();
 		}
 		if(currentPage >= lastPage){
-			$("#nextBtn").hide();
+			$("#inquiryNextBtn").hide();
 		}else{
-			$("#nextBtn").show();
+			$("#inquiryNextBtn").show();
 		}
 	}
 });

@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.example.codeblue.vo.Answer;
+import com.example.codeblue.vo.AnswerComment;
 import com.example.codeblue.vo.Expert;
 import com.example.codeblue.vo.Hospital;
 import com.example.codeblue.vo.Manager;
@@ -60,4 +62,11 @@ public interface UserMapper {
 	public List<Tag> selectTagListPopular(Page page);
 	//이름순
 	public List<Tag> selectTagListName(Page page);
+	
+	//질문 답변글 추가 
+	public int insertAnswer(Answer answer);
+	// 질문 답변글 리스트 가져오기
+	public List<Answer> selectAnswerList(int questionId);
+	//질문 답변 댓글 리스트 가져오기
+	public List<AnswerComment> selectAnswerCommentList(int answerId);
 }

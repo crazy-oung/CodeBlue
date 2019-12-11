@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.codeblue.mapper.UserMapper;
+import com.example.codeblue.vo.Answer;
+import com.example.codeblue.vo.AnswerComment;
 import com.example.codeblue.vo.Expert;
 import com.example.codeblue.vo.Hospital;
 import com.example.codeblue.vo.Manager;
@@ -26,7 +28,26 @@ import com.example.codeblue.vo.User;
 public class UserServiceImpl implements UserService{
 	@Autowired UserMapper userMapper; 
 	@Autowired JavaMailSender javaMailSender;
-	
+	//질문 답변 추가하기
+	@Override
+	public int addAnswer(Answer answer) {
+		System.out.println("::: LjhServiceImpl - addAnswer :::");
+		return userMapper.insertAnswer(answer);
+	}
+	// 질문 답변글 리스트 가져오기
+	@Override
+	public List<Answer> getAnswerList(int questionId) {
+		System.out.println("::: LjhServiceImpl - getAnswerList :::");
+		List<Answer> list =userMapper.selectAnswerList(questionId);
+		System.out.println(list.toString());
+		return userMapper.selectAnswerList(questionId);
+	}
+	// 질문 답변 댓글 리스트 가져오기
+	@Override
+	public List<AnswerComment> getAnswerCommentList(int answerId) {
+		System.out.println("::: LjhServiceImpl - getAnswerCommentList :::");
+		return userMapper.selectAnswerCommentList(answerId);
+	}
 	@Override
 	public User selectUserOne(String UserId) {
 		System.out.println("::: ProfileServiceImpl - selectUserOne :::");

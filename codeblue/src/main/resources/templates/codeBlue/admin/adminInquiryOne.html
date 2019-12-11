@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,7 +7,7 @@
 	<meta name="description" content="">
 	<meta name="author" content="">
 	
-	<title>관리자 공지 - 코드블루</title>
+	<title>관리자 - 코드블루</title>
 	
 	<!-- Custom fonts for this template-->
 	<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -24,9 +23,9 @@
   <!-- Page Wrapper -->
   <div id="wrapper">
 
-  	<!-- SideBard load -->
+	<!-- SideBard load -->
 	<div id="sideBar"></div>
-
+      
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
 
@@ -37,30 +36,31 @@
       <div id="topBar"></div>
 
         <!-- Begin Page Content -->
-       	<div class="container" style="height: 100%" align="center">
-			<div class="pt-4 mt-5 text-left card shadow p-3 mx-5"> 
-				
-				<!-- Page Content -->
+       <div class="container" style="height: 100%" align="center">  
+          <!-- Content Row 1 -->
+          <div class="pt-4 mt-5 text-left" > 
+          <div class="card shadow p-3 mx-5">
+           	<!-- :::::::::::::::::: 내용 출력 시작 :::::::::::: -->
+			<h2 id="inquiryHistoryId"></h2>
+			<table id="inquiryHistoryOne" class="table table-hover">
 
-					<!-- Page Heading -->
-					<div class="d-sm-flex align-items-center justify-content-between mb-3" >
-						<h3 class="text-gray-800 mb-2 font-weight-bold">FAQ</h3>
-						<hr>
-						<a href="adminFaqBoardAdd" class="d-none d-sm-inline-block btn  btn-primary shadow"><i class="mr-2 fas fa-plus fa-sm text-white-50"></i>FAQ 올리기</a> 
-					</div>
-					<!-- page Heading End -->
-					
-					<!-- Notice Board -->
-					<table id="faqOne" class="table table-hover text-center m-4"></table>
-					<br>
-					<div><button type="button" id="faqListBtn" class="btn btn-primary">목록으로</button>
-					<button type="button" id="faqModifyBtn" class="btn btn-primary">수정</button>
-					<button type="button" id="faqDelBtn" class="btn btn-primary">게시글 삭제</button></div>
-	
-			<!--  Page Content End -->
+			</table>
+			
+			<div><h2 id="inquiryAnswer"></h2></div>
+				<div>
+					<label class="text-dark font-weight-bold">문의 제목</label>
+					 <textarea class="form-control form-control-sm mb-2" cols="70" rows="1" id="inquiryHistoryAnswerTitle"></textarea>
+				</div>
+				<div>
+					<label class="text-dark font-weight-bold">문의 답변</label>
+					<textarea class="form-control form-control-sm mb-2" cols="100" rows="5" id="inquiryHistoryAnswerContent"></textarea>
+				</div>
+				<button id="inquiryHistoryAnswerBtn" type="button" class="btn ml-1 btn-sm btn-primary">답변</button>
 			</div>
-		</div>  
-        
+          </div>
+        </div>
+        <!-- /.container-fluid --> 
+      </div>
       <!-- End of Main Content -->
 
       <!-- Footer -->
@@ -120,72 +120,70 @@
   <!-- Page level plugins -->
   <script src="vendor/chart.js/Chart.min.js"></script>
   <!-- codeBlue Admin scripts -->
-  <script src="js/codeBlueAdmin.js"></script>>
+  <script src="js/codeBlueAdmin.js"></script>
 
 </body>
 <script type="text/javascript">
-$(document).ready(function(){
 
-	$("#sideBarNotice").addClass("active");
-	$("#sideBarNotice").children("a").attr("aria-expanded","false");
-	$("#sideBarNotice").children("div").addClass("show");
+$("#sideBarNotice").addClass("active");
+$("#sideBarNotice").children("a").attr("aria-expanded","false");
+$("#sideBarNotice").children("div").addClass("show");
 
-	
-	// 파라메터 정보가 저장될 오브젝트
-	// common.js 같은 모든 페이지에서 로딩되는 js 파일에 넣어두면 됨.
-	var getParam = function(key){
-	    var _parammap = {};
-	    document.location.search.replace(/\??(?:([^=]+)=([^&]*)&?)/g, function () {
-	        function decode(s) {
-	            return decodeURIComponent(s.split("+").join(" "));
-	        }
-	        _parammap[decode(arguments[1])] = decode(arguments[2]);
-	    });
-	    return _parammap[key];
-	};
-	$("#faqId").val(getParam("faqId"));
 
+//파라메터 정보가 저장될 오브젝트
+//common.js 같은 모든 페이지에서 로딩되는 js 파일에 넣어두면 됨.
+var getParam = function(key){
+ var _parammap = {};
+ document.location.search.replace(/\??(?:([^=]+)=([^&]*)&?)/g, function () {
+     function decode(s) {
+         return decodeURIComponent(s.split("+").join(" "));
+     }
+
+     _parammap[decode(arguments[1])] = decode(arguments[2]);
+ });
+
+ return _parammap[key];
+};
+$("#inquiryHistoryId").append(getParam("inquiryHistoryId"));
+$("#inquiryHistoryId").append("번 문의내역");
+$("#inquiryAnswer").append(getParam("inquiryHistoryId"));
+$("#inquiryAnswer").append("번 문의답변");
+
+$(document).ready(function() {
+	//문의내역 상세정보 가져오기
 	$.ajax({
-		url : "/rest/adminFaqOne",
+		url :"/rest/admin/getInquiryHistoryOne",
 		method : "post",
-		data : {"faqId": getParam("faqId")},
+		data : {"inquiryHistoryId" : getParam("inquiryHistoryId")},
 		success : function(json){
 			console.log(json);
-
-				html  = "<tr align='left'><td>FAQ 번호 :  "+json.faqId+"</td></tr>";
-				html += "<tr align='left'><td>FAQ 제목 :  "+json.faqTitle+"</td></tr>";
-				html += "<tr align='left'><td>FAQ 유형 :  "+json.serviceCategory.serviceCategoryId+"</td></tr>";
-				html += "<tr align='left'><td>FAQ 내용 :  "+json.faqContent+"</td></tr>";
-				html += "<tr align='left'><td>FAQ 날짜 :  "+json.faqDatetime+"</td></tr>";
-			$("#faqOne").append(html)
-
+			let html;
+			$(json).each(function(index, item){
+				html = "<tr align='left'><td>문의 제목 : "+item.inquiryTitle+"</td></tr>";
+				html += "<tr align='left'><td>문의 유형 : "+item.inquiry.inquiryName+"</td></tr>";
+				html += "<tr align='left'><td>문의 내역 : "+item.inquiryContent+"</td></tr>";
+				html += "<tr align='left'><td>작성자 : "+item.user.userId+"</td></tr>";
+				html += "<tr align='left'><td>작성 날짜 : "+item.inquiryDatetime+"</td></tr>";
+				$("#inquiryHistoryOne").append(html);
+			});
 		}
-	})
-	//목록으로 버튼
-	$("#faqListBtn").click(function(){
-		location.href="/adminFaqBoard";
-	})
-	//삭제하기 버튼
-	$("#faqDelBtn").click(function(){
-	$.ajax({
-		url:"/rest/removeFaqBoard",
-		method:"post",
-		data:{"faqId" : getParam("faqId")},
-		success : function(){
-			alert("삭제 되었습니다.");
-			location.href="/adminFaqBoard";
-		}
-		})
-	}); 
-	// 수정하기 버튼
-	$("#faqModifyBtn").click(function(){
-		location.href="/adminFaqModify?faqId="+getParam("faqId");
-	})
-//document
-
-
+	});
 	
-})
-
+	//답변하기 버튼 누르면 inquiryHistoryAnswer에 저장.
+	$("#inquiryHistoryAnswerBtn").click(function(){
+	 	$.ajax({
+	 		url:"/rest/admin/addInquiryHistoryAnswer",
+			data:{ 	"inquiryHistoryAnswerTitle" : $("#inquiryHistoryAnswerTitle").val() ,
+					"inquiryHistoryAnswerContent" : $("#inquiryHistoryAnswerContent").val(),
+					"inquiryHistory.inquiryHistoryId" : getParam("inquiryHistoryId")
+					},
+			method:"post",
+			success:function(){
+				location.replace("/adminInquiryBoard");	
+			},
+		})
+	})  
+});
 </script>
+
 </html>

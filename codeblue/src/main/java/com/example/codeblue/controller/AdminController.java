@@ -152,7 +152,7 @@ public class AdminController {
 			System.out.println("user admin 페이지 접근 시도 차단");
 			return "/home";
 		}
-		return "/codeBlue/admin/report";
+		return "/codeBlue/admin/adminReportBoard";
 	}
 	//문의내역 리스트 페이지로 이동
 	@GetMapping("adminInquiryBoard")
@@ -162,7 +162,7 @@ public class AdminController {
 			System.out.println("user admin 페이지 접근 시도 차단");
 			return "/home";
 		}
-		return "/codeBlue/admin/inquiry";
+		return "/codeBlue/admin/adminInquiryBoard";
 	}
 	//문의내역 상세 페이지로 이동
 	@GetMapping("adminInquiryOne")
