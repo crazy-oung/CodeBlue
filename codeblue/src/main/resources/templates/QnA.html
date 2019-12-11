@@ -33,23 +33,7 @@
 			<div class="row"> 
 			
 				<!-- Side Bar -->
-				<div class="col-sm-1 p-0" style="border-right: 1px solid #d9d9d9;">
-					<nav class="navbar pl-0 sticky-container">
-						<div style="margin-top: 70px">
-							<ul class="nav flex-column">
-								<li class="pl-0"><small>질문</small></li> 
-								<li class="nav-item pl-1"><a class="nav-link pl-2 font-weight-bold pt-1 pb-0" href="/">today</a></li> 
-								<li class="nav-item pl-1"><a class="nav-link pl-2 text-danger font-weight-bold pt-1 pb-0" href="/">hot 🔥</a></li>
-								<li class="nav-item pl-1"><a class="nav-link pl-2 text-warning font-weight-bold pt-1 pb-0" href="/">help!</a></li>
-								<li class="nav-item pl-1"><a class="nav-link pl-2 text-success font-weight-bold pt-1 pb-0" href="/">ongoing</a></li>
-								<li class="mt-2"><small>조회</small></li> 
-								<li class="nav-item"><a class="nav-link text-dark pl-2 pt-1 pb-0" href="/">유저</a></li>
-								<li class="nav-item"><a class="nav-link text-dark pl-2 pt-1 pb-0" href="/">태그</a></li>
-								<li class="nav-item"><a class="nav-link text-dark pl-2 pt-1 pb-0" href="/">랭킹</a></li>
-							</ul>
-						</div> 
-					</nav>
-				</div>
+				<div class="col-sm-1 p-0" style="border-right: 1px solid #d9d9d9;" id="leftSideBar"></div>
 				<!-- Side Bar End -->
 				
 				<!-- Page Content -->
@@ -66,12 +50,16 @@
 					<table id="questionBoard" class="table table-hover"></table>
 					<br>
 					
-					<button type="button" id="prevBtn" class="btn btn-primary">이전</button>
-					<button type="button" id="nextBtn" class="btn btn-primary">다음</button>
-					
+					<p>
+						<button type="button" id="prevBtn" class="btn btn-primary">이전</button>
+						<button type="button" id="nextBtn" class="btn btn-primary">다음</button>
+					</p>				
 				</div>
+				
 				<!-- Page rigth side bar -->
-				<div class="col-sm-3 pt-5" id="rightSideBar"></div> 
+				<div class="col-sm-3 pt-5 mt-5">
+					<div id="rightSideBar"></div>
+				</div> <!-- rigth side bar end -->
 				
 			</div>
 		</div> 

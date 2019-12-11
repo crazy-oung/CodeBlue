@@ -19,6 +19,14 @@
 		<association property="rank" resultMap="Rank">
 		</association>
 	</resultMap>
+	<!-- Manager 객체 -->
+	<resultMap type="com.example.codeblue.vo.Manager" id="Manager"> 
+		<!-- column은 테이블에서의 칼럼명  property는 클레스의 필드명 -->
+		<result column="manager_id" property="managerId" ></result>
+		<result column="manager_pw" property="managerPw" ></result>
+		<result column="manager_name" property="managerName"></result>
+		<result column="manager_createdate" property="managerCreatedate" ></result>
+	</resultMap>
 	
 	<!-- InquiryHistory 객체  -->
 	<resultMap type="com.example.codeblue.vo.InquiryHistory" id="InquiryHistory"> 
@@ -927,4 +935,11 @@
 			</if>
 		LIMIT #{beginRow},#{rowPerPage}
 	</select>
+	
+	<!-- 매니저 확인 -->
+	<select id="selectManagerId" parameterType="com.example.codeblue.vo.User" resultMap="Manager">
+		SELECT manager_id, manager_name 
+		FROM manager WHERE manager_id = #{userId} AND manager_pw = #{userPw}
+	</select>
+	
 </mapper>

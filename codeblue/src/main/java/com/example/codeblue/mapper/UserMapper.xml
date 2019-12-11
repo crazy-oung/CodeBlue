@@ -144,6 +144,7 @@
 			qb.question_id,
 			qb.question_title,
 			u.user_name,
+			u.user_id,
 			qb.question_datetime
 		FROM question_board qb inner join user u
 		ON qb.user_id = u.user_id
@@ -249,10 +250,7 @@
 		FROM user WHERE user_id = #{userId}
 	</select>
 	
-	<select id="selectManagerId" parameterType="com.example.codeblue.vo.User" resultType="com.example.codeblue.vo.Manager">
-		SELECT manager_id as managerId
-		FROM manager WHERE manager_id = #{userId} AND manager_pw = #{userPw}
-	</select>
+
 	
 	<update id="updateUserPw" parameterType="com.example.codeblue.vo.User">
 		UPDATE user SET user_pw = #{userPw} WHERE user_id = #{userId}

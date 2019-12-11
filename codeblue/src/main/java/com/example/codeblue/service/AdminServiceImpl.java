@@ -562,12 +562,13 @@ public class AdminServiceImpl implements AdminService {
 		System.out.println(map.toString());
 		return map;
 	}
+	// 연간 등록 질문수
 	@Override
 	public List<QuestionCount> getYearlyQuestionCount() {
 		System.out.println("::: AdminHomeServiceImpl - getYearlyQuestionCount :::");
 		return adminMapper.selectYearlyQuestionCount();
 	}
-
+	// 분야별 질문수 
 	@Override
 	public List<QuestionCount> getCurrentQuestionCountFromFeild() {
 		System.out.println("::: AdminHomeServiceImpl - getCurrentQuestionCountFromFeild :::");
@@ -613,7 +614,7 @@ public class AdminServiceImpl implements AdminService {
 		map.put("searchWord",page.getSearchWord());
 		return map;
 	}
-	
+	// 관리자 등록
 	@Override
 	public int addAdministrator(Manager manager) {
 		System.out.println("::: AdminServluceImpl - addaAdministrator :::"); 
@@ -623,7 +624,7 @@ public class AdminServiceImpl implements AdminService {
 		System.out.println(manager.toString());
 		return a;
 	}
-	
+	// 관리자 등록용 인증코드 전송
 	@Override
 	public String sendCodeToMail(Manager manager) {	        
 		System.out.println("::: AdminServluceImpl - sendCodeToMail :::");
@@ -632,12 +633,18 @@ public class AdminServiceImpl implements AdminService {
 		SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
 	    
 	    simpleMailMessage.setTo(manager.getManagerId()); 
-	    simpleMailMessage.setSubject("코드블루 인증코드입니다. 💙");
+	    simpleMailMessage.setSubject("코드블루 관리자 인증코드입니다. ");
 	    simpleMailMessage.setText(manager.getManagerName()+"님! 어드민 추가관련 인증코드는  ["+randNum+"]입니다. 인증코드 입력란에 입력해주셔야 관리자 추가가 완료 됩니다! :) 감사합니다. 😍");
 	    System.out.println("인증번호: " + randNum);
 	    
 	    javaMailSender.send(simpleMailMessage);
 	    return randNum;
+	}
+	
+	@Override
+	public Manager verifyManager(User user) {
+		System.out.println("::: UserServluceImpl - verifyManager :::"); 
+		return adminMapper.selectManagerId(user);
 	}
 
 }

@@ -16,6 +16,7 @@ import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.QuestionCount;
 import com.example.codeblue.vo.ReportHistory;
 import com.example.codeblue.vo.ServiceCategory;
+import com.example.codeblue.vo.User;
 
 public interface AdminService {
 	
@@ -94,5 +95,7 @@ public interface AdminService {
 	public int addAdministrator(Manager manager);
 	//관리자 추가 인증 메일
 	public String sendCodeToMail(Manager manager);
+	// 관리자 확인
+	public Manager verifyManager(User user);
 	
 }

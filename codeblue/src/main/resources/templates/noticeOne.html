@@ -40,47 +40,28 @@
 	<!-- End of Topbar -->
 
 		<!-- Begin Page Content -->
-		<div class="container">
-			<div class="row"> 
+		<div class="container" style="height: 85vh">
+			<div class="row" style="height: 100%"> 
 			
 				<!-- Side Bar -->
-				<div class="col-sm-1 p-0 " style="border-right: 1px solid #d9d9d9;">
-					<nav class="navbar pl-0 sticky-container">
-						<div style="margin-top: 70px">
-							<ul class="nav flex-column">
-								<li class="pl-0"><small>질문</small></li> 
-								<li class="nav-item pl-1"><a class="nav-link pl-2 font-weight-bold pt-1 pb-0" href="/">today</a></li> 
-								<li class="nav-item pl-1"><a class="nav-link pl-2 text-danger font-weight-bold pt-1 pb-0" href="/">hot 🔥</a></li>
-								<li class="nav-item pl-1"><a class="nav-link pl-2 text-warning font-weight-bold pt-1 pb-0" href="/">help!</a></li>
-								<li class="nav-item pl-1"><a class="nav-link pl-2 text-success font-weight-bold pt-1 pb-0" href="/">ongoing</a></li>
-								<li class="mt-2"><small>조회</small></li> 
-								<li class="nav-item"><a class="nav-link text-dark pl-2 pt-1 pb-0" href="/">유저</a></li>
-								<li class="nav-item"><a class="nav-link text-dark pl-2 pt-1 pb-0" href="/">태그</a></li>
-								<li class="nav-item"><a class="nav-link text-dark pl-2 pt-1 pb-0" href="/">랭킹</a></li>
-							</ul>
-						</div> 
-					</nav>
-				</div>
+				<div class="col-sm-1 p-0 " style="border-right: 1px solid #d9d9d9;" id="leftSideBar"></div>
 				<!-- Side Bar End -->
 				
 				<!-- Page Content -->
-				<div class="col-sm-8">
+				<div class="col-sm-11">
+				
 					<!-- Page Heading -->
-					<div class="d-sm-flex align-items-center justify-content-between mb-4" style="margin-top: 80px">
-						<h4 class="text-gray-800 mb-0">공 지 사 항</h4>
+					<div class="d-sm-flex align-items-center justify-content-between mb-2 mt-5 pt-5">
+						<h3 class="text-gray-800 font-weight-bold mx-3 mt-2" id="noticeTitle">공지사항 📂</h3>
 					</div><!-- page Heading End -->
-					<hr>
-					<!-- 공지사항 리스트 -->
-					<div>
-						<h2 id="aaaa"></h2>
-						<table id="noticeOne" class="table table-hover">
-								
-						</table>
-					</div>
 					
-					<div>
+					<p class="text-right small mb-1 px-2" id="noticeDate">게시일:  </p>					
+					<!-- 공지사항 내용 -->
+					<table id="noticeOne" class="table"></table>
+					
+					<p>
 					<a href="/notice" class="btn ml-1 btn-sm btn-primary ">목록으로</a>
-					</div>
+					</p>
 				</div>
 				<!-- Page Content End -->
 	
@@ -90,7 +71,31 @@
 	<!-- Footer -->
 	<div id="footer"></div>
 	<!-- End of Footer -->
+	
+<!-- ETC -->
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded bg-primary" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
 
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">로그아웃 하시겠습니까?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">로그아웃 하고 싶으시면 아래 로그아웃 버튼을 클릭해주세요!</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+          <a class="btn btn-primary" href="/logout">로그아웃</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
 	<!-- Bootstrap core JavaScript-->
 	<script src="vendor/jquery/jquery.min.js"></script>
@@ -133,13 +138,12 @@ $(document).ready(function() {
 		data : {"noticeId" : getParam("noticeId")},
 		success : function(json){
 			$(json).each(function(index, item){
-				html = "<tr align='center'>";
-				html += "<td>공지 내용</td>";
-				html += "<td>"+item.noticeContent+"</td>";
-				html += "</tr><tr align='center'>"
-				html += "<td>공지 날짜</td>";
-				html += "<td>"+item.noticeDatetime+"</td>";
-				html += "</tr>";
+				$("#noticeTitle").text("📂 "+item.noticeTitle);
+				$("#noticeDate").append(item.noticeDatetime);
+				html = "<tr>";
+				html += "<td width='6%' class='text-center'>공지내용</td>";
+				html += "<td class='text-dark px-4'>"+item.noticeContent+"</td>";
+				html += "</tr><tr>"
 				$("#noticeOne").append(html);
 			});
 		}

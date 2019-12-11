@@ -87,7 +87,7 @@ console.log("관리자");
 	+ '            <a class="collapse-item" href="/adminInquiryBoard">문의 내역</a>'
 	+ '            <a class="collapse-item" href="/adminReportBoard">신고 내역</a>'
 	+ '	       <div class="collapse-divider"></div> '
-	+ '            <a class="collapse-item" href="/adminFAQBoard">FAQ 관리</a>'
+	+ '            <a class="collapse-item" href="/adminFaqBoard">FAQ 관리</a>'
 	+ '            <a class="collapse-item" href="/adminNoticeBoard">공지 관리</a>'
 	+ '          </div>'
 	+ '        </div>'
@@ -116,5 +116,93 @@ console.log("관리자");
 	+ '      </div>'
 	+ '    </ul>');
 	
+	$("#topBar").append('<!-- Topbar -->'
+        + '<nav class="navbar navbar-expand navbar-light topbar shadow" style="height: 60px;border-bottom: 1px solid #d9d9d9; border-top: 4px solid #4e73df;">'
+        + '<!-- Sidebar Toggle (Topbar) -->'
+        + '  <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">'
+        + '    <i class="fa fa-bars"></i>'
+        + '  </button>'
+        + ' <!-- Topbar Search -->'
+        + '  <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">'
+        + '   <div class="input-group">'
+        + '      <input type="text" class="form-control bg-light border-1 small" placeholder="항목 검색" aria-label="Search" aria-describedby="basic-addon2">'
+        + '      <div class="input-group-append">'
+        + '        <button class="btn btn-primary" type="button">'
+        + '          <i class="fas fa-search fa-sm"></i>'
+        + '        </button>'
+        + '      </div>'
+        + '    </div>'
+        + '  </form>'
+        + '  <!-- Topbar Navbar -->'
+        + '  <ul class="navbar-nav ml-auto">'
+        + '    <!-- Nav Item - Search Dropdown (Visible Only XS) -->'
+        + '  <li class="nav-item dropdown no-arrow d-sm-none">'
+        + '     <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
+        + '       <i class="fas fa-search fa-fw"></i>'
+        + '     </a>'
+        + '     <!-- Dropdown - Messages -->'
+        + '     <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">'
+        + '        <form class="form-inline mr-auto w-100 navbar-search">'
+        + '       <div class="input-group">'
+        + '         <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">'
+        + '         <div class="input-group-append">'
+        + '           <button class="btn btn-primary" type="button">'
+        + '             <i class="fas fa-search fa-sm"></i>'
+        + '           </button>'
+        + '         </div>'
+        + '       </div>'
+        + '     </form>'
+        + '   </div>'
+        + ' </li>'
+//        + '    <div class="topbar-divider d-none d-sm-block"></div>'
+        + ' <!-- Nav Item - User Information -->'
+        + ' <li class="nav-item dropdown no-arrow">'
+        + '   <a class="nav-link dropdown-toggle mr-2" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
+        + '   	<!-- 로그인 관리자 이름 출력 -->'
+        + '     <span class="mr-2 d-none d-lg-inline text-gray-600" id="managerName">관리자 이름</span>'
+        + '     <img class="img-profile rounded-circle" src="/img/profile.svg"><!-- 디폴트 이미지 -->'
+        + '   </a>'
+        + '   <!-- Dropdown - User Information -->'
+        + '   <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">'
+        + '     <a class="dropdown-item" href="#">'
+        + '       <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>'
+        + '       설정'
+        + '     </a>'
+        + '     <a class="dropdown-item" href="#">'
+        + '       <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>'
+        + '       활동로그'
+        + '     </a>'
+        + '     <div class="dropdown-divider"></div>'
+        + '     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">'
+        + '       <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>'
+        + '       로그아웃'
+        + '     </a>'
+        + '   </div>'
+        + ' </li>'
+        + ' </ul>'
+        + '</nav>'
+        + '<!-- End of Topbar -->')
+	
+       $.ajax({
+    	   url : "/rest/getLoginManager",
+    	   method:"get",
+    	   success:function(json){
+    		   console.log(json);
+    		   $("#managerName").text(json.managerName);
+    	   }
+    	   
+       }) 
+        
+	$("#sidebarToggle").click(function(){
+//		console.log("사이드바 숨김");
+		if($("#page-top").attr("class")=="sidebar-toggled"){
+//			alert("숨김상태!")
+			$("#page-top").removeClass("sidebar-toggled");
+			$("#accordionSidebar").removeClass("toggled");
+			return;
+		}
+		$("#page-top").addClass("sidebar-toggled");
+		$("#accordionSidebar").addClass("toggled");
+	})
 	
 

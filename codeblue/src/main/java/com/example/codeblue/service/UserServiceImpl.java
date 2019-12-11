@@ -175,12 +175,6 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public Manager verifyManager(User user) {
-		System.out.println("::: UserServluceImpl - verifyManager :::"); 
-		return userMapper.selectManagerId(user);
-	}
-
-	@Override
 	public String resetPassword(User user) {
 		System.out.println("::: UserServluceImpl - resetPassword :::"); 
 		System.out.println(user.toString());

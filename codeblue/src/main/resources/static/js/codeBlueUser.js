@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	
 	$("#topBar").append( '<nav class="navbar navbar-expand navbar-light topbar mb-4 shadow fixed-top" style="height: 50px; border-bottom: 1px solid #d9d9d9; border-top: 4px solid #4e73df; background: #f2f2f2;">'
 							+ '<div class="container">'
 							+ '<a class="navbar-brand text-primary mr-0" href="/today"><img src="/img/codeBlueLogo.png" width="130px"></a> '
@@ -14,23 +15,27 @@ $(document).ready(function() {
 							+'<ul class="navbar-nav ml-auto" id="userInfo" style="width: 20%">'
 							+'</ul></div></nav>');
 	
-	$("#rightSideBar").append('<div class="card border-1 shadow bg-light border-bottom-primary mt-4">'
+	$("#leftSideBar").append('<nav class="navbar pl-0 sticky-container">'
+			+ '<div style="margin-top: 70px">'
+			+ '	<ul class="nav flex-column">'
+			+ '		<li class="pl-0"><small>질문</small></li> '
+			+ '		<li class="nav-item pl-1"><a class="nav-link pl-2 font-weight-bold pt-1 pb-0" href="/">today</a></li> '
+			+ '		<li class="nav-item pl-1"><a class="nav-link pl-2 text-danger font-weight-bold pt-1 pb-0" href="/">hot 🔥</a></li>'
+			+ '		<li class="nav-item pl-1"><a class="nav-link pl-2 text-warning font-weight-bold pt-1 pb-0" href="/QnA">help!</a></li>'
+			+ '		<li class="nav-item pl-1"><a class="nav-link pl-2 text-success font-weight-bold pt-1 pb-0" href="/QnA">ongoing</a></li>'
+			+ '		<li class="mt-2"><small>조회</small></li> '
+			+ '		<li class="nav-item"><a class="nav-link text-dark pl-2 pt-1 pb-0" href="/users">유저</a></li>'
+			+ '		<li class="nav-item"><a class="nav-link text-dark pl-2 pt-1 pb-0" href="/tags">태그</a></li>'
+			+ '		<li class="nav-item"><a class="nav-link text-dark pl-2 pt-1 pb-0" href="/ranking">랭킹</a></li>'
+			+ ' </ul>'
+			+ '</div> '
+			+ '</nav>');
+	
+	$("#rightSideBar").append('<div class="card border-1 shadow bg-light border-bottom-primary ">'
 						+ '<small class="text-primary font-weight-bold card-header alert-primary px-3 border-0">'
 						+ '<a class="nav-link p-0" href="/notice"><span class="badge badge-primary m-0">New</span> 새 소식이 있어요!</a>'
 						+ '</small>'
-						+ '<table class=" table table-sm mb-0">'
-						+ '<tr>'
-						+ '	<td><a class="nav-link small px-2" href="/notice"><i class="far fa-comment-dots mx-1"></i>공지사항을 확인해보세요! </a></td>'
-						+ '</tr>'
-						+ '<tr>'
-						+ '	<td><a class="nav-link small px-2" href="#"><i class="far fa-comment-dots mx-1"></i>도와주세용</a></td>'
-						+ '</tr>'
-						+ '<tr>'
-						+ '	<td><a class="nav-link small px-2" href="#"><i class="far fa-comment-dots mx-1"></i>도와주세용</a></td>'
-						+ '</tr>'
-						+ '<tr>'
-						+ '	<td><a class="nav-link small px-2" href="#"><i class="far fa-comment-dots mx-1"></i>도와주세용</a></td>'
-						+ '</tr>'
+						+ '<table class=" table table-sm mb-0" id="rightNoticeList">'
 						+ '</table>'		
 						+ '<small class="text-primary font-weight-bold card-header alert-primary px-3 border-0">'
 						+ '궁금한 것이 있나요?'
@@ -50,7 +55,23 @@ $(document).ready(function() {
 						+ '</tr>'
 						+ '</table>'		
 						+ '</div>');
-					
+	
+	// 최근 공지 5개
+	$.ajax({
+		url:"/rest/getNoticeList",
+		method:"post",
+		data:{"rowPerPage" : "5"},
+		success: function(json){
+			$("#noticeList").empty();
+			currentPage = json.currentPage;
+			lastPage = json.lastPage;
+			$(json.list).each(function(index,item){
+				html =  '<tr><td><a class="nav-link small px-2" href="/noticeOne?noticeId='+item.noticeId+'"><i class="far fa-comment-dots mx-1"></i>'+item.noticeTitle+'</a></td></tr>';
+				$("#rightNoticeList").append(html);
+			});
+		}
+	})
+	
 	$("#footer").append( '<footer class="sticky-footer bg-gray-900 py-4" id="footer">'
 			+ '<div class="container my-auto small">'
 			+ '<div class="row">'
@@ -60,35 +81,36 @@ $(document).ready(function() {
 			+ '<div class="col-sm-2 font-weight-bold">'
 			+ '	<label><a class="nav-link p-0 text-gray-400" href="/index">CODEBLUE</a></label>'
 			+ '    <ul class="nav flex-column">'
-			+ '        <li class="nav-item"><a class="nav-link p-0 mb-1 text-gray-600" href="/index">질문등록</a></li>'
-			+ '        <li class="nav-item"><a class="nav-link p-0 mb-1 text-gray-600" href="/index">정보검색</a></li>'
-			+ '        <li class="nav-item"><a class="nav-link p-0 mb-1 text-gray-600" href="/index">이용안내</a></li>'
-			+ '        <li class="nav-item"><a class="nav-link p-0 mb-1 text-gray-600" href="/index">문의하기</a></li>'
-			+ '        <li class="nav-item"><a class="nav-link p-0 mb-1 text-gray-600" href="/index">자주묻는질문</a></li>'
-			+ '        <li class="nav-item"><a class="nav-link p-0 mb-1 text-gray-600" href="/index">이용약관</a></li>'
+			+ '        <li class="nav-item"><a class="nav-link p-0 mb-1  " href="/index">질문등록</a></li>'
+			+ '        <li class="nav-item"><a class="nav-link p-0 mb-1  " href="/index">정보검색</a></li>'
+			+ '        <li class="nav-item"><a class="nav-link p-0 mb-1  " href="/index">이용안내</a></li>'
+			+ '        <li class="nav-item"><a class="nav-link p-0 mb-1  " href="/index">문의하기</a></li>'
+			+ '        <li class="nav-item"><a class="nav-link p-0 mb-1  " href="/index">자주묻는질문</a></li>'
+			+ '        <li class="nav-item"><a class="nav-link p-0 mb-1  " href="/index">이용약관</a></li>'
 			+ '    </ul>'
 			+ '</div>'
 			+ '<div class="col-sm-2 font-weight-bold">'
 			+ '	<label><a class="nav-link p-0 text-gray-400" href="/index">파트너</a></label>'
 			+ '    <ul class="nav flex-column">'
-			+ '        <li class="nav-item"><a class="nav-link p-0 mb-1 text-gray-600" href="/index">회사소개</a></li>'
-			+ '        <li class="nav-item"><a class="nav-link p-0 mb-1 text-gray-600" href="/index">회사정보</a></li>'
-			+ '        <li class="nav-item"><a class="nav-link p-0 mb-1 text-gray-600" href="/index">제휴·제안</a></li>'
-			+ '        <li class="nav-item"><a class="nav-link p-0 mb-1 text-gray-600" href="/index">채용안내</a></li>'
+			+ '        <li class="nav-item"><a class="nav-link p-0 mb-1" href="/index">회사소개</a></li>'
+			+ '        <li class="nav-item"><a class="nav-link p-0 mb-1  " href="/index">회사정보</a></li>'
+			+ '        <li class="nav-item"><a class="nav-link p-0 mb-1  " href="/hospital">제휴병원</a></li>'
+			+ '        <li class="nav-item"><a class="nav-link p-0 mb-1  " href="/index">제휴·제안</a></li>'
+			+ '        <li class="nav-item"><a class="nav-link p-0 mb-1  " href="/index">채용안내</a></li>'
 			+ '    </ul>'
 			+ '</div>'
 			+ '<div class="col-sm-3 font-weight-bold">'
 			+ '	<label><a class="nav-link p-0 text-gray-400" href="/index">연락처</a></label>'
 			+ '    <ul class="nav flex-column">'
-			+ '        <li class="nav-item"><span class="nnav-link p-0 mb-1 text-gray-600">전화 0000-00000</span></li>'
-			+ '        <li class="nav-item"><a class="nav-link p-0 mb-1 text-gray-600" href="/index">이메일 codeblue@codeblue.com</a></li>'
+			+ '        <li class="nav-item"><span class="nnav-link p-0 mb-1  ">전화 0000-00000</span></li>'
+			+ '        <li class="nav-item d-flex">이메일&nbsp;<a class="nav-link p-0 mb-1" href="mailto:creativecloud@kakao.com" target="_top"">creativecloud@kakao.com</a></li>'
 			+ '    </ul>'
 			+ '</div>'
 			+ '<div class="col-sm-3">'				
 			+ '	<div class="copyright text-right my-auto">'
 			+ '		<img src="img/codeBlue.png" width="130px"><br>'
 			+ '		<p class="mt-1">Copyright © CodeBlue Corp. <br>All Rights Reserved.</p>'
-			+ '		<a class="nav-link" href="https://github.com/crazy-oung/codeBlue"><i class="far fa-comment-github mx-1"></i>GitHub</a>'
+			+ '		<a class="nav-link font-weight-bold" href="https://github.com/crazy-oung/codeBlue"><i class="fab fa-github-alt mx-1"></i>GitHub</a>'
 			+ '	</div>'
 			+ '</div>'
 			+ '</div>'
@@ -110,6 +132,7 @@ $(document).ready(function() {
 										+'</li>');
 				return;
 			}
+			
 			$("#userInfo").empty();
 			$("#userInfo").append('<li class="nav-item dropdown no-arrow"><a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
 						+ '<span class="mr-2 d-none d-lg-inline text-gray-600 small" id="userName">'
@@ -118,7 +141,7 @@ $(document).ready(function() {
 						+ '<img class="img-profile rounded-circle" src="/img/profile.svg">'
 						+ '</a>'
 						+ '<div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">'
-						+ '<a class="dropdown-item" href="/userOne">'
+						+ '<a class="dropdown-item" href="/userOne?userId='+json.userId+'">'
 						+ '<i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>프로필</a>'
 						+ '<a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>설정</a>'
 						+ '<a class="dropdown-item" href="#"><i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>활동로그</a>'
@@ -171,13 +194,15 @@ $(document).ready(function() {
 			lastPage = json.lastPage;
 			BtnShow(currentPage,lastPage);
 			$(json.list).each(function(index,item){
-				html = append(item);
+				html = appendItem(item);
 				$("#questionBoard").append(html);
 			})
 		}
 	})	
-	
-	
+
+		
+		
+		
 	//이전버튼
 	$("#prevBtn").click(function(){
 		$.ajax({
@@ -191,7 +216,7 @@ $(document).ready(function() {
 				BtnShow(currentPage,lastPage);
 				$("#questionBoard").empty();
 				$(json.list).each(function(index,item){
-					html = append(item);
+					html = appendItem(item);
 					$("#questionBoard").append(html);
 				})
 			}
@@ -211,7 +236,7 @@ $(document).ready(function() {
 				BtnShow(currentPage,lastPage);
 				$("#questionBoard").empty();
 				$(json.list).each(function(index,item){
-					html = append(item);
+					html = appendItem(item);
 					$("#questionBoard").append(html);
 				})
 			}
@@ -249,7 +274,7 @@ $(document).ready(function() {
 				BtnShow(currentPage,lastPage);
 				$("#questionBoard").empty();
 				$(json.list).each(function(index,item){
-					html = append(item);							
+					html = appendItem(item);							
 					$("#questionBoard").append(html);
 				})
 			}
@@ -277,8 +302,9 @@ $(document).ready(function() {
 	});
 	
 }) // document ready end
+
 // 리스트 출력
-function append(item){
+function appendItem(item){
 	return "<tr>"+
 	"<td width='9%' class=><div class='text-center pt-1'>"+item.voteCount+"<br>"+
 	"<small class='my-1'>추천</small>"+
@@ -289,7 +315,7 @@ function append(item){
 	"<td><a class='nav-link' href='/questionBoardOne?questionId="+item.questionId+"'>"+item.questionTitle+"</a>" +
 	"<div class='d-flex justify-content-between'>"+
 	"<small class='p-2'>태그 잔뜩 나열</small>"+
-	"<small class='p-2'>uploaded at"+item.questionDatetime +" by " + item.user.userName+"</small></div>"
+	"<small class='p-2'>uploaded at"+item.questionDatetime +" by <a href='/userOne?userId="+item.user.userId+"'>"+ item.user.userName+"</small></div>"
 	+"</td></tr>";
 }
 

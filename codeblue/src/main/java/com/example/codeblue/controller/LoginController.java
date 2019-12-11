@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.example.codeblue.service.AdminService;
 import com.example.codeblue.service.UserService;
 import com.example.codeblue.vo.Manager;
 import com.example.codeblue.vo.User;
@@ -15,6 +16,7 @@ import com.example.codeblue.vo.User;
 @Controller
 public class LoginController {
 	@Autowired UserService userService;
+	@Autowired AdminService adminService;
 	
 	@GetMapping("/accountRecovery")
 	public String getResetPasswrod() { 
@@ -43,7 +45,6 @@ public class LoginController {
 		System.out.println("::: post - login :::"); 
 		System.out.println(user); 
 		
-		
 		// 세션 검사
 		if(session.getAttribute("loginUser") != null) {
 			System.out.println("already loged in Back to user Home");
@@ -51,9 +52,9 @@ public class LoginController {
 		}  
 		
 		// 매니저 검사
-		Manager loginManager = userService.verifyManager(user);
+		Manager loginManager = adminService.verifyManager(user);
 		if(loginManager != null) {
-			System.out.println("manager Login"); 
+			System.out.println("manager Login-->"); 
 			session.setAttribute("loginManager", loginManager);
 			session.setAttribute("authority", "manager");
 			return "/codeblue/admin/home";

@@ -31,6 +31,14 @@ import com.example.codeblue.vo.ServiceCategory;
 public class AdminRestController {
 	@Autowired private AdminService adminService;
 	
+	// 관리자 정보 가져오기
+	@GetMapping("/rest/getLoginManager")
+	public Manager getLoginUser(HttpSession session) {
+		System.out.println("::: get - getLoginManager :::"); 
+		System.out.println(session.getAttribute("loginManager"));
+		return (Manager) session.getAttribute("loginManager");
+	}
+	
 	//답변 상세정보
 	@PostMapping("/rest/getAnswerOne")
 	public Answer getAnswerOne(@RequestParam(value="answerId")String answerId) {

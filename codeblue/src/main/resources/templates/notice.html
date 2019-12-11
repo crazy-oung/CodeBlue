@@ -33,68 +33,76 @@
 			<div class="row"> 
 			
 				<!-- Side Bar -->
-				<div class="col-sm-1 p-0 " style="border-right: 1px solid #d9d9d9;">
-					<nav class="navbar pl-0 sticky-container">
-						<div style="margin-top: 70px">
-							<ul class="nav flex-column">
-								<li class="pl-0"><small>질문</small></li> 
-								<li class="nav-item pl-1"><a class="nav-link pl-2 font-weight-bold pt-1 pb-0" href="/">today</a></li> 
-								<li class="nav-item pl-1"><a class="nav-link pl-2 text-danger font-weight-bold pt-1 pb-0" href="/">hot 🔥</a></li>
-								<li class="nav-item pl-1"><a class="nav-link pl-2 text-warning font-weight-bold pt-1 pb-0" href="/">help!</a></li>
-								<li class="nav-item pl-1"><a class="nav-link pl-2 text-success font-weight-bold pt-1 pb-0" href="/">ongoing</a></li>
-								<li class="mt-2"><small>조회</small></li> 
-								<li class="nav-item"><a class="nav-link text-dark pl-2 pt-1 pb-0" href="/">유저</a></li>
-								<li class="nav-item"><a class="nav-link text-dark pl-2 pt-1 pb-0" href="/">태그</a></li>
-								<li class="nav-item"><a class="nav-link text-dark pl-2 pt-1 pb-0" href="/">랭킹</a></li>
-							</ul>
-						</div> 
-					</nav>
+				<div class="col-sm-1 p-0 " style="border-right: 1px solid #d9d9d9;" id="leftSideBar">
 				</div>
 				<!-- Side Bar End -->
 				
 				<!-- Page Content -->
-				<div class="col-sm-8">
+				<div class="col-sm-11">
+				
 					<!-- Page Heading -->
-					<div class="d-sm-flex align-items-center justify-content-between mb-4" style="margin-top: 80px">
-						<h4 class="text-gray-800 mb-0">공 지 사 항</h4>
+					<div class="d-sm-flex align-items-center justify-content-between mb-2 mt-5 pt-5">
+						<h2 class="text-gray-800 font-weight-bold mx-3 mt-2">공지사항 💌</h2>
 					</div><!-- page Heading End -->
-					<hr>
+					
 					<!-- 공지사항 리스트 -->
 					<div>
-						
 						<table class="table table-hover">
-							<thead align="center">
+							<thead class="text-center">
 								<tr>
-									<th>번호</th>
 									<th>제목</th>
-									<th>날짜</th>
+									<th width="20%">날짜</th>
 								</tr>
 							</thead>
-							<tbody id="noticeList" align="center">
+							<tbody id="noticeList">
 
 							</tbody>
 						</table>
 						<button type="button" id="prevBtn" class="btn ml-1 btn-primary">이전</button>
 						<button type="button" id="nextBtn" class="btn ml-1 btn-primary">다음</button>
 						
-						<div align="right">
-						<span class="page-numbers desc">per page : </span>
-							<button id="rowPerPageBtn1" type="button" class="btn btn-primary-sm" value="15">15</button>
-						    <button id="rowPerPageBtn2" type="button" class="btn btn-primary-sm" value="30">30</button>
-						    <button id="rowPerPageBtn3" type="button" class="btn btn-primary-sm" value="50">50</button>
-					    </div>
+						<p align="right">
+							<span class="page-numbers desc">페이지당 글수  </span>
+							<button id="rowPerPageBtn1" type="button" class="btn btn-outline-primary btn-sm" value="15">15</button>
+						    <button id="rowPerPageBtn2" type="button" class="btn btn-outline-primary btn-sm" value="30">30</button>
+						    <button id="rowPerPageBtn3" type="button" class="btn btn-outline-primary btn-sm" value="50">50</button>
+					    </p>
 					</div>
 				</div>
 				<!-- Page Content End -->
 	
-			</div>
+			</div><!-- row end -->
 			
 		</div> 
-
+	
 	<!-- Footer -->
 	<div id="footer"></div>
 	<!-- End of Footer -->
+	
+<!-- ETC -->
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded bg-primary" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
 
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">로그아웃 하시겠습니까?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">로그아웃 하고 싶으시면 아래 로그아웃 버튼을 클릭해주세요!</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+          <a class="btn btn-primary" href="/logout">로그아웃</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
 	<!-- Bootstrap core JavaScript-->
 	<script src="vendor/jquery/jquery.min.js"></script>
@@ -148,20 +156,8 @@ $(document).ready(function() {
 				currentPage = json.currentPage;
 				lastPage = json.lastPage;
 				BtnShow(currentPage, lastPage);
-				let html;
 				$(json.list).each(function(index,item){
-					html="<tr><td>";
-					html += item.noticeId;
-					html += "</td><td>";
-					html += "<a href='/noticeOne?noticeId=";
-					html += item.noticeId;
-					html += "'>";
-					html += item.noticeTitle;
-					html += "</a>"
-					html += "</td><td>";
-					html += item.noticeDatetime;
-					html += "</td></tr>";
-					$("#noticeList").append(html);
+					$("#noticeList").append(appendItem(item));
 				});
 			}
 		})
@@ -180,20 +176,8 @@ $(document).ready(function() {
 				currentPage = json.currentPage;
 				lastPage = json.lastPage;
 				BtnShow(currentPage, lastPage);
-				let html;
 				$(json.list).each(function(index,item){
-					html="<tr><td>";
-					html += item.noticeId;
-					html += "</td><td>";
-					html += "<a href='/noticeOne?noticeId=";
-					html += item.noticeId;
-					html += "'>";
-					html += item.noticeTitle;
-					html += "</a>"
-					html += "</td><td>";
-					html += item.noticeDatetime;
-					html += "</td></tr>";
-					$("#noticeList").append(html);
+					$("#noticeList").append(appendItem(item));
 				});
 			}
 		})
@@ -207,20 +191,8 @@ $(document).ready(function() {
 			lastPage = json.lastPage;
 			BtnShow(currentPage, lastPage);
 			console.log(json);
-			let html;
 			$(json.list).each(function(index,item){
-				html="<tr><td>";
-				html += item.noticeId;
-				html += "</td><td>";
-				html += "<a href='/noticeOne?noticeId=";
-				html += item.noticeId;
-				html += "'>";
-				html += item.noticeTitle;
-				html += "</a>"
-				html += "</td><td>";
-				html += item.noticeDatetime;
-				html += "</td></tr>";
-				$("#noticeList").append(html);
+				$("#noticeList").append(appendItem(item));
 			});
 			
 		}
@@ -240,6 +212,7 @@ $(document).ready(function() {
 			$("#nextBtn").show();
 		}
 	}
+	
 	function rowPerPageShow(rowPerPage) {
 		console.log("rowPerPageShow : ", rowPerPage);
 		$.ajax({
@@ -252,25 +225,25 @@ $(document).ready(function() {
 				currentPage = json.currentPage;
 				lastPage = json.lastPage;
 				BtnShow(currentPage, lastPage);
-				let html;
 				$(json.list).each(function(index,item){
-					html="<tr><td>";
-					html += item.noticeId;
-					html += "</td><td>";
-					html += "<a href='/noticeOne?noticeId=";
-					html += item.noticeId;
-					html += "'>";
-					html += item.noticeTitle;
-					html += "</a>"
-					html += "</td><td>";
-					html += item.noticeDatetime;
-					html += "</td></tr>";
-					$("#noticeList").append(html);
+					$("#noticeList").append(appendItem(item));
 				});
 			}
 		})
 	}
 	
+	function appendItem(item){
+		html="<tr><td class='px-3'>";
+		html += "<a class='nav-link p-0' href='/noticeOne?noticeId=";
+		html += item.noticeId;
+		html += "'>";
+		html += item.noticeTitle;
+		html += "</a>"
+		html += "</td><td class='text-center'>";
+		html += item.noticeDatetime;
+		html += "</td></tr>";
+		return html;
+	}
 	
 </script>
 </html>

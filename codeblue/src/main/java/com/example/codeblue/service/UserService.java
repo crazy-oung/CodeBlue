@@ -22,7 +22,6 @@ public interface UserService {
 	public int addQuestion(QuestionBoard questionBoard);
 	public User verifyUser(User user); 
 	public String getUserIdForCheck(User user); 
-	public Manager verifyManager(User user);
 	public int addUser(User user); 
 	public int addExpert(Expert expert); 
 	

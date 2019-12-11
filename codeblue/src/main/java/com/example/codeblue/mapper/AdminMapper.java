@@ -133,4 +133,7 @@ public interface AdminMapper {
 	public int deleteFaq(int faqId);
 	// FAQ 수정하기
 	public int updateFaq(FaqBoard faqBoard);
+	// 관리자 정보 확인
+	public Manager selectManagerId(User user);
+	
 }
