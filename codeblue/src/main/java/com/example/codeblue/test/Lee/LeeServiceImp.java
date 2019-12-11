@@ -44,6 +44,8 @@ public class LeeServiceImp implements LeeService{
 		System.out.println(leeMapper.selectQuestionCommentList(userId));
 		return leeMapper.selectQuestionCommentList(userId);
 	}
+	
+	//유저 질문 수 
 	@Override
 	public int questionBoardCount(String userId) {
 		System.out.println(":::UserServiceImp - questionBoardCount:::");
@@ -51,10 +53,27 @@ public class LeeServiceImp implements LeeService{
 		return leeMapper.selectQuestionBoardCount(userId);
 	}
 	
+	//해당 유저 질문수 차트
 	@Override
-	public int getQuestionChart(String userId) {
+	public List<QuestionBoard> getQuestionChart(String userId) {
 		System.out.println("::::UserServiceImp - getQuestionChart");
 		System.out.println("userId"+userId);
 		return leeMapper.selectQuestionChart(userId);
+	}
+	
+	//해당유저 답변 수
+	@Override
+	public int questionCommentCount(String userId) {
+		System.out.println(":::UserServiceImp - selectCommentCount");
+		System.out.println("userId"+userId);
+		return leeMapper.selectQuestionCommentCount(userId);
+	}
+	
+	//해당유저 답변 수 차트
+	@Override
+	public List<QuestionComment> getCommentChart(String userId) {
+		System.out.println(":::UserServiceImp - selectCommentChart");
+		System.out.println("userId"+userId);
+		return leeMapper.selectCommentChart(userId);
 	}	
 }

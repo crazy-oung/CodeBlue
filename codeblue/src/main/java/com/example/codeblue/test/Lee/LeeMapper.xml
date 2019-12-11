@@ -65,6 +65,23 @@
 		<result column="feild_name" property="feildName"></result>
 	</resultMap>
 	
+	<!-- QuestionCount 객체 -->
+	<resultMap type="com.example.codeblue.vo.QuestionCount" id="QuestionCount">
+		<result column="question_date" property="questionDate"></result>
+		<result column="question_month" property="questionMonth"></result>
+		<result column="count" property="questionCount"></result>
+		<result column="feild_id" property="feildId"></result>
+	</resultMap>
+	
+	<!-- 새로만듬 같이 이동시킬것 -->
+	<!-- CommentCount 객체 -->
+	<resultMap type="com.example.codeblue.vo.QuestionCount" id="CommentCount">
+		<result column="question_date" property="questionDate"></result>
+		<result column="question_month" property="questionMonth"></result>
+		<result column="count" property="questionCount"></result>
+		<result column="feild_id" property="feildId"></result>
+	</resultMap>
+	
 	<!-- 해당유저 질문게시글 출력 -->
 	<select id="selectQuestionBoardList" resultMap="QuestionBoard" parameterType="String">
 		SELECT 
@@ -77,11 +94,11 @@
 		WHERE 
 			u.user_id = #{userId} 
 		ORDER BY qb.question_datetime DESC  
-		LIMIT 0, 10;
+		LIMIT 0, 6;
 	</select>
 	
 	<!-- 해당유저 답글 리스트 출력 -->
-	<select id="selectQuestionCommentList" parameterType="String" resultMap="QuestionComment">
+	<select id="selectQuestionCommentList" resultMap="QuestionComment" parameterType="String" >
 		SELECT	
 			qc.question_comment_id,
 			u.user_id,
@@ -91,6 +108,7 @@
 		FROM question_comment qc INNER JOIN user u 
 		ON qc.user_id = u.user_id AND u.user_id = #{userId} 
 		ORDER BY qc.question_comment_datetime DESC 
+		LIMIT 0,6
 	</select>
 	
 	<!-- 회원 상세정보 -->
@@ -118,13 +136,31 @@
 		WHERE u.user_id = #{userId}
 	</select>
 	
-	<!-- 해당유저 연도별 게시글 수 차트 -->
-	<select id="selectQuestionChart" resultMap="QuestionBoard" parameterType="String">
-		SELECT YEAR(q.question_datetime), 
+	<!-- 해당유저 답변수 -->
+	<select id="selectQuestionCommentCount" resultType="int" parameterType="String">
+		SELECT 
 			COUNT(*)
-		FROM question_board q INNER JOIN user u
-		ON q.user_id = u.user_id
+		FROM question_comment qc Inner Join user u
+		ON qc.user_id = u.user_id
 		WHERE u.user_id = #{userId}
-		GROUP BY YEAR(q.question_datetime)
 	</select>
+	
+	
+	<!-- 해당유저 월별 게시글 수 차트 -->
+	<select id="selectQuestionChart" resultMap="QuestionCount" parameterType="String">
+	SELECT MONTH(question_datetime) AS question_month, IFNULL(COUNT(*), 0) as count
+	      FROM ( SELECT question_datetime, user_id from question_board WHERE YEAR(question_datetime) = YEAR(NOW()) )t INNER JOIN user u 
+	      ON u.user_id = t.user_id
+	      WHERE u.user_id = #{userId}
+    GROUP BY question_month
+	</select>
+	
+	<!-- 해당유저 월별 답변 수 차트 -->
+	<select id="selectCommentChart" resultMap="CommentCount" parameterType="String">
+		SELECT MONTH(question_comment_datetime) AS question_month, IFNULL(COUNT(*), 0) as count
+		      FROM ( SELECT question_comment_datetime, user_id from question_comment WHERE YEAR(question_comment_datetime) = YEAR(NOW()) )t INNER JOIN user u 
+		      ON u.user_id = t.user_id
+		      WHERE u.user_id = #{userId}
+	    GROUP BY question_month
+    </select>
 </mapper>

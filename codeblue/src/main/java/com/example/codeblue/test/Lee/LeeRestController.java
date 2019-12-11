@@ -23,6 +23,7 @@ public class LeeRestController {
 		return leeService.getUserOne(userId);
 	}
 
+	//유저 질문 리스트
 	@PostMapping("/rest/profileQuestionBoard")
 	public List<QuestionBoard> postProfileQuestionBoard(@RequestParam(value="userId")String userId){
 		System.out.println(":::post - postProfileQuestionBoard:::");
@@ -30,6 +31,7 @@ public class LeeRestController {
 		return leeService.getQuestionBoard(userId);
 	}
 	
+	//유저 답변 리스트
 	@PostMapping("/rest/profileQuestionComment")
 	public List<QuestionComment> postProfileQuestionComment(@RequestParam(value="userId")String userId){
 		System.out.println(":::post - postProfile:::");
@@ -37,6 +39,7 @@ public class LeeRestController {
 		return leeService.getQuestionComment(userId);
 	}
 	
+	//유저 질문 수
 	@PostMapping("/rest/QuestionCount")
 	public int postQuestionCount(@RequestParam(value="userId")String userId){
 		System.out.println(":::post - postQuestionCount:::");
@@ -44,10 +47,27 @@ public class LeeRestController {
 		return leeService.questionBoardCount(userId);
 	}
 	
+	//유저 질문 수 차트
 	@PostMapping("/rest/questionChart")
-	public int postQuestionChart(@RequestParam(value="userId")String userId) {
+	public List<QuestionBoard> postQuestionChart(@RequestParam(value="userId")String userId) {
 		System.out.println(":::post - postQuestionChart :::");
 		System.out.println("userId"+userId);
 		return leeService.getQuestionChart(userId);
+	}
+	
+	//유저 답변 수
+	@PostMapping("/rest/CommentCount")
+	public int postCommentCount(@RequestParam(value="userId")String userId){
+		System.out.println(":::post - postCommentCount:::");
+		System.out.println("userId"+userId);
+		return leeService.questionCommentCount(userId);
+	}
+	
+	//유저 답변 수 차트
+	@PostMapping("/rest/commentChart")
+	public List<QuestionComment> postCommentChart(@RequestParam(value="userId")String userId){
+		System.out.println(":::post - postCommentChart:::");
+		System.out.println("userId"+userId);
+		return leeService.getCommentChart(userId);
 	}
 }

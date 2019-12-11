@@ -30,7 +30,7 @@
 	<!-- End of Topbar -->
 
 		<!-- Begin Page Content -->
-		<div class="container" height="100%">
+		<div class="container">
 			<div class="row"> 
 			
 				<!-- Side Bar -->
@@ -54,49 +54,106 @@
 				<!-- Side Bar End -->
 				
 				<!-- Page Content -->
-				<div class="col-sm-10">
+				<div class="col-sm-11">
 					
 					<!-- Page Heading -->
-					<div class="d-sm-flex align-items-center justify-content-between mb-4" style="margin-top: 80px">
+					<div class="mb-4" style="margin-top: 80px">
 						<ul class="nav nav-tabs">
 						    <li class="nav-item">
-						      <a class="nav-link active" href="#"> profile</a>
+						      <a class="nav-link" href="#">프로필</a>
 						    </li>
 						    <li class="nav-item">
-						      <a class="nav-link" href="#">Link</a>
+						      <a class="nav-link active" href="#">활동</a>
 						    </li>
-						</ul>		
+						</ul>	
+						<div id="user" style="text-align: right;"></div>
+						  	
 					</div>
 					<!-- page Heading End -->
 
-					<!-- 1/4 (user)-->
-					<div>
-						<div>통계</div>
+					<!-- 유저 통계 -->
+					<div class="row">
+						<div class="col-sm-6 ">
+							<div class="card mb-4 d-flex justify-content-between p-4" style="position: relative; height: 20vh">
+								<div class="row">
+									<div class="col-sm-4">
+										<h1 class="h3 font-weight-bold text-dark NotoSans">월별<br> 질문 수</h1>
+									</div>
+									<!-- Card Body -->
+									<div class="col-sm-8">
+										<div style="position: relative; height: 15vh">
+											<canvas id="monthlyQuestionCountLineChart"></canvas>
+										</div>
+									</div>
+								</div>
+							</div>		
+						</div>
+						<div class="col-sm-6 ">
+							<div class="card mb-4 d-flex justify-content-between p-4" style="position: relative; height: 20vh">
+								<div class="row">
+									<div class="col-sm-4">
+										<h1 class="h3 font-weight-bold text-dark NotoSans">월별<br> 답변 수</h1>
+									</div>
+									<!-- Card Body -->
+									<div class="col-sm-8">
+										<div style="position: relative; height: 15vh">
+											<canvas id="monthlyCommentCountLineChart"></canvas>
+										</div>
+									</div>
+								</div>
+							</div>		
+						</div>
+					</div>	
 
+					<!-- 선택리스트 -->
+					<div class="mb-4" style="margin-top: 80px">
+						<ul class="nav nav-tabs">
+						    <li class="nav-item">
+						     	 <a class="nav-link active" href="#">요약</a>
+						    </li>
+						    <li class="nav-item">
+						     	 <a class="nav-link" href="#" id="active">답변</a>
+						    </li>
+						    <li class="nav-item">
+						    	  <a class="nav-link" href="#" id="active">질문</a>
+						    </li>
+						    <li class="nav-item">
+						     	 <a class="nav-link" href="/userOneActiviy" id="active">태그</a>
+						    </li>
+						</ul>		
 					</div>
-					<hr>
-					<div> 선랙리스트</div>
-					<hr>
+					
+					<!-- 위 버튼을 클릭하면 새로 출력하기 위한 div -->
+					<div>
 					<!-- 2/4 -->
 					<div class="row">
 						<div class="col-md-6">
-							<label>question</label><h5 id="questionCount"></h5>
-							<div id="questionList"></div>
+							<label>질문</label><label id="questionCount" style="font-size: x-small;"></label>
+							<table class="table table-hover">
+									</thead>
+									<!-- 내 질문/답변 list 출력 -->
+									<tbody id="questionList"></tbody>
+							</table>
 						</div>
 						<div class="col-md-6">
-							<label>reputation</label>
+							<label>기여도</label>
 						</div>
 					</div>
 					<hr>
+					
 					<!-- 3/4 -->
 					<div class="row">
 						<div class="col-md-6">
-							<label>answer</label>
-							<div id="answerList"></div>
+							<label>답변</label><label id="commentCount" style="font-size: x-small;"></label>
+							<table class="table table-hover">
+									<!-- 내 질문/답변 list 출력 -->
+									<tbody id="answerList"></tbody>
+							</table>
 						</div>
 						<div class="col-md-6">
-							<label>tag</label>
+							<label>태그</label>
 						</div>
+					</div>
 					</div>
 					<hr>
 					
@@ -126,8 +183,6 @@
   	<script src="js/codeBlueUser.js"></script>
 	
 </body>
-<!-- 구글차트 js -->
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
 
 //파라메터 정보가 저장될 오브젝트
@@ -162,7 +217,7 @@ $(document).ready(function() {
 			$(json).each(function(index, item){
 			
 			let	introduce = "<div><h2>"+item.userName+"</h2></div>";
-				$("#userName").append(introduce);
+				$("#user").append(introduce);
 			});
 		}
 	});
@@ -175,11 +230,7 @@ $(document).ready(function() {
 		success : function(json){
 			console.log(json);
 			$("#list").empty();
-			$("#headlist").empty();
-			let boardHead  = "<tr><th>질문 번호</th>";
-				boardHead += "<th>질문 제목</th>";
-				boardHead += "<th>질문 날짜</th></tr>";
-				$("#headlist").append(boardHead);
+			
 			$(json).each(function(index, item){
 				
 			let board =  "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionId+"</td>";
@@ -199,22 +250,32 @@ $(document).ready(function() {
 		success : function(json){
 			console.log(json);
 			$("#list").empty();
-			$("#headlist").empty();
-			let commentHead  = "<tr><th>댓글 번호</th>";
-				commentHead += "<th>댓글 내용</th>";
-				commentHead += "<th>댓글 날짜</th></tr>";
-				$("#headlist").append(commentHead);
+			
 			$(json).each(function(index, item){
 			
-				let comment =  "<tr><td>"+item.questionCommentId+"</td>";
-					comment += "<td>"+item.questionCommentContent+"</td>";
+				let comment =  "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionBoard.questionId+"</td>";
+					comment += "<td><a href='/questionBoardOne?questionId="+item.questionBoard.questionId+"'>"+item.questionCommentContent+"</a></td>";
 					comment += "<td>"+item.questionCommentDatetime+"</td></tr>";
 				$("#answerList").append(comment);
 			});
 		}
 	});
-
 	
+	//답변 수 
+	$.ajax({
+		url : "/rest/CommentCount",
+		method :"post",
+		data : {"userId" : getParam("userId")},
+		success : function(json){
+			console.log(json);
+			$(json).each(function(index, item){
+				$("#commentCount").append(item);
+			})
+		} 
+	
+	})
+	
+	//질문 수
 	$.ajax({
 		url : "/rest/QuestionCount",
 		method :"post",
@@ -225,9 +286,218 @@ $(document).ready(function() {
 				$("#questionCount").append(item);
 			})
 		} 
-	
 	})
+	
+	//해당 유저 월별 질문 차트
+	var lineQuestionctx = document.getElementById("monthlyQuestionCountLineChart"); 
+		var lineQuestionCount = [0,0,0,0,0,0,0,0,0,0,0,0];
+	
+		$.ajax({
+			url:"/rest/questionChart",
+			method:"post",
+			data : {"userId" : getParam("userId")},
+			success : function(json){
+				console.log("chart"+json);			
+				
+				$(json).each(function(index, item){
+					lineQuestionCount[item.questionMonth-1] = item.questionCount;
+				})
+				console.log(lineQuestionCount);
+				yearlyQuestionCountChart.update();
+			},
+		});
+	
+		var yearlyQuestionCountChart = new Chart(lineQuestionctx, {
+			type: 'line',
+			  data: {
+			    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+			    datasets: [{
+			      label: "질문수",
+			      lineTension: 0.3,
+			      backgroundColor: "rgba(78, 115, 223, 0.05)",
+			      borderColor: "rgba(78, 115, 223, 1)",
+			      pointRadius: 3,
+			      pointBackgroundColor: "rgba(78, 115, 223, 1)",
+			      pointBorderColor: "rgba(78, 115, 223, 1)",
+			      pointHoverRadius: 3,
+			      pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+			      pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+			      pointHitRadius: 10,
+			      pointBorderWidth: 2,
+			      data: lineQuestionCount,
+			    }],
+			  },
+			  options: {
+			    maintainAspectRatio: false,
+			    layout: {
+			      padding: {
+			        left: 10,
+			        right: 25,
+			        top: 25,
+			        bottom: 0
+			      }
+			    },
+			    scales: {
+			      xAxes: [{
+			        time: {
+			          unit: 'date'
+			        },
+			        gridLines: {
+			          display: false,
+			          drawBorder: false
+			        },
+			        ticks: {
+			          maxTicksLimit: 7
+			        }
+			      }],
+			      yAxes: [{
+			        ticks: {
+			          maxTicksLimit: 5,
+			          padding: 10,
+			          beginAtZero: true
+			        },
+			        gridLines: {
+			          color: "rgb(234, 236, 244)",
+			          zeroLineColor: "rgb(234, 236, 244)",
+			          drawBorder: false,
+			          borderDash: [2],
+			          zeroLineBorderDash: [2]
+			        }
+			      }],
+			    },
+			    legend: {
+			      display: false
+			    },
+			    tooltips: {
+			      backgroundColor: "rgb(255,255,255)",
+			      bodyFontColor: "#858796",
+			      titleMarginBottom: 10,
+			      titleFontColor: '#6e707e',
+			      titleFontSize: 14,
+			      borderColor: '#dddfeb',
+			      borderWidth: 1,
+			      xPadding: 15,
+			      yPadding: 15,
+			      displayColors: false,
+			      intersect: false,
+			      mode: 'index',
+			      caretPadding: 10,
+			      callbacks: {
+			        label: function(tooltipItem, chart) {
+			          var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+			          return datasetLabel + ': ' + tooltipItem.yLabel+"개";
+			        }
+			      }
+			    },
+			  }
+		});	
+
+		//해당 유저 월별 답변 차트
+		var lineCommentctx = document.getElementById("monthlyCommentCountLineChart"); 
+			var lineCommentCount = [0,0,0,0,0,0,0,0,0,0,0,0];
 		
+			$.ajax({
+				url:"/rest/commentChart",
+				method:"post",
+				data : {"userId" : getParam("userId")},
+				success : function(json){
+					console.log("chart"+json);			
+					
+					$(json).each(function(index, item){
+						lineCommentCount[item.questionMonth-1] = item.questionCount;
+					})
+					console.log(lineCommentCount);
+					yearlyCommentCountChart.update();
+				},
+			});
+		
+			var yearlyCommentCountChart = new Chart(lineCommentctx, {
+				type: 'line',
+				  data: {
+				    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+				    datasets: [{
+				      label: "질문수",
+				      lineTension: 0.3,
+				      backgroundColor: "rgba(78, 115, 223, 0.05)",
+				      borderColor: "rgba(78, 115, 223, 1)",
+				      pointRadius: 3,
+				      pointBackgroundColor: "rgba(78, 115, 223, 1)",
+				      pointBorderColor: "rgba(78, 115, 223, 1)",
+				      pointHoverRadius: 3,
+				      pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+				      pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+				      pointHitRadius: 10,
+				      pointBorderWidth: 2,
+				      data: lineCommentCount,
+				    }],
+				  },
+				  options: {
+				    maintainAspectRatio: false,
+				    layout: {
+				      padding: {
+				        left: 10,
+				        right: 25,
+				        top: 25,
+				        bottom: 0
+				      }
+				    },
+				    scales: {
+				      xAxes: [{
+				        time: {
+				          unit: 'date'
+				        },
+				        gridLines: {
+				          display: false,
+				          drawBorder: false
+				        },
+				        ticks: {
+				          maxTicksLimit: 7
+				        }
+				      }],
+				      yAxes: [{
+				        ticks: {
+				          maxTicksLimit: 5,
+				          padding: 10,
+				          beginAtZero: true
+				        },
+				        gridLines: {
+				          color: "rgb(234, 236, 244)",
+				          zeroLineColor: "rgb(234, 236, 244)",
+				          drawBorder: false,
+				          borderDash: [2],
+				          zeroLineBorderDash: [2]
+				        }
+				      }],
+				    },
+				    legend: {
+				      display: false
+				    },
+				    tooltips: {
+				      backgroundColor: "rgb(255,255,255)",
+				      bodyFontColor: "#858796",
+				      titleMarginBottom: 10,
+				      titleFontColor: '#6e707e',
+				      titleFontSize: 14,
+				      borderColor: '#dddfeb',
+				      borderWidth: 1,
+				      xPadding: 15,
+				      yPadding: 15,
+				      displayColors: false,
+				      intersect: false,
+				      mode: 'index',
+				      caretPadding: 10,
+				      callbacks: {
+				        label: function(tooltipItem, chart) {
+				          var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+				          return datasetLabel + ': ' + tooltipItem.yLabel+"개";
+				        }
+				      }
+				    },
+				  }
+			});	
+
+	//----->차트 끝
+	
 });
 </script>
 </html>

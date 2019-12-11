@@ -54,16 +54,16 @@
 				<!-- Side Bar End -->
 				
 				<!-- Page Content -->
-				<div class="col-sm-10">
+				<div class="col-sm-11">
 					
 					<!-- Page Heading -->
-					<div class="d-sm-flex align-items-center justify-content-between mb-4" style="margin-top: 80px">
+					<div class="mb-4" style="margin-top: 80px">
 						<ul class="nav nav-tabs">
 						    <li class="nav-item">
-						      <a class="nav-link active" href="#">profile</a>
+						      <a class="nav-link active" href="#">프로필</a>
 						    </li>
 						    <li class="nav-item">
-						      <a class="nav-link" href="/userOneActive" id="active">active</a>
+						      <a class="nav-link" href="/userOneActiviy" id="active">활동</a>
 						    </li>
 						</ul>		
 					</div><!-- page Heading End -->
@@ -265,7 +265,7 @@ $(document).ready(function() {
 			$(json).each(function(index, item){
 			
 				let comment =  "<tr><td>"+item.questionCommentId+"</td>";
-					comment += "<td>"+item.questionCommentContent+"</td>";
+					comment += "<td><a href='/questionBoardOne?questionId="+item.questionBoard.questionId+"'>"+item.questionCommentContent+"</a></td>";
 					comment += "<td>"+item.questionCommentDatetime+"</td></tr>";
 				$("#list").append(comment);
 			});
@@ -280,12 +280,12 @@ $(document).ready(function() {
 		success : function(json){
 			console.log(json);
 			$(json).each(function(index, item){
-				$("#count").append(item);
+				$("count").append(item);
 			})
 		} 
 	
 	})
-	
+		
 	$("#active").click(function(){
 		$.ajax({
 			url : "/userOneActive",
