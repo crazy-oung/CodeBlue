@@ -69,4 +69,8 @@ public interface UserMapper {
 	public List<Answer> selectAnswerList(int questionId);
 	//질문 답변 댓글 리스트 가져오기
 	public List<AnswerComment> selectAnswerCommentList(int answerId);
+	// 유저 유저조회
+	public List<User> selectUserList(Page Page);
+	// 유저 유저 수
+	public int selectUserCount(Page Page);
 }

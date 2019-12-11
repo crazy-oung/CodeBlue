@@ -31,13 +31,13 @@ public class UserServiceImpl implements UserService{
 	//질문 답변 추가하기
 	@Override
 	public int addAnswer(Answer answer) {
-		System.out.println("::: LjhServiceImpl - addAnswer :::");
+		System.out.println("::: UserServiceImpl - addAnswer :::");
 		return userMapper.insertAnswer(answer);
 	}
 	// 질문 답변글 리스트 가져오기
 	@Override
 	public List<Answer> getAnswerList(int questionId) {
-		System.out.println("::: LjhServiceImpl - getAnswerList :::");
+		System.out.println("::: UserServiceImpl - getAnswerList :::");
 		List<Answer> list =userMapper.selectAnswerList(questionId);
 		System.out.println(list.toString());
 		return userMapper.selectAnswerList(questionId);
@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService{
 	// 질문 답변 댓글 리스트 가져오기
 	@Override
 	public List<AnswerComment> getAnswerCommentList(int answerId) {
-		System.out.println("::: LjhServiceImpl - getAnswerCommentList :::");
+		System.out.println("::: UserServiceImpl - getAnswerCommentList :::");
 		return userMapper.selectAnswerCommentList(answerId);
 	}
 	@Override
@@ -268,5 +268,35 @@ public class UserServiceImpl implements UserService{
 
 		return userMapper.hospitalOne(hospitalId);
 	}
-	
+	// 유저 조회
+	@Override
+	public Map<String, Object> getUserList(int currentPage, int rowPerPage, String searchWord) {
+		System.out.println("::: UserServiceImpl - selectUserList :::");
+		int beginRow = (currentPage-1)*rowPerPage;
+		// page에 담아서 mapper의 parm으로 사용
+		Page page = new Page();
+		page.setBeginRow(beginRow);
+		page.setRowPerPage(rowPerPage);
+		page.setSearchWord(searchWord);
+		System.out.println(page.toString());
+		// 전체행의 수
+		int totalRow = userMapper.selectUserCount(page);
+		System.out.println("totalRow : "+totalRow);
+		// 마지막 페이지 구하기
+		int lastPage = 0;
+		if(totalRow%rowPerPage != 0) {
+			lastPage = (totalRow/rowPerPage)+1;
+		} else {
+			lastPage = totalRow/rowPerPage;
+		}
+		System.out.println("lastPage : "+lastPage);
+		// 리스트 출력
+		List<User> list = userMapper.selectUserList(page);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", list);
+		map.put("currentPage", currentPage);
+		map.put("totalRow", totalRow);
+		map.put("lastPage", lastPage);
+		return map;
+	}
 }

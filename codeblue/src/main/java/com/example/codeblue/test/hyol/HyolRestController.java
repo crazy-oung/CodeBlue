@@ -1,5 +1,6 @@
 package com.example.codeblue.test.hyol;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +14,7 @@ import com.example.codeblue.service.AdminService;
 public class HyolRestController {
 
 	@Autowired private HyolService hyolService;
-	// 회원 조회 리스트
+		// 회원 조회 리스트
 		@PostMapping("/rest/adminUserListTest")
 		public Map<String,Object> adminUserList(@RequestParam(value="currentPage", defaultValue = "1")int currentPage,
 				 @RequestParam(value="rowPerPage", defaultValue = "10")int rowPerPage,
@@ -28,7 +29,7 @@ public class HyolRestController {
 			System.out.println("fromDate : "+fromDate);
 			return hyolService.getAdminUserList(currentPage, rowPerPage,searchWord, toDate, fromDate);
 		}
-	// 회원 삭제(y->n)
+		// 회원 삭제(y->n)
 		@PostMapping("/rest/adminUserRemoveTest")
 		public String adminUserRemove(@RequestParam(value="checkBoxArr") List<String> checkBoxArr) {
 			System.out.println("::: post - /rest/adminUserRemoveTest :::");
@@ -37,7 +38,7 @@ public class HyolRestController {
 			System.out.println("1이면 성공 : "+checking);
 			return "adminUserListTest";
 		}
-	// 탈퇴회원 조회 리스트
+		// 탈퇴회원 조회 리스트
 		@PostMapping("/rest/adminWithdrawUserListTest")
 		public Map<String,Object> adminWithdrawUserList(@RequestParam(value="currentPage", defaultValue = "1")int currentPage,
 				 @RequestParam(value="rowPerPage", defaultValue = "10")int rowPerPage,
@@ -61,7 +62,7 @@ public class HyolRestController {
 			System.out.println("1이면 성공 : "+checking);
 			return "adminUserListTest";
 		}
-	// 전문가 유저 조회
+		// 전문가 유저 조회
 		@PostMapping("/rest/adminExpertUserListTest")
 		public Map<String,Object> adminExpertUserList(@RequestParam(value="currentPage", defaultValue = "1")int currentPage,
 				 @RequestParam(value="rowPerPage", defaultValue = "10")int rowPerPage,
@@ -75,5 +76,17 @@ public class HyolRestController {
 			System.out.println("toDate : "+toDate);
 			System.out.println("fromDate : "+fromDate);
 			return hyolService.getAdminExpertUserList(currentPage, rowPerPage,searchWord, toDate, fromDate);
+		}
+		// -------------------------------------------------------유저-----------------------------------------------
+		// 유저 유저 조회
+		@PostMapping("/rest/getUserListTest")
+		public Map<String,Object> getUserList(@RequestParam(value="currentPage", defaultValue = "1")int currentPage,
+				@RequestParam(value="rowPerPage", defaultValue = "36")int rowPerPage,
+				@RequestParam(value="searchWord", required = false)String searchWord) {
+			System.out.println("::: post - /getUserListTest :::");
+			System.out.println("currentPage : "+currentPage);
+			System.out.println("rowPerPage : "+rowPerPage);
+			System.out.println("searchWord : "+searchWord);
+			return hyolService.getUserList(currentPage, rowPerPage,searchWord);
 		}
 }

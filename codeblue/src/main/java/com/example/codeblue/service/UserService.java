@@ -41,4 +41,6 @@ public interface UserService {
 	public List<Answer> getAnswerList(int questionId);
 	// 질문 답변 댓글 리스트 가져오기
 	public List<AnswerComment> getAnswerCommentList(int answerId);
+	// 유저조회
+	public Map<String,Object> getUserList(int currentPage, int rowPerPage, String searchWord);
 }

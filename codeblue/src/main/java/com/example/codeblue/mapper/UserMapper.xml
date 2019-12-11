@@ -309,6 +309,37 @@
 	<update id="updateUserPw" parameterType="com.example.codeblue.vo.User">
 		UPDATE user SET user_pw = #{userPw} WHERE user_id = #{userId}
 	</update>
+	<!-- 유저조회 -->
+	<select id="selectUserList" resultMap="User">
+		select
+			u.user_id,
+			u.user_name,
+			re.region_id,
+			re.region_name,
+			u.user_birthdate,
+			u.user_createtime,
+			ra.rank_id,
+			ra.rank_name,
+			u.user_activity
+		from user u inner join region re INNER JOIN rank ra
+		ON u.region_id = re.region_id AND u.rank_id = ra.rank_id
+		where u.user_activity = 'Y'
+		<if test="searchWord != null">
+			AND user_name like CONCAT('%',#{searchWord},'%')
+		</if>
+		ORDER BY user_createtime DESC
+		LIMIT #{beginRow},#{rowPerPage}
+	</select>
+	<!-- 유저 수 카운팅 -->
+	<select id="selectUserCount" parameterType="com.example.codeblue.vo.Page" resultType="int">
+	select
+		count(*) 
+	from user
+	where user_activity = 'Y'
+	<if test="searchWord != null">
+			AND user_name LIKE CONCAT('%',#{searchWord},'%')
+	</if>
+	</select>
 </mapper>
 
 

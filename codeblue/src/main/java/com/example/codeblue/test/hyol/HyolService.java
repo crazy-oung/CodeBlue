@@ -3,6 +3,8 @@ package com.example.codeblue.test.hyol;
 import java.util.List;
 import java.util.Map;
 
+import javax.print.DocFlavor.STRING;
+
 public interface HyolService {
 
 	// 회원 리스트
@@ -15,4 +17,7 @@ public interface HyolService {
 	public int modifyAdminWithdrawUser(List<String> checkBoxArr);
 	// 전문가회원 리스트
 	public Map<String,Object> getAdminExpertUserList(int currentPage, int rowPerPage, String searchWord, String toDate, String fromDate);
+	// ----------------------------------------------------------------유저---------------------------------------------------
+	// 유저 유저조회
+	public Map<String,Object> getUserList(int currentPage, int rowPerPage, String searchWord);
 }

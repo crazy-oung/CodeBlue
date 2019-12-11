@@ -135,4 +135,35 @@ public class HyolServiceImpl implements HyolService {
 		map.put("fromDate", fromDate);
 		return map;
 	}
+	// -------------------------------------------------------------유저-------------------------------------------------------
+	@Override
+	public Map<String, Object> getUserList(int currentPage, int rowPerPage, String searchWord) {
+		System.out.println("::: UserServiceImpl - selectUserListTest :::");
+		int beginRow = (currentPage-1)*rowPerPage;
+		// page에 담아서 mapper의 parm으로 사용
+		Page page = new Page();
+		page.setBeginRow(beginRow);
+		page.setRowPerPage(rowPerPage);
+		page.setSearchWord(searchWord);
+		System.out.println(page.toString());
+		// 전체행의 수
+		int totalRow = hyolMapper.selectUserCount(page);
+		System.out.println("totalRow : "+totalRow);
+		// 마지막 페이지 구하기
+		int lastPage = 0;
+		if(totalRow%rowPerPage != 0) {
+			lastPage = (totalRow/rowPerPage)+1;
+		} else {
+			lastPage = totalRow/rowPerPage;
+		}
+		System.out.println("lastPage : "+lastPage);
+		// 리스트 출력
+		List<User> list = hyolMapper.selectUserList(page);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", list);
+		map.put("currentPage", currentPage);
+		map.put("totalRow", totalRow);
+		map.put("lastPage", lastPage);
+		return map;
+	}
 }

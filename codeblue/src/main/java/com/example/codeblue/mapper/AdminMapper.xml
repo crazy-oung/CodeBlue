@@ -422,7 +422,8 @@
 		GROUP BY question_id) qc
 		ON q.question_id = qc.question_id
 		LEFT JOIN (SELECT COUNT(*) AS vote_count,question_id FROM
-		question_vote) qv
+		question_vote
+		GROUP BY question_id) qv
 		ON q.question_id = qv.question_id
 		INNER JOIN user u
 		ON u.user_id = q.user_id
@@ -449,7 +450,8 @@
 		GROUP BY question_id) qc
 		ON q.question_id = qc.question_id
 		LEFT JOIN (SELECT COUNT(*) AS vote_count,question_id FROM
-		question_vote) qv
+		question_vote
+		GROUP BY question_id) qv
 		ON q.question_id = qv.question_id
 		INNER JOIN user u
 		ON u.user_id = q.user_id

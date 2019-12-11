@@ -218,5 +218,15 @@ public class UserRestController {
 		
 		return userService.getHospitalOne(hospitalId);
 	}
-	
+	// 유저 조회
+	@PostMapping("/rest/getUserList")
+	public Map<String,Object> getUserList(@RequestParam(value="currentPage", defaultValue = "1")int currentPage,
+			@RequestParam(value="rowPerPage", defaultValue = "36")int rowPerPage,
+			@RequestParam(value="searchWord", required = false)String searchWord) {
+		System.out.println("::: post - /getUserList :::");
+		System.out.println("currentPage : "+currentPage);
+		System.out.println("rowPerPage : "+rowPerPage);
+		System.out.println("searchWord : "+searchWord);
+		return userService.getUserList(currentPage, rowPerPage,searchWord);
+	}
 }

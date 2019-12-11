@@ -86,5 +86,11 @@ public class UserController {
 		System.out.println(":::get - getHospitalOne:::");
 		return "hospitalOne";
 	}
+	// 유저 보기
+	@GetMapping("/users")
+	public String getUserList() {
+		System.out.println("::: get - getUserListTest :::");
+		return "/users";
+	}
 	
 }	

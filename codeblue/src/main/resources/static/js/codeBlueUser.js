@@ -5,7 +5,7 @@ $(document).ready(function() {
 							+ '<a class="navbar-brand text-primary mr-0" href="/today"><img src="/img/codeBlueLogo.png" width="130px"></a> '
 							+ '<a class="btn btn-sm btn-default mx-2 hov-g text-dark" href="/QnA">QnA</a>'
 							+'<div class="input-group">'
-							+'<input type="text" class="form-control  form-control-sm bg-light border-1" placeholder="검색어" id="searchWord">'
+							+'<input type="text" class="form-control  form-control-sm bg-light border-1" placeholder="검색어" id="searchQuestionBoard">'
 							+'<div class="input-group-append">'
 							+'<button class="btn btn-primary btn-sm" type="button" id="search">'
 							+'<i class="fas fa-search fa-sm"></i>'
@@ -264,12 +264,12 @@ $(document).ready(function() {
 		$.ajax({
 			url:"/rest/getBoardList",
 			method:"POST",
-			data:{"searchWord": $("#searchWord").val()},
+			data:{"searchQuestionBoard": $("#searchQuestionBoard").val()},
 			success: function(json){
 				console.log(json);
 				currentPage = json.currentPage;
 				lastPage = json.lastPage;
-				$("#searchWord").val(json.searchWord);
+				$("#searchQuestionBoard").val(json.searchQuestionBoard);
 				searchWord = json.searchWord;
 				BtnShow(currentPage,lastPage);
 				$("#questionBoard").empty();

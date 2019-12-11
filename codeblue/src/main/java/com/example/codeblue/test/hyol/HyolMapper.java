@@ -27,4 +27,9 @@ public interface HyolMapper {
 	public List<User> adminSelectExpertUserList(Page page);
 	// 전문가 회원 수
 	public int adminSelectExpertUserCount(Page page);
+	// -------------------------------------------------------유저-----------------------------------------------
+	// 유저 유저조회
+	public List<User> selectUserList(Page Page);
+	// 유저 유저 수
+	public int selectUserCount(Page Page);
 }

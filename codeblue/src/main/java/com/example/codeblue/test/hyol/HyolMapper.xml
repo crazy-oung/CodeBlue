@@ -64,7 +64,7 @@
 				and u.user_name like CONCAT('%',#{searchWord},'%')
 			</if>
 			<if test="toDate != null and fromDate != null">
-			AND user_createtime &gt;= #{toDate} AND user_createtime &lt;= #{fromDate}
+			AND DATE(user_createtime) &gt;= DATE(#{toDate}) AND DATE(user_createtime) &lt;= DATE(#{fromDate})
 			</if>
 		order by u.user_createtime DESC
 		limit #{beginRow},#{rowPerPage}
@@ -79,7 +79,7 @@
 			AND user_name LIKE CONCAT('%',#{searchWord},'%')
 		</if>
 		<if test="toDate != null and fromDate != null">
-			AND user_createtime &gt;= #{toDate} AND user_createtime &lt;= #{fromDate}
+			AND DATE(user_createtime) &gt;= DATE(#{toDate}) AND DATE(user_createtime) &lt;= DATE(#{fromDate})
 		</if>
 	</select>
 
@@ -111,7 +111,7 @@
 				AND u.user_name like CONCAT('%',#{searchWord},'%')
 			</if>
 			<if test="toDate != null and fromDate != null">
-			AND user_createtime &gt;= #{toDate} AND user_createtime &lt;= #{fromDate}
+			AND DATE(user_createtime) &gt;= DATE(#{toDate}) AND DATE(user_createtime) &lt;= DATE(#{fromDate})
 			</if>
 		ORDER BY u.user_createtime DESC
 		LIMIT #{beginRow},#{rowPerPage}
@@ -126,7 +126,7 @@
 			AND user_name LIKE CONCAT('%',#{searchWord},'%')
 		</if>
 		<if test="toDate != null and fromDate != null">
-			AND user_createtime &gt;= #{toDate} AND user_createtime &lt;= #{fromDate}
+			AND DATE(user_createtime) &gt;= DATE(#{toDate}) AND DATE(user_createtime) &lt;= DATE(#{fromDate})
 		</if>
 	</select>
 	<!-- 회원 복구 -->
@@ -157,7 +157,7 @@
 				and u.user_name like CONCAT('%',#{searchWord},'%')
 			</if>
 			<if test="toDate != null and fromDate != null">
-			AND user_createtime &gt;= #{toDate} AND user_createtime &lt;= #{fromDate}
+			AND DATE(user_createtime) &gt;= DATE(#{toDate}) AND DATE(user_createtime) &lt;= DATE(#{fromDate})
 			</if>
 		order by u.user_createtime DESC
 		limit #{beginRow},#{rowPerPage}
@@ -173,7 +173,39 @@
 			AND u.user_name LIKE CONCAT('%',#{searchWord},'%')
 		</if>
 		<if test="toDate != null and fromDate != null">
-			AND u.user_createtime &gt;= #{toDate} AND u.user_createtime &lt;= #{fromDate}
+			AND DATE(u.user_createtime) &gt;= DATE(#{toDate}) AND DATE(u.user_createtime) &lt;= DATE(#{fromDate})
 		</if>
+	</select>
+	<!-- 유저ㅓㅓㅓㅓㅓㅓㅓㅏㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓㅓ -->
+	<!-- 유저 유저조회 -->
+	<select id="selectUserList" resultMap="User">
+		select
+			u.user_id,
+			u.user_name,
+			re.region_id,
+			re.region_name,
+			u.user_birthdate,
+			u.user_createtime,
+			ra.rank_id,
+			ra.rank_name,
+			u.user_activity
+		from user u inner join region re INNER JOIN rank ra
+		ON u.region_id = re.region_id AND u.rank_id = ra.rank_id
+		where u.user_activity = 'Y'
+		<if test="searchWord != null">
+			AND user_name like CONCAT('%',#{searchWord},'%')
+		</if>
+		ORDER BY user_createtime DESC
+		LIMIT #{beginRow},#{rowPerPage}
+	</select>
+	<!-- 유저 유저 수 카운팅 -->
+	<select id="selectUserCount" parameterType="com.example.codeblue.vo.Page" resultType="int">
+	select
+		count(*) 
+	from user
+	where user_activity = 'Y'
+	<if test="searchWord != null">
+			AND user_name LIKE CONCAT('%',#{searchWord},'%')
+	</if>
 	</select>
 </mapper>
