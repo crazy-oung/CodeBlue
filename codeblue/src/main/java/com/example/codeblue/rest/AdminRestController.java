@@ -173,6 +173,7 @@ public class AdminRestController {
 		System.out.println("::: post - getFaqBoardList :::"); 
 		return adminService.getFaqBoardList(currentPage, rowPerPage, searchWord);
 	}
+	
 	//FAQ 추가하기 
 	@PostMapping("/rest/admin/addFaqBoard")
 	public int addFaqBoard(FaqBoard faqBoard) {

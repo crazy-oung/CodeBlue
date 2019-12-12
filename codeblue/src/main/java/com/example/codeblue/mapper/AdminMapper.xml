@@ -958,7 +958,7 @@
     LIMIT #{beginRow},#{rowPerPage}
    </select>
    <!--  신고내역 전체 행 -->
-   <select  id="ReportHistoryTotalRow" 
+   <select id="ReportHistoryTotalRow" 
 			resultType="int">
 	SELECT count(*)
 	FROM report_history

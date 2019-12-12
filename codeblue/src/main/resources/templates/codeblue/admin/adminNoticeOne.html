@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	
+	<title>관리자 공지 - 코드블루</title>
+	
+	<!-- Custom fonts for this template-->
+	<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+	<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+	
+	<!-- Custom styles for this template-->
+	<link href="css/sb-admin-2.min.css" rel="stylesheet">
+	<!-- Custom styles for codeBlue -->
+	<link href="css/codeBlue.css" rel="stylesheet"> 
+</head>
+
+<body id="page-top"> 
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+  	<!-- SideBard load -->
+	<div id="sideBar"></div>
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <!-- topBar load -->
+      <div id="topBar"></div>
+
+        <!-- Begin Page Content -->
+       <div class="container-fluid px-4 pt-4">
+			<div class="card border-0 bg-white p-3 my-2 shadow mx-3"> 
+				<!-- Page Content -->
+				<div class="p-2">
+					<!-- Page Heading -->
+					<div class="d-sm-flex align-items-center justify-content-between mb-3" >
+						<h3 class="text-gray-800 mb-2 font-weight-bold NotoSans">공지 정보</h3>
+						<hr>
+						<a href="/adminNoticeAdd" class="d-none d-sm-inline-block btn  btn-primary shadow"><i class="mr-2 fas fa-plus fa-sm text-white-50"></i>공지 올리기</a> 
+					</div>
+					<!-- page Heading End -->
+					
+					<!-- Notice Board -->
+					<table id="noticeOne" class="table table-hover text-center text-dark"></table>
+					<br>
+					<div>
+						<button type="button" id="listBtn" class="btn btn-primary">목록으로</button>
+						 <button type="button" id="delBtn" class="btn btn-primary">게시글 삭제</button>
+					</div>
+					
+				</div>
+			<!--  Page Content End -->
+			</div>
+		</div>  
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      <footer class="sticky-footer">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <img src="./img/codeBlueLogo.png" width="150px">
+          </div>
+        </div>
+      </footer>
+      <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+<!-- ETC -->
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded bg-primary" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">로그아웃 하시겠습니까?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">로그아웃 하고 싶으시면 아래 로그아웃 버튼을 클릭해주세요!</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+          <a class="btn btn-primary" href="/logout">로그아웃</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="js/sb-admin-2.min.js"></script>
+
+  <!-- Page level plugins -->
+  <script src="vendor/chart.js/Chart.min.js"></script>
+
+  <!-- Page level plugins -->
+  <script src="vendor/chart.js/Chart.min.js"></script>
+  <!-- codeBlue Admin scripts -->
+  <script src="js/codeBlueAdmin.js"></script>
+
+</body>
+<script type="text/javascript">
+$(document).ready(function(){
+
+	
+		$("#sideBarNotice").addClass("active");
+		$("#sideBarNotice").children("a").attr("aria-expanded","false");
+		$("#sideBarNotice").children("div").addClass("show");
+
+	
+	// 파라메터 정보가 저장될 오브젝트
+	// common.js 같은 모든 페이지에서 로딩되는 js 파일에 넣어두면 됨.
+	var getParam = function(key){
+	    var _parammap = {};
+	    document.location.search.replace(/\??(?:([^=]+)=([^&]*)&?)/g, function () {
+	        function decode(s) {
+	            return decodeURIComponent(s.split("+").join(" "));
+	        }
+
+	        _parammap[decode(arguments[1])] = decode(arguments[2]);
+	    });
+
+	    return _parammap[key];
+	};
+	$("#noticeId").val(getParam("noticeId"));
+
+	$.ajax({
+		url : "/rest/adminNoticeBoardOne",
+		method : "post",
+		data : {"noticeId": getParam("noticeId")},
+		success : function(json){
+			console.log(json);
+		let html  = "<tr align='left'><td> 번호 : "+json.noticeId+"</td></tr>";
+			html += "<tr align='left'><td> 제목 : "+json.noticeTitle+"</td></tr>";
+			html += "<tr align='left'><td> 내용 : "+json.noticeContent+"</td></tr>";
+			html += "<tr align='left'><td> 날짜 : "+json.noticeDatetime+"</td></tr>";
+
+			$("#noticeOne").append(html);
+		}
+	})
+	
+	$("#listBtn").click(function(){
+		location.href="/adminNoticeBoard";
+	})
+	
+	$("#delBtn").click(function(){
+	$.ajax({
+		url:"/rest/removeNoticeBoard",
+		method:"post",
+		data:{"noticeId" : getParam("noticeId")},
+		success : function(){
+			alert("삭제 되었습니다.");
+			location.href="/adminNoticeBoard";
+		}
+		})
+	});
+//document
+})
+
+</script>
+</html>

@@ -60,14 +60,6 @@ public class UserRestController {
 		System.out.println("answerId : "+ answerId);
 		return userService.getAnswerCommentList(answerId);
 	}
-	
-	//분야별 질문 리스트 출력
-	@GetMapping("getBoardListByFeild")
-	public List<QuestionBoard> getBoardListByFeild(){
-		
-		return null;
-	}
-	
 	@GetMapping("/rest/getLoginUser")
 	public User getLoginUser(HttpSession session) {
 		System.out.println("::: get - getLoginUser :::"); 

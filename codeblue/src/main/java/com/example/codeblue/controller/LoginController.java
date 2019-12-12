@@ -77,7 +77,7 @@ public class LoginController {
 	public String getRegister(HttpSession session) {
 		System.out.println("::: get - register :::");
 		if(session.getAttribute("user") != null) {
-			return "/codeBlue/today";
+			return "/codeblue/today";
 		} 
 		return "register";
 	}
@@ -86,7 +86,7 @@ public class LoginController {
 	public String getRegisterExpert(HttpSession session) {
 		System.out.println("::: get - register :::");
 		if(session.getAttribute("user") != null) {
-			return "/codeBlue/today";
+			return "/codeblue/today";
 		} 
 		return "registerExpert";
 	}

@@ -14,6 +14,13 @@ import com.example.codeblue.vo.Manager;
 public class AdminController {
 	@Autowired AdminService adminService;
 	
+	// 관리자 통계페이지
+	@GetMapping("/analysis")
+	public String getanalysis() {
+		System.out.println("::: get- analysis :::");
+		return "/codeblue/admin/analysis";
+	}
+	
 	//질문댓글 리스트 페이지
 	@GetMapping("/adminQuestionComment")
 	public String getQuestionComment() {
@@ -42,7 +49,7 @@ public class AdminController {
 			System.out.println("user admin 페이지 접근 시도 차단");
 			return "/home";
 		}
-		return "/codeBlue/admin/adminWithdrawQuestionBoard";
+		return "/codeblue/admin/adminWithdrawQuestionBoard";
 	}
 	
 	//FAQ 상세 페이지
@@ -53,7 +60,7 @@ public class AdminController {
 			System.out.println("user admin 페이지 접근 시도 차단");
 			return "/home";
 		}
-		return"/codeBlue/admin/adminFaqOne";
+		return"/codeblue/admin/adminFaqOne";
 	}
 	//FAQ 수정페이지
 	@GetMapping("/adminFaqModify")
@@ -63,7 +70,7 @@ public class AdminController {
 			System.out.println("user admin 페이지 접근 시도 차단");
 			return "/home";
 		}
-		return"/codeBlue/admin/adminModifyFaqBoard";
+		return"/codeblue/admin/adminModifyFaqBoard";
 	}
 	//FaQ 게시판 페이지로 이동
 	@GetMapping("/adminFaqBoard")
@@ -73,7 +80,7 @@ public class AdminController {
 			System.out.println("user admin 페이지 접근 시도 차단");
 			return "/home";
 		}
-		return "/codeBlue/admin/adminFaqBoard";
+		return "/codeblue/admin/adminFaqBoard";
 	}
 	//FaQ 게시판 페이지로 이동
 	@GetMapping("/adminFaqBoardAdd")
@@ -83,7 +90,7 @@ public class AdminController {
 			System.out.println("user admin 페이지 접근 시도 차단");
 			return "/home";
 		}
-		return "/codeBlue/admin/adminAddFaqBoard";
+		return "/codeblue/admin/adminAddFaqBoard";
 	}
 	//병원정보 수정
 	@GetMapping("/modifyHospital")
@@ -94,18 +101,18 @@ public class AdminController {
 			return "/home";
 		}
 		System.out.println("hospital"+hospitalId);
-		return "/codeBlue/admin/adminModifyHospital";
+		return "/codeblue/admin/adminModifyHospital";
 	}
 	
 	//제휴병원 게시판
-	@GetMapping("/adminHospital")
+	@GetMapping("/adminHospitalList")
 	public String getHospital(HttpSession session) {
 		System.out.println(":::get - getHospital:::");
 		if(session.getAttribute("authority")==null || session.getAttribute("authority").equals("user")) {
 			System.out.println("user admin 페이지 접근 시도 차단");
 			return "/home";
 		}
-		return"/codeBlue/admin/adminHospital";
+		return"/codeblue/admin/adminHospital";
 	}
 	
 	//제휴병원 입력
@@ -116,7 +123,7 @@ public class AdminController {
 			System.out.println("user admin 페이지 접근 시도 차단");
 			return "/home";
 		}
-		return"/codeBlue/admin/adminAddHospital";
+		return"/codeblue/admin/adminAddHospital";
 	}
 	
 	//제휴병원 삭제
@@ -129,7 +136,7 @@ public class AdminController {
 		}
 		System.out.println("hospitalId"+hospitalId);
 		adminService.removeHospital(hospitalId);
-		return "/codeBlue/admin/adminHospitalOne";
+		return "/codeblue/admin/adminHospitalOne";
 	}
 	
 	//제휴병원 상세보기
@@ -141,7 +148,7 @@ public class AdminController {
 			return "/home";
 		}
 		System.out.println("hospitalId"+hospitalId);
-		return"/codeBlue/admin/adminHospitalOne";
+		return"/codeblue/admin/adminHospitalOne";
 	}
 	
 	//신고내역 리스트 페이지로 이동
@@ -152,7 +159,7 @@ public class AdminController {
 			System.out.println("user admin 페이지 접근 시도 차단");
 			return "/home";
 		}
-		return "/codeBlue/admin/adminReportBoard";
+		return "/codeblue/admin/adminReportBoard";
 	}
 	//문의내역 리스트 페이지로 이동
 	@GetMapping("adminInquiryBoard")
@@ -162,7 +169,7 @@ public class AdminController {
 			System.out.println("user admin 페이지 접근 시도 차단");
 			return "/home";
 		}
-		return "/codeBlue/admin/adminInquiryBoard";
+		return "/codeblue/admin/adminInquiryBoard";
 	}
 	//문의내역 상세 페이지로 이동
 	@GetMapping("adminInquiryOne")
@@ -172,7 +179,7 @@ public class AdminController {
 			System.out.println("user admin 페이지 접근 시도 차단");
 			return "/home";
 		}
-		return "/codeBlue/admin/inquiryOne";
+		return "/codeblue/admin/adminInquiryOne";
 	}
 	//신고내역 상세 페이지로 이동
 	@GetMapping("adminReportOne")
@@ -182,7 +189,7 @@ public class AdminController {
 			System.out.println("user admin 페이지 접근 시도 차단");
 			return "/home";
 		}
-		return "/codeBlue/admin/reportOne";
+		return "/codeblue/admin/adminReportOne";
 	}
 	
 	// 유저 조회
@@ -193,20 +200,20 @@ public class AdminController {
 			System.out.println("user admin 페이지 접근 시도 차단");
 			return "/home";
 		}
-		return "/codeBlue/admin/adminUserList";
+		return "/codeblue/admin/adminUserList";
 	}
 	// 탈퇴 유저 조회
 	@GetMapping("/adminWithdrawUserList")
 	public String adminWithdrawUserList() {
 		System.out.println("::: get - adminWithdrawUserList :::");
-		return "/codeBlue/admin/adminWithdrawUserList";
+		return "/codeblue/admin/adminWithdrawUserList";
 	}
 	
 	// 전문가 유저 조회
 	@GetMapping("/adminExpertUserList")
 	public String adminExpertUserList() {
 		System.out.println("::: get - adminExpertUserList :::");
-		return "/codeBlue/admin/adminExpertUserList";
+		return "/codeblue/admin/adminExpertUserList";
 	}
 	
 	@GetMapping("/adminNoticeBoard")
@@ -216,7 +223,7 @@ public class AdminController {
 			System.out.println("user admin 페이지 접근 시도 차단");
 			return "/home";
 		}
-	return "/codeBlue/admin/adminNoticeBoard";
+	return "/codeblue/admin/adminNoticeBoard";
 	}
 	
 	@GetMapping("/adminNoticeOne")
@@ -226,7 +233,7 @@ public class AdminController {
 			System.out.println("user admin 페이지 접근 시도 차단");
 			return "/home";
 		}
-		return "/codeBlue/admin/adminNoticeOne";
+		return "/codeblue/admin/adminNoticeOne";
 	}
 	
 	@GetMapping("/adminNoticeAdd")
@@ -236,7 +243,7 @@ public class AdminController {
 			System.out.println("user admin 페이지 접근 시도 차단");
 			return "/home";
 		}
-		return"/codeBlue/admin/adminAddNotice";
+		return"/codeblue/admin/adminAddNotice";
 	}
 	//질문 리스트 가져오기
 	@GetMapping("/adminQuestionBoard")
@@ -246,7 +253,7 @@ public class AdminController {
 			System.out.println("user admin 페이지 접근 시도 차단");
 			return "/home";
 		}
-		return "/codeBlue/admin/adminQuestionBoard";
+		return "/codeblue/admin/adminQuestionBoard";
 	}
 	
 	@GetMapping("admin")
@@ -255,25 +262,26 @@ public class AdminController {
 			System.out.println("user admin 페이지 접근 시도 차단");
 			return "/home";
 		}
-		return "/codeBlue/admin/home";
+		return "/codeblue/admin/home";
 	}
 	//관리자 계정 추가
 	@GetMapping("/manageAdmin")
 	public String addAdministrator(Manager manager) {
 			System.out.println("::get - addAdministrator:::");
-		return "/codeBlue/admin/adminAddAdministrator";
+		return "/codeblue/admin/adminAddAdministrator";
 	}
 	//관리자 전체 리스트 가져오기
 	@GetMapping("/adminManagerList")
 	public String getAdminManagerList() {
 		System.out.println("::: get - getAdminManagerList :::");
-		return "/codeBlue/admin/adminManagerList";
+		return "/codeblue/admin/adminManagerList";
 	}
+	
 	//관리자 상세정보 페이지
 	@GetMapping("/adminManagerOne")
 	public String getAdminManagerOne() {
 		System.out.println("::: get - getAdminManagerOne :::");
-		return"/codeBlue/admin/adminManagerOne";
+		return"/codeblue/admin/adminManagerOne";
 	}
 	
 }

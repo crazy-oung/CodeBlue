@@ -38,7 +38,7 @@ public class UserController {
 	public String QuestionBoardOne(@RequestParam(value="questionId")String questionId) {
 		System.out.println("::: get - QuestionBoardOne :::");
 		System.out.println("questionId : "+questionId);
-		return "questionBoardOne";
+		return "/questionBoardOne";
 	}
 	
 	@GetMapping("/QnA")
@@ -55,19 +55,19 @@ public class UserController {
 	@GetMapping("/notice")
 	public String notice() {
 		System.out.println("::: get - notice :::"); 
-		return "notice";
+		return "/notice";
 	}
 	
 	@GetMapping("/noticeOne")
 	public String getnoticeOne() {
 		System.out.println("::: get - getnoticeOne :::"); 
-		return "noticeOne";
+		return "/noticeOne";
 	}
 	
 	@GetMapping("/userOne")
 	public String getUserOne() {
 		System.out.println("::: get - getUserOne :::");
-		return "userOne";
+		return "/userOne";
 	}
 	
 	 @GetMapping("/oops!")
@@ -82,7 +82,7 @@ public class UserController {
 		if(session.getAttribute("loginUser") == null) {
 			return "/login";
 		}
-		return "codeblue/ask";
+		return "/codeblue/ask";
 	}
 	
 	@PostMapping("/addQuestion")
@@ -104,7 +104,7 @@ public class UserController {
 	@GetMapping("/hospitalOne")
 	public String getHospitalOne() {
 		System.out.println(":::get - getHospitalOne:::");
-		return "hospitalOne";
+		return "/hospitalOne";
 	}
 	// 유저 보기
 	@GetMapping("/users")

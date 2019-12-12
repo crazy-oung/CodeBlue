@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	
+	<title>관리자 신고내역 - 코드블루</title>
+	
+	<!-- Custom fonts for this template-->
+	<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+	<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+	
+	<!-- Custom styles for this template-->
+	<link href="css/sb-admin-2.min.css" rel="stylesheet">
+	<!-- Custom styles for codeBlue -->
+	<link href="css/codeBlue.css" rel="stylesheet"> 
+</head>
+
+<body id="page-top"> 
+    <div id="wrapper">
+
+  	<!-- SideBard load -->
+	<div id="sideBar"></div>
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+     	<!-- topBar load -->
+      <div id="topBar"></div>
+
+	 <!-- Begin Page Content -->
+       <div class="container-fluid px-4 pt-4">
+			<div class="card border-0 bg-white p-3 my-2 shadow mx-3"> 
+				<!-- Page Content -->
+				<div class="p-2">
+					<!-- heading -->
+					<div class="d-sm-flex align-items-center justify-content-between mb-3" >
+						<h3 class="text-gray-800 mb-2 font-weight-bold NotoSans">신고 내역</h3>
+					</div>
+					<!-- page Heading End -->
+					<hr>
+						<table class="table table-hover table-bordered">
+							<thead class="text-center">
+								<tr>
+									<th width="10%">번호</th>
+									<th>제목</th>
+									<th width="15%">작성 날짜</th>
+								</tr>
+							</thead>
+							<tbody id="reportHistoryList" align="center"></tbody>
+						</table>
+				<button type="button" id="reportPrevBtn" class="btn ml-1 btn-primary">이전</button>
+				<button type="button" id="reportNextBtn" class="btn ml-1 btn-primary">다음</button>
+				</div>
+				</div>
+				</div>
+				</div>
+			<!--  Page Content End -->
+
+      <!-- Footer -->
+      <footer class="sticky-footer">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <img src="./img/codeBlueLogo.png" width="150px">
+          </div>
+        </div>
+      </footer>
+      <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+<!-- ETC -->
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded bg-primary" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">로그아웃 하시겠습니까?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">로그아웃 하고 싶으시면 아래 로그아웃 버튼을 클릭해주세요!</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+          <a class="btn btn-primary" href="/logout">로그아웃</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="js/sb-admin-2.min.js"></script>
+
+  <!-- Page level plugins -->
+  <script src="vendor/chart.js/Chart.min.js"></script>
+  <!-- codeBlue Admin scripts -->
+  <script src="js/codeBlueAdmin.js"></script>
+</body>
+
+<script type="text/javascript">
+$(document).ready(function() {
+	
+	$("#sideBarNotice").addClass("active");
+	$("#sideBarNotice").children("a").attr("aria-expanded","false");
+	$("#sideBarNotice").children("div").addClass("show");
+
+	
+	var reportCurrentPage = 1;
+	var lastPage = 0;	
+	
+	//신고내역  이전버튼
+	$("#reportPrevBtn").click(function(){ 
+		appendItem(--reportCurrentPage);
+	});
+	//신고내역 다음버튼
+	$("#reportNextBtn").click(function(){
+		appendItem(++reportCurrentPage);
+	});
+	
+	//페이지 들어오면 신고내역 리스트 바로 출력
+	appendItem(reportCurrentPage);
+		
+	function appendItem(currentPage){
+		$.ajax({
+			url:"/rest/admin/getReportHistoryList",
+			method:"get",
+			data:{"currentPage" : currentPage},
+			success:function(json){
+				$("#reportHistoryList").empty();
+				reportCurrentPage = json.currentPage;
+				lastPage = json.lastPage;
+				ReportBtnShow(reportCurrentPage, lastPage);
+				console.log(json);
+				console.log(json.list);
+				let html;
+				$(json.list).each(function(index,item){
+					html="<tr><td>";
+					html += item.reportHistoryId;
+					html += "</td><td class=''>";
+					html += "<a href='/adminReportOne?reportHistoryId=";
+					html += item.reportHistoryId;
+					html += "'>";
+					html += item.reportTitle;
+					html += "</a>"
+					html += "</td><td>";
+					html += item.reportDatetime;
+					html += "</td></tr>";
+					$("#reportHistoryList").append(html);
+				});
+			}
+		})
+	}
+	
+	//페이징 메서드화
+	function ReportBtnShow(currentPage, lastPage){
+		if(currentPage == 1){
+			$("#reportPrevBtn").hide();
+		}else{
+			$("#reportPrevBtn").show();
+		}
+		if(currentPage >= lastPage){
+			$("#reportNextBtn").hide();
+		}else{
+			$("#reportNextBtn").show();
+		}
+	}
+});
+</script>
+</html>

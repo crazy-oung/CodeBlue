@@ -294,7 +294,7 @@ public class AdminServiceImpl implements AdminService {
 	//FAQ 전체 리스트 가져오기
 	@Override
 	public Map<String, Object> getFaqBoardList(int currentPage, int rowPerPage, String searchWord) {
-		System.out.println(":::AdminServiceImpl - getInquiryHistoryAnswerList:::");
+		System.out.println(":::AdminServiceImpl - getFaqBoardList:::");
 		System.out.println("currentPage :"+currentPage+"/rowPerPage :"+rowPerPage);
 
 		Page page = new Page();
@@ -307,7 +307,7 @@ public class AdminServiceImpl implements AdminService {
 		int totalRow = adminMapper.selectFaqBoardTotalCount();
 		int lastPage = 0;
 		
-		if(totalRow % rowPerPage ==1) {
+		if(totalRow % rowPerPage != 0) {
 			lastPage = (totalRow/rowPerPage)+1;
 		}else {
 			lastPage = totalRow/rowPerPage;

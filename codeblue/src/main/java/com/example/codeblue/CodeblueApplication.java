@@ -34,7 +34,6 @@ public class CodeblueApplication {
 	        JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
 	        javaMailSender.setHost("smtp.gmail.com");
 	        javaMailSender.setPort(587);
-	        //한다영 구글아이디
 	        javaMailSender.setUsername("ddukgyen@gmail.com");
 	        javaMailSender.setPassword("goodee2019#*");
 	        

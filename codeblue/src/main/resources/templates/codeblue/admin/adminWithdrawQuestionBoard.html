@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	
+	<title>관리자 삭제질문내역 - 코드블루</title>
+	
+	<!-- Custom fonts for this template-->
+	<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+	<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+	
+	<!-- Custom styles for this template-->
+	<link href="css/sb-admin-2.min.css" rel="stylesheet">
+	<!-- Custom styles for codeBlue -->
+	<link href="css/codeBlue.css" rel="stylesheet"> 
+</head>
+
+<body id="page-top"> 
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+	 <!-- Side Bar load -->
+ 	<div id="sideBar"></div>
+    
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+		<!-- topBar load -->
+       <div id="topBar"></div>
+
+        <!-- Begin Page Content -->
+        
+       	<div class="container-fluid px-4 pt-4">
+		<div class="card border-0 bg-white p-3 m-2 shadow"> 
+				
+		<!-- Begin Page Content -->
+       <div class="container-fluid px-4 pt-4">
+ 
+         
+            <!-- Page Content -->
+            <div class="p-2">
+            
+               <!-- Page Heading -->
+               <div class="d-sm-flex align-items-center justify-content-between mb-3" >
+                  <h3 class="text-gray-800 mb-2 font-weight-bold">삭제된 게시글 관리</h3>
+               </div>
+               
+               <!-- page Heading End -->
+               
+        		<!-- questionBoard search -->
+        		<form id="searchBoard">
+        		<div class="card bg-gray-200 border-0 mb-3">
+	        		<div class="row p-4">
+		        		<div class="col-sm-9">
+		        			 <table class="table table-sm table-borderless">
+		        			 	<tr>
+		        			 		<td>카테고리</td>
+		        			 		<td>
+		        			 			<select id="searchCategory" class="form-control form-control-sm" style="width: 40%">
+											<option value="All">전체</option>
+										</select>
+									</td>
+		        			 	</tr>
+								<tr>
+									<td width="15%">검색어 </td>
+									<td> <input class="form-control form-control-sm" type="text" id="searchWord" style="width: 40%"></td>
+								</tr>
+								<tr>
+									<td>날짜 </td>
+									<td><div class='d-flex'>
+										<input class="form-control form-control-sm" type="date" id=toDate style="width: 30%">&nbsp;~&nbsp;<input class="form-control form-control-sm" type="date" id="fromDate" style="width: 30%">
+									</div></td>
+								</tr>
+							</table>
+		        		</div>
+		        		<div class="col-sm-3 text-right">
+		        			<button type="button" class="btn btn-primary btn-sm px-5 my-1 mt-3" id="getBoard">검색</button><br>
+							<button type="reset" class="btn btn-outline-primary btn-sm px-5 " id="reset">초기화</button>
+		        		</div>
+					</div>
+				</div>
+				</form>
+				
+				<div class="row my-2 mt-4">
+					<div class="col-sm-2">
+						<p id="totalRow" class="py-1 m-0"></p>
+					</div>
+					<div class="col-sm-9">
+					</div>
+					<div class="col-sm-1">
+						<select class="form-control form-control-sm" id="rowPerPage">
+							<option value="10" selected="selected">10개 보기</option>
+							<option value="20">20개 보기</option>
+							<option value="30">30개 보기</option>
+							<option value="40">40개 보기</option>
+							<option value="50">50개 보기</option>
+						</select>
+					</div>
+				</div>
+				
+				<table class="table table-hover table-bordered" id="boardList">
+					<thead>
+						<tr class="text-center">
+							<th width="5%">번호</th>
+							<th width="10%">카테고리</th>
+							<th>제목</th>
+							<th width="13%">작성자 아이디</th>
+							<th width="13%">작성일자</th>
+						</tr>
+					</thead>
+					<tbody id="boardListBody">
+					</tbody>
+				</table>
+				<div class="d-flex justify-content-between">
+					<div class="p-2">
+						<button type="button" id="prevBtn" class="btn btn-primary">이전</button>
+						<span id="pageInfo"></span>
+						<button type="button" id="nextBtn" class="btn btn-primary">다음</button>
+					</div>
+					<div class="text-right p-2">
+						<button type="button" id="close" class="btn btn-primary">닫기</button>
+					</div>
+				</div>
+				<br>
+               	<div class="d-flex ">
+               
+					<table id="boardOne" class="table table-borderless ">
+				
+					</table>
+               	</div>
+               
+            </div>
+         <!--  Page Content End -->
+  
+      </div> 
+      
+      <!-- End of Main Content -->
+	</div>
+      <!-- Footer -->
+      <footer class="sticky-footer">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <img src="./img/codeBlueLogo.png" width="150px">
+          </div>
+        </div>
+      </footer>
+      <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+<!-- ETC -->
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded bg-primary" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">로그아웃 하시겠습니까?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">로그아웃 하고 싶으시면 아래 로그아웃 버튼을 클릭해주세요!</div>
+        <div class="modal-footer">	
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+          <a class="btn btn-primary" href="/logout">로그아웃</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="js/sb-admin-2.min.js"></script>
+
+  <!-- Page level plugins -->
+  <script src="vendor/chart.js/Chart.min.js"></script>
+  
+  <!-- codeBlue admin scripts -->
+  <script src="js/codeBlueAdmin.js"></script>
+
+</body>
+<script>
+	
+	$("#sideBarManage").addClass("active");
+	$("#sideBarManage").children("a").attr("aria-expanded","false");
+	$("#sideBarManage").children("div").addClass("show");
+	
+	//작성날짜 끝 자동적으로 입력하게하기
+	document.getElementById("fromDate").valueAsDate = new Date();
+	//초기화 버튼을 눌러도 fromDate는 자동적으로 들어가게만들기
+	$("#reset").click(function() {
+		document.getElementById("fromDate").valueAsDate = new Date();
+	});
+	
+	$.ajax({
+		url:"/rest/admin/getFeildList",
+		method:"post",
+		success:function(json) {
+			console.log(json);
+			$(json).each(function(index,item){
+				var html = "<option value="+item.feildId+">"+item.feildName+"</option>";
+				$("#searchCategory").append(html);
+			});
+		}
+	});
+	//테이블 값 넣어주기 기본적으로
+	$.ajax({
+			url: "/rest/admin/getWithdrawQuestionBoardList",
+			method:"post",
+			data:{"searchCategory":searchCategory,"searchWord":searchWord,"toDate":toDate,"fromDate":fromDate},
+			success: function(json){
+				console.log(json);
+				//체크박스로 클릭한 값 배열 초기화
+				checkBoxArr = new Array();
+				subInfo(json);
+				BtnShow(currentPage,lastPage);
+				$("#boardListBody").empty();
+				$(json.list).each(function(index,item) {
+					var html = append(item,index)
+					$("#boardList").append(html);
+				})
+			}
+	});
+	$("#rowPerPage").change(function(){
+		$.ajax({
+			url: "/rest/admin/getWithdrawQuestionBoardList",
+			method:"post",
+			data:{"searchCategory":searchCategory,"searchWord":searchWord,"toDate":toDate,"fromDate":fromDate,"rowPerPage":$("#rowPerPage").val()},
+			success: function(json){
+				console.log(json);
+				//체크박스로 클릭한 값 배열 초기화
+				checkBoxArr = new Array();
+				subInfo(json);
+				BtnShow(currentPage,lastPage);
+				$("#boardListBody").empty();
+				$(json.list).each(function(index,item) {
+					var html = append(item,index)
+					$("#boardList").append(html);
+				})
+			}
+		});
+	})
+	$("#prevBtn").hide();
+	$("#nextBtn").hide();
+	//현재페이지값
+	var currentPage = 1;
+	//마지막페이지값
+	var lastPage = 1;
+	//카테고리설정
+	var searchCategory = undefined;
+	//검색어
+	var searchWord = undefined;
+	//작성기간시작
+	var toDate = undefined;
+	//작성기간끝
+	var fromDate = undefined;
+	//체크 박스에 선택된 값을 저장
+	var checkBoxArr = [];
+	//페이지에 출력할 행 갯수
+	var rowPerPage = 10;
+	//닫기 버튼 누를시 상세정보 창을 삭제
+	$("#close").click(function() {
+		$("#boardOne").empty();
+	})
+	//검색하기
+	$("#getBoard").click(function() {
+		//전체 체크 풀어주기
+		$("#selectAll").prop("checked",false);
+		console.log("::: 검색 폼 :::")
+		//값 학인 테스트
+	//		console.log("카테고리 값 : "+document.getElementById("searchCategory").value);
+	//		console.log("검색어 : "+$("#searchWord").val())
+	//		console.log("작성날짜시작 : "+document.querySelector("input[id='toDate']").valueAsDate.toISOString().slice(0, 10));
+	//		console.log("작성날짜끝 : "+$("input[id='fromDate']").eq(0).prop("valueAsDate").toISOString().slice(0, 10) );
+	
+		//id 값이 searchCategory 인 html 을가져와서 value 값이 All이 아닐경우 가져온값을 저장하고 아닐경우는 null로 넘긴다.
+		if(document.getElementById("searchCategory").value != "All") {
+			searchCategory = document.getElementById("searchCategory").value;
+		} else {
+			searchCategory = undefined;
+		}
+		//id 값이 searchWord 인 html를 가져와서 value 값이 null이 아닐경우 저장한다.
+			if(document.getElementById("searchWord").value){
+				searchWord = $("#searchWord").val();
+			} else {
+				searchWord = undefined;
+			}
+			//html태그중에 input에 id값이 toDate 인  value데이터를 Date형식으로 변환한 값이 null이 아닐경우 저장한다.
+		if(document.querySelector("input[id='toDate']").valueAsDate){
+			toDate = document.querySelector("input[id='toDate']").valueAsDate.toISOString().slice(0, 10);	
+		}
+		//html태그중에 input에 id값이 fromDate 인  value데이터를 Date형식으로 변환한 값이 null이 아닐경우 저장한다.
+		if(document.querySelector("input[id='fromDate']").valueAsDate){
+			fromDate = document.querySelector("input[id='fromDate']").valueAsDate.toISOString().slice(0, 10);
+		}
+		console.log("카테고리 값 : " +searchCategory);
+		console.log("검색어 : "+ searchWord)
+		console.log("작성 날짜 시작 : "+toDate);
+		console.log("작성 날짜 끝 : "+fromDate);
+		//검색조건에 따른 질문 리스트를 뽑기
+		$.ajax({
+			url: "/rest/admin/getWithdrawQuestionBoardList",
+			method:"post",
+			data:{"searchCategory":searchCategory,"searchWord":searchWord,"toDate":toDate,"fromDate":fromDate,"rowPerPage":$("#rowPerPage").val()},
+			success: function(json){
+				console.log(json);
+				//체크박스로 클릭한 값 배열 초기화
+				checkBoxArr = new Array();
+				subInfo(json);
+				BtnShow(currentPage,lastPage);
+				$("#boardListBody").empty();
+				$(json.list).each(function(index,item) {
+					var html = append(item,index)
+					$("#boardList").append(html);
+				})
+			}
+		});
+	});
+	//이전버튼
+	$("#prevBtn").click(function(){
+		//전체 체크 풀어주기
+		$("#selectAll").prop("checked",false);
+		$.ajax({
+			url:"/rest/admin/getWithdrawQuestionBoardList",
+			method:"POST",
+			data:{"currentPage" : currentPage-1,"searchCategory":searchCategory,"searchWord":searchWord,"toDate":toDate,"fromDate":fromDate,"rowPerPage":$("#rowPerPage").val()},
+			success: function(json){
+				//체크박스로 클릭한 값 배열 초기화
+				checkBoxArr = new Array();
+				subInfo(json);
+				BtnShow(currentPage,lastPage);
+				$("#boardListBody").empty();
+				$(json.list).each(function(index,item) {
+					var html = append(item,index)
+					$("#boardList").append(html);
+				})
+			}
+		})
+	});
+	//다음버튼
+	$("#nextBtn").click(function(){
+		//전체 체크 풀어주기
+		$("#selectAll").prop("checked",false);
+		$.ajax({
+			url:"/rest/admin/getWithdrawQuestionBoardList",
+			method:"POST",
+			data:{"currentPage" : currentPage+1,"searchCategory":searchCategory,"searchWord":searchWord,"toDate":toDate,"fromDate":fromDate,"rowPerPage":$("#rowPerPage").val()},
+			success: function(json){
+				//체크박스로 클릭한 값 배열 초기화
+				checkBoxArr = new Array();
+				subInfo(json);
+				BtnShow(currentPage,lastPage);
+				$("#boardListBody").empty();
+				$(json.list).each(function(index,item) {
+					var html = append(item,index)
+					$("#boardList").append(html);
+				})
+			}
+		})
+	});
+	//이전 다음 버튼이 숨기는지 안숨기는지 함수로변경
+	function BtnShow(currentPage,lastPage) {
+		if(currentPage == 1){
+			$("#prevBtn").hide();
+		} else {
+			$("#prevBtn").show();
+		}
+		if(currentPage <lastPage) {
+			$("#nextBtn").show();
+		} else {
+			$("#nextBtn").hide();
+		}
+	}
+	// 질문의 내용 출력하기
+	function content(questionId){
+		$("#boardOne").empty();
+		console.log(questionId+" 상세정보 가져오기");
+		$.ajax({
+			url:"/rest/admin/getWithdrawQuestionBoardOne",
+			method:"post",
+			data:{"questionId":questionId},
+			success:function(json){
+				console.log(json)
+				var html = 	"<thead  class='card bg-light my-2'>"+
+								"<tr class='bg-gray-200'>"+
+									"<td>"+json.questionTitle+"</td>"+
+								"</tr>"+
+								"<tr class='d-flex justify-content-between'>"+
+									"<th class='small'>작성자 아이디 : "+json.user.userId+
+									" 닉네임 : "+json.user.userName+"</th>"+
+									"<th class='small text-right'>답변 수 : "+json.answerCount+"건"+
+									" 추천 수 : "+json.voteCount+"회"+
+									" 댓글 수 : "+json.commentCount+"건</th>"+
+								"</tr>"+
+							"</thead><br>"+
+							"<tbody class='card bg-light my-2'>"+
+								"<tr><td>"+json.questionContent+"</td></tr>"
+							"</tbody>";
+				$("#boardOne").append(html);
+			}
+		})
+	}
+	//html 추가
+	function append(item,index){
+		return "<tr>"+
+	//		"<td><input type='checkbox' value="+item.questionId+" name='chk'></td>"+
+// 		"<td><div class='custom-control custom-checkbox text-center'><input class='custom-control-input' type='checkbox' name='chk' value="+item.questionId+" id='check"+index+"'><label name='chk' class='custom-control-label' for='check"+index+"'></label></div></td>"+
+		"<td class='text-center'>"+item.questionId+"</td>"+
+		"<td>"+item.feild.feildName+"</td>"+
+		"<td onclick='content("+item.questionId+")' style='cursor:pointer'>"+item.questionTitle+"</td>"+
+		"<td class='text-center'>"+item.user.userId+"</td>"+
+		"<td class='text-center'>"+item.questionDatetime+"</td>"+
+		"<tr>";
+	}
+	function subInfo(json){
+		$("#totalRow").empty();
+		$("#pageInfo").empty();
+		currentPage = json.currentPage;
+		rowPerPage = json.rowPerPage;
+		lastPage = json.lastPage;
+		$("#searchWord").val(json.searchWord);
+		$("#totalRow").append("검색결과"+json.totalCount+"건");
+		$("#pageInfo").append(currentPage+"/"+lastPage);
+	}
+	
+	// -------------------------------------------------------------------테이블 관련  끝----------------------------------------------
+	
+</script>
+</html>

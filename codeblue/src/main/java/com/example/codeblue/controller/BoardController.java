@@ -26,7 +26,7 @@ public class BoardController {
 			if(session.getAttribute("loginManager")!= null) {
 				return "codeblue/admin/home";
 			}
-			return "/codeBlue/today";
+			return "/codeblue/today";
 		}
 		return "/index";
 	}

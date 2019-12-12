@@ -12,7 +12,7 @@ $(document).ready(function() {
 							+'</button>'
 							+'</div>'
 							+'</div>'
-							+'<ul class="navbar-nav ml-auto" id="userInfo" style="width: 20%">'
+							+'<ul class="navbar-nav" id="userInfo" style="width: 13vw">'
 							+'</ul></div></nav>');
 	
 	$("#leftSideBar").append('<nav class="navbar pl-0 sticky-container">'
@@ -48,10 +48,10 @@ $(document).ready(function() {
 						+ '	<td><a class="nav-link small px-2" href="#"><i class="far fa-comment-dots mx-1"></i>도와주세용</a></td>'
 						+ '</tr>'
 						+ '<tr>'
-						+ '	<td><a class="nav-link small px-2" href="#"><img src="img/codeblueicon.png" width="15px">도와주세용</a></td>'
+						+ '	<td><a class="nav-link small px-2" href="#"><img src="img/codeBlueIcon.png" width="15px">도와주세용</a></td>'
 						+ '</tr>'
 						+ '<tr>'
-						+ '	<td><a class="nav-link small px-2" href="#"><img src="img/codeblueicon.png" width="15px">도와주세용</a></td>'
+						+ '	<td><a class="nav-link small px-2" href="#"><img src="img/codeBlueIcon.png" width="15px">도와주세용</a></td>'
 						+ '</tr>'
 						+ '</table>'		
 						+ '</div>');
@@ -124,7 +124,7 @@ $(document).ready(function() {
 		success : function(json) {
 			console.log(json);
 			if (json == "") {
-				$("#userInfo").append('<li class="nav-item ml-2 mx-1">'
+				$("#userInfo").append('<li class="nav-item ml-3 mx-1">'
 										+'<a class="btn btn-sm hov-p text-primary p-1" href="/login">로그인</a>'
 										+'</li>'
 										+'<li class="nav-item mx-1">'
