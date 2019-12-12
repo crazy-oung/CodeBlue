@@ -79,14 +79,16 @@ public class UserRestController {
 	public Map<String,Object> getBoardList(	@RequestParam(value="currentPage",defaultValue = "1")int currentPage,
 											@RequestParam(value="rowPerPage",defaultValue = "10")int rowPerPage,
 											@RequestParam(value="searchWord", required = false)String searchWord,
+											@RequestParam(value="searchCategory", defaultValue = "today")String searchCategory,
 											@RequestParam(value="feildId", defaultValue = "99")int feildId) {
 		System.out.println("::: post - getBoardList :::");
 		System.out.println("currentPage : "+ currentPage);
 		System.out.println("rowPerPage : "+ rowPerPage);
 		System.out.println("searchWord : "+ searchWord);
 		System.out.println("feildId : "+ feildId);
+		System.out.println("searchCategory :"+searchCategory);
 		
-		return userService.getQuestBoardList(currentPage, rowPerPage,searchWord, feildId);
+		return userService.getQuestBoardList(currentPage, rowPerPage,searchWord,searchCategory, feildId);
 	}
 	@PostMapping("/rest/questionBoardOne")
 	public QuestionBoard QuestionBoardOne(@RequestParam(value="questionId" , required=true)int questionId) {

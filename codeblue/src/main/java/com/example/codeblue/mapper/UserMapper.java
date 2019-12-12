@@ -42,8 +42,6 @@ public interface UserMapper {
 	public int noticeBoardTotalRow();
 	
 	public int selectQuestionCommentCount(int questionId);
-	public int selectQuestionBoardVotes(QuestionBoard questionBoard);
-	public int selectQuestionBoardAnswerCount(QuestionBoard questionBoard);
 	public int selectQuestionBoardTotalCount(Page page);
 	public List<QuestionBoard> selectQuestionBoardList(Page page);
 	public QuestionBoard selectQuestionBoardOne(int questionId);

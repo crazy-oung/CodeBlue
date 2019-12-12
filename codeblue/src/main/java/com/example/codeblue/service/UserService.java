@@ -16,7 +16,7 @@ import com.example.codeblue.vo.User;
 public interface UserService {
 	
 	public User selectUserOne(String UserId);
-	public Map<String,Object> getQuestBoardList(int currentpage,int rowPerPage,String searchWord, int feildId);
+	public Map<String,Object> getQuestBoardList(int currentpage,int rowPerPage,String searchWord,String searchCategory, int feildId);
 	public QuestionBoard getQuestionBoardOne(int questionId);
 	public List<QuestionComment> getQuestionCommentList(int questionId);
 	public Map<String, Object> getNoticeBoardList(int currentPage, int rowPerPage);

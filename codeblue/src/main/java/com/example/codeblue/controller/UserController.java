@@ -14,6 +14,26 @@ import com.example.codeblue.vo.QuestionBoard;
 @Controller
 public class UserController {
 	@Autowired UserService userService;
+	
+	
+	//답변이 많은 수
+	@GetMapping("/hot")
+	public String gethot() {
+		System.out.println("::: get - gethot :::"); 
+		return "/hot";
+	}
+	//답변이 제일적으면서, 제일먼저올린질문
+	@GetMapping("/help")
+	public String gethelp() {
+		System.out.println("::: get - gethelp :::"); 
+		return "/help";
+	}
+	//답변이 최근에 적힌 질문순서
+	@GetMapping("/ongoing")
+	public String getongoing() {
+		System.out.println("::: get - getongoing :::"); 
+		return "/ongoing";
+	}
 	@GetMapping("/questionBoardOne")
 	public String QuestionBoardOne(@RequestParam(value="questionId")String questionId) {
 		System.out.println("::: get - QuestionBoardOne :::");

@@ -4,7 +4,24 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @org.springframework.stereotype.Controller
 public class JJWController {
-
+//	//답변이 많은 수
+//	@GetMapping("/hot")
+//	public String gethot() {
+//		System.out.println("::: get - gethot :::"); 
+//		return "/hot";
+//	}
+//	//답변이 제일적으면서, 제일먼저올린질문
+//	@GetMapping("/help")
+//	public String gethelp() {
+//		System.out.println("::: get - gethelp :::"); 
+//		return "/help";
+//	}
+//	@GetMapping("/ongoing")
+//	public String getongoing() {
+//		System.out.println("::: get - getongoing :::"); 
+//		return "/ongoing";
+//	}
+	
 //	//질문댓글 리스트 페이지
 //	@GetMapping("/adminQuestionComment")
 //	public String getQuestionComment() {

@@ -187,38 +187,51 @@
 		ON u.user_id = qb.user_id
 		WHERE qb.question_id = #{questionId}
 	</select>
-	<select id="selectQuestionBoardVotes" resultType="int" parameterType="com.example.codeblue.vo.QuestionBoard">
-		SELECT 
-			COUNT(question_id) 
-		FROM question_vote
-			WHERE question_id = #{questionId}
-	</select>
-	
-	<select id="selectQuestionBoardAnswerCount" resultType="int" parameterType="com.example.codeblue.vo.QuestionBoard">
-		SELECT 
-			COUNT(question_id) 
-		FROM answer
-			WHERE question_id = #{questionId}
-	</select>
 	
 	<select id="selectQuestionBoardList" resultMap="QuestionBoard" parameterType="com.example.codeblue.vo.Page">
 		SELECT 
-			qb.question_id,
-			qb.question_title,
-			u.user_name,
-			u.user_id,
-			qb.question_datetime
-		FROM question_board qb inner join user u
-		ON qb.user_id = u.user_id
+				q.question_id,
+				q.question_title,
+				q.question_datetime,
+				q.question_content,
+				q.user_id,
+				u.user_name,
+				CASE WHEN a.answer_count IS NULL then 0 ELSE a.answer_count END AS answer_count,
+				CASE WHEN qc.comment_count IS NULL then 0 ELSE qc.comment_count END AS comment_count,
+				CASE WHEN qv.vote_count IS NULL then 0 ELSE qv.vote_count END AS vote_count,
+				CASE WHEN ad.answer_datetime IS NULL then DATE(0) ELSE ad.answer_datetime END AS answer_datetime
+		FROM question_board q left JOIN (SELECT COUNT(*) AS answer_count,question_id FROM
+		answer
+		GROUP BY question_id) a
+		ON q.question_id = a.question_id
+		LEFT JOIN (SELECT COUNT(*) AS comment_count,question_id FROM
+		question_comment
+		GROUP BY question_id) qc
+		ON q.question_id = qc.question_id
+		LEFT JOIN (SELECT COUNT(*) AS vote_count,question_id FROM
+		question_vote
+		GROUP BY question_id) qv
+		ON q.question_id = qv.question_id
+		LEFT JOIN (SELECT MAX(answer_datetime) as answer_datetime,question_id FROM answer
+		GROUP BY question_id
+		HAVING MAX(answer_datetime)) ad
+		ON q.question_id = ad.question_id
+		INNER JOIN user u
+		ON u.user_id = q.user_id
 		<where>
 			<if test="searchWord != null">
-				qb.question_title like CONCAT('%',#{searchWord},'%')
+				q.question_title like CONCAT('%',#{searchWord},'%')
 			</if>
 			<if test="feildId != 99">
-				qb.feild_id = #{feildId}
+				q.feild_id = #{feildId}
 			</if>
 		</where>
-			ORDER BY qb.question_datetime DESC 
+		<trim prefix="ORDER BY">
+			<if test="searchCategory == 'today'"> q.question_datetime DESC </if>
+			<if test="searchCategory == 'hot'"> answer_count DESC </if> 
+			<if test="searchCategory == 'help'"> answer_count ASC,q.question_datetime DESC </if>
+			<if test="searchCategory == 'ongoing'"> answer_datetime DESC </if>                          
+		</trim> 
 			LIMIT #{beginRow},#{rowPerPage}
 	</select>
 	

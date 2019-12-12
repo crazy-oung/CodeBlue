@@ -397,6 +397,7 @@
 			method:"POST",
 			data:{"currentPage" : currentPage+1,"searchCategory":searchCategory,"searchWord":searchWord,"toDate":toDate,"fromDate":fromDate,"rowPerPage":$("#rowPerPage").val()},
 			success: function(json){
+				console.log(json);
 				//체크박스로 클릭한 값 배열 초기화
 				checkBoxArr = new Array();
 				subInfo(json);

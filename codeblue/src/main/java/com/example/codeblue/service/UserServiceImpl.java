@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	@Override
-	public Map<String,Object> getQuestBoardList(int currentPage, int rowPerPage, String searchWord, int feildId) {
+	public Map<String,Object> getQuestBoardList(int currentPage, int rowPerPage, String searchWord,String searchCategory, int feildId) {
 		System.out.println("::: QuestionBoardServiceImpl - getQuestBoardList :::");
 		//페이징객체 생성
 		Page page = new Page();
@@ -87,6 +87,7 @@ public class UserServiceImpl implements UserService{
 		page.setBeginRow(beginRow);
 		page.setRowPerPage(rowPerPage);
 		page.setSearchWord(searchWord);
+		page.setSearchCategory(searchCategory);
 		//질문 리스트 전체 행의 갯수
 		int totalCount = userMapper.selectQuestionBoardTotalCount(page);
 		//페이지 마지막값변수선언
@@ -103,11 +104,11 @@ public class UserServiceImpl implements UserService{
 		
 		// 질문 리스트 저장
 		List<QuestionBoard> list = userMapper.selectQuestionBoardList(page);
-		// 각질문에 해당하는 갯수 뽑기
-		for(int i=0; i<list.size(); i++) {
-			list.get(i).setAnswerCount(userMapper.selectQuestionBoardAnswerCount(list.get(i)));
-			list.get(i).setVoteCount(userMapper.selectQuestionBoardVotes(list.get(i)));
-		}
+//		// 각질문에 해당하는 갯수 뽑기
+//		for(int i=0; i<list.size(); i++) {
+//			list.get(i).setAnswerCount(userMapper.selectQuestionBoardAnswerCount(list.get(i)));
+//			list.get(i).setVoteCount(userMapper.selectQuestionBoardVotes(list.get(i)));
+//		}
 		System.out.println(list.toString());
 		Map<String,Object> map = new HashMap<String, Object>();
 		map.put("lastPage", lastPage);

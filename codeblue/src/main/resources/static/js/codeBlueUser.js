@@ -19,10 +19,10 @@ $(document).ready(function() {
 			+ '<div style="margin-top: 70px">'
 			+ '	<ul class="nav flex-column">'
 			+ '		<li class="pl-0"><small>질문</small></li> '
-			+ '		<li class="nav-item pl-1"><a class="nav-link pl-2 font-weight-bold pt-1 pb-0" href="/">today</a></li> '
-			+ '		<li class="nav-item pl-1"><a class="nav-link pl-2 text-danger font-weight-bold pt-1 pb-0" href="/">hot 🔥</a></li>'
-			+ '		<li class="nav-item pl-1"><a class="nav-link pl-2 text-warning font-weight-bold pt-1 pb-0" href="/QnA">help!</a></li>'
-			+ '		<li class="nav-item pl-1"><a class="nav-link pl-2 text-success font-weight-bold pt-1 pb-0" href="/QnA">ongoing</a></li>'
+			+ '		<li class="nav-item pl-1"><a class="nav-link pl-2 font-weight-bold pt-1 pb-0" href="/today">today</a></li> '
+			+ '		<li class="nav-item pl-1"><a class="nav-link pl-2 text-danger font-weight-bold pt-1 pb-0" href="/hot">hot 🔥</a></li>'
+			+ '		<li class="nav-item pl-1"><a class="nav-link pl-2 text-warning font-weight-bold pt-1 pb-0" href="/help">help!</a></li>'
+			+ '		<li class="nav-item pl-1"><a class="nav-link pl-2 text-success font-weight-bold pt-1 pb-0" href="/ongoing">ongoing</a></li>'
 			+ '		<li class="mt-2"><small>조회</small></li> '
 			+ '		<li class="nav-item"><a class="nav-link text-dark pl-2 pt-1 pb-0" href="/users">유저</a></li>'
 			+ '		<li class="nav-item"><a class="nav-link text-dark pl-2 pt-1 pb-0" href="/tags">태그</a></li>'
@@ -188,7 +188,7 @@ $(document).ready(function() {
 	$.ajax({
 		url:"/rest/getBoardList",
 		method:"POST",
-		data:{"currentPage" : currentPage, "feildId":feildId},
+		data:{"currentPage" : currentPage, "feildId":feildId,"searchCategory":$("#searchCategory").val()},
 		success: function(json){
 			currentPage = json.currentPage;
 			lastPage = json.lastPage;
@@ -208,7 +208,7 @@ $(document).ready(function() {
 		$.ajax({
 			url:"/rest/getBoardList",
 			method:"POST",
-			data:{"currentPage" : currentPage-1,"searchWord": searchWord},
+			data:{"currentPage" : currentPage-1,"searchWord": searchWord,"searchCategory":$("#searchCategory").val()},
 			success: function(json){
 				currentPage = json.currentPage;
 				lastPage = json.lastPage;
@@ -228,7 +228,7 @@ $(document).ready(function() {
 		$.ajax({
 			url:"/rest/getBoardList",
 			method:"POST",
-			data:{"currentPage" : currentPage+1,"searchWord": searchWord},
+			data:{"currentPage" : currentPage+1,"searchWord": searchWord,"searchCategory":$("#searchCategory").val()},
 			success: function(json){
 				currentPage = json.currentPage;
 				lastPage = json.lastPage;
