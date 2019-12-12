@@ -185,7 +185,7 @@ console.log("관리자");
         + '<!-- End of Topbar -->')
 	
        $.ajax({
-    	   url : "/rest/getLoginManager",
+    	   url : "/rest/admin/getLoginManager",
     	   method:"get",
     	   success:function(json){
     		   console.log(json);

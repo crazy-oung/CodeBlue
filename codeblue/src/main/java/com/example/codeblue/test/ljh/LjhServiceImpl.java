@@ -6,13 +6,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.codeblue.vo.Answer;
 import com.example.codeblue.vo.AnswerComment;
+import com.example.codeblue.vo.QuestionComment;
 
 @Service
 @Transactional
 public class LjhServiceImpl implements LjhService{
 	@Autowired LjhMapper ljhMapper;
+	/*
+	 * //질문 댓글 추가하기.
+	 * 
+	 * @Override public int addQeustionComment(QuestionComment questionComment) {
+	 * System.out.println("::: LjhServiceImpl - addQeustionComment :::");
+	 * ljhMapper.insertQuestionComment(questionComment); return
+	 * ljhMapper.selectQuestiocCommentTotal(questionComment.getQuestionBoard().
+	 * getQuestionId()); } //질문 답변 댓글 추가하기
+	 * 
+	 * @Override public int addAnswerComment(AnswerComment answerComment) {
+	 * System.out.println("::: LjhServiceImpl - addAnswerComment :::");
+	 * System.out.println("answerComment : "+ answerComment.toString()); return
+	 * ljhMapper.insertAnswerComment(answerComment); }
+	 */
+
 
 
 	

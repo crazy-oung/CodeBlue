@@ -2,7 +2,7 @@ $(document).ready(function() {
 	
 	$("#topBar").append( '<nav class="navbar navbar-expand navbar-light topbar mb-4 shadow fixed-top" style="height: 50px; border-bottom: 1px solid #d9d9d9; border-top: 4px solid #4e73df; background: #f2f2f2;">'
 							+ '<div class="container">'
-							+ '<a class="navbar-brand text-primary mr-0" href="/today"><img src="/img/codeBlueLogo.png" width="130px"></a> '
+							+ '<a class="navbar-brand text-primary mr-0" href="/today" style="width:16%"><img src="/img/codeBlueLogo.png" width="100%"></a> '
 							+ '<a class="btn btn-sm btn-default mx-2 hov-g text-dark" href="/QnA">QnA</a>'
 							+'<div class="input-group">'
 							+'<input type="text" class="form-control  form-control-sm bg-light border-1" placeholder="검색어" id="searchQuestionBoard">'

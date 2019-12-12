@@ -1,11 +1,9 @@
 package com.example.codeblue.test.ljh;
 
-import java.util.List;
-
 import org.apache.ibatis.annotations.Mapper;
 
-import com.example.codeblue.vo.Answer;
 import com.example.codeblue.vo.AnswerComment;
+import com.example.codeblue.vo.QuestionComment;
 
 @Mapper
 public interface LjhMapper {
@@ -32,4 +30,11 @@ public interface LjhMapper {
 //	public List<Answer> selectAnswerList(int questionId);
 //	//질문 답변 댓글 리스트 가져오기
 //	public List<AnswerComment> selectAnswerCommentList(int answerId);
+//	//질문 댓글 토탈행
+//	public int selectQuestiocCommentTotal(int questionId);
+//	//질문 댓글 추가
+//	public int insertQuestionComment(QuestionComment questionComment);
+//	//질문 답변 댓글 추가
+//	public int insertAnswerComment(AnswerComment answerComment);
+	
 }

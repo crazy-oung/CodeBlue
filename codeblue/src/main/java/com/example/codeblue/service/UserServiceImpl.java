@@ -28,6 +28,20 @@ import com.example.codeblue.vo.User;
 public class UserServiceImpl implements UserService{
 	@Autowired UserMapper userMapper; 
 	@Autowired JavaMailSender javaMailSender;
+	//질문 댓글 추가하기.
+	@Override
+	public int addQeustionComment(QuestionComment questionComment) {
+		System.out.println("::: UserServiceImpl - addQeustionComment :::");
+		userMapper.insertQuestionComment(questionComment);
+		return userMapper.selectQuestiocCommentTotal(questionComment.getQuestionBoard().getQuestionId());
+	}
+	//질문 답변 댓글 추가하기
+	@Override
+	public int addAnswerComment(AnswerComment answerComment) {
+		System.out.println("::: UserServiceImpl - addAnswerComment :::");
+		System.out.println("answerComment : "+ answerComment.toString());
+		return userMapper.insertAnswerComment(answerComment);
+	}
 	//질문 답변 추가하기
 	@Override
 	public int addAnswer(Answer answer) {

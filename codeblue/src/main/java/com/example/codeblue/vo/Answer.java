@@ -9,4 +9,5 @@ public class Answer {
 	private User user;
 	private String answerContent;
 	private String answerDatetime;
+	private int answerTotal;
 }

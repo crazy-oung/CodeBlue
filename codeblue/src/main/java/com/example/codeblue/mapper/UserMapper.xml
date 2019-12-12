@@ -91,6 +91,42 @@
 		<association property="user" resultMap="User"></association>
 		<association property="answer" resultMap="Answer"></association>
 	</resultMap>
+		<!--  질문 댓글 추가하기 (원본) -->
+	<insert id="insertQuestionComment" parameterType="com.example.codeblue.vo.QuestionComment">
+		INSERT INTO question_comment(
+			question_id,
+			user_id,
+			question_comment_content,
+			question_comment_datetime
+		) VALUES(
+			#{questionBoard.questionId},
+			#{user.userId},
+			#{questionCommentContent},
+			NOW()
+		)
+	
+	</insert>
+	<!--  질문댓글 수 가져오기 -->
+	<select id="selectQuestiocCommentTotal" parameterType="int" resultType="int">
+	SELECT COUNT(*)
+	FROM question_comment
+	WHERE question_id = #{questionId}
+	
+	</select>
+	<!--  질문 답변 댓글 추가하기 (원본) -->
+	<insert id="insertAnswerComment" parameterType="com.example.codeblue.vo.AnswerComment">
+		INSERT INTO answer_comment(
+			answer_id,
+			user_id,
+			answer_comment_content,
+			answer_comment_datetime
+		) VALUES (
+			#{answer.answerId},
+			#{user.userId},
+			#{answerCommentContent},
+			NOW()
+		)
+	</insert>
 	<!-- 질문 답변 댓글 리스트 가져오기 -->
 	<select id="selectAnswerCommentList" parameterType="int" resultMap="AnswerComment">
 		SELECT	ac.answer_comment_id,
@@ -109,13 +145,15 @@
 		INSERT INTO answer  (
 			question_id,
 			answer_content,
-			answer_datetime
+			answer_datetime,
+			user_id
 		)
 		VALUES (
 			#{questionBoard.questionId},
 			#{answerContent},
-			NOW()
-		)		
+			NOW(),
+			#{user.userId}
+		)			
 	</insert>
 	<!--질문 답변 리스트 가져오기 -->
 	<select id="selectAnswerList" parameterType="int" 

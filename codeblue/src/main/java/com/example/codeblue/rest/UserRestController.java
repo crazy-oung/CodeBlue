@@ -23,6 +23,21 @@ import com.example.codeblue.vo.User;
 @RestController
 public class UserRestController {
 	@Autowired UserService userService;
+
+	//질문 댓글 추가하기
+	@PostMapping("/rest/questionCommentAdd")
+	public int questionCommentAdd(QuestionComment questionComment) {
+		System.out.println("::: post - questionCommentAdd :::");
+		System.out.println(questionComment.toString());
+		return userService.addQeustionComment(questionComment);
+	}
+	//질문 답변 댓글 추가하기
+	@PostMapping("/rest/answerCommnetAdd")
+	public int addAnswerCommnet(AnswerComment answerComment) {
+		System.out.println("::: post - answerCommnetAdd :::");
+		System.out.println(answerComment.toString());
+		return userService.addAnswerComment(answerComment);
+	}
 	//질문 답변 추가하기
 	@PostMapping("/rest/answerAdd")
 	public int answerAdd(Answer answer) {
