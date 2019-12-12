@@ -34,23 +34,7 @@
 			<div class="row"> 
 			
 				<!-- Side Bar -->
-				<div class="col-sm-1 p-0 " style="border-right: 1px solid #d9d9d9;">
-					<nav class="navbar pl-0 sticky-container">
-						<div style="margin-top: 70px">
-							<ul class="nav flex-column">
-								<li class="pl-0"><small>질문</small></li> 
-								<li class="nav-item pl-1"><a class="nav-link pl-2 font-weight-bold pt-1 pb-0" href="/">today</a></li> 
-								<li class="nav-item pl-1"><a class="nav-link pl-2 text-danger font-weight-bold pt-1 pb-0" href="/">hot 🔥</a></li>
-								<li class="nav-item pl-1"><a class="nav-link pl-2 text-warning font-weight-bold pt-1 pb-0" href="/">help!</a></li>
-								<li class="nav-item pl-1"><a class="nav-link pl-2 text-success font-weight-bold pt-1 pb-0" href="/">ongoing</a></li>
-								<li class="mt-2"><small>조회</small></li> 
-								<li class="nav-item"><a class="nav-link text-dark pl-2 pt-1 pb-0" href="/">유저</a></li>
-								<li class="nav-item"><a class="nav-link text-dark pl-2 pt-1 pb-0" href="/">태그</a></li>
-								<li class="nav-item"><a class="nav-link text-dark pl-2 pt-1 pb-0" href="/">랭킹</a></li>
-							</ul>
-						</div> 
-					</nav>
-				</div>
+				<div class="col-sm-1 p-0 " style="border-right: 1px solid #d9d9d9;" id="leftSideBar"></div>
 				<!-- Side Bar End -->
 				
 				<!-- Page Content -->
@@ -59,12 +43,8 @@
 					<!-- Page Heading -->
 					<div class="mb-4" style="margin-top: 80px">
 						<ul class="nav nav-tabs">
-						    <li class="nav-item">
-						      <a class="nav-link" href="#">프로필</a>
-						    </li>
-						    <li class="nav-item">
-						      <a class="nav-link active" href="#">활동</a>
-						    </li>
+						   	<li class="nav-item" id="linkToProfile"></li>
+						    <li class="nav-item" id="linkToActivity"></li>
 						</ul>	
 						<div id="user" style="text-align: right;"></div>
 						  	
@@ -106,55 +86,65 @@
 					</div>	
 
 					<!-- 선택리스트 -->
-					<div class="mb-4" style="margin-top: 80px">
+					<div class="mb-4" >
 						<ul class="nav nav-tabs">
 						    <li class="nav-item">
-						     	 <a class="nav-link active" href="#">요약</a>
+						     	 <a class="nav-link active hov-p" href="#" onclick="reset()" id="summaryBtn">요약</a>
 						    </li>
 						    <li class="nav-item">
-						     	 <a class="nav-link" href="#" id="active">답변</a>
+						     	 <a class="nav-link hov-p" href="#" onclick="activeCategory('answerBtn')" id="answerBtn">답변</a>
 						    </li>
 						    <li class="nav-item">
-						    	  <a class="nav-link" href="#" id="active">질문</a>
+						    	  <a class="nav-link hov-p " href="#" onclick="activeCategory('questionBtn')" id="questionBtn">질문</a>
 						    </li>
 						    <li class="nav-item">
-						     	 <a class="nav-link" href="/userOneActiviy" id="active">태그</a>
+						     	 <a class="nav-link hov-p" href="#" onclick="activeCategory('commentBtn')" id="commentBtn">댓글</a>
+						    </li>
+						    <li class="nav-item">
+						     	 <a class="nav-link hov-p" href="#" onclick="activeCategory('tagBtn')" id="tagBtn">태그</a>
 						    </li>
 						</ul>		
 					</div>
 					
-					<!-- 위 버튼을 클릭하면 새로 출력하기 위한 div -->
-					<div>
-					<!-- 2/4 -->
-					<div class="row">
-						<div class="col-md-6">
-							<label>질문</label><label id="questionCount" style="font-size: x-small;"></label>
-							<table class="table table-hover">
-									</thead>
-									<!-- 내 질문/답변 list 출력 -->
-									<tbody id="questionList"></tbody>
-							</table>
-						</div>
-						<div class="col-md-6">
-							<label>기여도</label>
-						</div>
-					</div>
-					<hr>
+					<!-- 질문버튼 클릭시 사용됨 -->
+					<table class="table table-hover">
+						<tbody id="boardList"></tbody>
+					</table>
 					
-					<!-- 3/4 -->
-					<div class="row">
-						<div class="col-md-6">
-							<label>답변</label><label id="commentCount" style="font-size: x-small;"></label>
-							<table class="table table-hover">
-									<!-- 내 질문/답변 list 출력 -->
-									<tbody id="answerList"></tbody>
-							</table>
+					<!--기본페이지 및 요약버튼 클릭시 출력.-->
+					<div id="contentBoard" >
+					
+						<!-- 2/4 -->
+						<div class="row">
+							<div class="col-md-6">
+								<label>질문</label><label id="questionCount" style="font-size: x-small;"></label>
+								<table class="table table-hover">
+										<!-- 내 질문/답변 list 출력 -->
+										<tbody id="questionList"></tbody>
+								</table>
+							</div>
+							<div class="col-md-6">
+								<label>기여도</label>
+							</div>
 						</div>
-						<div class="col-md-6">
-							<label>태그</label>
+						<hr>
+						
+						<!-- 3/4 -->
+						<div class="row">
+							<div class="col-md-6">
+								<label>댓글</label><label id="commentCount" style="font-size: x-small;"></label>
+								<table class="table table-hover">
+										<!-- 내 질문/답변 list 출력 -->
+										<tbody id="commentList"></tbody>
+								</table>
+							</div>
+							<div class="col-md-6">
+								<label>태그</label>
+							</div>
 						</div>
+						
 					</div>
-					</div>
+					
 					<hr>
 					
 					<!-- 4/4 -->
@@ -184,27 +174,97 @@
 	
 </body>
 <script type="text/javascript">
+var currentPage  = 1;
+var rowPerPage = 10;
 
-//파라메터 정보가 저장될 오브젝트
-//common.js 같은 모든 페이지에서 로딩되는 js 파일에 넣어두면 됨.
-var getParam = function(key){
- var _parammap = {};
- document.location.search.replace(/\??(?:([^=]+)=([^&]*)&?)/g, function () {
-     function decode(s) {
-         return decodeURIComponent(s.split("+").join(" "));
-     }
+function activeCategory(item){
+	$("#answerBtn").removeClass("active");
+	$("#summaryBtn").removeClass("active");
+	$("#questionBtn").removeClass("active");
+	$("#commentBtn").removeClass("active");
+	$("#tagBtn").removeClass("active");
+	console.log("#"+item);
+	$("#"+item).addClass("active");
+}
 
-     _parammap[decode(arguments[1])] = decode(arguments[2]);
- });
-
- return _parammap[key];
-};
-$("#userId").val(getParam("userId"));
+function reset(){
+	console.log("요약...")
+	activeCategory("summaryBtn");
+	
+	$("#boardList").empty();
+	
+	$("#contentBoard").fadeIn(500);
+	//내 질문 리스트 출력.
+	$.ajax({
+		url :"/rest/profileQuestionBoard",
+		method : "post",
+		data : {"userId" : getParam("userId")},
+		success : function(json){
+			console.log(json);
+			$("#questionList").empty();
+			
+			$(json).each(function(index, item){
+				
+			let board =  "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionId+"</td>";
+				board += "<td><a href='/questionBoardOne?questionId="+item.questionId+"'>"+item.questionTitle+"</a></td>";
+				board += "<td>"+item.questionDatetime+"</td></tr>";
+		
+				$("#questionList").append(board);
+			});
+		}
+	});
+	
+	// 댓글 리스트 출력.
+	$.ajax({
+		url :"/rest/profileQuestionComment",
+		method : "post",
+		data : {"userId" : getParam("userId")},
+		success : function(json){
+			console.log(json);
+			$("#commentList").empty();
+			
+			$(json).each(function(index, item){
+			
+				let comment =  "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionBoard.questionId+"</td>";
+					comment += "<td><a href='/questionBoardOne?questionId="+item.questionBoard.questionId+"'>"+item.questionCommentContent+"</a></td>";
+					comment += "<td>"+item.questionCommentDatetime+"</td></tr>";
+				$("#commentList").append(comment);
+			});
+		}
+	});
+	
+	//답변 수 
+	$.ajax({
+		url : "/rest/CommentCount",
+		method :"post",
+		data : {"userId" : getParam("userId")},
+		success : function(json){
+			console.log("commentCount: " ,json);
+			$("#commentCount").empty();
+			$("#commentCount").append(json);
+		} 
+	
+	})
+	
+	//질문 수
+	$.ajax({
+		url : "/rest/QuestionCount",
+		method :"post",
+		data : {"userId" : getParam("userId")},
+		success : function(json){
+			console.log("questionCount: " ,json);
+			$("#questionCount").empty();
+			$("#questionCount").append(json);
+		} 
+	})
+}
 
 $(document).ready(function() {
 	
-	var currentPage  = 1;
-	var rowPerPage = 10;
+	$("#linkToProfile").append('<a class="nav-link hov-p" href="/userOne?userId='+getParam("userId")+'">프로필</a>');
+	console.log(getParam("userId"));
+	$("#linkToActivity").append('<a class="nav-link active hov-p" href="/userOneActive?userId='+getParam("userId")+'">활동</a>');
+	$("#userId").val(getParam("userId"));
 	
 	//이름출력.
 	$.ajax({
@@ -222,72 +282,81 @@ $(document).ready(function() {
 		}
 	});
 	
-	//내 질문 리스트 출력.
-	$.ajax({
-		url :"/rest/profileQuestionBoard",
-		method : "post",
-		data : {"userId" : getParam("userId")},
-		success : function(json){
-			console.log(json);
-			$("#list").empty();
-			
-			$(json).each(function(index, item){
-				
-			let board =  "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionId+"</td>";
-				board += "<td><a href='/questionBoardOne?questionId="+item.questionId+"'>"+item.questionTitle+"</a></td>";
-				board += "<td>"+item.questionDatetime+"</td></tr>";
-		
-				$("#questionList").append(board);
-			});
-		}
-	});
-	
-	// 답변 리스트 출력.
-	$.ajax({
-		url :"/rest/profileQuestionComment",
-		method : "post",
-		data : {"userId" : getParam("userId")},
-		success : function(json){
-			console.log(json);
-			$("#list").empty();
-			
-			$(json).each(function(index, item){
-			
-				let comment =  "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionBoard.questionId+"</td>";
+	// 요약 출력
+	reset();
+
+	//댓글 버튼
+	$("#commentBtn").click(function(){
+		$("#contentBoard").hide();
+		$("#boardList").empty();
+		$.ajax({
+			url :"/rest/questionCommentPaging",
+			method : "post",
+			data : {"currentPage" : currentPage,
+					"rowPerPage": rowPerPage,
+					"userId" : getParam("userId")},
+			success : function(json){
+				console.log(json);
+				$(json.list).each(function(index,item){
+					let comment =  "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionBoard.questionId+"</td>";
 					comment += "<td><a href='/questionBoardOne?questionId="+item.questionBoard.questionId+"'>"+item.questionCommentContent+"</a></td>";
 					comment += "<td>"+item.questionCommentDatetime+"</td></tr>";
-				$("#answerList").append(comment);
-			});
-		}
-	});
-	
-	//답변 수 
-	$.ajax({
-		url : "/rest/CommentCount",
-		method :"post",
-		data : {"userId" : getParam("userId")},
-		success : function(json){
-			console.log(json);
-			$(json).each(function(index, item){
-				$("#commentCount").append(item);
-			})
-		} 
-	
+					$("#boardList").append(comment);
+				})
+			}
+		})
 	})
 	
-	//질문 수
-	$.ajax({
-		url : "/rest/QuestionCount",
-		method :"post",
-		data : {"userId" : getParam("userId")},
-		success : function(json){
-			console.log(json);
-			$(json).each(function(index, item){
-				$("#questionCount").append(item);
-			})
-		} 
+	//답변버튼
+	$("#answerBtn").click(function(){
+		$("#contentBoard").hide();
+		$("#boardList").empty();
+		$.ajax({
+			url : "/rest/questionAnswerPaging",
+			method :"post",
+			data :{ "currentPage" : currentPage,
+					"rowPerPage": rowPerPage,
+					"userId" : getParam("userId")},
+			success : function(json){
+				console.log(json);
+				$(json.list).each(function(index, item){
+					let answer = "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.answerId+"</td>";
+						answer += "<td><a href='/questionBoardOne?questionId="+item.questionBoard.questionId+"'>"+item.answerContent+"</a></td>";
+						answer += "<td>"+item.answerDatetime+"</td></tr>";
+					$("#boardList").append(answer);
+				})
+			}
+		})
 	})
 	
+	//질문버튼
+	$("#questionBtn").click(function(){
+		$("#contentBoard").hide();
+		$("#boardList").empty();
+		$.ajax({
+			url :"/rest/questionBoardPaging",
+			method : "post",
+			data : {"currentPage" : currentPage,
+					"rowPerPage": rowPerPage,
+					"userId" : getParam("userId")},
+			success : function(json){
+				console.log(json);
+				$(json.list).each(function(index,item){
+					let question = "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionId+"</td>";
+						question += "<td><a href='/questionBoardOne?questionId="+item.questionId+"'>"+item.questionTitle+"</a></td>";
+						question += "<td>"+item.questionDatetime+"</td></tr>";
+					$("#boardList").append(question);
+				})
+			}
+		})
+	})
+	
+	//태그버튼 
+	$("#tagBtn").click(function(){
+		$("#boardList").append("<tr><td>밥밥</td></tr>");
+	})
+	
+
 	//해당 유저 월별 질문 차트
 	var lineQuestionctx = document.getElementById("monthlyQuestionCountLineChart"); 
 		var lineQuestionCount = [0,0,0,0,0,0,0,0,0,0,0,0];
@@ -496,7 +565,7 @@ $(document).ready(function() {
 				  }
 			});	
 
-	//----->차트 끝
+
 	
 });
 </script>

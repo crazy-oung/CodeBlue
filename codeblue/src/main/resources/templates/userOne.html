@@ -34,23 +34,7 @@
 			<div class="row"> 
 			
 				<!-- Side Bar -->
-				<div class="col-sm-1 p-0 " style="border-right: 1px solid #d9d9d9;">
-					<nav class="navbar pl-0 sticky-container">
-						<div style="margin-top: 70px">
-							<ul class="nav flex-column">
-								<li class="pl-0"><small>질문</small></li> 
-								<li class="nav-item pl-1"><a class="nav-link pl-2 font-weight-bold pt-1 pb-0" href="/">today</a></li> 
-								<li class="nav-item pl-1"><a class="nav-link pl-2 text-danger font-weight-bold pt-1 pb-0" href="/">hot 🔥</a></li>
-								<li class="nav-item pl-1"><a class="nav-link pl-2 text-warning font-weight-bold pt-1 pb-0" href="/">help!</a></li>
-								<li class="nav-item pl-1"><a class="nav-link pl-2 text-success font-weight-bold pt-1 pb-0" href="/">ongoing</a></li>
-								<li class="mt-2"><small>조회</small></li> 
-								<li class="nav-item"><a class="nav-link text-dark pl-2 pt-1 pb-0" href="/">유저</a></li>
-								<li class="nav-item"><a class="nav-link text-dark pl-2 pt-1 pb-0" href="/">태그</a></li>
-								<li class="nav-item"><a class="nav-link text-dark pl-2 pt-1 pb-0" href="/">랭킹</a></li>
-							</ul>
-						</div> 
-					</nav>
-				</div>
+				<div class="col-sm-1 p-0 " style="border-right: 1px solid #d9d9d9;" id="leftSideBar"></div>
 				<!-- Side Bar End -->
 				
 				<!-- Page Content -->
@@ -59,12 +43,8 @@
 					<!-- Page Heading -->
 					<div class="mb-4" style="margin-top: 80px">
 						<ul class="nav nav-tabs">
-						    <li class="nav-item">
-						      <a class="nav-link active" href="#">프로필</a>
-						    </li>
-						    <li class="nav-item">
-						      <a class="nav-link" href="/userOneActiviy" id="active">활동</a>
-						    </li>
+ 							<li class="nav-item" id="linkToProfile"></li>
+						    <li class="nav-item" id="linkToActivity"></li>
 						</ul>		
 					</div><!-- page Heading End -->
 
@@ -99,7 +79,8 @@
 									<label style="text-align: left; font-size: medium;" id="count">내 게시글</label><label id="count" style="font-size: small;"></label>
 							 </div>
 							 <div class="col-md-2" style="font-size: small;">
-							 		<button type="button" id="questionCommentBtn" style="float: right;">내 답글</button>
+							 		<button type="button" id="questionAnswerBtn" style="float: right;">내 답글</button> 
+							 		<button type="button" id="questionCommentBtn" style="float: right;">내 댓글</button>
 							 		<button type="button" id="questionBoardBtn" style="float: right;">내 질문</button> 		
 							 </div>
 						</div>
@@ -110,7 +91,7 @@
 									<thead align="center" id="headlist">
 										
 									</thead>
-									<!-- 내 질문/답변 list 출력 -->
+									<!-- 내 질문/답변/댓글 list 출력 -->
 									<tbody id="list"></tbody>
 								</table>
 							</div>
@@ -153,21 +134,9 @@
 </body>
 <script type="text/javascript">
 
-
-//파라메터 정보가 저장될 오브젝트
-//common.js 같은 모든 페이지에서 로딩되는 js 파일에 넣어두면 됨.
-var getParam = function(key){
- var _parammap = {};
- document.location.search.replace(/\??(?:([^=]+)=([^&]*)&?)/g, function () {
-     function decode(s) {
-         return decodeURIComponent(s.split("+").join(" "));
-     }
-
-     _parammap[decode(arguments[1])] = decode(arguments[2]);
- });
-
- return _parammap[key];
-};
+$("#linkToProfile").append('<a class="nav-link active hov-p" href="/userOne?userId='+getParam("userId")+'">프로필</a>');
+$("#linkToActivity").append('<a class="nav-link  hov-p" href="/userOneActive?userId='+getParam("userId")+'">활동</a>');
+console.log(getParam("userId"));
 $("#userId").val(getParam("userId"));
 
 $(document).ready(function() {
@@ -224,54 +193,80 @@ $(document).ready(function() {
 	
 	//내 질문버튼 클릭시 리스트 출력.
 	$("#questionBoardBtn").click(function(){
-	$.ajax({
-		url :"/rest/profileQuestionBoard",
-		method : "post",
-		data : {"userId" : getParam("userId")},
-		success : function(json){
-			console.log(json);
-			$("#list").empty();
-			$("#headlist").empty();
-			let boardHead  = "<tr><th>질문 번호</th>";
-				boardHead += "<th>질문 제목</th>";
-				boardHead += "<th>질문 날짜</th></tr>";
-				$("#headlist").append(boardHead);
-			$(json).each(function(index, item){
-				
-			let board =  "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionId+"</td>";
-				board += "<td><a href='/questionBoardOne?questionId="+item.questionId+"'>"+item.questionTitle+"</a></td>";
-				board += "<td>"+item.questionDatetime+"</td></tr>";
-				
-				$("#list").append(board);
-			});
-		}
-	});
+		$.ajax({
+			url :"/rest/profileQuestionBoard",
+			method : "post",
+			data : {"userId" : getParam("userId")},
+			success : function(json){
+				console.log("question json :"+ json);
+				$("#list").empty();
+				$("#headlist").empty();
+				let boardHead  = "<tr><th>질문 번호</th>";
+					boardHead += "<th>질문 제목</th>";
+					boardHead += "<th>질문 날짜</th></tr>";
+					$("#headlist").append(boardHead);
+				$(json).each(function(index, item){
+					
+				let board =  "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionId+"</td>";
+					board += "<td><a href='/questionBoardOne?questionId="+item.questionId+"'>"+item.questionTitle+"</a></td>";
+					board += "<td>"+item.questionDatetime+"</td></tr>";
+					
+					$("#list").append(board);
+				});
+			}
+		});
 	})
 	
-	//클릭시 내 답변 리스트 출력.
+	//클릭시 내 답글 리스트 출력
+	$("#questionAnswerBtn").click(function(){
+		$.ajax({
+			url : "/rest/questionAnswer",
+			method : "post",
+			data :  {"userId" : getParam("userId")},
+			success : function(json){
+				console.log("answer json : "+json);
+				$("#list").empty();
+				$("#headlist").empty();
+				let answerHead = "<tr><th>답변 번호</th>";
+					answerHead += "<th>답변 내용</th>";
+					answerHead += "<th>답변 날짜</th></tr>";
+					$("#headlist").append(answerHead);
+
+				$(json).each(function(index,item){
+					let answer = "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.answerId+"</td>";
+						answer += "<td><a href='/questionBoardOne?questionId="+item.questionBoard.questionId+"'>"+item.answerContent+"</a></td>";
+						answer += "<td>"+item.answerDatetime+"</td></tr>";
+					$("#list").append(answer);
+				})
+			}
+		})
+	})
+	
+	
+	//클릭시 내 댓글 리스트 출력.
 	$("#questionCommentBtn").click(function(){
-	$.ajax({
-		url :"/rest/profileQuestionComment",
-		method : "post",
-		data : {"userId" : getParam("userId")},
-		success : function(json){
-			console.log(json);
-			$("#list").empty();
-			$("#headlist").empty();
-			let commentHead  = "<tr><th>댓글 번호</th>";
-				commentHead += "<th>댓글 내용</th>";
-				commentHead += "<th>댓글 날짜</th></tr>";
-				$("#headlist").append(commentHead);
-			$(json).each(function(index, item){
-			
-				let comment =  "<tr><td>"+item.questionCommentId+"</td>";
-					comment += "<td><a href='/questionBoardOne?questionId="+item.questionBoard.questionId+"'>"+item.questionCommentContent+"</a></td>";
-					comment += "<td>"+item.questionCommentDatetime+"</td></tr>";
-				$("#list").append(comment);
-			});
-		}
-	});
-})
+		$.ajax({
+			url :"/rest/profileQuestionComment",
+			method : "post",
+			data : {"userId" : getParam("userId")},
+			success : function(json){
+				console.log("comment json:"+json);
+				$("#list").empty();
+				$("#headlist").empty();
+				let commentHead  = "<tr><th>댓글 번호</th>";
+					commentHead += "<th>댓글 내용</th>";
+					commentHead += "<th>댓글 날짜</th></tr>";
+					$("#headlist").append(commentHead);
+				$(json).each(function(index, item){
+				
+					let comment =  "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionCommentId+"</td>";
+						comment += "<td><a href='/questionBoardOne?questionId="+item.questionBoard.questionId+"'>"+item.questionCommentContent+"</a></td>";
+						comment += "<td>"+item.questionCommentDatetime+"</td></tr>";
+					$("#list").append(comment);
+				});
+			}
+		});
+	})
 	
 	$.ajax({
 		url : "/rest/QuestionCount",

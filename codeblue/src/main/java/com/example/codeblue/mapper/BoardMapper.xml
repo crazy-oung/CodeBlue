@@ -3,15 +3,28 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
+
 <mapper namespace="com.example.codeblue.mapper.BoardMapper">
-	<select id="selectRegionList" resultType="com.example.codeblue.vo.Region">
-		SELECT region_id as regionId, region_name as regionName 
+	<!-- region 객체생성 -->
+	<resultMap type="com.example.codeblue.vo.Region" id="Region">
+		<result column="region_id"  property="regionId"></result>
+		<result column="region_name"  property="regionName"></result>
+	</resultMap>
+	
+	<!-- feild 객체생성 -->
+	<resultMap type="com.example.codeblue.vo.Feild" id="Feild">
+		<result column="feild_id" property="feildId"></result>
+		<result column="feild_name" property="feildName"></result>
+	</resultMap>
+
+	<select id="selectRegionList" resultMap="Region">
+		SELECT region_id , region_name 
 		FROM region
 	</select> 
 	
-	<select id="selectFeildList" resultType="com.example.codeblue.vo.Feild">
-		SELECT feild_id as feildId, feild_name as feildName
-		FROM Feild 
+	<select id="selectFeildList" resultMap="Feild">
+		SELECT feild_id , feild_name 
+		FROM feild 
 	</select> 
 </mapper>
 

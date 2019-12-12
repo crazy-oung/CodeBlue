@@ -14,4 +14,6 @@ public class Page {
 	public String toDate;
 	public String fromDate;
 	public int feildId;
+	//프로필에서 해당유저 게시글 페이징
+	public String userId;
 }
