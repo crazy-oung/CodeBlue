@@ -19,6 +19,7 @@ import com.example.codeblue.vo.Hospital;
 import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.QuestionComment;
+import com.example.codeblue.vo.ServiceCategory;
 import com.example.codeblue.vo.User;
 @RestController
 public class UserRestController {
@@ -245,5 +246,19 @@ public class UserRestController {
 		System.out.println("rowPerPage : "+rowPerPage);
 		System.out.println("searchWord : "+searchWord);
 		return userService.getUserList(currentPage, rowPerPage,searchWord);
+	}
+	// serviceCategory 리스트 조회 및 강조
+	@GetMapping("/rest/getServiceCategoryList")
+	public List<ServiceCategory> getServiceCategoryList() {
+		return userService.getServiceCategoryList();
+	}
+	// faq 리스트 조회
+	@PostMapping("/rest/getFaqList")
+	public Map<String,Object> getFaqList(@RequestParam(value="currentPage", defaultValue = "1")int currentPage,
+			@RequestParam(value = "rowPerPage", defaultValue = "10")int rowPerPage){
+		System.out.println("::: post - /getFaqList :::");
+		System.out.println("currentPage : "+currentPage);
+		System.out.println("rowPerPage : "+rowPerPage);
+		return userService.getFaqList(currentPage, rowPerPage);
 	}
 }

@@ -15,12 +15,14 @@ import com.example.codeblue.mapper.UserMapper;
 import com.example.codeblue.vo.Answer;
 import com.example.codeblue.vo.AnswerComment;
 import com.example.codeblue.vo.Expert;
+import com.example.codeblue.vo.FaqBoard;
 import com.example.codeblue.vo.Hospital;
 import com.example.codeblue.vo.Manager;
 import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.QuestionComment;
+import com.example.codeblue.vo.ServiceCategory;
 import com.example.codeblue.vo.User;
 
 @Transactional
@@ -307,6 +309,42 @@ public class UserServiceImpl implements UserService{
 		System.out.println("lastPage : "+lastPage);
 		// 리스트 출력
 		List<User> list = userMapper.selectUserList(page);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", list);
+		map.put("currentPage", currentPage);
+		map.put("totalRow", totalRow);
+		map.put("lastPage", lastPage);
+		return map;
+	}
+	// serviceCategory 조회
+	@Override
+	public List<ServiceCategory> getServiceCategoryList() {
+		System.out.println("::: UserServiceImpl - selectServiceCategoryList :::");
+		List<ServiceCategory> list = userMapper.selectServiceCategoryList();
+		System.out.println(list.toString());
+		return list;
+	}
+	// faq 리스트 조회
+	@Override
+	public Map<String, Object> getFaqList(int currentPage, int rowPerPage) {
+		System.out.println("::: UserServiceImpl - selectFaqList :::");
+		int beginRow = (currentPage-1)*rowPerPage;
+		Page page = new Page();
+		page.setBeginRow(beginRow);
+		page.setRowPerPage(rowPerPage);
+		// 전체행의 수
+		int totalRow = userMapper.selectFaqCount(page);
+		System.out.println("totalRow : "+totalRow);
+		// 마지막 페이지 구하기
+		int lastPage = 0;
+		if(totalRow%rowPerPage != 0) {
+			lastPage = (totalRow/rowPerPage)+1;
+		} else {
+			lastPage = totalRow/rowPerPage;
+		}
+		System.out.println("lastPage : "+lastPage);
+		// 리스트 출력
+		List<FaqBoard> list = userMapper.selectFaqList(page);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("list", list);
 		map.put("currentPage", currentPage);

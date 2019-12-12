@@ -31,4 +31,10 @@ public class HyolController {
 		System.out.println("::: get - getUserListTest :::");
 		return "/UserListTest";
 	}
+	// faq 조회
+	@GetMapping("/getFaqListTest")
+	public String getFaqList() {
+		System.out.println("::: get - getFaqListTest :::");
+		return "/faqTest";
+	}
 }

@@ -112,5 +112,11 @@ public class UserController {
 		System.out.println("::: get - getUserListTest :::");
 		return "/users";
 	}
+	// faq 조회
+	@GetMapping("/faq")
+	public String getFaqList() {
+		System.out.println("::: get - getFaqList :::");
+		return "/faq";
+	}
 	
 }	

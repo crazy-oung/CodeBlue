@@ -91,6 +91,21 @@
 		<association property="user" resultMap="User"></association>
 		<association property="answer" resultMap="Answer"></association>
 	</resultMap>
+	<!-- service_category 객체 -->
+	<resultMap type="com.example.codeblue.vo.ServiceCategory" id="ServiceCategory">
+		<result column="service_category_id" property="serviceCategoryId"></result>
+		<result column="service_category_name" property="serviceCategoryName"></result>
+	</resultMap>
+	<!-- FaqBoard 객체 -->
+	<resultMap type="com.example.codeblue.vo.FaqBoard" id="FaqBoard">
+		<result column="FAQ_id" property="faqId"></result>
+		<result column="FAQ_title" property="faqTitle"></result>
+		<result column="FAQ_content" property="faqContent"></result>
+		<result column="FAQ_datetime" property="faqDatetime"></result>
+		
+		<association property="serviceCategory" resultMap="ServiceCategory">
+		</association>
+	</resultMap>
 		<!--  질문 댓글 추가하기 (원본) -->
 	<insert id="insertQuestionComment" parameterType="com.example.codeblue.vo.QuestionComment">
 		INSERT INTO question_comment(
@@ -398,6 +413,24 @@
 	<if test="searchWord != null">
 			AND user_name LIKE CONCAT('%',#{searchWord},'%')
 	</if>
+	</select>
+	<!-- serviceCategory 리스트 -->
+	<select id="selectServiceCategoryList" resultMap="ServiceCategory">
+		select service_category_id, service_category_name
+		from service_category
+	</select>
+	<!-- faq 리스트 -->
+	<select id="selectFaqList" parameterType="com.example.codeblue.vo.Page" resultMap="FaqBoard">
+		SELECT f.FAQ_id, sc.service_category_name, f.FAQ_title, f.FAQ_datetime
+		FROM faq_board f INNER JOIN service_category sc
+		ON f.service_category_id = sc.service_category_id 
+		ORDER BY f.FAQ_datetime DESC
+		LIMIT #{beginRow},#{rowPerPage}
+	</select>
+	<!-- faq 총 수 -->
+	<select id="selectFaqCount" parameterType="com.example.codeblue.vo.Page" resultType="int">
+		SELECT COUNT(*)
+		FROM faq_board
 	</select>
 </mapper>
 

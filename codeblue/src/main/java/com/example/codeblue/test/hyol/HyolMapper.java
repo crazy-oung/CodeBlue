@@ -5,7 +5,9 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.example.codeblue.vo.FaqBoard;
 import com.example.codeblue.vo.Page;
+import com.example.codeblue.vo.ServiceCategory;
 import com.example.codeblue.vo.User;
 
 @Mapper
@@ -32,4 +34,10 @@ public interface HyolMapper {
 	public List<User> selectUserList(Page Page);
 	// 유저 유저 수
 	public int selectUserCount(Page Page);
+	// serviceCategory 조회
+	public List<ServiceCategory> selectServiceCategoryList();
+	// faq 조회
+	public List<FaqBoard> selectFaqList(Page page);
+	// faq 총 수
+	public int selectFaqCount(Page page);
 }

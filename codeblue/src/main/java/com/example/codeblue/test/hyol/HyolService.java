@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.print.DocFlavor.STRING;
 
+import com.example.codeblue.vo.ServiceCategory;
+
 public interface HyolService {
 
 	// 회원 리스트
@@ -20,4 +22,8 @@ public interface HyolService {
 	// ----------------------------------------------------------------유저---------------------------------------------------
 	// 유저 유저조회
 	public Map<String,Object> getUserList(int currentPage, int rowPerPage, String searchWord);
+	// serviceCategory 조회
+	public List<ServiceCategory> getServiceCategoryList();
+	// faq 조회
+	public Map<String,Object> getFaqList(int currentPage, int rowPerPage);
 }

@@ -62,7 +62,7 @@
 		        			 <table class="table table-sm table-borderless">
 								<tr>
 									<td width="15%">유저이름 </td>
-									<td> <input class="form-control form-control-sm" type="text" id="searchContent" style="width: 40%"></td>
+									<td> <input class="form-control form-control-sm" type="text" id="searchWord" style="width: 40%"></td>
 								</tr>
 								<tr>
 									<td>회원가입일 </td>
@@ -225,9 +225,9 @@
 	var currentPage = 1;
 	var lastPage = 0;
 	var rowPerPage = 10;
-	var searchWord = null;
-	var toDate = null;
-	var fromDate = null;
+	var searchWord = undefined;
+	var toDate = undefined;
+	var fromDate = undefined;
 
 	// 기본 홈
 	$.ajax({
@@ -247,12 +247,40 @@
 	// 검색 버튼 클릭
 	$("#searchBtn").click(function(){
 		$("#userListContent").empty();
+		//값 학인 테스트
+		//		console.log("카테고리 값 : "+document.getElementById("searchCategory").value);
+		//		console.log("검색어 : "+$("#searchWord").val())
+		//		console.log("작성날짜시작 : "+document.querySelector("input[id='toDate']").valueAsDate.toISOString().slice(0, 10));
+		//		console.log("작성날짜끝 : "+$("input[id='fromDate']").eq(0).prop("valueAsDate").toISOString().slice(0, 10) );
+		
+		//id 값이 searchWord 인 html를 가져와서 value 값이 null이 아닐경우 저장한다.
+		if(document.getElementById("searchWord").value){
+			searchWord = $("#searchWord").val();
+		} else {
+			searchWord = undefined;
+		}
+		//html태그중에 input에 id값이 toDate 인  value데이터를 Date형식으로 변환한 값이 null이 아닐경우 저장한다.
+		if(document.querySelector("input[id='toDate']").valueAsDate){
+			toDate = document.querySelector("input[id='toDate']").valueAsDate.toISOString().slice(0, 10);	
+		} else {
+			toDate = undefined;
+		}
+		//html태그중에 input에 id값이 fromDate 인  value데이터를 Date형식으로 변환한 값이 null이 아닐경우 저장한다.
+		if(document.querySelector("input[id='fromDate']").valueAsDate){
+			fromDate = document.querySelector("input[id='fromDate']").valueAsDate.toISOString().slice(0, 10);
+		} else {
+			fromDate = undefined;
+		}
+		console.log("검색어 : "+ searchWord)
+		console.log("작성 날짜 시작 : "+toDate);
+		console.log("작성 날짜 끝 : "+fromDate);
+		//검색조건에 따른 질문 리스트를 뽑기
 		$.ajax({
 			url : "/rest/adminWithdrawUserList",
 			method : "post",
-			data : {"searchWord" : $("#searchContent").val(),
-					"toDate" : $("#toDate").val(),
-					"fromDate" : $("#fromDate").val(),
+			data : {"searchWord" : searchWord,
+					"toDate" : toDate,
+					"fromDate" : fromDate,
 					"rowPerPage" : $("#rowPerPage").val()},
 			success : function(json){
 				console.log(json);
@@ -271,9 +299,9 @@
 			url : "/rest/adminWithdrawUserList",
 			method : "post",
 			data : {"currentPage" : currentPage+1,
-					"searchWord" : $("#searchContent").val(),
-					"toDate" : $("#toDate").val(),
-					"fromDate" : $("#fromDate").val(),
+					"searchWord" : searchWord,
+					"toDate" : toDate,
+					"fromDate" : fromDate,
 					"rowPerPage" : $("#rowPerPage").val()},
 			success : function(json){
 				console.log(json);
@@ -293,9 +321,9 @@
 			url : "/rest/adminWithdrawUserList",
 			method : "post",
 			data : {"currentPage" : currentPage-1,
-					"searchWord" : $("#searchContent").val(),
-					"toDate" : $("#toDate").val(),
-					"fromDate" : $("#fromDate").val(),
+					"searchWord" : searchWord,
+					"toDate" : toDate,
+					"fromDate" : fromDate,
 					"rowPerPage" : $("#rowPerPage").val()},
 			success : function(json){
 				console.log(json);
@@ -314,9 +342,9 @@
 			url : "/rest/adminWithdrawUserList",
 			method : "post",
 			data : {"currentPage" : currentPage,
-					"searchWord" : $("#searchContent").val(),
-					"toDate" : $("#toDate").val(),
-					"fromDate" : $("#fromDate").val(),
+					"searchWord" : searchWord,
+					"toDate" : toDate,
+					"fromDate" : fromDate,
 					"rowPerPage" : $("#rowPerPage").val()},
 			success : function(json){
 				console.log(json);

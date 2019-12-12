@@ -7,12 +7,14 @@ import org.apache.ibatis.annotations.Mapper;
 import com.example.codeblue.vo.Answer;
 import com.example.codeblue.vo.AnswerComment;
 import com.example.codeblue.vo.Expert;
+import com.example.codeblue.vo.FaqBoard;
 import com.example.codeblue.vo.Hospital;
 import com.example.codeblue.vo.Manager;
 import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.QuestionComment;
+import com.example.codeblue.vo.ServiceCategory;
 import com.example.codeblue.vo.Tag;
 import com.example.codeblue.vo.User;
 
@@ -77,5 +79,11 @@ public interface UserMapper {
 	public List<User> selectUserList(Page Page);
 	// 유저 유저 수
 	public int selectUserCount(Page Page);
+	// serviceCategory 조회
+	public List<ServiceCategory> selectServiceCategoryList();
+	// faq 조회
+	public List<FaqBoard> selectFaqList(Page page);
+	// faq 총 수
+	public int selectFaqCount(Page page);
 	
 }

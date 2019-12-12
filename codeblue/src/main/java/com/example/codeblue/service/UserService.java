@@ -11,6 +11,7 @@ import com.example.codeblue.vo.Manager;
 import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.QuestionComment;
+import com.example.codeblue.vo.ServiceCategory;
 import com.example.codeblue.vo.User;
 
 public interface UserService {
@@ -47,4 +48,8 @@ public interface UserService {
 	public int addAnswerComment(AnswerComment answerComment);
 	// 유저조회
 	public Map<String,Object> getUserList(int currentPage, int rowPerPage, String searchWord);
+	// serviceCategory 조회
+	public List<ServiceCategory> getServiceCategoryList();
+	// faq 조회
+	public Map<String,Object> getFaqList(int currentPage, int rowPerPage);
 }

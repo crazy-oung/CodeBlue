@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.codeblue.service.AdminService;
+import com.example.codeblue.vo.ServiceCategory;
 @RestController
 public class HyolRestController {
 
@@ -88,5 +90,19 @@ public class HyolRestController {
 			System.out.println("rowPerPage : "+rowPerPage);
 			System.out.println("searchWord : "+searchWord);
 			return hyolService.getUserList(currentPage, rowPerPage,searchWord);
+		}
+		// serviceCategory 리스트 조회 및 강조
+		@GetMapping("/rest/getServiceCategoryListTest")
+		public List<ServiceCategory> getServiceCategoryList() {
+			return hyolService.getServiceCategoryList();
+		}
+		// faq 리스트 조회
+		@PostMapping("/rest/getFaqListTest")
+		public Map<String,Object> getFaqList(@RequestParam(value="currentPage", defaultValue = "1")int currentPage,
+				@RequestParam(value = "rowPerPage", defaultValue = "10")int rowPerPage){
+			System.out.println("::: post - /getFaqListTest :::");
+			System.out.println("currentPage : "+currentPage);
+			System.out.println("rowPerPage : "+rowPerPage);
+			return hyolService.getFaqList(currentPage, rowPerPage);
 		}
 }

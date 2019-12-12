@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.codeblue.mapper.AdminMapper;
+import com.example.codeblue.vo.FaqBoard;
 import com.example.codeblue.vo.Page;
+import com.example.codeblue.vo.ServiceCategory;
 import com.example.codeblue.vo.User;
 @Service
 @Transactional
@@ -159,6 +161,42 @@ public class HyolServiceImpl implements HyolService {
 		System.out.println("lastPage : "+lastPage);
 		// 리스트 출력
 		List<User> list = hyolMapper.selectUserList(page);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", list);
+		map.put("currentPage", currentPage);
+		map.put("totalRow", totalRow);
+		map.put("lastPage", lastPage);
+		return map;
+	}
+	// serviceCategory 조회
+	@Override
+	public List<ServiceCategory> getServiceCategoryList() {
+		System.out.println("::: UserServiceImpl - selectServiceCategoryListTest :::");
+		List<ServiceCategory> list = hyolMapper.selectServiceCategoryList();
+		System.out.println(list.toString());
+		return list;
+	}
+	// faq 리스트 조회
+	@Override
+	public Map<String, Object> getFaqList(int currentPage, int rowPerPage) {
+		System.out.println("::: UserServiceImpl - selectFaqListTest :::");
+		int beginRow = (currentPage-1)*rowPerPage;
+		Page page = new Page();
+		page.setBeginRow(beginRow);
+		page.setRowPerPage(rowPerPage);
+		// 전체행의 수
+		int totalRow = hyolMapper.selectFaqCount(page);
+		System.out.println("totalRow : "+totalRow);
+		// 마지막 페이지 구하기
+		int lastPage = 0;
+		if(totalRow%rowPerPage != 0) {
+			lastPage = (totalRow/rowPerPage)+1;
+		} else {
+			lastPage = totalRow/rowPerPage;
+		}
+		System.out.println("lastPage : "+lastPage);
+		// 리스트 출력
+		List<FaqBoard> list = hyolMapper.selectFaqList(page);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("list", list);
 		map.put("currentPage", currentPage);
