@@ -429,7 +429,10 @@
 	<select id="selectFaqList" parameterType="com.example.codeblue.vo.Page" resultMap="FaqBoard">
 		SELECT f.FAQ_id, sc.service_category_name, f.FAQ_title, f.FAQ_datetime
 		FROM faq_board f INNER JOIN service_category sc
-		ON f.service_category_id = sc.service_category_id 
+		ON f.service_category_id = sc.service_category_id
+		<if test="searchCategory != null">
+			WHERE f.service_category_id = #{searchCategory}
+		</if> 
 		ORDER BY f.FAQ_datetime DESC
 		LIMIT #{beginRow},#{rowPerPage}
 	</select>
@@ -437,6 +440,20 @@
 	<select id="selectFaqCount" parameterType="com.example.codeblue.vo.Page" resultType="int">
 		SELECT COUNT(*)
 		FROM faq_board
+		<if test="searchCategory != null">
+			WHERE service_category_id = #{searchCategory}
+		</if>
+	</select>
+	<!--  faqone 출력 (이전글,다음글까지 출력) -->
+	<select id="selectFaqOne" parameterType="int" resultMap="FaqBoard">
+		SELECT f.FAQ_id, f.FAQ_title, se.service_category_name, f.FAQ_content, f.FAQ_datetime
+		FROM faq_board f INNER JOIN service_category se
+		ON f.service_category_id = se.service_category_id
+		WHERE f.FAQ_id IN (
+		    (SELECT faq_id FROM faq_board WHERE faq_id &lt; #{faqId} ORDER BY faq_id DESC LIMIT 1),
+			 (SELECT faq_id FROM faq_board WHERE faq_id = #{faqId}),
+		    (SELECT faq_id FROM faq_board WHERE faq_id &gt; #{faqId} ORDER BY faq_id LIMIT 1)
+			 );
 	</select>
 </mapper>
 

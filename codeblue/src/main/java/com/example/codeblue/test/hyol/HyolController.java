@@ -37,4 +37,10 @@ public class HyolController {
 		System.out.println("::: get - getFaqListTest :::");
 		return "/faqTest";
 	}
+	// faqOne 조회
+	@GetMapping("/getFaqOneTest")
+	public String getFaqOne() {
+		System.out.println("::: get - getFaqOneTest :::");
+		return "/faqOneTest";
+	}
 }

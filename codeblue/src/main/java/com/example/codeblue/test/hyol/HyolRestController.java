@@ -1,16 +1,19 @@
 package com.example.codeblue.test.hyol;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.codeblue.service.AdminService;
+import com.example.codeblue.vo.FaqBoard;
 import com.example.codeblue.vo.ServiceCategory;
 @RestController
 public class HyolRestController {
@@ -99,10 +102,20 @@ public class HyolRestController {
 		// faq 리스트 조회
 		@PostMapping("/rest/getFaqListTest")
 		public Map<String,Object> getFaqList(@RequestParam(value="currentPage", defaultValue = "1")int currentPage,
-				@RequestParam(value = "rowPerPage", defaultValue = "10")int rowPerPage){
+				@RequestParam(value="rowPerPage", defaultValue = "10")int rowPerPage,
+				// mapper에서 page에 담기위해서 변수명을 변경한다
+				@RequestParam(value="serviceCategoryId", required = false)String searchCategory){
 			System.out.println("::: post - /getFaqListTest :::");
 			System.out.println("currentPage : "+currentPage);
 			System.out.println("rowPerPage : "+rowPerPage);
-			return hyolService.getFaqList(currentPage, rowPerPage);
+			System.out.println("searchCategory : "+searchCategory);
+			return hyolService.getFaqList(currentPage, rowPerPage, searchCategory);
+		}
+		// faqone 출력 (이전글,다음글까지 출력)
+		@PostMapping("/rsst/getFaqOneTest")
+		public List<FaqBoard> getFaqOne(int faqId){
+			System.out.println("::: post - /getFaqOneTest :::");
+			System.out.println("faqId : "+faqId);
+			return hyolService.getFaqOne(faqId);
 		}
 }

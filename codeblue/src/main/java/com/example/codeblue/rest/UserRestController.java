@@ -15,6 +15,7 @@ import com.example.codeblue.service.UserService;
 import com.example.codeblue.vo.Answer;
 import com.example.codeblue.vo.AnswerComment;
 import com.example.codeblue.vo.Expert;
+import com.example.codeblue.vo.FaqBoard;
 import com.example.codeblue.vo.Hospital;
 import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.QuestionBoard;
@@ -252,10 +253,20 @@ public class UserRestController {
 	// faq 리스트 조회
 	@PostMapping("/rest/getFaqList")
 	public Map<String,Object> getFaqList(@RequestParam(value="currentPage", defaultValue = "1")int currentPage,
-			@RequestParam(value = "rowPerPage", defaultValue = "10")int rowPerPage){
+			@RequestParam(value = "rowPerPage", defaultValue = "10")int rowPerPage,
+			// mapper에서 page에 담기위해서 변수명을 변경한다
+			@RequestParam(value="serviceCategoryId", required = false)String searchCategory){
 		System.out.println("::: post - /getFaqList :::");
 		System.out.println("currentPage : "+currentPage);
 		System.out.println("rowPerPage : "+rowPerPage);
-		return userService.getFaqList(currentPage, rowPerPage);
+		System.out.println("searchCategory : "+searchCategory);
+		return userService.getFaqList(currentPage, rowPerPage, searchCategory);
+	}
+	// faqone 출력 (이전글,다음글까지 출력)
+	@PostMapping("/rest/getFaqOne")
+	public List<FaqBoard> getFaqOne(int faqId){
+		System.out.println("::: post - /getFaqOne :::");
+		System.out.println("faqId : "+faqId);
+		return userService.getFaqOne(faqId);
 	}
 }

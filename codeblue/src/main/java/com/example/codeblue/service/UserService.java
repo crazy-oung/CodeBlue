@@ -6,6 +6,7 @@ import java.util.Map;
 import com.example.codeblue.vo.Answer;
 import com.example.codeblue.vo.AnswerComment;
 import com.example.codeblue.vo.Expert;
+import com.example.codeblue.vo.FaqBoard;
 import com.example.codeblue.vo.Hospital;
 import com.example.codeblue.vo.Manager;
 import com.example.codeblue.vo.NoticeBoard;
@@ -53,5 +54,7 @@ public interface UserService {
 	// serviceCategory 조회
 	public List<ServiceCategory> getServiceCategoryList();
 	// faq 조회
-	public Map<String,Object> getFaqList(int currentPage, int rowPerPage);
+	public Map<String,Object> getFaqList(int currentPage, int rowPerPage, String searchCategory);
+	// faqone 출력 (이전글,다음글까지 출력)
+	public List<FaqBoard> getFaqOne(int faqId);
 }

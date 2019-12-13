@@ -40,4 +40,6 @@ public interface HyolMapper {
 	public List<FaqBoard> selectFaqList(Page page);
 	// faq 총 수
 	public int selectFaqCount(Page page);
+	// faqone 출력 (이전글,다음글까지 출력)
+	public List<FaqBoard> selectFaqOne(int faqId);
 }

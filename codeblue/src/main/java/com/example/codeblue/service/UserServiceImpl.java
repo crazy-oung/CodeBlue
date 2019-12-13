@@ -332,12 +332,13 @@ public class UserServiceImpl implements UserService{
 	}
 	// faq 리스트 조회
 	@Override
-	public Map<String, Object> getFaqList(int currentPage, int rowPerPage) {
+	public Map<String, Object> getFaqList(int currentPage, int rowPerPage, String searchCategory) {
 		System.out.println("::: UserServiceImpl - selectFaqList :::");
 		int beginRow = (currentPage-1)*rowPerPage;
 		Page page = new Page();
 		page.setBeginRow(beginRow);
 		page.setRowPerPage(rowPerPage);
+		page.setSearchCategory(searchCategory);
 		// 전체행의 수
 		int totalRow = userMapper.selectFaqCount(page);
 		System.out.println("totalRow : "+totalRow);
@@ -356,6 +357,15 @@ public class UserServiceImpl implements UserService{
 		map.put("currentPage", currentPage);
 		map.put("totalRow", totalRow);
 		map.put("lastPage", lastPage);
+		// 서비스 카테고리아이디를 page의 searchCategory에 담으려고 한것이기 떄문에 다시 원래이름으로 되돌려준다
+		map.put("serviceCategoryId", searchCategory);
 		return map;
+	}
+	// faqone 출력 (이전글,다음글까지 출력)
+	@Override
+	public List<FaqBoard> getFaqOne(int faqId) {
+		System.out.println("::: UserServiceImpl - selectFaqOne :::");
+		List<FaqBoard> list = userMapper.selectFaqOne(faqId);
+		return list;
 	}
 }

@@ -124,5 +124,10 @@ public class UserController {
 		System.out.println("::: get - getFaqList :::");
 		return "/faq";
 	}
-	
+	// faqOne 조회
+		@GetMapping("/faqOne")
+		public String getFaqOne() {
+			System.out.println("::: get - getFaqOne :::");
+			return "/faqOne";
+		}
 }	

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head> 
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>FAQ - 코드블루</title>
+<!-- import JQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
+
+<!-- Custom fonts for this template-->
+<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+<!-- Custom styles for this template-->
+<link href="css/sb-admin-2.min.css" rel="stylesheet">
+<!-- Custom styles for codeBlue -->
+<link href="css/codeBlue.css" rel="stylesheet">
+</head>
+<body id="page-top">
+ 
+		<!-- Topbar -->
+		<div id="topBar"></div>
+		<!-- End of Topbar -->
+
+		<!-- Begin Page Content -->
+		<div class="container" style="height: 100%">
+			<div class="row" style="height: 100%"> 
+			
+				<!-- Side Bar -->
+				<div class="col-sm-1 p-0 " style="border-right: 1px solid #d9d9d9;" id="leftSideBar">
+				</div>
+				<!-- Side Bar End -->
+				
+				<!-- Page Content -->
+				<div class="col-sm-11">
+				
+					<!-- Page Heading -->
+					<div class="d-sm-flex align-items-center justify-content-between mb-2 mt-5 pt-5">
+						<h2 class="text-gray-800 font-weight-bold mx-3 mt-2" id="">FAQ</h2>
+					</div><!-- page Heading End -->
+					<hr class="mb-4">
+					<table id="faqOne" class="table table-borderless"></table>
+					<div>
+						<button type="button" id="backBtn" class="btn btn-primary btn-sm">목록으로</button>
+					</div>
+					<table id="subTable" class="table table-hover text-center m-4"></table>
+				<!-- Page Content End -->
+	
+			</div><!-- row end -->
+			
+		</div>
+		</div> 
+	
+	<!-- Footer -->
+	<div id="footer"></div>
+	<!-- End of Footer -->
+	
+<!-- ETC -->
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded bg-primary" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">로그아웃 하시겠습니까?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">로그아웃 하고 싶으시면 아래 로그아웃 버튼을 클릭해주세요!</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+          <a class="btn btn-primary" href="/logout">로그아웃</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+	<!-- Bootstrap core JavaScript-->
+	<script src="vendor/jquery/jquery.min.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+	<!-- Core plugin JavaScript-->
+	<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+	<!-- Custom scripts for all pages-->
+	<script src="js/sb-admin-2.min.js"></script>
+	
+  	<!-- CodeBlue scripts -->
+  	<script src="js/codeBlueUser.js"></script>
+
+</body>
+<script>
+	// get방식으로 넘겨준 faqId를 받는다
+	var faqId = undefined;
+	if(getParam("faqId")!= null){
+		faqId = getParam("faqId");
+	} else {
+		// FAQ를 선택 안했으면 리스트로 다시 되돌아 간다
+		location.href="faq";
+	}
+	// 선택된 정보 출력
+	console.log("faqId: ",faqId);
+	// 목록으로 버튼 클릭
+	$("#backBtn").click(function(){
+		location.href="/faq";
+	});
+	// 기본 홈
+	$.ajax({
+		url :"/rest/getFaqOne",
+		method :"post",
+		data : {"faqId" : faqId},
+		success : function(json){
+			var arr = json;
+			console.log(json);
+			console.log(arr[0]);
+			console.log(arr[1]);
+			console.log(arr[2]);
+			if(arr[2] != null){
+				html = "<tr><td class='text-left small text-primary p-0 pl-4'>"+arr[1].serviceCategory.serviceCategoryName+"</td></tr>";
+	 			html += "<tr><td class='text-left text-dark font-weight-bold h3 pt-1 pb-0'>"+arr[1].faqTitle+"</td></tr>";
+				html += "<tr><td class='text-left text-dark'>"+arr[1].faqContent+"</td></tr>";
+				$("#faqOne").append(html);
+				if(arr[0] != undefined && arr[2] != undefined){
+					subHtml = "<tr><td class='col-8-sm text-left px-4'>이전글</td><td class='text-left'><a href='/faqOne?faqId="+arr[2].faqId+"'>"+arr[2].faqTitle+"</a></td></tr>";	
+					subHtml += "<tr><td class='col-8-sm text-left px-4'>다음글</td><td class='text-left'><a href='/faqOne?faqId="+arr[0].faqId+"'>"+arr[0].faqTitle+"</a></td></tr>";
+					$("#subTable").append(subHtml);
+				}
+			}else{
+				if(arr[0].faqId == 1){
+					html = "<tr><td class='text-left'>"+arr[0].serviceCategory.serviceCategoryName+"</td></tr>";
+		 			html += "<tr><td class='text-left'>"+arr[0].faqTitle+"</td></tr>";
+					html += "<tr><td>"+arr[0].faqContent+"</td></tr>";
+					$("#faqOne").append(html);
+					console.log("이전");
+					subHtml = "<tr><td class='col-8-sm text-left px-4'>이전글</td><td class='text-left'><a href='/faqOne?faqId="+arr[1].faqId+"'>"+arr[1].faqTitle+"</a></td></tr>";
+					$("#subTable").append(subHtml);
+				}else{
+					html = "<tr><td class='text-left'>"+arr[1].serviceCategory.serviceCategoryName+"</td></tr>";
+		 			html += "<tr><td class='text-left'>"+arr[1].faqTitle+"</td></tr>";
+					html += "<tr><td>"+arr[1].faqContent+"</td></tr>";
+					$("#faqOne").append(html);
+					console.log("다음");
+					subHtml = "<tr><td class='col-8-sm text-left px-4'>다음글</td><td class='text-left'><a href='/faqOne?faqId="+arr[0].faqId+"'>"+arr[0].faqTitle+"</a></td></tr>";
+					$("#subTable").append(subHtml);
+				}
+				
+			}	
+		}
+	});
+</script>
+</html>
