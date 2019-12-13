@@ -111,6 +111,16 @@
 						<tbody id="boardList"></tbody>
 					</table>
 					
+					<!-- 페이징 버튼 -->
+					<button type="button" class="btn btn-primary" id="QuestionPrevBtn">이전</button>
+					<button type="button" class="btn btn-primary" id="QuestionNextBtn">다음</button>
+					
+					<button type="button" class="btn btn-primary" id="CommentPrevBtn">이전</button>
+					<button type="button" class="btn btn-primary" id="CommentNextBtn">다음</button>
+					
+					<button type="button" class="btn btn-primary" id="AnswerPrevBtn">이전</button>
+					<button type="button" class="btn btn-primary" id="AnswerNextBtn">다음</button>
+					
 					<!--기본페이지 및 요약버튼 클릭시 출력.-->
 					<div id="contentBoard" >
 					
@@ -124,7 +134,11 @@
 								</table>
 							</div>
 							<div class="col-md-6">
-								<label>기여도</label>
+								<label>답글</label><label id="answerCount" style="font-size: x-small;"></label>
+								<table class="table table-hover">
+										<!-- 내 질문/답변 list 출력 -->
+										<tbody id="answerList"></tbody>
+								</table>
 							</div>
 						</div>
 						<hr>
@@ -176,6 +190,7 @@
 <script type="text/javascript">
 var currentPage  = 1;
 var rowPerPage = 10;
+var lastPage =0;
 
 function activeCategory(item){
 	$("#answerBtn").removeClass("active");
@@ -188,6 +203,7 @@ function activeCategory(item){
 }
 
 function reset(){
+	buttonHide();
 	console.log("요약...")
 	activeCategory("summaryBtn");
 	
@@ -233,13 +249,43 @@ function reset(){
 		}
 	});
 	
-	//답변 수 
+	// 답글 리스트 출력.
+	$.ajax({
+		url : "/rest/questionAnswer",
+		method : "post",
+		data :  {"userId" : getParam("userId")},
+		success : function(json){
+			console.log("answer json : "+json);
+			$("#answerList").empty();
+
+			$(json).each(function(index,item){
+				let answer = "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.answerId+"</td>";
+					answer += "<td><a href='/questionBoardOne?questionId="+item.questionBoard.questionId+"'>"+item.answerContent+"</a></td>";
+					answer += "<td>"+item.answerDatetime+"</td></tr>";
+				$("#answerList").append(answer);
+			})
+		}
+	})
+	
+	//답변 수
+	$.ajax({
+		url : "/rest/answerCount",
+		method :"post",
+		data : {"userId" : getParam("userId")},
+		success : function(json){
+			console.log("answer Count", json);
+			$("#answerCount").empty();
+			$("#answerCount").append(json);
+		}
+	})
+	
+	//댓글 수 
 	$.ajax({
 		url : "/rest/CommentCount",
 		method :"post",
 		data : {"userId" : getParam("userId")},
 		success : function(json){
-			console.log("commentCount: " ,json);
+			console.log("commentCount:",json);
 			$("#commentCount").empty();
 			$("#commentCount").append(json);
 		} 
@@ -252,14 +298,68 @@ function reset(){
 		method :"post",
 		data : {"userId" : getParam("userId")},
 		success : function(json){
-			console.log("questionCount: " ,json);
+			console.log("questionCount:",json);
 			$("#questionCount").empty();
 			$("#questionCount").append(json);
 		} 
 	})
 }
 
+//버튼 숨김.
+function buttonHide(){
+	$("#QuestionNextBtn").hide()
+	$("#QuestionPrevBtn").hide()
+	$("#CommentNextBtn").hide()
+	$("#CommentPrevBtn").hide()
+	$("#AnswerNextBtn").hide()
+	$("#AnswerPrevBtn").hide()
+}
+
+//질문 페이징 버튼
+function questionPaging(){
+	if(currentPage <= 1){
+		$("#QuestionNextBtn").show()
+		$("#QuestionPrevBtn").hide()	
+	}else if(currentPage >= lastPage){
+		$("#QuestionNextBtn").hide()
+		$("#QuestionPrevBtn").show()	
+	}else{
+		$("#QuestionNextBtn").show()
+		$("#QuestionPrevBtn").show()
+	}
+}
+
+//답글 페이징 버튼
+function answerPaging(){
+	if(currentPage <= 1){
+		$("#AnswerNextBtn").show()
+		$("#AnswerPrevBtn").hide()
+	}else if(currentPage >= lastPage){
+		$("#AnswerNextBtn").hide()
+		$("#AnswerPrevBtn").show()
+	}else{
+		$("#AnswerNextBtn").show()
+		$("#AnswerPrevBtn").show()
+	}
+}
+
+//댓글 페이징 버튼
+function commentPaging(){
+	if(currentPage <= 1){
+		$("#CommentNextBtn").show()
+		$("#CommentPrevBtn").hide()
+	}else if(currentPage >= lastPage){	
+		$("#CommentNextBtn").hide()
+		$("#CommentPrevBtn").show()
+	}else{
+		$("#CommentNextBtn").show()
+		$("#CommentPrevBtn").show()
+	}
+}
+
 $(document).ready(function() {
+	//첫화면 버튼 숨김
+	buttonHide()
 	
 	$("#linkToProfile").append('<a class="nav-link hov-p" href="/userOne?userId='+getParam("userId")+'">프로필</a>');
 	console.log(getParam("userId"));
@@ -275,7 +375,6 @@ $(document).ready(function() {
 			console.log(json);
 		
 			$(json).each(function(index, item){
-			
 			let	introduce = "<div><h2>"+item.userName+"</h2></div>";
 				$("#user").append(introduce);
 			});
@@ -287,6 +386,8 @@ $(document).ready(function() {
 
 	//댓글 버튼
 	$("#commentBtn").click(function(){
+		currentPage=1;
+		buttonHide();
 		$("#contentBoard").hide();
 		$("#boardList").empty();
 		$.ajax({
@@ -296,6 +397,9 @@ $(document).ready(function() {
 					"rowPerPage": rowPerPage,
 					"userId" : getParam("userId")},
 			success : function(json){
+				$("#CommentPrevBtn").show()
+				$("#CommentNextBtn").show()
+				commentPaging()
 				console.log(json);
 				$(json.list).each(function(index,item){
 					let comment =  "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionBoard.questionId+"</td>";
@@ -309,6 +413,8 @@ $(document).ready(function() {
 	
 	//답변버튼
 	$("#answerBtn").click(function(){
+		currentPage=1;
+		buttonHide();
 		$("#contentBoard").hide();
 		$("#boardList").empty();
 		$.ajax({
@@ -318,6 +424,7 @@ $(document).ready(function() {
 					"rowPerPage": rowPerPage,
 					"userId" : getParam("userId")},
 			success : function(json){
+				answerPaging()
 				console.log(json);
 				$(json.list).each(function(index, item){
 					let answer = "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.answerId+"</td>";
@@ -331,6 +438,8 @@ $(document).ready(function() {
 	
 	//질문버튼
 	$("#questionBtn").click(function(){
+		currentPage=1;
+		buttonHide();
 		$("#contentBoard").hide();
 		$("#boardList").empty();
 		$.ajax({
@@ -340,6 +449,7 @@ $(document).ready(function() {
 					"rowPerPage": rowPerPage,
 					"userId" : getParam("userId")},
 			success : function(json){
+				questionPaging()
 				console.log(json);
 				$(json.list).each(function(index,item){
 					let question = "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionId+"</td>";
@@ -351,11 +461,166 @@ $(document).ready(function() {
 		})
 	})
 	
+	//질문(다음페이지)
+	$("#QuestionNextBtn").click(function(){
+		console.log("currentPage"+currentPage);
+
+		$("#contentBoard").hide();
+		$("#boardList").empty();
+		$.ajax({
+			url :"/rest/questionBoardPaging",
+			method : "post",
+			data : {"currentPage" : currentPage+1,
+					"rowPerPage": rowPerPage,
+					"userId" : getParam("userId")},
+			success : function(json){
+				currentPage = json.currentPage;
+				lastPage = json.lastPage;
+				questionPaging();
+				console.log("question"+json);
+				console.log("lastPage",lastPage)
+				$(json.list).each(function(index,item){
+					let question = "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionId+"</td>";
+						question += "<td><a href='/questionBoardOne?questionId="+item.questionId+"'>"+item.questionTitle+"</a></td>";
+						question += "<td>"+item.questionDatetime+"</td></tr>";
+					$("#boardList").append(question);
+				})
+			}
+		})
+	})
+	
+	//질문(이전페이지)
+	$("#QuestionPrevBtn").click(function(){
+		console.log("currentPage"+currentPage);
+
+		$("#contentBoard").hide();
+		$("#boardList").empty();
+		$.ajax({
+			url :"/rest/questionBoardPaging",
+			method : "post",
+			data : {"currentPage" : currentPage-1,
+					"rowPerPage": rowPerPage,
+					"userId" : getParam("userId")},
+			success : function(json){
+				lastPage = json.lastPage;
+				currentPage = json.currentPage;
+				questionPaging();
+				console.log("question"+json);
+				$(json.list).each(function(index,item){
+					let question = "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionId+"</td>";
+						question += "<td><a href='/questionBoardOne?questionId="+item.questionId+"'>"+item.questionTitle+"</a></td>";
+						question += "<td>"+item.questionDatetime+"</td></tr>";
+					$("#boardList").append(question);
+				})
+			}
+		})
+	})
+	
+	//답변(다음페이지)
+	$("#AnswerNextBtn").click(function(){
+		$("#contentBoard").hide();
+		$("#boardList").empty();
+		$.ajax({
+			url : "/rest/questionAnswerPaging",
+			method :"post",
+			data :{ "currentPage" : currentPage+1,
+					"rowPerPage": rowPerPage,
+					"userId" : getParam("userId")},
+			success : function(json){
+				currentPage = json.currentPage;
+				lastPage = json.lastPage;
+				answerPaging();
+				console.log("answer"+json);
+				$(json.list).each(function(index, item){
+					let answer = "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.answerId+"</td>";
+						answer += "<td><a href='/questionBoardOne?questionId="+item.questionBoard.questionId+"'>"+item.answerContent+"</a></td>";
+						answer += "<td>"+item.answerDatetime+"</td></tr>";
+					$("#boardList").append(answer);
+				})
+			}
+		})
+	})
+	
+	//답변(이전페이지)
+	$("#AnswerPrevBtn").click(function(){
+		$("#contentBoard").hide();
+		$("#boardList").empty();
+		$.ajax({
+			url : "/rest/questionAnswerPaging",
+			method :"post",
+			data :{ "currentPage" : currentPage-1,
+					"rowPerPage": rowPerPage,
+					"userId" : getParam("userId")},
+			success : function(json){
+				currentPage = json.currentPage;
+				lastPage = json.lastPage;
+				answerPaging();
+				console.log("answer"+json);
+				$(json.list).each(function(index, item){
+					let answer = "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.answerId+"</td>";
+						answer += "<td><a href='/questionBoardOne?questionId="+item.questionBoard.questionId+"'>"+item.answerContent+"</a></td>";
+						answer += "<td>"+item.answerDatetime+"</td></tr>";
+					$("#boardList").append(answer);
+				})
+			}
+		})
+	})
+	
+	//댓글(다음페이지)
+	$("#CommentNextBtn").click(function(){
+		$("#contentBoard").hide();
+		$("#boardList").empty();
+		$.ajax({
+			url :"/rest/questionCommentPaging",
+			method : "post",
+			data : {"currentPage" : currentPage+1,
+					"rowPerPage": rowPerPage,
+					"userId" : getParam("userId")},
+			success : function(json){
+				currentPage = json.currentPage;
+				lastPage = json.lastPage;
+				commentPaging();
+				console.log("comment"+json);
+				$(json.list).each(function(index,item){
+					let comment =  "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionBoard.questionId+"</td>";
+					comment += "<td><a href='/questionBoardOne?questionId="+item.questionBoard.questionId+"'>"+item.questionCommentContent+"</a></td>";
+					comment += "<td>"+item.questionCommentDatetime+"</td></tr>";
+					$("#boardList").append(comment);
+				})
+			}
+		})
+	})
+	
+	//댓글(이전페이지)
+	$("#CommentPrevBtn").click(function(){
+		$("#contentBoard").hide();
+		$("#boardList").empty();
+		$.ajax({
+			url :"/rest/questionCommentPaging",
+			method : "post",
+			data : {"currentPage" : currentPage-1,
+					"rowPerPage": rowPerPage,
+					"userId" : getParam("userId")},
+			success : function(json){
+				currentPage = json.currentPage;
+				lastPage = json.lastPage;
+				commentPaging();
+				console.log("comment"+json);
+				$(json.list).each(function(index,item){
+					let comment =  "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionBoard.questionId+"</td>";
+					comment += "<td><a href='/questionBoardOne?questionId="+item.questionBoard.questionId+"'>"+item.questionCommentContent+"</a></td>";
+					comment += "<td>"+item.questionCommentDatetime+"</td></tr>";
+					$("#boardList").append(comment);
+				})
+			}
+		})
+	})
+	
 	//태그버튼 
 	$("#tagBtn").click(function(){
 		$("#boardList").append("<tr><td>밥밥</td></tr>");
 	})
-	
+
 
 	//해당 유저 월별 질문 차트
 	var lineQuestionctx = document.getElementById("monthlyQuestionCountLineChart"); 
@@ -461,26 +726,26 @@ $(document).ready(function() {
 			  }
 		});	
 
-		//해당 유저 월별 답변 차트
-		var lineCommentctx = document.getElementById("monthlyCommentCountLineChart"); 
-			var lineCommentCount = [0,0,0,0,0,0,0,0,0,0,0,0];
+		//해당 유저 월별 댓글 차트
+		var lineAnswerctx = document.getElementById("monthlyCommentCountLineChart"); 
+			var lineAnswerCount = [0,0,0,0,0,0,0,0,0,0,0,0];
 		
 			$.ajax({
-				url:"/rest/commentChart",
+				url:"/rest/answerChart",
 				method:"post",
 				data : {"userId" : getParam("userId")},
 				success : function(json){
 					console.log("chart"+json);			
 					
 					$(json).each(function(index, item){
-						lineCommentCount[item.questionMonth-1] = item.questionCount;
+						lineAnswerCount[item.questionMonth-1] = item.questionCount;
 					})
-					console.log(lineCommentCount);
-					yearlyCommentCountChart.update();
+					console.log(lineAnswerCount);
+					yearlyAnswerCountChart.update();
 				},
 			});
 		
-			var yearlyCommentCountChart = new Chart(lineCommentctx, {
+			var yearlyAnswerCountChart = new Chart(lineAnswerctx, {
 				type: 'line',
 				  data: {
 				    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
@@ -497,7 +762,7 @@ $(document).ready(function() {
 				      pointHoverBorderColor: "rgba(78, 115, 223, 1)",
 				      pointHitRadius: 10,
 				      pointBorderWidth: 2,
-				      data: lineCommentCount,
+				      data: lineAnswerCount,
 				    }],
 				  },
 				  options: {
@@ -564,9 +829,6 @@ $(document).ready(function() {
 				    },
 				  }
 			});	
-
-
-	
 });
 </script>
 </html>

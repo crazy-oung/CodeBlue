@@ -2,11 +2,13 @@ package com.example.codeblue.test.Lee;
 
 
 import java.util.List;
+
 import java.util.Map;
 
 import com.example.codeblue.vo.Answer;
 import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.QuestionComment;
+import com.example.codeblue.vo.QuestionVote;
 import com.example.codeblue.vo.User;
 
 public interface LeeService {
@@ -26,8 +28,6 @@ public interface LeeService {
 	public List<QuestionComment> getQuestionComment(String userId);
 	//해당 유저 댓글 수
 	public int questionCommentCount(String userId);
-	//해당 유저 댓글 수 차트
-	public List<QuestionComment> getCommentChart(String userId);
 	//해당 유저 댓글 리스트(페이징)
 	public Map<String, Object> getCommentBoardPaging(int currentPage, int rowPerPage, String userId);
 	
@@ -35,6 +35,13 @@ public interface LeeService {
 	public List<Answer> getQuestionAnswer(String userId);
 	//해당 유저 답글 리스트(페이징)
 	public Map<String, Object> getAnswerPaging(int currentPage, int rowPerPage, String userId);
+	//해당 유저 답글 수
+	public int answerCount(String userId);
+	//해당 유저 답글 수 차트
+	public List<Answer> getAnswerChart(String userId);
 	
-	
-	}
+	//해당 유저 질문 글 추천 수
+	public int getUserVote(String userId);
+	//유저 질문 중복 검사
+	public String getQuestionVoteCheck(QuestionVote questionVote);
+}

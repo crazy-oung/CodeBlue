@@ -1,6 +1,7 @@
 package com.example.codeblue.test.Lee;
 
 import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ import com.example.codeblue.vo.Answer;
 import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.QuestionComment;
+import com.example.codeblue.vo.QuestionVote;
 import com.example.codeblue.vo.User;
 
 
@@ -147,14 +149,6 @@ public class LeeServiceImp implements LeeService{
 		return leeMapper.selectQuestionCommentCount(userId);
 	}
 	
-	//해당유저 댓글 수 차트
-	@Override
-	public List<QuestionComment> getCommentChart(String userId) {
-		System.out.println(":::UserServiceImp - selectCommentChart");
-		System.out.println("userId"+userId);
-		return leeMapper.selectCommentChart(userId);
-	}
-	
 	//해당유저 답글 리스트
 	@Override
 	public List<Answer> getQuestionAnswer(String userId) {
@@ -198,6 +192,44 @@ public class LeeServiceImp implements LeeService{
 		map.put("list", list);
 		map.put("beginRow", beginRow);
 		return map;
+	}
+	
+	//해당유저 답글 수
+	@Override
+	public int answerCount(String userId) {
+		System.out.println(":::UserServiceImp - answerCount:::");
+		System.out.println("userId"+userId);
+		return leeMapper.selectAnswerCount(userId);
+	}
+	
+	//해당유저 답글 수 차트
+	@Override
+	public List<Answer> getAnswerChart(String userId) {
+		System.out.println(":::UserServiceImp - getAnswerChart:::");
+		System.out.println("userId"+userId);
+		return leeMapper.selectAnswerChart(userId);
+	}
+	//유저 질문글 추천 수
+	@Override
+	public int getUserVote(String userId) {
+		System.out.println(":::UserServiceImp - getUserVote:::");
+		System.out.println("userId"+userId);
+		return leeMapper.selectUserVote(userId);
+	}
+
+	//------------------------실행 x
+	
+	//유저 추천 중복검사 및 추천
+	@Override
+	public String getQuestionVoteCheck(QuestionVote questionVote) {
+		System.out.println(":::UserServiceImp - getQuestionVoteCheck:::");
+		System.out.println("questionid"+questionVote);
+		
+		if(leeMapper.selectQuestionVoteCheck(questionVote) == null) {
+			System.out.print("추천!");
+		return leeMapper.insertQuestionVote(questionVote);
+		}
+		return "중복 추천 입니다.";
 	}
 		
 }

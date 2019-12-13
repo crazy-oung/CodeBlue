@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.codeblue.vo.Answer;
 import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.QuestionComment;
+import com.example.codeblue.vo.QuestionVote;
 import com.example.codeblue.vo.User;
 
 @RestController
@@ -89,12 +90,12 @@ public class LeeRestController {
 		return leeService.questionCommentCount(userId);
 	}
 	
-	//유저 댓글 수 차트
-	@PostMapping("/rest/commentChart")
-	public List<QuestionComment> postCommentChart(@RequestParam(value="userId")String userId){
-		System.out.println(":::post - postCommentChart:::");
+	//유저 답글 수 차트
+	@PostMapping("/rest/answerChart")
+	public List<Answer> postAnswerChart(@RequestParam(value="userId")String userId){
+		System.out.println(":::post - postAnswerChart:::");
 		System.out.println("userId"+userId);
-		return leeService.getCommentChart(userId);
+		return leeService.getAnswerChart(userId);
 	}
 	
 	//유저 답글 리스트
@@ -116,4 +117,31 @@ public class LeeRestController {
 		System.out.println("rowPerPage"+rowPerPage);												
 		return leeService.getAnswerPaging(currentPage, rowPerPage, userId);
 	}
+	
+	//유저 답글 수 
+	@PostMapping("/rest/answerCount")
+	public int postAnswerCount(@RequestParam(value="userId")String userId) {
+		System.out.println(":::post - postAnswerCount");
+		System.out.println("userId"+userId);
+		return leeService.answerCount(userId);
+	}
+	
+	//-------------------------------------------------실행 x
+	
+	//해당 유저가 받은 추천 수
+	@PostMapping("/rest/userVote")
+	public int postUserVote(@RequestParam(value="userId")String userId) {
+		System.out.println(":::post - postUserVote");
+		System.out.println("userId"+userId);
+		return leeService.getUserVote(userId);
+	}
+	
+	//중복 검사 후 추천
+	@PostMapping("/rest/questionVote")
+	public String postQuestionVote(QuestionVote questionVote) {
+		System.out.println(":::post - postQuestionVote");
+		System.out.println("userId"+questionVote);
+		return leeService.getQuestionVoteCheck(questionVote);
+	}
+	
 }

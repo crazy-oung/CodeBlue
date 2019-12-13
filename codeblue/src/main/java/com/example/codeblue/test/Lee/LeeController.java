@@ -19,5 +19,5 @@ public class LeeController {
 		System.out.println(":::get - getUserOneProfile:::");
 		return "userOneActive";
 	}
-	
+
 }

@@ -75,13 +75,13 @@
 							<div class="col-md-2">
 								<Label>Community</Label>
 							</div>
-							<div class="col-md-8">
+							<div class="col-md-6">
 									<label style="text-align: left; font-size: medium;" id="count">내 게시글</label><label id="count" style="font-size: small;"></label>
 							 </div>
-							 <div class="col-md-2" style="font-size: small;">
-							 		<button type="button" id="questionAnswerBtn" style="float: right;">내 답글</button> 
-							 		<button type="button" id="questionCommentBtn" style="float: right;">내 댓글</button>
-							 		<button type="button" id="questionBoardBtn" style="float: right;">내 질문</button> 		
+							 <div class="col-md-4 btn-group mb-2">
+							 		<button type="button" class="btn btn-outline-primary btn-sm" id="questionCommentBtn" style="float: right;">내 댓글</button>
+							 		<button type="button" class="btn btn-outline-primary btn-sm" id="questionAnswerBtn" style="float: right;">내 답글</button> 
+							 		<button type="button" class="btn btn-outline-primary btn-sm" id="questionBoardBtn" style="float: right;">내 질문</button> 		
 							 </div>
 						</div>
 						<div class="row">
@@ -96,18 +96,8 @@
 								</table>
 							</div>
 						</div>
-					
-					<hr>
-					<!-- 4/4 (rank) -->
-					
-						<div style="text-align: center"><h3>랭크</h3></div>
-						
-					<br>
-					
-					
-				</div>
-				
-				
+					<hr>			
+				</div>			
 			</div>
 		</div> 
 	</div>
@@ -257,6 +247,7 @@ $(document).ready(function() {
 					commentHead += "<th>댓글 내용</th>";
 					commentHead += "<th>댓글 날짜</th></tr>";
 					$("#headlist").append(commentHead);
+					
 				$(json).each(function(index, item){
 				
 					let comment =  "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionCommentId+"</td>";
@@ -268,6 +259,7 @@ $(document).ready(function() {
 		});
 	})
 	
+	//유저 질문 수 
 	$.ajax({
 		url : "/rest/QuestionCount",
 		method :"post",
@@ -290,6 +282,17 @@ $(document).ready(function() {
 				console.log("성공");
 			}
 		})
+	})
+	
+	//해당 유저 질문 추천 받은 수 
+	$.ajax({
+		url : "/rest/userVote",
+		method : "post",
+		data : {"userId" : getParam("userId")},
+		success : function(json){
+			console.log("vote"+json);
+			$("#introduce").append("<h1 class='h6 mt-3'>받은 추천👍"+json+"</h1>");
+		}
 	})
 	
 });
