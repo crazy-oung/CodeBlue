@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>최근 질문 - 코드블루</title>
+
+<!-- Custom fonts for this template-->
+<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+<!-- Custom styles for this template-->
+<link href="css/sb-admin-2.min.css" rel="stylesheet">
+<!-- Custom styles for codeBlue -->
+<link href="css/codeBlue.css" rel="stylesheet">
+</head>
+
+<body id="page-top">
+ 
+	<!-- Topbar -->
+	<div id="topBar"></div>
+	<!-- End of Topbar -->
+
+		<!-- Begin Page Content -->
+		<div class="container" height="100%">
+			<div class="row"> 
+			
+				<!-- Side Bar -->
+				<div class="col-sm-1 p-0" style="border-right: 1px solid #d9d9d9;" id="leftSideBar"></div>
+				<!-- Side Bar End -->
+				
+				<!-- Page Content -->
+				<div class="col-sm-8">
+					<!-- Page Heading -->
+					<div class="d-sm-flex align-items-center justify-content-between mb-4" style="margin-top: 80px">
+						<h4 class="text-gray-800 mb-0">검색 결과</h4>
+						<a href="/ask" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow"><i class="mr-2 fas fa-plus fa-sm text-white-50"></i>질문 올리기</a>
+					</div><!-- page Heading End -->
+					<small id="content" class="p-1 py-2"></small>
+					<div class="d-flex">
+						<input type="text" class="form-control  form-control-sm border-1" placeholder="검색어" id="searchWord">
+						<button class="btn btn-primary btn-sm" type="button" id="search">
+							<i class="fas fa-search fa-sm"></i>
+						</button>
+					</div>
+					<p id="totalCount" class="py-3 m-0"></p> <!-- 검색 건 수 -->
+					<!-- 무슨페이지인지 구분하기위한 숨김값 -->
+					<input type="text" id="searchCategory" value="today" hidden="hidden">
+					<table id="questionBoard" class="table table-hover">
+						
+					</table>
+					<br>
+					<p>
+						<button type="button" id="prevBtn" class="btn btn-primary">이전</button>
+						<button type="button" id="nextBtn" class="btn btn-primary">다음</button>
+					</p>
+				</div>
+				
+				<!-- Page rigth side bar -->
+				<div class="col-sm-3 pt-5 mt-5">
+					<div id="rightSideBar"></div>
+				</div> <!-- rigth side bar end -->
+				
+			</div>
+		</div> 
+
+	<!-- Footer -->
+	<div id="footer"></div>
+	<!-- End of Footer -->
+	
+<!-- ETC -->
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded bg-primary" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">로그아웃 하시겠습니까?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">로그아웃 하고 싶으시면 아래 로그아웃 버튼을 클릭해주세요!</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+          <a class="btn btn-primary" href="/logout">로그아웃</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+	<!-- Bootstrap core JavaScript-->
+	<script src="vendor/jquery/jquery.min.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+	<!-- Core plugin JavaScript-->
+	<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+	<!-- Custom scripts for all pages-->
+	<script src="js/sb-admin-2.min.js"></script>
+  	<!-- CodeBlue scripts -->
+  	<script src="js/codeBlueUser.js"></script>
+	
+</body>
+<script>
+	$("#searchWord").val(getParam("searchWord"))
+	$("#search").on("click",function() {
+		if($("#searchWord").val() == ""){
+			location.href="/search";
+		} else {
+			location.href="/search?searchWord="+$("#searchWord").val();
+		}
+	})
+</script>
+</html>
