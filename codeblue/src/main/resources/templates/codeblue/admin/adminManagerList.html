@@ -100,6 +100,9 @@
 				<table class="table table-hover table-bordered" id="userList">
 					<thead>
 						<tr class="text-center">
+							<th width="3%" class="px-1"><div class='custom-control custom-checkbox ml-2'>
+								<input class='custom-control-input' type='checkbox' onclick="checkAll()" id='selectAll'><label class='custom-control-label' for='selectAll'></label>
+							</div></th>
 							<th>관리자 아이디</th>
 							<th>관리자 이름</th>
 							<th>관리자 생성일자</th>
@@ -116,10 +119,10 @@
 					</div>
 				</div>
 				
-               
+               </div>
             </div>
          <!--  Page Content End -->
-  
+  		</div>
       </div> 
       
       <!-- End of Main Content -->
@@ -200,7 +203,7 @@
 			subInfo(json);
 			BtnShow(currentPage,lastPage);
 			$(json.list).each(function(index,item){
-				append(item);
+				append(index, item);
 			});
 			
 		} 
@@ -220,7 +223,7 @@
 				subInfo(json);
 				BtnShow(currentPage,lastPage);
 				$(json.list).each(function(index,item){
-					append(item);
+					append(index, item);
 				});
 			} 
 		});
@@ -241,7 +244,7 @@
 				subInfo(json);
 				BtnShow(currentPage,lastPage);
 				$(json.list).each(function(index,item){
-					append(item);
+					append(index, item);
 				});
 			} 
 		});
@@ -263,7 +266,7 @@
 				subInfo(json);
 				BtnShow(currentPage,lastPage);
 				$(json.list).each(function(index,item){
-					append(item);
+					append(index, item);
 				});
 			} 
 		});
@@ -271,16 +274,27 @@
 	// 보기형식 선택
 	
 	// ajax html뛰우는 함수
-	function append(item) {
+	function append(index, item) {
 		console.log(item);
 		var html = "<tr>";
+		html += "<td class='px-1'><div class='custom-control custom-checkbox text-center ml-2'>";
+		html +=	"<input class='custom-control-input' type='checkbox' name='chk' id='check"+index+"' value='"+item.userId+"'><label name='chk' class='custom-control-label' for='check"+index+"'></label></div></td>";
 		html += "<td>"+item.managerId+"</td>";
 		html += "<td>"+item.managerName+"</td>";
 		html += "<td>"+item.managerCreatedate+"</td>";
 		html += "</tr>";
 		$("#ManagerList").append(html);
 	}
-	
+	// 전체선택 함수
+	function checkAll() {
+		if ($("#selectAll").prop("checked") === true) {
+			/* alert("체크"); */
+			$("input[name=chk]").prop("checked", true);
+		} else {
+		/* 	alert("해제"); */
+			$("input[name=chk]").prop("checked", false);
+		}
+	} 
 	// 화면뛰울때 필요한 함수(현재,마지막 페이지 등)
 	function subInfo(json){
 		console.log(json);

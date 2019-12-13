@@ -435,8 +435,8 @@
 	//html 추가
 	function append(item,index){
 		var html = "<tr>"+
-	//		"<td><input type='checkbox' value="+item.questionId+" name='chk'></td>"+
-		"<td><div class='custom-control custom-checkbox text-center'><input class='custom-control-input' type='checkbox' name='chk' value="+item.answerCommentId+" id='check"+index+"'><label name='chk' class='custom-control-label' for='check"+index+"'></label></div></td>"+
+		"<td class='px-1'><div class='custom-control custom-checkbox text-center ml-2'>" +
+		"<input class='custom-control-input' type='checkbox' name='chk' id='check"+index+"' value='"+item.answerCommentId+"'><label name='chk' class='custom-control-label' for='check"+index+"'></label></div></td>"+
 		"<td class='text-center'>"+item.answerCommentId+"</td>"+
 		"<td onclick='content("+item.answer.answerId+")' style='cursor:pointer'>"+item.answer.answerContent+"</td>"+
 		"<td>"+item.answerCommentContent+"</td>"+

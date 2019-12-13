@@ -13,10 +13,15 @@
 	<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 	<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 	
+	<!-- summerNote -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.css" rel="stylesheet">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.js"></script>	
+	
 	<!-- Custom styles for this template-->
 	<link href="css/sb-admin-2.min.css" rel="stylesheet">
 	<!-- Custom styles for codeBlue -->
 	<link href="css/codeBlue.css" rel="stylesheet"> 
+	
 </head>
 
 <body id="page-top"> 
@@ -38,17 +43,14 @@
         <!-- Begin Page Content -->
           <div class="pt-4 mt-3 text-left">
            	<!-- 내용 출력 시작  -->
-			<div class="card border-0 shadow p-3 mx-5" style="height:70vh">
-				<div>
-					<label class="text-dark font-weight-bold">제목</label>
-					<input class="form-control form-control-sm mb-2" placeholder="제목" id="faqTitle">
-					<label class="text-dark font-weight-bold">분류</label>
-					<select id="serviceCategoryList" class="form-control form-control-sm"></select>
-				</div>
-				<div>
-					<label class="text-dark font-weight-bold">내용</label>
-					<textarea id="faqContent" rows="20" cols="50" class="form-control form-control-sm mb-2" placeholder="내용을 입력하세요"></textarea>
-				</div>
+			<div class="card border-0 shadow p-3 mx-5" style="height: 100%">
+				<label class="text-dark font-weight-bold">제목</label>
+				<input class="form-control form-control-sm mb-2" placeholder="제목" id="faqTitle">
+				<label class="text-dark font-weight-bold">분류</label>
+				<select id="serviceCategoryList" class="form-control form-control-sm"></select>
+				<hr>
+				<label class="text-dark font-weight-bold">내용</label>
+				<div id="faqContent" class="mb-2"></div>
 			</div>
 				<button id="faqBoardInsertBtn" class="btn btn-primary shadow mt-3 px-4  ml-5">FAQ 등록</button>
 				<button id="cancel" class="btn btn-primary shadow mt-3 px-4  ml-5">취소</button>
@@ -109,8 +111,10 @@
   <!-- Custom scripts for all pages-->
   <script src="js/sb-admin-2.min.js"></script>
 
-  <!-- Page level plugins -->
-  <script src="vendor/chart.js/Chart.min.js"></script>
+	<!-- summer note scripts -->
+	<script src="js/summernote/summernote-bs4.min.js"></script>
+	<script src="js/summernote/summernote-ko-KR.js"></script>
+	<script src="js/summernote/summernote.min.js"></script>
 
   <!-- Page level plugins -->
   <script src="vendor/chart.js/Chart.min.js"></script>
@@ -121,9 +125,9 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	
-		$("#sideBarNotice").addClass("active");
-		$("#sideBarNotice").children("a").attr("aria-expanded","false");
-		$("#sideBarNotice").children("div").addClass("show");
+	$("#sideBarNotice").addClass("active");
+	$("#sideBarNotice").children("a").attr("aria-expanded","false");
+	$("#sideBarNotice").children("div").addClass("show");
 
 	$.ajax({
 		url : "/rest/admin/getServiceCategoryList",
@@ -138,25 +142,49 @@ $(document).ready(function() {
 		}
 	});
 	
-	//답변하기 버튼 누르면 inquiryHistoryAnswer에 저장.
+	//답변하기 버튼 누르면 faq Board 에 저장.
 	$("#faqBoardInsertBtn").click(function(){
-		console.log("check");
-	 	$.ajax({
-	 		url:"/rest/admin/addFaqBoard",
-	 		method:"post",
-			data : { "faqTitle" : $("#faqTitle").val() ,
-					"faqContent" : $("#faqContent").val(),
-					"serviceCategory.serviceCategoryId" : $("#serviceCategoryList").val()
-					},
-			success:function(){
-				console.log("check");
-				location.href = "/adminFaqBoard";
-			}
-		});
+		console.log($("#summernote").val());
+		if(confirm( '질문을 등록하시겠습니까?' )){
+		 	$.ajax({
+		 		url:"/rest/admin/addFaqBoard",
+		 		method:"post",
+				data : { "faqTitle" : $("#faqTitle").val() ,
+						"faqContent" : $("#faqContent").summernote('code'),
+						"serviceCategory.serviceCategoryId" : $("#serviceCategoryList").val()
+						},
+				success:function(){
+					console.log("check");
+					alert("FAQ 등록을 완료 했습니다.");
+					location.href = "/adminFaqBoard";
+				}
+			});
+		}
 	});
-	  $("#cancel").click(function(){
-		  location.href="/adminFaqBoard";
-	  })
+	
+	$('#faqContent').summernote({
+		  toolbar: [
+				['style', ['style']],
+				['style', ['bold', 'italic', 'underline', 'clear']],
+				['font', ['strikethrough', 'superscript', 'subscript']],
+				['fontsize', ['fontsize']],
+				['color', ['color']],
+				['para', ['ul', 'ol', 'paragraph']],
+				['height', ['height']],
+				['fontsize', ['8','10','10','10','10']],
+				['para', ['ul', 'ol', 'paragraph']],
+				['table', ['table']],
+				['insert', ['link', 'picture', 'video']]
+			],
+		lang : 'ko-KR',
+		placeholder: '내용을 입력해주세요',
+		tabsize: 4,
+		height:500
+	});
+	
+  $("#cancel").click(function(){
+	  location.href="/adminFaqBoard";
+  })
 });
 </script>
 

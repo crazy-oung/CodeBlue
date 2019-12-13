@@ -51,7 +51,7 @@
 					<br>
 					<div><button type="button" id="faqListBtn" class="btn btn-primary">목록으로</button>
 					<button type="button" id="faqModifyBtn" class="btn btn-primary">수정</button>
-					<button type="button" id="faqDelBtn" class="btn btn-primary">게시글 삭제</button></div>
+					<button type="button" id="faqDelBtn" class="btn btn-primary">삭제</button></div>
 				</div>
 			</div>
 		</div>
@@ -146,12 +146,11 @@ $(document).ready(function(){
 		data : {"faqId": getParam("faqId")},
 		success : function(json){
 			console.log(json);
-
 				html  = "<tr align='left'><td> 번호 :  "+json.faqId+"</td></tr>";
-				html += "<tr align='left'><td> 제목 :  "+json.faqTitle+"</td></tr>";
-				html += "<tr align='left'><td> 유형 :  "+json.serviceCategory.serviceCategoryId+"</td></tr>";
-				html += "<tr align='left'><td> 내용 :  "+json.faqContent+"</td></tr>";
+				html += "<tr align='left'><td> 유형 :  "+json.serviceCategory.serviceCategoryName+"</td></tr>";
 				html += "<tr align='left'><td> 날짜 :  "+json.faqDatetime+"</td></tr>";
+				html += "<tr align='left' class='h3 font-weight-bold'><td>"+json.faqTitle+"</td></tr>";
+				html += "<tr align='left' class='bg-light'><td>"+json.faqContent+"</td></tr>";
 			$("#faqOne").append(html)
 
 		}

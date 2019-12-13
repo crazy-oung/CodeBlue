@@ -156,9 +156,9 @@ $(document).ready(function(){
 		success : function(json){
 			console.log(json);
 		let html  = "<tr align='left'><td> 번호 : "+json.noticeId+"</td></tr>";
-			html += "<tr align='left'><td> 제목 : "+json.noticeTitle+"</td></tr>";
-			html += "<tr align='left'><td> 내용 : "+json.noticeContent+"</td></tr>";
 			html += "<tr align='left'><td> 날짜 : "+json.noticeDatetime+"</td></tr>";
+			html += "<tr align='left' class='h3 font-weight-bold'><td> "+json.noticeTitle+"</td></tr>";
+			html += "<tr align='left' class='bg-light'><td> "+json.noticeContent+"</td></tr>";
 
 			$("#noticeOne").append(html);
 		}

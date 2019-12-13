@@ -14,6 +14,10 @@
 	<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 	<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 	
+	<!-- summerNote -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.css" rel="stylesheet">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.js"></script>	
+	
 	<!-- Custom styles for this template-->
 	<link href="css/sb-admin-2.min.css" rel="stylesheet">
 	<!-- Custom styles for codeBlue -->
@@ -49,7 +53,7 @@
 						<label class="text-dark font-weight-bold">제목</label>
 						<input class="form-control form-control-sm mb-2" placeholder="제목" id="title">
 						<label class="text-dark font-weight-bold">내용</label>
-						<textarea id="contents" rows="15" cols="50" class="form-control form-control-sm mb-2" placeholder="내용을 입력하세요" ></textarea>
+						<div id="contents" class="mb-2"></div>
 					  <hr>
 					</form>
 					<!-- Form end --> 
@@ -114,8 +118,11 @@
   <!-- Custom scripts for all pages-->
   <script src="js/sb-admin-2.min.js"></script>
 
-  <!-- Page level plugins -->
-  <script src="vendor/chart.js/Chart.min.js"></script>
+	<!-- summer note scripts -->
+	<script src="js/summernote/summernote-bs4.min.js"></script>
+	<script src="js/summernote/summernote-ko-KR.js"></script>
+	<script src="js/summernote/summernote.min.js"></script>
+	
 	<!-- Page level plugins -->
   <script src="vendor/chart.js/Chart.min.js"></script>
   <!-- codeBlue Admin scripts -->
@@ -125,38 +132,59 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	
-		$("#sideBarNotice").addClass("active");
-		$("#sideBarNotice").children("a").attr("aria-expanded","false");
-		$("#sideBarNotice").children("div").addClass("show");
-
+	$("#sideBarNotice").addClass("active");
+	$("#sideBarNotice").children("a").attr("aria-expanded","false");
+	$("#sideBarNotice").children("div").addClass("show");
+	
+	$('#contents').summernote({
+		  toolbar: [
+				['style', ['style']],
+				['style', ['bold', 'italic', 'underline', 'clear']],
+				['font', ['strikethrough', 'superscript', 'subscript']],
+				['fontsize', ['fontsize']],
+				['color', ['color']],
+				['para', ['ul', 'ol', 'paragraph']],
+				['height', ['height']],
+				['fontsize', ['8','10','10','10','10']],
+				['para', ['ul', 'ol', 'paragraph']],
+				['table', ['table']],
+				['insert', ['link', 'picture', 'video']]
+			],
+		lang : 'ko-KR',
+		placeholder: '내용을 입력해주세요',
+		tabsize: 4,
+		height:500
+	});
 	
 	$("#submit").click(function(){
 		console.log($("#title").val());
-		console.log($("#contents").val());
+		console.log($("#contents").summernote('code'));
 		
 		if($("#title").val() == ""){
 			alert("제목을 입력하시오");
 			return;
-		}else if($("#contents").val()==""){
+		}else if($("#contents").summernote('code')=="<p><br></p>"){
 			alert("내용을 입력하시오");
 			return;
 		}
-		
+		console.log($("#summernote").summernote('code'));
+		if(confirm( '공지을 등록하시겠습니까?' )){
 			$.ajax({
 				url:"/rest/adminNoticeAdd",
 				method : "post",
 				data : {"noticeTitle" : $("#title").val(),
-						"noticeContent" : $("#contents").val()},
+						"noticeContent" : $("#contents").summernote('code')},
 				success:function(){
 					console.log("성공");
 					location.href="/adminNoticeBoard";
 				}
 			})	
+		}
 	});
-  
-  $("#cancel").click(function(){
+	 
+	 $("#cancel").click(function(){
 	  location.href="/adminNoticeBoard";
-  })
+	 })
 //document
 })
 </script>
