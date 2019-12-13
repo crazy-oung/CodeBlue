@@ -4,10 +4,10 @@ import lombok.Data;
 
 @Data
 public class HospitalImg {
-	private int hiId;
-	private String hiName;
-	private String hiExtension;
-	private String hiOriginName;
-	private int hiSize;
-	private String hiDatetime;
+	private int hospitalImgId;
+	private String hospitalImgName;
+	private String hospitalImgExtension;
+	private String hospitalImgOriginName;
+	private long hospitalImgSize;
+	private String hospitalImgDatetime;
 }

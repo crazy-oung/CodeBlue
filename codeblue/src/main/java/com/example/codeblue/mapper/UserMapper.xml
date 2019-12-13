@@ -106,7 +106,13 @@
 		<association property="serviceCategory" resultMap="ServiceCategory">
 		</association>
 	</resultMap>
-		<!--  질문 댓글 추가하기 (원본) -->
+	<!--  질문 답변 댓글 총 개수 가져오기 -->
+	<select id="selectAnswerCommentCount" resultType="int" parameterType="int">
+		SELECT COUNT(*)
+		FROM answer_comment
+		WHERE answer_id = #{answerId}
+	</select>
+	<!--  질문 댓글 추가하기 (원본) -->
 	<insert id="insertQuestionComment" parameterType="com.example.codeblue.vo.QuestionComment">
 		INSERT INTO question_comment(
 			question_id,
@@ -122,7 +128,7 @@
 	
 	</insert>
 	<!--  질문댓글 수 가져오기 -->
-	<select id="selectQuestiocCommentTotal" parameterType="int" resultType="int">
+	<select id="selectQuestionCommentTotal" parameterType="int" resultType="int">
 	SELECT COUNT(*)
 	FROM question_comment
 	WHERE question_id = #{questionId}

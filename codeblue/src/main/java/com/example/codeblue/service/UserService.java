@@ -42,6 +42,8 @@ public interface UserService {
 	public List<Answer> getAnswerList(int questionId);
 	// 질문 답변 댓글 리스트 가져오기
 	public List<AnswerComment> getAnswerCommentList(int answerId);
+	//질문 답변 댓글 개수 가져오기
+	public int getAnswerCommentCount(int answerId);
 	// 질문 댓글 추가하기.
 	public int addQeustionComment(QuestionComment questionComment);
 	// 질문 답변의 댓글 추가하기

@@ -64,7 +64,7 @@
 		<result column="feild_id" property="feildId"></result>
 		<result column="feild_name" property="feildName"></result>
 	</resultMap>
-	<!-- Answer 객체 (원본)-->
+	<!-- Answer 객체 -->
 	<resultMap type="com.example.codeblue.vo.Answer" id="Answer">
 		<result column="answer_id" property="answerId"></result>
 		<result column="answer_content" property="answerContent"></result>
@@ -73,7 +73,7 @@
 		<association property="user" resultMap="User"></association>
 		<association property="questionBoard" resultMap="QuestionBoard"></association>
 	</resultMap>
-	<!-- AnswerComment 객체(원본) -->
+	<!-- AnswerComment 객체 -->
 	<resultMap type="com.example.codeblue.vo.AnswerComment" id="AnswerComment">
 		<result column="answer_comment_id" property="answerCommentId"></result>
 		<result column="answer_comment_content" property="answerCommentContent"></result>
@@ -82,56 +82,36 @@
 		<association property="user" resultMap="User"></association>
 		<association property="answer" resultMap="Answer"></association>
 	</resultMap>
-	<!-- 나중에 머지하고 수정한거 넣으면됨. -->
-		<insert id="insertAnswer" parameterType="com.example.codeblue.vo.Answer">
-		INSERT INTO answer  (
-			question_id,
-			answer_content,
-			answer_datetime,
-			user_id
-		)
-		VALUES (
-			#{questionBoard.questionId},
-			#{answerContent},
-			NOW(),
-			#{user.userId}
-		)		
-	</insert>
-	<!--  질문 댓글 추가하기 (원본) -->
-	<insert id="insertQuestionComment" parameterType="com.example.codeblue.vo.QuestionComment">
-		INSERT INTO question_comment(
-			question_id,
-			user_id,
-			question_comment_content,
-			question_comment_datetime
-		) VALUES(
-			#{questionBoard.questionId},
-			#{user.userId},
-			#{questionCommentContent},
-			NOW()
-		)
-	
-	</insert>
-	<!--  질문댓글 수 가져오기 -->
-	<select id="selectQuestiocCommentTotal" parameterType="int" resultType="int">
-	SELECT COUNT(*)
-	FROM question_comment
-	WHERE question_id = #{questionId}
-	
+	<!-- Hospital 객체 (복사본)-->
+	<resultMap type="com.example.codeblue.vo.Hospital" id="Hospital">
+		<!-- pk는 id 그 외는 result칼럼사용 -->
+		<!-- column은 테이블에서의 칼럼명  property는 클레스의 필드명 -->
+		<result column="hospital_id" property="hospitalId"></result>
+		<result column="hospital_name" property="hospitalName"></result>
+		<result column="hospital_number" property="hospitalNumber"></result>
+		<result column="hospital_address" property="hospitalAddress"></result>
+		<result column="hospital_address2" property="hospitalAddress2"></result>
+		<association property="region" javaType="com.example.codeblue.vo.Region">
+		</association>
+	</resultMap>
+
+	<select id="selectAnswerCommentCount" resultType="int" parameterType="int">
+		SELECT COUNT(*)
+		FROM answer_comment
+		WHERE answer_id = #{answerId}
 	</select>
-	<!--  질문 답변 댓글 추가하기 (원본) -->
-	<insert id="insertAnswerComment" parameterType="com.example.codeblue.vo.AnswerComment">
-		INSERT INTO answer_comment(
-			answer_id,
-			user_id,
-			answer_comment_content,
-			answer_comment_datetime
-		) VALUES (
-			#{answer.answerId},
-			#{user.userId},
-			#{answerCommentContent},
-			NOW()
+		<!-- 병원 추가 -->
+	<insert id="insertHospital" parameterType="com.example.codeblue.vo.Hospital">
+		INSERT INTO Hospital(
+			hospital_name, hospital_number, hospital_address, hospital_address2,region_Id
+		) VALUES(
+			#{hospitalName}, #{hospitalNumber}, #{hospitalAddress}, #{hospitalAddress2}, #{region.regionId}
 		)
 	</insert>
-	
+	<!-- <insert id="insertHospitalImg" parameterType="com.example.codeblue.vo.HospitalImg">
+		INSERT INTO hospital_img
+	</insert> -->
 </mapper>
+
+
+
