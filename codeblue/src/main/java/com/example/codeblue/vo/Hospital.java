@@ -11,5 +11,4 @@ public class Hospital {
 	private String hospitalAddress;
 	private String hospitalAddress2;
 	private Region region;
-	private HospitalImg hospitalImg;
 }

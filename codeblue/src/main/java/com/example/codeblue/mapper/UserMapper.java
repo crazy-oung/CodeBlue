@@ -69,8 +69,10 @@ public interface UserMapper {
 	public List<Answer> selectAnswerList(int questionId);
 	//질문 답변 댓글 리스트 가져오기
 	public List<AnswerComment> selectAnswerCommentList(int answerId);
+	//질문 답변 개수 가져오기
+	public int selectAnswerCommentCount(int answerId);
 	//질문 댓글 토탈행
-	public int selectQuestiocCommentTotal(int questionId);
+	public int selectQuestionCommentTotal(int questionId);
 	//질문 댓글 추가
 	public int insertQuestionComment(QuestionComment questionComment);
 	//질문 답변 댓글 추가
