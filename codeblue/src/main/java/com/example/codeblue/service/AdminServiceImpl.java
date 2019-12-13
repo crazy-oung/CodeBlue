@@ -36,6 +36,14 @@ public class AdminServiceImpl implements AdminService {
 	private AdminMapper adminMapper;
 	@Autowired 
 	private JavaMailSender javaMailSender;
+	//공지사항 리스트 삭제
+	@Override
+	public void removeNoticeBoardList(List<String> noticeBoardIdList) {
+		System.out.println("::: AdminServiceImpl - removeNoticeBoardList :::");
+		System.out.println(noticeBoardIdList.toString());
+		adminMapper.deleteNoticeBoardList(noticeBoardIdList);
+		System.out.println("공지사항 지우기 성공");
+	}
 	
 	//답변 댓글 지우기
 	@Override
@@ -537,7 +545,7 @@ public class AdminServiceImpl implements AdminService {
 		int totalRow = adminMapper.noticeBoardCount(page);
 		int lastPage = 0;
 		
-		if(totalRow % rowPerPage ==1) {
+		if(totalRow % rowPerPage !=1) {
 			lastPage = (totalRow/rowPerPage)+1;
 		}else {
 			lastPage = totalRow/rowPerPage;

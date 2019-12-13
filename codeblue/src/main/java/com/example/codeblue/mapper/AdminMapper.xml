@@ -844,14 +844,11 @@
   			notice_board
   		<where>
 			<if test="searchWord != null">
-				question_title like CONCAT('%',#{searchWord},'%')
+				notice_title like CONCAT('%',#{searchWord},'%')
 			</if>
 		</where>
   		ORDER BY notice_datetime DESC
   		LIMIT #{beginRow}, #{rowPerPage}
-  		<where>
-  		
-  		</where>
   	</select>
   	
   	<select id="noticeBoardCount" resultType="int" parameterType="com.example.codeblue.vo.Page">
@@ -860,11 +857,11 @@
   		FROM notice_board
   		<where>
 			<if test="searchWord != null">
-				question_title like CONCAT('%',#{searchWord},'%')
+				notice_title like CONCAT('%',#{searchWord},'%')
 			</if>
 		</where>
   	</select>
-  	
+  	<!--  공지사항 상세정보 -->
   	<select id="noticeBoardOne" resultMap="NoticeBoard" parameterType="int">
   			SELECT notice_id,
   			notice_title,
@@ -875,7 +872,7 @@
   		WHERE 
   			notice_id = #{noticeId}
   	</select>
-  	
+  	<!--  공지사항 추가 -->
   	<insert id ="insertNoticeBoard" parameterType="com.example.codeblue.vo.NoticeBoard">
   		INSERT INTO notice_board (
   			notice_title,
@@ -887,12 +884,19 @@
   			now()
   		)
   	</insert>
-  	
+  	<!--  공지사항 삭제 -->
   	<delete id="deleteNoticeBoard" parameterType="int">
 		DELETE FROM notice_board
 		WHERE notice_id = #{noticeId}
 	</delete>
-
+	<!-- 공지사항 리스트 삭제 -->
+	<delete id="deleteNoticeBoardList" parameterType="java.util.List">
+		DELETE FROM notice_board
+		WHERE notice_id IN
+		<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+			(#{item})
+		</foreach>
+	</delete>
 	<!--  문의내역 SQL 문 -->
 	<!--  문의내역 상세페이지 -->
 	   <select  id="selectInquiryHistoryOne" 

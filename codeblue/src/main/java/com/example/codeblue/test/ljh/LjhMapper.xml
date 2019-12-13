@@ -111,6 +111,8 @@
 	<!-- <insert id="insertHospitalImg" parameterType="com.example.codeblue.vo.HospitalImg">
 		INSERT INTO hospital_img
 	</insert> -->
+	
+
 </mapper>
 
 

@@ -62,6 +62,8 @@ public interface AdminService {
 	public int addNotice(NoticeBoard noticeBoard);
 	//공지사항 삭제
 	public int removeNoticeBoard(int noticeId);
+	//공지사항 리스트 삭제
+	public void removeNoticeBoardList(List<String> noticeBoardIdList);
 	//문의 내역 리스트 출력
 	public Map<String, Object> getInquiryHistoryList(int currentPage, int rowPerPage);
 	//문의 내역 상세 페이지 출력

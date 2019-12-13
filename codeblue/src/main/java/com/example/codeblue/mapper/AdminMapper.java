@@ -105,6 +105,8 @@ public interface AdminMapper {
 	public int insertNoticeBoard(NoticeBoard noticeBoard);
 	//공지사항 삭제
 	public int deleteNoticeBoard(int noticeId);
+	//공지사항 리스트 삭제
+	public int deleteNoticeBoardList(List<String> noticeBoardIdList);
 	//회원리스트
 	public List<User> adminSelectUserList(Page page);
 	//회원 수

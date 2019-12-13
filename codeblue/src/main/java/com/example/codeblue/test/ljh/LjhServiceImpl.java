@@ -2,6 +2,7 @@ package com.example.codeblue.test.ljh;
 
 
 import java.io.File;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,28 @@ import com.example.codeblue.vo.Region;
 @Transactional
 public class LjhServiceImpl implements LjhService{
 	@Autowired LjhMapper ljhMapper;
+	//공지사항 리스트 삭제
+	@Override
+	public void removeNoticeBoardList(List<String> noticeBoardIdList) {
+		System.out.println("::: AdminBoardServiceImpl - removeNoticeBoardList :::");
+		System.out.println(noticeBoardIdList.toString());
+		ljhMapper.deleteNoticeBoard(noticeBoardIdList);
+		System.out.println("공지사항 지우기 성공");
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	//질문 답변 댓글 총 개수 가져오기
 	@Override
 	public int getAnswerCommentCount(int answerId) {
@@ -70,6 +93,8 @@ public class LjhServiceImpl implements LjhService{
 		}
 		return 0;
 	}
+
+
 
 
 	

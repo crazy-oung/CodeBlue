@@ -31,6 +31,14 @@ import com.example.codeblue.vo.ServiceCategory;
 public class AdminRestController {
 	@Autowired private AdminService adminService;
 	
+	//체크박스로 선택한 noticeId 배열 가져오고 삭제하기
+	@PostMapping("/rest/admin/removeNoticeBoardList")
+	public String removeNoticeBoardList(@RequestParam(value="checkBoxArr")List<String> noticeBoardIdList) {
+		System.out.println("::: post - removeNoticeBoardList :::");
+		System.out.println(noticeBoardIdList.toString());
+		adminService.removeNoticeBoardList(noticeBoardIdList);
+		return "삭제성공";
+	}
 	//답변 댓글 지우기
 	@PostMapping("/rest/admin/removeAnswerCommentList")
 	public String removeAnswerCommentList(@RequestParam(value="checkBoxArr")List<String> answerCommentIdList) {

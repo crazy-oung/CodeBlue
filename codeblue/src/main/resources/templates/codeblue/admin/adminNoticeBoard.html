@@ -42,15 +42,75 @@
 				<!-- Page Content -->
 				<div class="p-2">
 					<!-- Page Heading -->
+					
 					<div class="d-sm-flex align-items-center justify-content-between mb-3" >
-						<h3 class="text-gray-800 mb-2 font-weight-bold">공지사항</h3>
+						<h3 class="text-gray-800 mb-2 font-weight-bold">공지사항 관리</h3>
+						<div class="col-sm-2">
+						</div>
 						<a href="/adminNoticeAdd" class="d-none d-sm-inline-block btn btn-primary shadow"><i class="mr-2 fas fa-plus fa-sm text-white-50"></i>공지 올리기</a> 
 					</div>
+				<!-- start NoticeBoard search -->
+        		<form id="searchBoard">
+        		<div class="card bg-gray-200 border-0 mb-3">
+	        		<div class="row p-4">
+		        		<div class="col-sm-9">
+		        			 <table class="table table-sm table-borderless">
+								<tr>
+									<td width="15%">검색어 </td>
+									<td> <input class="form-control form-control-sm" type="text" id="searchWord" style="width: 40%"></td>
+								</tr>
+								<tr>
+									<td>날짜 </td>
+									<td><div class='d-flex'>
+										<input class="form-control form-control-sm" type="date" id=toDate style="width: 30%">&nbsp;~&nbsp;<input class="form-control form-control-sm" type="date" id="fromDate" style="width: 30%">
+									</div></td>
+								</tr>
+							</table>
+		        		</div>
+		        		<div class="col-sm-3 text-right">
+		        			<button type="button" class="btn btn-primary btn-sm px-5 my-1 mt-3" id="getBoard">검색</button><br>
+							<button type="reset" class="btn btn-outline-primary btn-sm px-5 " id="reset">초기화</button>
+		        		</div>
+					</div>
+				</div>
+				</form>
+				<!-- ----------- end searchLine--------------------- -->
+					
+					<div class="row my-2 mt-4">
+					<div class="col-sm-2">
+						<p id="totalRow" class="py-1 m-0"></p>
+					</div>
+					<div class="col-sm-9">
+						<button type="button" class="btn btn-outline-primary btn-sm px-4" id="removeNoticeBoard">공지사항 삭제</button>
+					</div>
+					<div class="col-sm-1">
+						<select  class="form-control form-control-sm" id="rowPerPage">
+							<option value="10" selected="selected">10개 보기</option>
+							<option value="20">20개 보기</option>
+							<option value="30">30개 보기</option>
+							<option value="40">40개 보기</option>
+							<option value="50">50개 보기</option>
+						</select>
+					</div>
+				</div>
 					<!-- page Heading End -->
-					<hr>
+					
 					<!-- Notice Board -->
-					<table id="notice" class="table table-bordered text-center table-hover"></table>
+					
+					<table class="table table-bordered text-center table-hover">
+						<thead>
+							<tr>
+								<th class='px-1'><div class='custom-control custom-checkbox text-center ml-2'><input class='custom-control-input' type='checkbox' onclick="checkAll()" id='selectAll'><label class='custom-control-label' for='selectAll'></label></div></th>
+								<th width='10%'>번호</th>
+								<th>제목</th><th width='15%'>날짜</th>
+							</tr>
+						</thead>
+						<tbody id="notice">
+						
+						</tbody>
+					</table>
 					<button type="button" id="prevBtn" class="btn btn-primary">이전</button>
+					<span id="pageInfo"></span>
 					<button type="button" id="nextBtn" class="btn btn-primary">다음</button>
 					
 				</div>
@@ -121,56 +181,116 @@
 
 </body>
 <script type="text/javascript">
+//체크 박스에 선택된 값을 저장
+var checkBoxArr = [];
+//현재페이지값
+var currentPage = 1;
+//마지막페이지값
+var lastPage = 1;
+//페이지에 출력할 행 갯수
+var rowPerPage = 10;
+//검색어
+var searchWord = undefined;
+//작성기간시작
+var toDate = undefined;
+//작성기간끝
+var fromDate = undefined;
+
 $(document).ready(function(){
-	
-	var currentPage =1;
-	
 	$("#sideBarNotice").addClass("active");
 	$("#sideBarNotice").children("a").attr("aria-expanded","false");
 	$("#sideBarNotice").children("div").addClass("show");
 
-
+	//처음에 공지사항 리스트 보여주기
 	appendItem(currentPage);
-	
+	//이전버튼 공지사항 보여줌
 	$("#prevBtn").click(function(){
-		appendItem(--currentPage);
+		appendItem(--currentPage, false, searchWord);
+		$("#selectAll").prop("checked",false);
 	})
-	
+	//다음버튼 공지사항 보여줌
 	$("#nextBtn").click(function(){
-		appendItem(++currentPage);
+		appendItem(++currentPage, false, searchWord);
+		$("#selectAll").prop("checked",false);
 	})
-	
+	//rowPerPage 변경시 공지사항 보여줌
+	$("#rowPerPage").change(function(){
+		appendItem(1, true, searchWord);
+		$("#selectAll").prop("checked",false);
+	});
+	//getBoard버튼 누르면 검색한다.
+	$("#getBoard").click(function(){
+		appendItem(1, true, $("#searchWord").val());
+		$("#selectAll").prop("checked",false);
+	})
 //document
 })
-function appendItem(currentPage){
-	
+function appendItem(currentPage, YN, word){
+	console.log("searchWord",word);
+	if(YN){
+		currentPage = 1;
+	}
 	$.ajax({
 		url : "/rest/adminNoticeBoard",
 		method : "post",
-		data : {"currentPage": currentPage},
+		data : {"currentPage": currentPage,
+				"rowPerPage" : $("#rowPerPage").val(),
+				"searchWord" : word,
+				"toDate" : $("#toDate").val(),
+				"fromDate": $("#fromDate").val()},
 		success : function(json){
 			$("#notice").empty();
-			currentPage = json.currentPage;
-			lastPage = json.lastPage;
+			subInfo(json);
 			BtnShow(currentPage, lastPage);
 			console.log(json);
-			let notice;
-				notice = "<tr><th width='10%'>번호</th><th>제목</th><th width='15%'>날짜</th></tr>" 
+			var notice;
 			$(json.list).each(function(index,item){
-				notice += "<tr>";
-				notice += "<td>"+item.noticeId+"</td>";
-				notice += "<td class='text-left'><a href='/adminNoticeOne?noticeId="
-				notice += item.noticeId
-				notice += "'>"
-				notice += item.noticeTitle+"</td>";
-				notice += "<td>"+item.noticeDatetime+"</td>";
-				notice += "</tr>";
-			})
+				//체크리스트 출력
+			  notice += "<tr>"+
+						"<td class='px-1'><div class='custom-control custom-checkbox text-center ml-2'>" +
+						"<input class='custom-control-input' type='checkbox' name='chk' id='check"+index+"' value='"+item.noticeId+"'>"+
+						"<label name='chk' class='custom-control-label' for='check"+index+"'></label></div></td>"+
+						"<td>"+item.noticeId+"</td>"+
+						"<td class='text-left'><a href='/adminNoticeOne?noticeId="+item.noticeId+"'>"+item.noticeTitle+"</td>"+
+						"<td>"+item.noticeDatetime+"</td>"+
+						"</tr>";
+				})
 			$("#notice").append(notice);
 		}
 	})
 }
+
+$("#removeNoticeBoard").click(function() {
+	$("input[name=chk]:checked").each(function(){
+			
+		checkBoxArr.push($(this).val());
 	
+	});
+	console.log("::: checkBoxArr배열 :::")
+	console.log(checkBoxArr);
+	if(checkBoxArr.length == 0){
+		alert("체크 항목이 없습니다.");
+	} else {
+		$.ajax({
+			url:"/rest/admin/removeNoticeBoardList",
+			traditional : true, //ajax에서 기본적으로 배열을 지원하지않기때문에 설정
+			method:"post",
+			data:{"checkBoxArr":checkBoxArr},
+			success:function(json){
+				console.log(json);
+				location.reload();
+			}
+		})
+	}
+})
+function checkAll() {
+	if( $("#selectAll").is(':checked') ){
+        $("input[name=chk]").prop("checked", true);
+    }else{
+        $("input[name=chk]").prop("checked", false);
+    }
+}
+//이전, 다음버튼 보이기/숨기기
 function BtnShow(currentPage, lastPage){
 console.log("currentPage"+currentPage+"/ lastPage"+lastPage);
 	if(currentPage <= 1){
@@ -184,6 +304,17 @@ console.log("currentPage"+currentPage+"/ lastPage"+lastPage);
 		$("#nextBtn").show();
 	}
 }
-
+// 서브 값 추가
+function subInfo(json){
+	$("#totalRow").empty();
+	$("#pageInfo").empty();
+	currentPage = json.currentPage;
+	rowPerPage = json.rowPerPage;
+	lastPage = json.lastPage;
+	searchWord = json.searchWord;
+	$("#searchWord").val(json.searchWord);
+	$("#totalRow").append("검색결과"+json.totalRow+"건");
+	$("#pageInfo").append(currentPage+"/"+lastPage);
+}
 </script>
 </html>
