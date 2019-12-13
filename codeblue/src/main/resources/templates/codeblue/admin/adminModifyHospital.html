@@ -7,13 +7,13 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta name="description" content="">
 	<meta name="author" content="">
-	
-	<title>관리자 제휴병원 - 코드블루</title>
-	
+
+	<title>제휴병원 - 코드블루</title>
+
 	<!-- Custom fonts for this template-->
 	<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 	<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-	
+
 	<!-- Custom styles for this template-->
 	<link href="css/sb-admin-2.min.css" rel="stylesheet">
 	<!-- Custom styles for codeBlue -->
@@ -21,7 +21,7 @@
 </head>
 
 <body id="page-top"> 
-  <!-- Page Wrapper -->
+ <!-- Page Wrapper -->
   <div id="wrapper">
 
   	<!-- SideBard load -->
@@ -43,25 +43,36 @@
 				<div class="p-2">
 					<!-- heading -->
 					<div class="d-sm-flex align-items-center justify-content-between mb-3" >
-						<h3 class="text-gray-800 mb-2 font-weight-bold NotoSans">제휴병원</h3>
+						<h3 class="text-gray-800 mb-2 font-weight-bold NotoSans">제휴 정보 수정</h3>
 						<a href="/addHospital" class="d-none d-sm-inline-block btn  btn-primary shadow"><i class="mr-2 fas fa-plus fa-sm text-white-50"></i>제휴병원 등록</a> 
 					</div>
 					<!-- page Heading End -->
 					<hr>
-					
-					<!-- hospital -->
-					<table id="hospitalOne" class="table table-hover text-center m-4"></table>
-					<br>
-					<button type="button" id="listBtn" class="btn btn-primary">목록</button>
-					<button type="button" id="modifyBtn" class="btn btn-primary">수정</button>
-					<button type="button" id="deleteBtn" class="btn btn-primary">삭제</button>
-					
+
+				<!--  Form begin -->
+					<form method="post">
+						<label class="text-dark font-weight-bold">병원명</label>
+						<input class="form-control form-control-sm mb-2" placeholder="병원명" id="hospitalName" >
+						<label class="text-dark font-weight-bold">전화번호</label>
+						<input class="form-control form-control-sm mb-2" placeholder="전화번호" id="hospitalNumber">
+						<label class="text-dark font-weight-bold">주소</label>
+						<input class="form-control form-control-sm mb-2" placeholder="주소" id="hospitalAddress">
+						<label class="text-dark font-weight-bold">상세주소</label>
+						<input class="form-control form-control-sm mb-2" placeholder="상세주소" id="hospitalAddress2">
+						<label class="text-dark font-weight-bold">지역</label>
+						<select class="form-control form-control-sm mb-2" id="regionId"></select>
+					  <hr>
+					</form>
 				</div>
-			  </div>
-			<!--  Page Content End -->
-			</div>
-		</div>  
-        
+				<!--  Form end --> 
+				<div class="d-flex">
+					<button id="submit" class="btn btn-primary shadow mt-3 px-4 mx-2">수정</button>
+				<button id="cancel" class="btn btn-primary shadow mt-3 px-4 mx-2">취소</button>
+				</div>
+			</div> 			
+		</div> 
+        </div>
+
       <!-- End of Main Content -->
 
       <!-- Footer -->
@@ -138,10 +149,8 @@ $(document).ready(function(){
 	        function decode(s) {
 	            return decodeURIComponent(s.split("+").join(" "));
 	        }
-
 	        _parammap[decode(arguments[1])] = decode(arguments[2]);
 	    });
-
 	    return _parammap[key];
 	};
 	$("#hospitalId").val(getParam("hospitalId"));
@@ -155,38 +164,71 @@ $(document).ready(function(){
 			console.log(json);		
 			let hospitalOne
 			$(json).each(function(index,item){
-				    hospitalOne  = "<tr><td>병원명</td><td>"+item.hospitalName;
-					hospitalOne += "</td></tr><tr><td>전화번호</td><td>"+item.hospitalNumber;
-					hospitalOne += "<td></tr><tr><td>지역</td><td>"+item.region.regionName;
-					hospitalOne += "</td></tr><tr><td>주소</td><td>"+item.hospitalAddress;
-					hospitalOne += "</td></tr><tr><td>상세주소</td><td>"+item.hospitalAddress2;
-					hospitalOne += "</td></tr>";
+				   	let name = item.hospitalName;
+				   	$("#hospitalName").val(name);
+					let number = item.hospitalNumber;
+					$("#hospitalNumber").val(number);
+					let selectRegion = item.region.regionName;
+					$("#regionId").val(selectRegion);
+					let address = item.hospitalAddress;
+					$("#hospitalAddress").val(address);
+					let address2 = item.hospitalAddress2;
+					$("#hospitalAddress2").val(address2);
 			})
-			$("#hospitalOne").append(hospitalOne);
 		}
 	})
 	
-	$("#listBtn").click(function(){
-		location.href="/adminHospitalList";
+	//지역 리스트 출력.
+	$.ajax({
+		url : "/rest/getRegionList",
+		method : "get",
+		success : function(json){
+			console.log(json);
+			let region;
+			$(json).each(function(index,item){
+				region = "<option value='";
+				region += item.regionId;
+				region += "'>";
+				region += item.regionName;
+				region += "</option>";
+				$("#regionId").append(region);
+			})
+		}
 	})
 	
-	$("#modifyBtn").click(function(){
-		location.href="/modifyHospital?hospitalId="+getParam("hospitalId");
-	})
-	
-	$("#deleteBtn").click(function(){
-		$.ajax({
-			url : "/removeHospital",
-			data : {"hospitalId":getParam("hospitalId")},
-			method:"get",
-			success : function(){
-				console.log("삭제");
-				location.href="/adminHospitalList";
-			}
-		})
-	})
+	//저장버튼
+	$("#submit").click(function(){
+		console.log($("#hospitalName").val());
+		console.log($("#hospitalNumber").val());
+		console.log($("#hospitalAddress").val());
+		console.log($("#hospitalAddress2").val());
+		console.log($("#regionId").val());
+		
+		if($("#hospitalName").val() == "" || $("#hospitalNumber").val() == "" || $("#hospitalAddress").val() == "" || $("#hospitalAddress2").val() == "" || $("#regionId").val() == ""){
+			alert("빈칸이 존재합니다");
+			return;
+		}
+			$.ajax({
+				url:"/rest/modifyHospital",
+				method : "post",
+				data : {"hospitalId" : getParam("hospitalId"),
+						"hospitalName" : $("#hospitalName").val(),
+						"hospitalNumber" : $("#hospitalNumber").val(),
+						"hospitalAddress" : $("#hospitalAddress").val(),
+						"hospitalAddress2" : $("#hospitalAddress2").val(),
+						"region.regionId" : $("#regionId").val()},
+				success:function(){
+					console.log("성공");
+					location.href="/adminHospitalList"; 
+				}
+			})	
+	});
+  
+	//취소버튼
+  $("#cancel").click(function(){
+	  location.href="/adminHospitalList";
+  })
 //document
 })
-
 </script>
 </html>

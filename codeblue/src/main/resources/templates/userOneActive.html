@@ -357,6 +357,28 @@ function commentPaging(){
 	}
 }
 
+function commentItem(commentNum){
+	$.ajax({
+		url :"/rest/questionCommentPaging",
+		method : "post",
+		data : {"currentPage" : currentPage,
+				"rowPerPage": rowPerPage,
+				"userId" : getParam("userId")},
+		success : function(json){
+			$("#CommentPrevBtn").show()
+			$("#CommentNextBtn").show()
+			commentPaging()
+			console.log(json);
+			$(json.list).each(function(index,item){
+				let comment =  "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionBoard.questionId+"</td>";
+				comment += "<td><a href='/questionBoardOne?questionId="+item.questionBoard.questionId+"'>"+item.questionCommentContent+"</a></td>";
+				comment += "<td>"+item.questionCommentDatetime+"</td></tr>";
+				$("#boardList").append(comment);
+			})
+		}
+	})
+}
+
 $(document).ready(function() {
 	//첫화면 버튼 숨김
 	buttonHide()
@@ -390,25 +412,7 @@ $(document).ready(function() {
 		buttonHide();
 		$("#contentBoard").hide();
 		$("#boardList").empty();
-		$.ajax({
-			url :"/rest/questionCommentPaging",
-			method : "post",
-			data : {"currentPage" : currentPage,
-					"rowPerPage": rowPerPage,
-					"userId" : getParam("userId")},
-			success : function(json){
-				$("#CommentPrevBtn").show()
-				$("#CommentNextBtn").show()
-				commentPaging()
-				console.log(json);
-				$(json.list).each(function(index,item){
-					let comment =  "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionBoard.questionId+"</td>";
-					comment += "<td><a href='/questionBoardOne?questionId="+item.questionBoard.questionId+"'>"+item.questionCommentContent+"</a></td>";
-					comment += "<td>"+item.questionCommentDatetime+"</td></tr>";
-					$("#boardList").append(comment);
-				})
-			}
-		})
+		 commentItem();
 	})
 	
 	//답변버튼
@@ -570,50 +574,14 @@ $(document).ready(function() {
 	$("#CommentNextBtn").click(function(){
 		$("#contentBoard").hide();
 		$("#boardList").empty();
-		$.ajax({
-			url :"/rest/questionCommentPaging",
-			method : "post",
-			data : {"currentPage" : currentPage+1,
-					"rowPerPage": rowPerPage,
-					"userId" : getParam("userId")},
-			success : function(json){
-				currentPage = json.currentPage;
-				lastPage = json.lastPage;
-				commentPaging();
-				console.log("comment"+json);
-				$(json.list).each(function(index,item){
-					let comment =  "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionBoard.questionId+"</td>";
-					comment += "<td><a href='/questionBoardOne?questionId="+item.questionBoard.questionId+"'>"+item.questionCommentContent+"</a></td>";
-					comment += "<td>"+item.questionCommentDatetime+"</td></tr>";
-					$("#boardList").append(comment);
-				})
-			}
-		})
+		 commentItem(++currentPage)
 	})
 	
 	//댓글(이전페이지)
 	$("#CommentPrevBtn").click(function(){
 		$("#contentBoard").hide();
 		$("#boardList").empty();
-		$.ajax({
-			url :"/rest/questionCommentPaging",
-			method : "post",
-			data : {"currentPage" : currentPage-1,
-					"rowPerPage": rowPerPage,
-					"userId" : getParam("userId")},
-			success : function(json){
-				currentPage = json.currentPage;
-				lastPage = json.lastPage;
-				commentPaging();
-				console.log("comment"+json);
-				$(json.list).each(function(index,item){
-					let comment =  "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionBoard.questionId+"</td>";
-					comment += "<td><a href='/questionBoardOne?questionId="+item.questionBoard.questionId+"'>"+item.questionCommentContent+"</a></td>";
-					comment += "<td>"+item.questionCommentDatetime+"</td></tr>";
-					$("#boardList").append(comment);
-				})
-			}
-		})
+		 commentItem(--currentPage)
 	})
 	
 	//태그버튼 
