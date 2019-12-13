@@ -37,41 +37,44 @@ $(document).ready(function() {
 						+ '</small>'
 						+ '<table class=" table table-sm mb-0" id="rightNoticeList">'
 						+ '</table>'		
-						+ '<small class="text-primary font-weight-bold card-header alert-primary px-3 border-0">'
-						+ '궁금한 것이 있나요?'
+						+ '<small class="text-primary font-weight-bold card-header alert-primary px-3 border-0"><a class="nav-link p-0" href="/faq">'
+						+ '<span class="badge badge-warning m-0">FAQ</span> 궁금한 것이 있나요?</a>'
 						+ '</small>'
-						+ '<table class=" table table-sm mb-0">'
-						+ '<tr>'
-						+ '	<td><a class="nav-link small px-2" href="#"><i class="far fa-comment-dots mx-1"></i>도와주세용</a></td>'
-						+ '</tr>'
-						+ '<tr>'
-						+ '	<td><a class="nav-link small px-2" href="#"><i class="far fa-comment-dots mx-1"></i>도와주세용</a></td>'
-						+ '</tr>'
-						+ '<tr>'
-						+ '	<td><a class="nav-link small px-2" href="#"><img src="img/codeBlueIcon.png" width="15px">도와주세용</a></td>'
-						+ '</tr>'
-						+ '<tr>'
-						+ '	<td><a class="nav-link small px-2" href="#"><img src="img/codeBlueIcon.png" width="15px">도와주세용</a></td>'
-						+ '</tr>'
+						+ '<table class=" table table-sm mb-0" id=""rightFAQList>'
 						+ '</table>'		
 						+ '</div>');
 	
 	// 최근 공지 5개
-	$.ajax({
-		url:"/rest/getNoticeList",
-		method:"post",
-		data:{"rowPerPage" : "5"},
-		success: function(json){
-			$("#noticeList").empty();
-			currentPage = json.currentPage;
-			lastPage = json.lastPage;
-			$(json.list).each(function(index,item){
-				html =  '<tr><td><a class="nav-link small px-2" href="/noticeOne?noticeId='+item.noticeId+'"><i class="far fa-comment-dots mx-1"></i>'+item.noticeTitle+'</a></td></tr>';
-				$("#rightNoticeList").append(html);
-			});
-		}
-	})
-	
+   $.ajax({
+      url:"/rest/getNoticeList",
+      method:"post",
+      data:{"rowPerPage" : "5"},
+      success: function(json){
+         $("#rightNoticeList").empty();
+         currentPage = json.currentPage;
+         lastPage = json.lastPage;
+         $(json.list).each(function(index,item){
+            html =  '<tr><td><a class="nav-link small px-2" href="/noticeOne?noticeId='+item.noticeId+'"><i class="far fa-comment-dots mx-1"></i>'+item.noticeTitle+'</a></td></tr>';
+            $("#rightNoticeList").append(html);
+         });
+      }
+   })
+   
+   // FAQ 5개
+   $.ajax({
+      url:"/rest/getFaqList",
+      method:"post",
+      data:{"rowPerPage" : "5"},
+      success: function(json){
+         $("#rightFAQList").empty();
+         console.log(json);
+         $(json.list).each(function(index,item){
+            html =  '<tr><td><a class="nav-link small px-2" href="/faqOne?faqId='+item.faqId+'"><i class="far fa-comment-dots mx-1"></i>'+item.faqTitle+'</a></td></tr>';
+            $("#rightFAQList").append(html);
+         });
+      }
+   })
+
 	$("#footer").append( '<footer class="sticky-footer bg-gray-900 py-4" id="footer">'
 			+ '<div class="container my-auto small">'
 			+ '<div class="row">'
@@ -150,7 +153,8 @@ $(document).ready(function() {
 		},
 
 	})
-
+	console.log(getParam("searchWord"));
+	$("#searchQuestionBoard").val(getParam("searchWord"))
 	//현재페이지값
 	var currentPage = 1;
 	//마지막페이지값
@@ -188,8 +192,15 @@ $(document).ready(function() {
 	$.ajax({
 		url:"/rest/getBoardList",
 		method:"POST",
-		data:{"currentPage" : currentPage, "feildId":feildId,"searchCategory":$("#searchCategory").val()},
+		data:{"currentPage" : currentPage, "feildId":feildId,"searchCategory":$("#searchCategory").val(),"searchWord":getParam("searchWord")},
 		success: function(json){
+			console.log(json);
+			$("#content").empty();
+			if(json.searchWord != null) {
+				$("#content").append(json.searchWord+"에 대한 검색 결과");
+			}
+			$("#totalCount").empty();
+			$("#totalCount").append("검색결과"+json.totalCount+"건");
 			currentPage = json.currentPage;
 			lastPage = json.lastPage;
 			BtnShow(currentPage,lastPage);
@@ -208,8 +219,9 @@ $(document).ready(function() {
 		$.ajax({
 			url:"/rest/getBoardList",
 			method:"POST",
-			data:{"currentPage" : currentPage-1,"searchWord": searchWord,"searchCategory":$("#searchCategory").val()},
+			data:{"currentPage" : currentPage-1,"searchWord": getParam("searchWord"),"searchCategory":$("#searchCategory").val()},
 			success: function(json){
+				console.log(json);
 				currentPage = json.currentPage;
 				lastPage = json.lastPage;
 				$("#searchWord").val(json.searchWord);
@@ -228,8 +240,9 @@ $(document).ready(function() {
 		$.ajax({
 			url:"/rest/getBoardList",
 			method:"POST",
-			data:{"currentPage" : currentPage+1,"searchWord": searchWord,"searchCategory":$("#searchCategory").val()},
+			data:{"currentPage" : currentPage+1,"searchWord": getParam("searchWord"),"searchCategory":$("#searchCategory").val()},
 			success: function(json){
+				console.log(json);
 				currentPage = json.currentPage;
 				lastPage = json.lastPage;
 				$("#searchWord").val(json.searchWord);
@@ -257,29 +270,35 @@ $(document).ready(function() {
 			$("#nextBtn").hide();
 		}
 	}
-	
-	//검색버튼
 	$("#search").click(function(){
-		console.log("검색시작");
-		$.ajax({
-			url:"/rest/getBoardList",
-			method:"POST",
-			data:{"searchQuestionBoard": $("#searchQuestionBoard").val()},
-			success: function(json){
-				console.log(json);
-				currentPage = json.currentPage;
-				lastPage = json.lastPage;
-				$("#searchQuestionBoard").val(json.searchQuestionBoard);
-				searchWord = json.searchWord;
-				BtnShow(currentPage,lastPage);
-				$("#questionBoard").empty();
-				$(json.list).each(function(index,item){
-					html = appendItem(item);							
-					$("#questionBoard").append(html);
-				})
-			}
-		})
-	});
+		if($("#searchQuestionBoard").val() == ""){
+			location.href="/search";
+		} else {
+			location.href="/search?searchWord="+$("#searchQuestionBoard").val();
+		}
+	})
+//	//검색버튼
+//	$("#search").click(function(){
+//		console.log("검색시작");
+//		$.ajax({
+//			url:"/rest/getBoardList",
+//			method:"POST",
+//			data:{"searchQuestionBoard": $("#searchQuestionBoard").val()},
+//			success: function(json){
+//				console.log(json);
+//				currentPage = json.currentPage;
+//				lastPage = json.lastPage;
+//				$("#searchQuestionBoard").val(json.searchQuestionBoard);
+//				searchWord = json.searchWord;
+//				BtnShow(currentPage,lastPage);
+//				$("#questionBoard").empty();
+//				$(json.list).each(function(index,item){
+//					html = appendItem(item);							
+//					$("#questionBoard").append(html);
+//				})
+//			}
+//		})
+//	});
 	
 	$('#summernote').summernote({
 		  toolbar: [

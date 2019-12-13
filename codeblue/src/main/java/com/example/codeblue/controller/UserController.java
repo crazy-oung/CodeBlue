@@ -16,6 +16,12 @@ public class UserController {
 	@Autowired UserService userService;
 	
 	
+	
+	//검색되는 리스트
+	@GetMapping("/search") 
+	public String getsearch() {
+		return "/search";
+	}
 	//답변이 많은 수
 	@GetMapping("/hot")
 	public String gethot() {

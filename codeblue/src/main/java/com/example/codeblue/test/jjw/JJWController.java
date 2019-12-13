@@ -4,6 +4,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @org.springframework.stereotype.Controller
 public class JJWController {
+	
+	@GetMapping("/test")
+	public String gettest() {
+		return "/test";
+	}
+	
+	@GetMapping("/test1")
+	public String gettest1() {
+		return "/test1";
+	}
+//	@GetMapping("/search") 
+//	public String getsearch() {
+//		return "/search";
+//	}
 //	//답변이 많은 수
 //	@GetMapping("/hot")
 //	public String gethot() {
