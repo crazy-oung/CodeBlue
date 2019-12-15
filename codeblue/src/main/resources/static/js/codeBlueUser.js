@@ -2,7 +2,7 @@ $(document).ready(function() {
 	
 	$("#topBar").append( '<nav class="navbar navbar-expand navbar-light topbar mb-4 shadow fixed-top" style="height: 50px; border-bottom: 1px solid #d9d9d9; border-top: 4px solid #4e73df; background: #f2f2f2;">'
 							+ '<div class="container">'
-							+ '<a class="navbar-brand text-primary mr-0" href="/today" style="width:16%"><img src="/img/codeBlueLogo.png" width="100%"></a> '
+							+ '<a class="navbar-brand text-primary mr-0" href="/today"><img src="/img/codeBlueLogo.png" width="125px">'
 							+ '<a class="btn btn-sm btn-default mx-2 hov-g text-dark" href="/QnA">QnA</a>'
 							+'<div class="input-group">'
 							+'<input type="text" class="form-control  form-control-sm bg-light border-1" placeholder="검색어" id="searchQuestionBoard">'
@@ -12,7 +12,7 @@ $(document).ready(function() {
 							+'</button>'
 							+'</div>'
 							+'</div>'
-							+'<ul class="navbar-nav" id="userInfo" style="width: 13vw">'
+							+'<ul class="navbar-nav" id="userInfo">'
 							+'</ul></div></nav>');
 	
 	$("#leftSideBar").append('<nav class="navbar pl-0 sticky-container">'
@@ -31,7 +31,7 @@ $(document).ready(function() {
 			+ '</div> '
 			+ '</nav>');
 	
-	$("#rightSideBar").append('<div class="card border-1 shadow bg-light border-bottom-primary ">'
+	$("#rightSideBar").append('<div class="card border-1 shadow bg-light border-bottom-primary mb-3">'
 						+ '<small class="text-primary font-weight-bold card-header alert-primary px-3 border-0">'
 						+ '<a class="nav-link p-0" href="/notice"><span class="badge badge-primary m-0">New</span> 새 소식이 있어요!</a>'
 						+ '</small>'
@@ -40,7 +40,7 @@ $(document).ready(function() {
 						+ '<small class="text-primary font-weight-bold card-header alert-primary px-3 border-0"><a class="nav-link p-0" href="/faq">'
 						+ '<span class="badge badge-warning m-0">FAQ</span> 궁금한 것이 있나요?</a>'
 						+ '</small>'
-						+ '<table class=" table table-sm mb-0" id=""rightFAQList>'
+						+ '<table class=" table table-sm mb-0" id="rightFAQList">'
 						+ '</table>'		
 						+ '</div>');
 	
@@ -127,11 +127,11 @@ $(document).ready(function() {
 		success : function(json) {
 			console.log(json);
 			if (json == "") {
-				$("#userInfo").append('<li class="nav-item ml-3 mx-1">'
-										+'<a class="btn btn-sm hov-p text-primary p-1" href="/login">로그인</a>'
+				$("#userInfo").append('<li class="nav-item ml-2 mr-1">'
+										+'<a class="btn btn-sm hov-p text-primary p-1" href="/login" style="width: 70px">로그인</a>'
 										+'</li>'
-										+'<li class="nav-item mx-1">'
-										+'<a class="btn btn-sm btn-primary p-1" href="/register">회원가입</a>'
+										+'<li class="nav-item">'
+										+'<a class="btn btn-sm btn-primary p-1" href="/register" style="width: 80px">회원가입</a>'
 										+'</li>');
 				return;
 			}

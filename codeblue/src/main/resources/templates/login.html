@@ -31,16 +31,21 @@
 
 		<!-- Begin Page Content -->
 		<div class="container" style="height: 100%" align="center">  
-			<div class="p-5 m-5 text-left" style="width: 50%"> 
+			<div class="p-5 mt-5" style="width: 50%"> 
 				<p class="text-center">
 					<a href="/">
 						<img src="/img/codeBlueIcon.png" width="50px"><br>
 						<img class="mb-4" src="/img/codeBlue.png" width="100px">
 					</a> 
 				</p>
+			</div>
 				<!-- login Form begin -->
-				<div class="card shadow pt-2 px-2 mx-5"> 
-					<small class="text-center card p-2 alert-primary border-0">DEMO 용 관리자 계정 💨 <br>ID: ndodshon0@opera.com | PW: 50111</small>
+				<div class="card shadow pt-2 px-2 mx-5 text-left" style="width: 380px"> 
+					<small class="text-center card p-2 alert-primary border-0">
+						DEMO 용 관리자 계정 💨 <br>
+						ID: ndodshon0@opera.com | PW: 50111<br>
+						<button class="btn btn-sm btn-blick btn-primary mt-1" onclick="adminLogin()">관리자로 바로 로그인 <small>(귀찮은 사람들을 위해)</small></button>
+					</small>
 					<form class="was-validated card-body" action="/login" method="post">
 					  <div class="form-group">
 					    <label class="text-dark font-weight-bold" for="id">아이디</label>
@@ -49,7 +54,7 @@
 					    <div class="invalid-feedback">올바른 이메일을 입력해주세요.</div>
 					  </div> 
 					  <div class="form-group">
-					    <label class="text-dark font-weight-bold" for="pw">비밀번호
+					    <label class="text-dark font-weight-bold" for="pw"><span class="mr-4">비밀번호</span>
 					     <sub class="text-center ml-5 pl-4"><a href="/accountRecovery" style="padding: 0px !important">비밀번호를 잊어버리셨나요?</a></sub>
 					    </label> 					   
 					    <input type="password" class="form-control form-control-sm" value='2243' id="userPw" placeholder="password" name="userPw" required>
@@ -57,7 +62,6 @@
 					    <div class="invalid-feedback">비밀번호를 입력해주세요.</div>
 					  </div> 
 					  <button type="submit" class="btn btn-block btn-primary join" id="login">로그인</button> 
-					  
 					</form>  
 				</div>
 				<!-- login Form end --> 
@@ -65,8 +69,7 @@
 					<a class="nav-link" href="/register" style="padding: 0px !important">아직 회원이 아니신가요?</a>
 					<a class="nav-link" href="/registerExpert" style="padding: 0px !important">전문가 이신가요?</a>
 					
-				</p> 
-			</div> 			
+				</p> 		
 		</div> 
 		<!-- Page Content End --> 
 		 
@@ -87,22 +90,18 @@
   	
 </body>
 <script> 
-/* 	$("#login").click(function(){
-		console.log("login click");
-		if($("#id").val() == "" || $("#pw").val() == ""){
-			alert("공백입니다. 입력해주세요.");
-			return;
-		} 
-		console.log("login ajax after ");
-		$.ajax({
-			url:"/login",
-			data:{"userId" : $("#id").val() , "userPw" : $("#pw").val() },
-			method : "post",
-			success : function(){
-				console.log("success ! ")	
-			}
-		})
-	}) */
+function adminLogin(){
+	console.log("adminLogin click");
+	console.log("login ajax after ");
+	$.ajax({
+		url:"/login",
+		data:{"userId" : "ndodshon0@opera.com" , "userPw" : "50111" },
+		method : "post",
+		success: function (json){
+			location.href="/admin";
+		}
+	})
+}
 	
 </script>
 </html>

@@ -113,7 +113,7 @@ console.log("관리자");
 	+ '          <div class="bg-white py-2 collapse-inner rounded">'
 	+ '            <h6 class="collapse-header">관리자 관리</h6>'
 	+ '            <a class="collapse-item" href="/adminManagerList">관리자 조회</a>'
-	+ '            <a class="collapse-item" href="/adminReportBoard">관리자 추가</a>'
+	+ '            <a class="collapse-item" href="/manageAdmin">관리자 추가</a>'
 	+ '          </div>'
 	+ '        </div>'
 	+ '      </li>'

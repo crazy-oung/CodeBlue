@@ -50,11 +50,11 @@
 
 					<!-- 1/4 (user)-->
 					<div>
-						<div class="row">
-							<div class="col-md-2" id="img">
+						<div class="row text-dark">
+							<div class="col-md-2 text-center" id="img">
 								<img src="/img/profile.svg" width="100px">
 							</div>
-							<div class="col-md-6" id="introduce"></div>
+							<div class="col-md-6 py-3" id="introduce"></div>
 							<div class="col-md-4" id="information"></div>
 						</div>
 					</div>
@@ -143,7 +143,7 @@ $(document).ready(function() {
 		
 			$(json).each(function(index, item){
 			
-			let	introduce = "<div><h2>"+item.userName+"</h2></div>";
+			let	introduce = "<h1 class=' h2 font-weight-bold mb-1'>"+item.userName+"</h1>";
 				introduce += "<div>"+item.userId+"</div>";
 				$("#introduce").append(introduce);
 			

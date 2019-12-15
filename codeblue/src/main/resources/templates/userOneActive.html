@@ -9,7 +9,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>공지사항 - 코드블루</title>
+<title>유저 활동 - 코드블루</title>
 <!-- import JQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
 
@@ -41,42 +41,40 @@
 				<div class="col-sm-11">
 					
 					<!-- Page Heading -->
-					<div class="mb-4" style="margin-top: 80px">
+					<div class="mb-1" style="margin-top: 80px">
 						<ul class="nav nav-tabs">
 						   	<li class="nav-item" id="linkToProfile"></li>
 						    <li class="nav-item" id="linkToActivity"></li>
 						</ul>	
-						<div id="user" style="text-align: right;"></div>
-						  	
+						<div id="user" class="text-right font-weight-bold h3"></div>
 					</div>
 					<!-- page Heading End -->
 
 					<!-- 유저 통계 -->
 					<div class="row">
 						<div class="col-sm-6 ">
-							<div class="card mb-4 d-flex justify-content-between p-4" style="position: relative; height: 20vh">
+							<div class="card mb-4 p-4 bg-gray-100">
 								<div class="row">
 									<div class="col-sm-4">
 										<h1 class="h3 font-weight-bold text-dark NotoSans">월별<br> 질문 수</h1>
 									</div>
-									<!-- Card Body -->
 									<div class="col-sm-8">
-										<div style="position: relative; height: 15vh">
+										<div style="height: 20vh">
 											<canvas id="monthlyQuestionCountLineChart"></canvas>
 										</div>
 									</div>
 								</div>
 							</div>		
 						</div>
-						<div class="col-sm-6 ">
-							<div class="card mb-4 d-flex justify-content-between p-4" style="position: relative; height: 20vh">
+						
+						<div class="col-sm-6">
+							<div class="card mb-4 p-4 alert-primary">
 								<div class="row">
-									<div class="col-sm-4">
+									<div class="col-sm-4" >
 										<h1 class="h3 font-weight-bold text-dark NotoSans">월별<br> 답변 수</h1>
 									</div>
-									<!-- Card Body -->
-									<div class="col-sm-8">
-										<div style="position: relative; height: 15vh">
+									<div class="col-sm-8" >
+										<div style="height: 20vh">
 											<canvas id="monthlyCommentCountLineChart"></canvas>
 										</div>
 									</div>
@@ -397,7 +395,7 @@ $(document).ready(function() {
 			console.log(json);
 		
 			$(json).each(function(index, item){
-			let	introduce = "<div><h2>"+item.userName+"</h2></div>";
+				let	introduce = "<a class='nav-link py-1 px-0' href='/userOne?userId="+item.userId+"'>"+item.userName+"</a>";
 				$("#user").append(introduce);
 			});
 		}
