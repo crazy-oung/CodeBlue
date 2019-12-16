@@ -1,6 +1,7 @@
 package com.example.codeblue.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -367,5 +368,39 @@ public class UserServiceImpl implements UserService{
 		System.out.println("::: UserServiceImpl - selectFaqOne :::");
 		List<FaqBoard> list = userMapper.selectFaqOne(faqId);
 		return list;
+	}
+	
+	// 방금 등록한 질문 번호
+	@Override
+	public int getLastQuestionId() {
+		System.out.println("::: UserServiceImpl - getLastQuestionId :::");
+		return userMapper.selectLastInsertQuestionId();
+	}
+	
+	// 태그 등록
+	@Override
+	public int addTag(String tags, int questionId) {
+		System.out.println("::: UserServiceImpl - addTag :::");
+		System.out.println(questionId+"번 질문의 테그: "+tags);
+		String[] tagSplit = tags.split("#");
+		System.out.println(Arrays.toString(tagSplit));
+		
+		if(Arrays.toString(tagSplit) == null) {
+			System.out.println("warning! null !@!!");
+			return 0;
+		}
+		int total=0;
+		Map map = new HashMap<String, String>();
+		map.put("questionId", questionId);
+		
+		for(int i=1;i<tagSplit.length;i++) {
+			String tagName = tagSplit[i];
+			System.out.println(tagName);
+			map.put("tagName", tagName);
+			total += userMapper.insertTag(map);
+		}
+		
+		System.out.println("return.");		
+		return total;
 	}
 }

@@ -1,6 +1,7 @@
 package com.example.codeblue.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -20,6 +21,12 @@ import com.example.codeblue.vo.User;
 
 @Mapper
 public interface UserMapper {
+	
+	//태그 등록
+	public int insertTag(Map map);
+	//방금 등록한 질문
+	public int selectLastInsertQuestionId();
+	
 	public User selectUserOne(String UserId);
 	// 유저 로그인
 	public User selectUserId(User user);

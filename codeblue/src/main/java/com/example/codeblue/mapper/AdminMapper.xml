@@ -74,13 +74,12 @@
 		<result column="answer_count" property="answerCount"></result>
 		<result column="comment_count" property="commentCount"></result>
 		<result column="vote_count" property="voteCount"></result>
-		<association property="user" resultMap="User">
-		</association>	
-		<association property="feild" resultMap="Feild">
-		</association>
-		<association property="tag" resultMap="Tag">
-		</association>
+		<result column="question_tags" property="questionTags"></result>
+		
+		<association property="user" resultMap="User"></association>	
+		<association property="feild" resultMap="Feild"></association>
 	</resultMap>
+	
 	<!-- Expert 객체 -->
 	<resultMap type="com.example.codeblue.vo.Expert" id="Expert">
 		<result column="expert_license_no" property="expertLicenseNo"></result>

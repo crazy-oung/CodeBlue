@@ -6,10 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class HdyTestController {
 	
-	@GetMapping("/tags")
-	public String getTags() {
-		System.out.println("::: bget - getTags :::");
-		return "/tags";
-	}
+
 
 }

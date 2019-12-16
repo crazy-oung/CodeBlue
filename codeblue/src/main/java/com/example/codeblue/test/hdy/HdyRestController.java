@@ -13,12 +13,4 @@ public class HdyRestController {
 	
 	@Autowired HdyService hdyService;
 	
-	@PostMapping("/rest/addTag")
-	public String[] addTag(String[] list) {
-		System.out.println("::: post - addTag :::");
-		System.out.println(Arrays.toString(list));
-		System.out.println(list.toString());
-		return list;
-		
-	}
 }

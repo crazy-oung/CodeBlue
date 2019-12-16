@@ -12,8 +12,9 @@ public class QuestionBoard {
 	private int answerCount;
 	private int voteCount;
 	private int commentCount;
-	//외래키 3개
+	private String questionTags;
+	
+	//외래키 2개
 	private Feild feild;
 	private User user;
-	private Tag tag;
 }

@@ -4,5 +4,4 @@ import com.example.codeblue.vo.Tag;
 
 public interface HdyService {
 	
-	public int addTag(Tag tag);
 }

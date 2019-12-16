@@ -34,8 +34,8 @@ public class CodeblueApplication {
 	        JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
 	        javaMailSender.setHost("smtp.gmail.com");
 	        javaMailSender.setPort(587);
-	        javaMailSender.setUsername("ddukgyen@gmail.com");
-	        javaMailSender.setPassword("goodee2019#*");
+	        javaMailSender.setUsername("dnwnsmsdnwn1@gmail.com");
+	        javaMailSender.setPassword("a74101234");
 	        
 	        Properties properties = new Properties();
 	        properties.setProperty("mail.smtp.auth", "true");

@@ -15,7 +15,12 @@ import com.example.codeblue.vo.QuestionBoard;
 public class UserController {
 	@Autowired UserService userService;
 	
-	
+	// 태그 출력 페이지
+	@GetMapping("/tags")
+	public String getTags() {
+		System.out.println("::: bget - getTags :::");
+		return "/tags";
+	}
 	
 	//검색되는 리스트
 	@GetMapping("/search") 
@@ -95,7 +100,13 @@ public class UserController {
 	public String postAsk(QuestionBoard questionBoard) {
 		System.out.println("::: AskController-postAsk:::");
 		System.out.println(questionBoard);
+		// 질문 등록
 		userService.addQuestion(questionBoard);
+		// 태그 등록 시작
+		int questionId = userService.getLastQuestionId();
+		System.out.println(questionId);
+		userService.addTag(questionBoard.getQuestionTags(),questionId);
+		
 		return "/QnA";
 	}
 	

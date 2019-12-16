@@ -17,6 +17,11 @@ import com.example.codeblue.vo.User;
 
 public interface UserService {
 	
+	// 방금 등록한 질문 번호 가져오기
+	public int getLastQuestionId();
+	// 태그 등록
+	public int addTag(String tags,int questionId);
+	
 	public User selectUserOne(String UserId);
 	public Map<String,Object> getQuestBoardList(int currentpage,int rowPerPage,String searchWord,String searchCategory, int feildId);
 	public QuestionBoard getQuestionBoardOne(int questionId);
