@@ -1,9 +1,14 @@
 package com.example.codeblue.test.hyol;
 
+import java.io.IOException;
+import java.lang.ProcessBuilder.Redirect;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.bind.DefaultValue;
@@ -14,7 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.codeblue.service.AdminService;
 import com.example.codeblue.vo.FaqBoard;
+import com.example.codeblue.vo.Inquiry;
 import com.example.codeblue.vo.ServiceCategory;
+import com.example.codeblue.vo.User;
+import com.sun.mail.iap.Response;
 @RestController
 public class HyolRestController {
 
@@ -117,5 +125,29 @@ public class HyolRestController {
 			System.out.println("::: post - /getFaqOneTest :::");
 			System.out.println("faqId : "+faqId);
 			return hyolService.getFaqOne(faqId);
+		}
+		// 문의내역 카테고리
+		@GetMapping("/rest/getInquiryTest")
+		public List<Inquiry> getInquiry(){
+			return hyolService.getInquiryList();
+		}
+		// 문의내역 출력(자신이 올린 글만)
+		@PostMapping("/rest/getInquiryBoardTest")
+		public Map<String,Object> getInquiryBoard(@RequestParam(value="currentPage", defaultValue = "1")int currentPage,
+				@RequestParam(value="rowPerPage", defaultValue = "5")int rowPerPage,
+				// mapper에서 page에 담기위해서 변수명을 변경한다
+				@RequestParam(value="inquiryId", required = false)String searchCategory,
+				HttpSession session){
+			System.out.println("::: post - /getInquiryBoardTest :::");
+			System.out.println("currentPage : "+currentPage);
+			System.out.println("rowPerPage : "+rowPerPage);
+			System.out.println("searchCategory : "+searchCategory);
+			System.out.println(session.getAttribute("loginUser"));
+			
+				// 세션에서 유저의 정보를 받아 온 후 유저아이디값을 넘겨준다
+				User loginUser = new User();
+				loginUser = (User) session.getAttribute("loginUser");
+				String loginUserId = loginUser.getUserId();
+				return hyolService.getInquiryHistoryBoard(currentPage, rowPerPage, loginUserId, searchCategory);
 		}
 }

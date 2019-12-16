@@ -10,6 +10,8 @@ import com.example.codeblue.vo.AnswerComment;
 import com.example.codeblue.vo.Expert;
 import com.example.codeblue.vo.FaqBoard;
 import com.example.codeblue.vo.Hospital;
+import com.example.codeblue.vo.Inquiry;
+import com.example.codeblue.vo.InquiryHistory;
 import com.example.codeblue.vo.Manager;
 import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.Page;
@@ -107,4 +109,10 @@ public interface UserMapper {
 	public int selectFaqCount(Page page);
 	// faqone 출력 (이전글,다음글까지 출력)
 	public List<FaqBoard> selectFaqOne(int faqId);
+	// inquiry 카테고리 조회
+	public List<Inquiry> selectInquiry();
+	// 문의 내역 리스트  출력
+	public List<InquiryHistory> selectInquiryHistory(Page page);
+	// 문의 내역 리스트 행의 수
+	public int selectInquiryHistoryCount(Page page);
 }

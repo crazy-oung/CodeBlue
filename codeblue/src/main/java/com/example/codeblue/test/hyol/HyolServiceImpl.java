@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.codeblue.mapper.AdminMapper;
 import com.example.codeblue.vo.FaqBoard;
+import com.example.codeblue.vo.Inquiry;
+import com.example.codeblue.vo.InquiryHistory;
 import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.ServiceCategory;
 import com.example.codeblue.vo.User;
@@ -213,5 +215,48 @@ public class HyolServiceImpl implements HyolService {
 		System.out.println("::: UserServiceImpl - selectFaqOneTest :::");
 		List<FaqBoard> list = hyolMapper.selectFaqOne(faqId);
 		return list;
+	}
+	// inquiry 출력
+	@Override
+	public List<Inquiry> getInquiryList() {
+		System.out.println("::: UserServiceImpl - selectInquiryTest :::");
+		List<Inquiry> list = hyolMapper.selectInquiry();
+		System.out.println(list);
+		return list;
+	}
+	// inquiry 히스토리출력(자신이 올린 글만)
+	@Override
+	public Map<String, Object> getInquiryHistoryBoard(int currentPage, int rowPerPage, String loginUserId, String searchCategory) {
+		System.out.println("::: UserServiceImpl - selectInquiryHistoryTest :::");
+		// 페이징
+		int beginRow = (currentPage-1)*rowPerPage;
+		Page page = new Page();
+		page.setBeginRow(beginRow);
+		page.setRowPerPage(rowPerPage);
+		page.setUserId(loginUserId);
+		page.setSearchCategory(searchCategory);
+		// 전체행의 수
+		int totalRow = hyolMapper.selectInquiryHistoryCount(page);
+		System.out.println("totalRow : "+totalRow);
+		// 마지막 페이지 구하기
+		int lastPage = 0;
+		if(totalRow%rowPerPage != 0) {
+			lastPage = (totalRow/rowPerPage)+1;
+		} else {
+			lastPage = totalRow/rowPerPage;
+		}
+		System.out.println("lastPage : "+lastPage);
+		// 리스트 출력
+		List<InquiryHistory> list = hyolMapper.selectInquiryHistory(page);
+		System.out.println(list);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", list);
+		map.put("currentPage", currentPage);
+		map.put("totalRow", totalRow);
+		map.put("lastPage", lastPage);
+		// 서비스 카테고리아이디를 page의 searchCategory에 담으려고 한것이기 떄문에 다시 원래이름으로 되돌려준다
+		map.put("inquiryId", searchCategory);
+		
+		return map;
 	}
 }

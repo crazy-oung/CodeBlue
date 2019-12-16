@@ -6,6 +6,8 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.example.codeblue.vo.FaqBoard;
+import com.example.codeblue.vo.Inquiry;
+import com.example.codeblue.vo.InquiryHistory;
 import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.ServiceCategory;
 import com.example.codeblue.vo.User;
@@ -42,4 +44,11 @@ public interface HyolMapper {
 	public int selectFaqCount(Page page);
 	// faqone 출력 (이전글,다음글까지 출력)
 	public List<FaqBoard> selectFaqOne(int faqId);
+	// inquiry 카테고리 조회
+	public List<Inquiry> selectInquiry();
+	// 문의 내역 리스트  출력
+	public List<InquiryHistory> selectInquiryHistory(Page page);
+	// 문의 내역 리스트 행의 수
+	public int selectInquiryHistoryCount(Page page);
+	
 }

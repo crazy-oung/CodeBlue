@@ -18,6 +18,8 @@ import com.example.codeblue.vo.AnswerComment;
 import com.example.codeblue.vo.Expert;
 import com.example.codeblue.vo.FaqBoard;
 import com.example.codeblue.vo.Hospital;
+import com.example.codeblue.vo.Inquiry;
+import com.example.codeblue.vo.InquiryHistory;
 import com.example.codeblue.vo.Manager;
 import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.Page;
@@ -392,13 +394,56 @@ public class UserServiceImpl implements UserService{
 		return list;
 	}
 	
+	
 	// 방금 등록한 질문 번호
 	@Override
 	public int getLastQuestionId() {
 		System.out.println("::: UserServiceImpl - getLastQuestionId :::");
 		return userMapper.selectLastInsertQuestionId();
 	}
-	
+	// inquiry 출력
+		@Override
+		public List<Inquiry> getInquiryList() {
+			System.out.println("::: UserServiceImpl - selectInquiry :::");
+			List<Inquiry> list = userMapper.selectInquiry();
+			System.out.println(list);
+			return list;
+		}
+		// inquiry 히스토리출력(자신이 올린 글만)
+		@Override
+		public Map<String, Object> getInquiryHistoryBoard(int currentPage, int rowPerPage, String loginUserId, String searchCategory) {
+			System.out.println("::: UserServiceImpl - selectInquiryHistory :::");
+			// 페이징
+			int beginRow = (currentPage-1)*rowPerPage;
+			Page page = new Page();
+			page.setBeginRow(beginRow);
+			page.setRowPerPage(rowPerPage);
+			page.setUserId(loginUserId);
+			page.setSearchCategory(searchCategory);
+			// 전체행의 수
+			int totalRow = userMapper.selectInquiryHistoryCount(page);
+			System.out.println("totalRow : "+totalRow);
+			// 마지막 페이지 구하기
+			int lastPage = 0;
+			if(totalRow%rowPerPage != 0) {
+				lastPage = (totalRow/rowPerPage)+1;
+			} else {
+				lastPage = totalRow/rowPerPage;
+			}
+			System.out.println("lastPage : "+lastPage);
+			// 리스트 출력
+			List<InquiryHistory> list = userMapper.selectInquiryHistory(page);
+			System.out.println(list);
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("list", list);
+			map.put("currentPage", currentPage);
+			map.put("totalRow", totalRow);
+			map.put("lastPage", lastPage);
+			// 서비스 카테고리아이디를 page의 searchCategory에 담으려고 한것이기 떄문에 다시 원래이름으로 되돌려준다
+			map.put("inquiryId", searchCategory);
+			
+			return map;
+		}
 	// 태그 등록
 	@Override
 	public int addTag(String tags, int questionId) {

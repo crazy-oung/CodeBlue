@@ -17,6 +17,7 @@ import com.example.codeblue.vo.AnswerComment;
 import com.example.codeblue.vo.Expert;
 import com.example.codeblue.vo.FaqBoard;
 import com.example.codeblue.vo.Hospital;
+import com.example.codeblue.vo.Inquiry;
 import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.QuestionComment;
@@ -301,26 +302,49 @@ public class UserRestController {
 		System.out.println("faqId : "+faqId);
 		return userService.getFaqOne(faqId);
 	}
-	
-	@PostMapping("rest/profileModify")
-	public void modifyUserProfile(User user,
-									@RequestParam(value="userName")String userName,
-									@RequestParam(value="userPw")String userPw,
-									@RequestParam(value="userId")String userId) {
-		
-		System.out.println("::: post - modifyUserProfile :::");		
-		System.out.println("user Name : " + userName);
-		System.out.println("change Pw : " + userPw);	
-		
-		user = new User();
-			user.setUserName(userName);
-			user.setUserPw(userPw);
-			user.setUserId(userId);
-		System.out.println("user : " + user.toString());
-		
-		userService.modifyUserProfile(user);
-	
-		//return "redirect:/userOne?userId="+user.getUserId();
+	// 문의내역 카테고리
+			@GetMapping("/rest/getInquiry")
+			public List<Inquiry> getInquiry(){
+				return userService.getInquiryList();
+			}
+	// 문의내역 출력(자신이 올린 글만)
+	@PostMapping("/rest/getInquiryBoard")
+	public Map<String,Object> getInquiryBoard(@RequestParam(value="currentPage", defaultValue = "1")int currentPage,
+			@RequestParam(value="rowPerPage", defaultValue = "5")int rowPerPage,
+			// mapper에서 page에 담기위해서 변수명을 변경한다
+			@RequestParam(value="inquiryId", required = false)String searchCategory,
+			HttpSession session){
+		System.out.println("::: post - /getInquiryBoard :::");
+		System.out.println("currentPage : "+currentPage);
+		System.out.println("rowPerPage : "+rowPerPage);
+		System.out.println("searchCategory : "+searchCategory);
+		System.out.println(session.getAttribute("loginUser"));
+		// 세션에서 유저의 정보를 받아 온 후 유저아이디값을 넘겨준다
+		User loginUser = new User();
+		loginUser = (User) session.getAttribute("loginUser");
+			String loginUserId = loginUser.getUserId();
+			return userService.getInquiryHistoryBoard(currentPage, rowPerPage, loginUserId, searchCategory);
 	}
+
+@PostMapping("rest/profileModify")
+public void modifyUserProfile(User user,
+								@RequestParam(value="userName")String userName,
+							@RequestParam(value="userPw")String userPw,
+							@RequestParam(value="userId")String userId) {
+
+System.out.println("::: post - modifyUserProfile :::");		
+System.out.println("user Name : " + userName);
+System.out.println("change Pw : " + userPw);	
+
+user = new User();
+	user.setUserName(userName);
+	user.setUserPw(userPw);
+	user.setUserId(userId);
+System.out.println("user : " + user.toString());
+
+userService.modifyUserProfile(user);
+
+//return "redirect:/userOne?userId="+user.getUserId();
+}
 	
 }

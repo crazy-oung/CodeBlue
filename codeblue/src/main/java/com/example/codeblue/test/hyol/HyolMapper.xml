@@ -60,6 +60,31 @@
 		<association property="serviceCategory" resultMap="ServiceCategory">
 		</association>
 	</resultMap>
+	<!-- Inquiry -->
+	<resultMap type="com.example.codeblue.vo.Inquiry" id="Inquiry">
+		<result column="inquiry_id" property="inquiryId"></result>
+		<result column="inquiry_name" property="inquiryName"></result>
+	</resultMap>
+	<!-- InquiryHistory -->
+	<resultMap type="com.example.codeblue.vo.InquiryHistory" id="InquiryHistory">
+		<result column="inquiry_history_id" property="inquiryHistoryId"></result>
+		<result column="inquiry_title" property="inquiryTitle"></result>
+		<result column="inquiry_content" property="inquiryContent"></result>
+		<result column="inquiry_datetime" property="inquiryDatetime"></result>
+		<result column="inquiry_answer" property="inquiryAnswer"></result>
+		
+		<association property="inquiry" resultMap="Inquiry"></association>
+		<association property="user" resultMap="User"></association>
+	</resultMap>
+	<!-- InquiryHistoryAnswer -->
+	<resultMap type="com.example.codeblue.vo.InquiryHistoryAnswer" id="InquiryHistoryAnswer">
+		<result column="inquiry_history_answer_id" property="inquiryHistoryAnswerId"></result>
+		<result column="inquiry_history_answer_title" property="inquiryHistoryAnswerTitle"></result>
+		<result column="inquiry_history_answer_content" property="inquiryHistoryAnswerContent"></result>
+		<result column="inquiry_history_answer_datetime" property="inquiryHistoryAnswerDatetime"></result>
+		
+		<association property="inquiryHistory" resultMap="InquiryHistory"></association>
+	</resultMap>
 	<!-- 유저리스트 -->
 	<select id="adminSelectUserList" parameterType="com.example.codeblue.vo.Page" resultMap="User">
 		select
@@ -257,5 +282,32 @@
 			 (SELECT faq_id FROM faq_board WHERE faq_id = #{faqId}),
 		    (SELECT faq_id FROM faq_board WHERE faq_id &gt; #{faqId} ORDER BY faq_id LIMIT 1)
 			 );
+	</select>
+	<!-- inquiry 카테고리 출력 -->
+	<select id="selectInquiry" resultMap="Inquiry">
+		SELECT inquiry_id, inquiry_name
+		FROM inquiry
+	</select>
+	<!-- inquiryHistory 리스트 출력 -->
+	<select id="selectInquiryHistory" parameterType="com.example.codeblue.vo.Page" resultMap="InquiryHistory">
+		SELECT inh.inquiry_history_id, inq.inquiry_name, inh.inquiry_title, inh.inquiry_datetime, inh.inquiry_answer
+		FROM inquiry_history inh INNER JOIN inquiry inq INNER JOIN user u
+		ON inh.inquiry_id = inq.inquiry_id AND inh.user_id = u.user_id
+		WHERE inh.user_id = #{userId}
+		<if test="searchCategory != null">
+			AND inh.inquiry_id = #{searchCategory}
+		</if>
+		ORDER BY inh.inquiry_datetime DESC
+		LIMIT #{beginRow},#{rowPerPage}
+	</select>
+	<!-- 문의 내역 리스트 행의 수 -->
+	<select id="selectInquiryHistoryCount" parameterType="com.example.codeblue.vo.Page" resultType="int">
+		SELECT COUNT(*)
+		FROM inquiry_history inh INNER JOIN inquiry inq INNER JOIN user u
+		ON inh.inquiry_id = inq.inquiry_id AND inh.user_id = u.user_id
+		WHERE inh.user_id = #{userId}
+		<if test="searchCategory != null">
+			AND inh.inquiry_id = #{searchCategory}
+		</if>
 	</select>
 </mapper>
