@@ -11,6 +11,7 @@ import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.QuestionComment;
 import com.example.codeblue.vo.QuestionVote;
+import com.example.codeblue.vo.Tag;
 import com.example.codeblue.vo.User;
 
 @Mapper
@@ -50,4 +51,11 @@ public interface LeeMapper {
 	public int insertQuestionVote(QuestionVote questionVote);
 	//유저 질문 추천 중복검사
 	public QuestionVote selectQuestionVoteCheck(QuestionVote questionVote);
+	
+	//유저가 사용한 태그리스트
+	public List<Tag> selectUserTagList(String userId);
+	//유저가 사용한 태그리스트(페이징)
+	public List<Tag> selectUserTagPaging(Page page);
+	//유저가 사용한 태그 수
+	public int selectUserTagTotalRow(String userId);
 }

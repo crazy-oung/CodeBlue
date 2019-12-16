@@ -12,6 +12,7 @@ import com.example.codeblue.vo.Answer;
 import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.QuestionComment;
 import com.example.codeblue.vo.QuestionVote;
+import com.example.codeblue.vo.Tag;
 import com.example.codeblue.vo.User;
 
 @RestController
@@ -126,8 +127,6 @@ public class LeeRestController {
 		return leeService.answerCount(userId);
 	}
 	
-	//-------------------------------------------------실행 x
-	
 	//해당 유저가 받은 추천 수
 	@PostMapping("/rest/userVote")
 	public int postUserVote(@RequestParam(value="userId")String userId) {
@@ -144,4 +143,32 @@ public class LeeRestController {
 		return leeService.getQuestionVoteCheck(questionVote);
 	}
 	
+	//해당 유저가 사용한 태그리스트
+	@PostMapping("/rest/userTagList")
+	public List<Tag> postUserTagList(@RequestParam(value="userId")String userId) {
+		System.out.println(":::post - postUserTagList");
+		System.out.println("userId"+userId);
+		return leeService.getUserTagList(userId);
+	}
+	
+	//해당 유저가 사용한 태그 수
+	@PostMapping("/rest/userTagCount")
+	public int postUserTagCount(@RequestParam(value="userId")String userId) {
+		System.out.println(":::post - postUserTagCount");
+		System.out.println("userId"+userId);
+		return leeService.getUserTagCount(userId);
+	}
+	
+	//해당 유저가 사용한 태그리스트(페이징)
+	@PostMapping("/rest/userTagPaging")
+	public Map<String, Object> postUserTagPaging(@RequestParam(value="userId")String userId,
+												@RequestParam(value="currentPage", defaultValue="1")int currentPage,
+												@RequestParam(value="rowPerPage", defaultValue="10")int rowPerPage){
+		System.out.println(":::post - postUserTagPaging");
+		System.out.println("userId"+userId);
+		System.out.println("currentPage"+currentPage);
+		System.out.println("rowPerPage"+rowPerPage);	
+		
+		return leeService.getUserTagPaging(currentPage, rowPerPage, userId);
+	}
 }

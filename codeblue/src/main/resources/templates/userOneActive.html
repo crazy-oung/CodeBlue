@@ -31,7 +31,7 @@
 
 		<!-- Begin Page Content -->
 		<div class="container">
-			<div class="row"> 
+			<div class="row" style="height:100%"> 
 			
 				<!-- Side Bar -->
 				<div class="col-sm-1 p-0 " style="border-right: 1px solid #d9d9d9;" id="leftSideBar"></div>
@@ -110,15 +110,23 @@
 					</table>
 					
 					<!-- 페이징 버튼 -->
-					<button type="button" class="btn btn-primary" id="QuestionPrevBtn">이전</button>
-					<button type="button" class="btn btn-primary" id="QuestionNextBtn">다음</button>
-					
-					<button type="button" class="btn btn-primary" id="CommentPrevBtn">이전</button>
-					<button type="button" class="btn btn-primary" id="CommentNextBtn">다음</button>
-					
-					<button type="button" class="btn btn-primary" id="AnswerPrevBtn">이전</button>
-					<button type="button" class="btn btn-primary" id="AnswerNextBtn">다음</button>
-					
+					<p>
+						<button type="button" class="btn btn-primary" id="QuestionPrevBtn">이전</button>
+						<button type="button" class="btn btn-primary" id="QuestionNextBtn">다음</button>
+					</p>
+					<p>
+						<button type="button" class="btn btn-primary" id="CommentPrevBtn">이전</button>
+						<button type="button" class="btn btn-primary" id="CommentNextBtn">다음</button>
+					</p>
+					<p>
+						<button type="button" class="btn btn-primary" id="AnswerPrevBtn">이전</button>
+						<button type="button" class="btn btn-primary" id="AnswerNextBtn">다음</button>
+					</p>
+					<p>
+						<button type="button" class="btn btn-primary" id="TagPrevBtn">이전</button>
+						<button type="button" class="btn btn-primary" id="TagNextBtn">다음</button>
+					</p>
+				
 					<!--기본페이지 및 요약버튼 클릭시 출력.-->
 					<div id="contentBoard" >
 					
@@ -151,16 +159,15 @@
 								</table>
 							</div>
 							<div class="col-md-6">
-								<label>태그</label>
+								<label>태그</label><label id="tagCount" style="font-size: x-small;"></label>
+								<table class="table table-hover">
+										<!-- 내 태그 list 출력 -->
+										<tbody id="tag"></tbody>
+								</table>
 							</div>
 						</div>
 						
 					</div>
-					
-					<hr>
-					
-					<!-- 4/4 -->
-					
 			</div>
 		</div> 
 	</div>
@@ -239,7 +246,7 @@ function reset(){
 			
 			$(json).each(function(index, item){
 			
-				let comment =  "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionBoard.questionId+"</td>";
+				let comment =  "<tr><td><span class='badge badge-primary m-0 mr-2'>C</span>"+item.questionBoard.questionId+"</td>";
 					comment += "<td><a href='/questionBoardOne?questionId="+item.questionBoard.questionId+"'>"+item.questionCommentContent+"</a></td>";
 					comment += "<td>"+item.questionCommentDatetime+"</td></tr>";
 				$("#commentList").append(comment);
@@ -257,11 +264,37 @@ function reset(){
 			$("#answerList").empty();
 
 			$(json).each(function(index,item){
-				let answer = "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.answerId+"</td>";
+				let answer = "<tr><td><span class='badge badge-primary m-0 mr-2'>A</span>"+item.answerId+"</td>";
 					answer += "<td><a href='/questionBoardOne?questionId="+item.questionBoard.questionId+"'>"+item.answerContent+"</a></td>";
 					answer += "<td>"+item.answerDatetime+"</td></tr>";
 				$("#answerList").append(answer);
 			})
+		}
+	})
+	
+	//태그 리스트 출력
+	$.ajax({
+		url : "/rest/userTagList",
+		method : "post",
+		data : {"userId": getParam("userId")},
+		success : function(json){
+			console.log(json);
+			let tagList;
+			$(json).each(function(index, item){
+				tagList  = "<tr><td><span class='badge badge-primary m-0 mr-2'>#</span>"+item.tagName+"</td></tr>";
+				$("#tag").append(tagList);
+			})
+		}
+	})
+	
+	//사용한 태그 전체 수
+	$.ajax({
+		url : "/rest/userTagCount",
+		method : "post",
+		data :{"userId": getParam("userId")},
+		success : function(json){
+			$("#tagCount").empty();
+			$("#tagCount").append(json);
 		}
 	})
 	
@@ -311,6 +344,8 @@ function buttonHide(){
 	$("#CommentPrevBtn").hide()
 	$("#AnswerNextBtn").hide()
 	$("#AnswerPrevBtn").hide()
+	$("#TagNextBtn").hide()
+	$("#TagPrevBtn").hide()
 }
 
 //질문 페이징 버튼
@@ -355,6 +390,19 @@ function commentPaging(){
 	}
 }
 
+//태그 페이징 버튼
+function tagPaging(){
+	if(currentPage <= 1){
+		$("#TagNextBtn").show()
+		$("#TagPrevBtn").hide()
+	}else if(currentPage >= lastPage){	
+		$("#TagNextBtn").hide()
+		$("#TagPrevBtn").show()
+	}else{
+		$("#TagNextBtn").show()
+		$("#TagPrevBtn").show()
+	}
+}
 function commentItem(commentNum){
 	$.ajax({
 		url :"/rest/questionCommentPaging",
@@ -368,7 +416,7 @@ function commentItem(commentNum){
 			commentPaging()
 			console.log(json);
 			$(json.list).each(function(index,item){
-				let comment =  "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionBoard.questionId+"</td>";
+				let comment =  "<tr><td><span class='badge badge-primary m-0 mr-2'>C</span>"+item.questionBoard.questionId+"</td>";
 				comment += "<td><a href='/questionBoardOne?questionId="+item.questionBoard.questionId+"'>"+item.questionCommentContent+"</a></td>";
 				comment += "<td>"+item.questionCommentDatetime+"</td></tr>";
 				$("#boardList").append(comment);
@@ -429,7 +477,7 @@ $(document).ready(function() {
 				answerPaging()
 				console.log(json);
 				$(json.list).each(function(index, item){
-					let answer = "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.answerId+"</td>";
+					let answer = "<tr><td><span class='badge badge-primary m-0 mr-2'>A</span>"+item.answerId+"</td>";
 						answer += "<td><a href='/questionBoardOne?questionId="+item.questionBoard.questionId+"'>"+item.answerContent+"</a></td>";
 						answer += "<td>"+item.answerDatetime+"</td></tr>";
 					$("#boardList").append(answer);
@@ -454,10 +502,10 @@ $(document).ready(function() {
 				questionPaging()
 				console.log(json);
 				$(json.list).each(function(index,item){
-					let question = "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionId+"</td>";
-						question += "<td><a href='/questionBoardOne?questionId="+item.questionId+"'>"+item.questionTitle+"</a></td>";
-						question += "<td>"+item.questionDatetime+"</td></tr>";
-					$("#boardList").append(question);
+					let tag = "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionId+"</td>";
+						tag += "<td><a href='/questionBoardOne?questionId="+item.questionId+"'>"+item.questionTitle+"</a></td>";
+						tag += "<td>"+item.questionDatetime+"</td></tr>";
+					$("#boardList").append(tag);
 				})
 			}
 		})
@@ -534,7 +582,7 @@ $(document).ready(function() {
 				answerPaging();
 				console.log("answer"+json);
 				$(json.list).each(function(index, item){
-					let answer = "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.answerId+"</td>";
+					let answer = "<tr><td><span class='badge badge-primary m-0 mr-2'>A</span>"+item.answerId+"</td>";
 						answer += "<td><a href='/questionBoardOne?questionId="+item.questionBoard.questionId+"'>"+item.answerContent+"</a></td>";
 						answer += "<td>"+item.answerDatetime+"</td></tr>";
 					$("#boardList").append(answer);
@@ -559,7 +607,7 @@ $(document).ready(function() {
 				answerPaging();
 				console.log("answer"+json);
 				$(json.list).each(function(index, item){
-					let answer = "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.answerId+"</td>";
+					let answer = "<tr><td><span class='badge badge-primary m-0 mr-2'>A</span>"+item.answerId+"</td>";
 						answer += "<td><a href='/questionBoardOne?questionId="+item.questionBoard.questionId+"'>"+item.answerContent+"</a></td>";
 						answer += "<td>"+item.answerDatetime+"</td></tr>";
 					$("#boardList").append(answer);
@@ -584,11 +632,75 @@ $(document).ready(function() {
 	
 	//태그버튼 
 	$("#tagBtn").click(function(){
+		currentPage=1;
+		buttonHide();
 		$("#contentBoard").hide();
 		$("#boardList").empty();
-		$("#boardList").append("<h1 class='font-weight-bold text-dark NotoSans'>현재 태그 준비중입니다.</h1>");
+		$.ajax({
+			url :"/rest/userTagPaging",
+			method : "post",
+			data : {"currentPage" : currentPage,
+					"rowPerPage": rowPerPage,
+					"userId" : getParam("userId")},
+			success : function(json){
+				tagPaging()
+				console.log(json);
+				$(json.list).each(function(index,item){
+					let question = "<tr><td class='text-primary'><span class='badge badge-primary m-0 mr-2'>#</span>"+item.tagName+"</td>";
+						question += "<td>"+item.count+"</td></tr>";
+					$("#boardList").append(question);
+				})
+			}
+		})
 	})
 
+	//태그 다음 버튼 
+	$("#TagNextBtn").click(function(){
+		currentPage=1;
+		buttonHide();
+		$("#contentBoard").hide();
+		$("#boardList").empty();
+		$.ajax({
+			url :"/rest/userTagPaging",
+			method : "post",
+			data : {"currentPage" : currentPage+1,
+					"rowPerPage": rowPerPage,
+					"userId" : getParam("userId")},
+			success : function(json){
+				tagPaging()
+				console.log(json);
+				$(json.list).each(function(index,item){
+					let question = "<tr><td><span class='badge badge-primary m-0 mr-2'>#</span>"+item.tagName+"</td>";
+						question += "<td>"+item.count+"</td></tr>";
+					$("#boardList").append(question);
+				})
+			}
+		})
+	})
+	
+	//태그 이전 버튼 
+	$("#TagPrevBtn").click(function(){
+		currentPage=1;
+		buttonHide();
+		$("#contentBoard").hide();
+		$("#boardList").empty();
+		$.ajax({
+			url :"/rest/userTagPaging",
+			method : "post",
+			data : {"currentPage" : currentPage-1,
+					"rowPerPage": rowPerPage,
+					"userId" : getParam("userId")},
+			success : function(json){
+				tagPaging()
+				console.log(json);
+				$(json.list).each(function(index,item){
+					let question = "<tr><td><span class='badge badge-primary m-0 mr-2'>#</span>"+item.tagName+"</td>";
+						question += "<td>"+item.count+"</td></tr>";
+					$("#boardList").append(question);
+				})
+			}
+		})
+	})
 
 	//해당 유저 월별 질문 차트
 	var lineQuestionctx = document.getElementById("monthlyQuestionCountLineChart"); 

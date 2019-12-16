@@ -5,6 +5,12 @@
   
   
 <mapper namespace="com.example.codeblue.test.Lee.LeeMapper">
+	<!-- tagList객체 -->
+	<resultMap id="tagList" type="java.util.HashMap">
+      <result column="tag_name" property="tagName" javaType="java.lang.String" />
+      <result column="COUNT(*)" property="count"  javaType="java.lang.String" />
+   </resultMap>
+	
 	<!-- Answer 객체 -->
 	<resultMap type="com.example.codeblue.vo.Answer" id="Answer">
 		<result column="answer_id" property="answerId"></result>
@@ -56,10 +62,10 @@
 		<result column="answer_count" property="answerCount"></result>
 		<result column="vote_count" property="voteCount"></result>
 		<result column="comment_count" property="commentCount"></result>
+		<result column="question_tags" property="questionTags"></result>
 		
 		<association property="feild" resultMap="Feild"></association>
 		<association property="user" resultMap="User"></association>
-		<association property="tag" resultMap="Tag"></association>
 	</resultMap>
 	
 	<!-- Tag 객체 -->
@@ -228,7 +234,7 @@
 				u.user_id 
 		FROM answer a INNER JOIN user u INNER JOIN question_board qb
 		ON a.user_id = u.user_id AND a.question_id = qb.question_id
-		WHERE u.user_id =#{userId}
+		WHERE u.user_id = #{userId}
 		ORDER BY a.answer_datetime DESC
 		LIMIT #{beginRow}, #{rowPerPage}
 	</select>
@@ -271,4 +277,31 @@
 		)
 	</insert> 
 	
+	
+	<!--유저가 사용한 태그리스트 -->
+	 <select id="selectUserTagList" parameterType="String" resultMap="tagList">
+      SELECT t.tag_name, COUNT(*) 
+      FROM tag t INNER JOIN user u 
+      WHERE u.user_id = #{userId}
+      GROUP BY t.tag_name 
+      ORDER BY COUNT(*) desc 
+      limit 0, 6
+   </select>
+   
+   <!-- 유저가 사용한 태그 수 -->
+   <select id="selectUserTagTotalRow" resultType="int" parameterType="String">
+      SELECT COUNT(t.tag_name)AS count
+      FROM tag t INNER JOIN user u
+      WHERE u.user_id = #{userId}
+   </select>
+   
+   <!-- 유저가 사용한 태그리스트(페이징) -->
+   <select id="selectUserTagPaging" parameterType="com.example.codeblue.vo.Page" resultMap="tagList">
+      SELECT t.tag_name, COUNT(*) 
+      FROM tag t INNER JOIN user u 
+      WHERE u.user_id = #{userId}
+      GROUP BY t.tag_name 
+      ORDER BY COUNT(*) desc 
+      limit #{beginRow}, #{rowPerPage}
+   </select>
 </mapper>

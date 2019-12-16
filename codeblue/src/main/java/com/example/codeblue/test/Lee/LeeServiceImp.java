@@ -14,6 +14,7 @@ import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.QuestionComment;
 import com.example.codeblue.vo.QuestionVote;
+import com.example.codeblue.vo.Tag;
 import com.example.codeblue.vo.User;
 
 
@@ -216,8 +217,6 @@ public class LeeServiceImp implements LeeService{
 		System.out.println("userId"+userId);
 		return leeMapper.selectUserVote(userId);
 	}
-
-	//------------------------실행 x
 	
 	//유저 추천 중복검사 및 추천
 	@Override
@@ -230,6 +229,58 @@ public class LeeServiceImp implements LeeService{
 		return leeMapper.insertQuestionVote(questionVote);
 		}
 		return 0;
+	}	
+	
+	//유저가 사용한 태그 리스트
+	@Override
+	public List<Tag> getUserTagList(String userId) {
+		System.out.println(":::UserServiceImp - getUserTagList:::");
+		System.out.println("userId"+userId);
+		return leeMapper.selectUserTagList(userId);
+	}
+	
+	//유저가 사용한 태그 수
+	@Override
+	public int getUserTagCount(String userId) {
+		System.out.println(":::UserServiceImp - getUserTagCount:::");
+		System.out.println("userId"+userId);
+		return leeMapper.selectUserTagTotalRow(userId);
+	}
+	
+	//유저가 사용한 태그 페이징
+	@Override
+	public Map<String, Object> getUserTagPaging(int currentPage, int rowPerPage, String userId) {
+		System.out.println(":::UserServiceImp - getUserTagPaging:::");
+		System.out.println("currentPage : "+currentPage +"/rowPerPage :"+rowPerPage+"/userId:"+userId);
+		
+		int totalRow = leeMapper.selectUserTagTotalRow(userId);
+		System.out.println("totalRow"+totalRow);
+		
+		int beginRow = (currentPage-1)*rowPerPage;
+		Page page = new Page();
+		page.setBeginRow(beginRow);
+		page.setRowPerPage(rowPerPage);
+		page.setUserId(userId);
+		
+		int lastPage = totalRow/rowPerPage;
+		if(totalRow % rowPerPage !=0) {
+			lastPage = (totalRow/rowPerPage)+1;
+		}else {
+			lastPage = totalRow/rowPerPage;
+		}
+		
+		
+		List<Tag> list = leeMapper.selectUserTagPaging(page);
+		System.out.println(list.toString());
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", list);
+		map.put("rowPerPage", rowPerPage);
+		map.put("currentPage", currentPage);
+		map.put("userId", userId);
+		map.put("lastPage", lastPage);
+		map.put("beginRow", beginRow);
+		return map;
 	}
 		
 }

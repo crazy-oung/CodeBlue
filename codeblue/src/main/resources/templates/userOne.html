@@ -30,11 +30,11 @@
 	<!-- End of Topbar -->
 
 		<!-- Begin Page Content -->
-		<div class="container" height="100%">
-			<div class="row"> 
+		<div class="container">
+			<div class="row" style="height:100%"> 
 			
 				<!-- Side Bar -->
-				<div class="col-sm-1 p-0 " style="border-right: 1px solid #d9d9d9;" id="leftSideBar"></div>
+				<div class="col-sm-1 p-0" style="border-right: 1px solid #d9d9d9;" id="leftSideBar"></div>
 				<!-- Side Bar End -->
 				
 				<!-- Page Content -->
@@ -58,49 +58,50 @@
 							<div class="col-md-4" id="information"></div>
 						</div>
 					</div>
-					<hr>
-					<!-- 2/4 (tag)-->
-					<div class="col-sm-3">
+					<div class="row" >
+						<div class="col-md-2">
+							<hr>
+							<Label class="text-dark">Community</Label>
+						</div>
+						<div class="col-md-10">
+							<hr class="mb-2">
+							<div class="text-center">
+								<div><p class="text-dark text-left font-weight-bold NotoSans mb-0"><span class="text-lg">태그</span><small class="ml-1" id="tagCount"></small></p></div>
+								<div id="tag" class="row px-2 py-0" style="text-align: right;"></div>
+							</div>
+							<hr>
+							<div class="d-flex justify-content-between">
+								<div>
+									<label class="text-dark text-left font-weight-bold NotoSans mb-0 mt-1" id="count">내 게시글</label><label id="count" style="font-size: small;"></label>
+								</div>
+								<div>
+									 <div class="btn-group mb-2">
+								 		<button type="button" class="btn btn-outline-primary btn-sm" id="questionCommentBtn" >내 댓글</button>
+								 		<button type="button" class="btn btn-outline-primary btn-sm" id="questionAnswerBtn">내 답글</button> 
+								 		<button type="button" class="btn btn-outline-primary btn-sm" id="questionBoardBtn">내 질문</button> 		
+									 </div>
+								</div>
+
+							</div>
+							
+						 </div>
 					</div>
-					<div>
-						<div style="text-align: center">
-							<div><h3>태그</h3></div>
-							<div id="tag">태그 </div>
+					<div class="row">
+						<div class="col-md-2"></div>
+						<div class="col-md-10">
+							<table class="table table-hover">
+								<thead align="center" id="headlist">
+									
+								</thead>
+								<!-- 내 질문/답변/댓글 list 출력 -->
+								<tbody id="list"></tbody>
+							</table>
 						</div>
-					
-					<!-- 3/4 (list) -->
-					<hr>
-					
-						<div class="row" >
-							<div class="col-md-2">
-								<Label>Community</Label>
-							</div>
-							<div class="col-md-6">
-									<label style="text-align: left; font-size: medium;" id="count">내 게시글</label><label id="count" style="font-size: small;"></label>
-							 </div>
-							 <div class="col-md-4 btn-group mb-2">
-							 		<button type="button" class="btn btn-outline-primary btn-sm" id="questionCommentBtn" style="float: right;">내 댓글</button>
-							 		<button type="button" class="btn btn-outline-primary btn-sm" id="questionAnswerBtn" style="float: right;">내 답글</button> 
-							 		<button type="button" class="btn btn-outline-primary btn-sm" id="questionBoardBtn" style="float: right;">내 질문</button> 		
-							 </div>
-						</div>
-						<div class="row">
-							<div class="col-md-2"></div>
-							<div class="col-md-10">
-								<table class="table table-hover">
-									<thead align="center" id="headlist">
-										
-									</thead>
-									<!-- 내 질문/답변/댓글 list 출력 -->
-									<tbody id="list"></tbody>
-								</table>
-							</div>
-						</div>
-					<hr>			
-				</div>			
-			</div>
-		</div> 
-	</div>
+					</div>
+							
+			</div>			
+		</div>
+	</div> 
 	<!-- Footer -->
 	<div id="footer"></div>
 	<!-- End of Footer -->
@@ -134,6 +135,7 @@ $(document).ready(function() {
 	var currentPage  = 1;
 	var rowPerPage = 10;
 	
+	//프로필 출력
 	$.ajax({
 		url :"/rest/profile",
 		method : "post",
@@ -156,6 +158,33 @@ $(document).ready(function() {
 			});
 		}
 	});
+	
+	//태그 리스트 출력
+	$.ajax({
+		url : "/rest/userTagList",
+		method : "post",
+		data : {"userId": getParam("userId")},
+		success : function(json){
+			console.log(json);
+			let tagList;
+			$(json).each(function(index, item){
+				tagList = "<div class='p-2'>";
+				tagList += "<div class='p-1'><a href='#' class='btn btn-sm hov-p text-primary p-1'>#"+item.tagName+"</a> x ";
+				tagList += "<small class='text-dark text-right'>"+item.count+"</small></div></div>";
+				$("#tag").append(tagList);
+			})
+		}
+	})
+	
+	//사용한 태그 전체 수
+	$.ajax({
+		url : "/rest/userTagCount",
+		method : "post",
+		data :{"userId": getParam("userId")},
+		success : function(json){
+			$("#tagCount").append(json);
+		}
+	})
 	
 	//클릭하지 않아도 기본적으로 내 질문 리스트 출력.
 	$.ajax({
@@ -272,7 +301,8 @@ $(document).ready(function() {
 		} 
 	
 	})
-		
+	
+	//active 버튼 클릭시
 	$("#active").click(function(){
 		$.ajax({
 			url : "/userOneActive",
