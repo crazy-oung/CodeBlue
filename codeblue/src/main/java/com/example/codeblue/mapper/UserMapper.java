@@ -34,6 +34,9 @@ public interface UserMapper {
 	// 관리자 로그인
 	public Manager selectManagerId(User user);
 	
+	//유저 이름, 비밀번호 변경
+	public void updateUserProfile(User user);
+	
 	//회원가입
 	public int insertUser(User user);
 	

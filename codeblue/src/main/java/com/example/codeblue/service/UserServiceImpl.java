@@ -403,4 +403,12 @@ public class UserServiceImpl implements UserService{
 		System.out.println("return.");		
 		return total;
 	}
+	
+	@Override
+	public void modifyUserProfile(User user) {
+		System.out.println("::: UserServiceImpl - modifyUserProfile :::");
+		userMapper.updateUserProfile(user);
+
+	}
+	
 }

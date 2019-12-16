@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+
+<head> 
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>유저 상세정보 - 코드블루</title>
+<!-- import JQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
+
+<!-- Custom fonts for this template-->
+<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+<!-- Custom styles for this template-->
+<link href="css/sb-admin-2.min.css" rel="stylesheet">
+<!-- Custom styles for codeBlue -->
+<link href="css/codeBlue.css" rel="stylesheet">
+</head>
+
+<body id="page-top">
+ 
+	<!-- Topbar -->
+	<div id="topBar"></div>
+	<!-- End of Topbar -->
+
+		<!-- Begin Page Content -->
+		<div class="container" height="100%">
+			<div class="row"> 
+			
+				<!-- Side Bar -->
+				<div class="col-sm-1 p-0 " style="border-right: 1px solid #d9d9d9;" id="leftSideBar"></div>
+				<!-- Side Bar End -->
+				
+				<!-- Page Content -->
+				<div class="col-sm-11">
+					
+					<!-- Page Heading -->
+					<div class="mb-4" style="margin-top: 80px">
+						<ul class="nav nav-tabs">
+ 							<li class="nav-item" id="linkToProfile"></li>
+						    <li class="nav-item" id="linkToActivity"></li>
+						</ul>		
+					</div><!-- page Heading End -->
+
+					<!-- 1/4 (user)-->
+					<div>
+						<div class="row text-dark">
+							<div class="col-md-2 text-center" id="img">
+								<img src="/img/profile.svg" width="100px">
+							</div>
+							<div class="col-md-6 py-3" id="introduce"></div>
+							<div class="col-md-4" id="information"></div>
+						</div>
+					</div>
+					<hr>
+					<!-- 2/4 (tag)-->
+					<div class="col-sm-3">
+					</div>
+					<div>
+						<div style="text-align: center">
+							<div><h3>회원 정보</h3></div>
+							<div id="tag"> 회원정보 수정 </div>
+						</div>
+					
+					<!-- 3/4 (form) -->
+					<hr>
+					
+						<div class="card shadow pt-2 px-2 mx-5"> 
+					<form class="was-validated card-body">
+					 <input type="text" class="form-control form-control-sm" id="userId" readonly> 
+					  <div class="form-group">
+					    <label class="text-dark font-weight-bold" for="name">유저 이름</label>
+					    <input type="text" class="form-control form-control-sm" id="name" placeholder="유저 이름" required>
+					    <div class="valid-feedback">좋아요.</div>
+					    <div class="invalid-feedback">유저 이름을입력해주세요.</div>
+					  </div>
+					  <div class="form-group">
+					    <label class="text-dark font-weight-bold" for="pw">비밀번호</label>
+					    <input type="password" class="form-control form-control-sm" id="pw" placeholder="비밀번호" required>
+					    <div class="valid-feedback">좋아요.</div>
+					    <div class="invalid-feedback">비밀번호를 입력해주세요.</div>
+					  </div>
+					  <div class="form-group">
+					    <label class="text-dark font-weight-bold" for="pw2">비밀번호 확인</label>
+					    <input type="password" class="form-control form-control-sm" id="pw2" placeholder="비밀번호 확인" required>
+					    <div class="valid-feedback">좋아요.</div>
+					    <div class="invalid-feedback">비밀번호를 한번 더 입력해주세요.</div>
+					  </div> 
+					 <button type="button" id="change" class="btn btn-block btn-outline-primary">회원정보 수정</button>
+				  	</form>
+				</div>
+					<hr>			
+				</div>			
+			</div>
+		</div> 
+	</div>
+	<!-- Footer -->
+	<div id="footer"></div>
+	<!-- End of Footer -->
+
+
+	<!-- Bootstrap core JavaScript-->
+	<script src="vendor/jquery/jquery.min.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+	<!-- Core plugin JavaScript-->
+	<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+	<!-- Custom scripts for all pages-->
+	<script src="js/sb-admin-2.min.js"></script>
+
+	<!-- Page level plugins -->
+	<script src="vendor/chart.js/Chart.min.js"></script>
+  	<!-- CodeBlue scripts -->
+  	<script src="js/codeBlueUser.js"></script>
+	
+</body>
+<script type="text/javascript">
+
+$("#linkToProfile").append('<a class="nav-link active hov-p" href="/userOne?userId='+getParam("userId")+'">프로필</a>');
+$("#linkToActivity").append('<a class="nav-link  hov-p" href="/userOneActive?userId='+getParam("userId")+'">활동</a>');
+console.log(getParam("userId"));
+$("#userId").val(getParam("userId"));
+
+$(document).ready(function() {
+	$("#change").click(function(){
+		if($("#pw").val() == "" || $("#name").val() == "" || $("#pw2").val() == ""){
+			alert("공백은 사용할 수 없습니다.")
+			return;
+		}else{
+			if($("#pw").val() == $("#pw2").val()){
+				alert("회원정보가 수정되었습니다.");
+				console.log("변경 완료  !");
+			}else{
+				alert("비밀번호가 일치하지 않습니다.");
+				console.log("변경실패 ! ");
+				return;
+			}
+	}
+		$.ajax({
+			url:"/rest/profileModify",
+			method:"post",
+			data:{"userPw":$("#pw").val(), "userName":$("#name").val(), "userId" : $("#userId").val()},
+			success:function(){
+				console.log("성공")
+				window.location.href = "/today";
+				//window.history.back(); 뒤로가기
+			}	
+		})
+	});	
+	
+	$.ajax({
+		url :"/rest/profile",
+		method : "post",
+		data : {"userId" : getParam("userId")},
+		success : function(json){
+			console.log(json);
+		
+			$(json).each(function(index, item){
+			
+			let	introduce = "<h1 class=' h2 font-weight-bold mb-1'>"+item.userName+"</h1>";
+				introduce += "<div>"+item.userId+"</div>";
+				$("#introduce").append(introduce);
+			
+			let information = "<div>🚩"+item.region.regionName+"</div>";
+				information += "<div>💓"+item.userBirthdate+"</div>";
+				information += "<div>⏱"+item.userCreatetime+"</div>";
+				information += "<div>🏆"+item.rank.rankName+"</div>";
+				$("#information").append(information);
+				
+			});
+		}
+	});
+		
+	$("#active").click(function(){
+		$.ajax({
+			url : "/userOneActive",
+			method : "get",
+			data :  {"userId" : getParam("userId")},
+			success :function(){
+				console.log("성공");
+			}
+		})
+	})
+	
+	//해당 유저 질문 추천 받은 수 
+	$.ajax({
+		url : "/rest/userVote",
+		method : "post",
+		data : {"userId" : getParam("userId")},
+		success : function(json){
+			console.log("vote"+json);
+			$("#introduce").append("<h1 class='h6 mt-3'>받은 추천👍"+json+"</h1>");
+		}
+	})
+	
+});
+</script>
+</html>

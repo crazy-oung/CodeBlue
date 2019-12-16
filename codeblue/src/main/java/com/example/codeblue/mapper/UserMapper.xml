@@ -467,6 +467,15 @@
 		    (SELECT faq_id FROM faq_board WHERE faq_id &gt; #{faqId} ORDER BY faq_id LIMIT 1)
 			 );
 	</select>
+	<!-- 유저 이름, 비밀번호 변경 -->
+	<update id="updateUserProfile"
+			parameterType="com.example.codeblue.vo.User">
+		Update user
+		SET user_name = #{userName},
+			user_pw = #{userPw}
+		WHERE user_id = #{userId}	
+	</update>
+	
 </mapper>
 
 

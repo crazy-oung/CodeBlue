@@ -42,6 +42,9 @@ public interface UserService {
 	public String resetPassword(User user);
 	public int modifyUserPw(User user);
 	
+	//유저 이름, 비밀번호 변경
+	public void modifyUserProfile(User user);
+	
 	// 질문 상세페이지 답변 추가
 	public int addAnswer(Answer answer);
 	// 질문 답변 리스트 가져오기

@@ -141,4 +141,11 @@ public class UserController {
 			System.out.println("::: get - getFaqOne :::");
 			return "/faqOne";
 		}
+	//유저 비번, 이름 변경
+	@GetMapping("/profileModify")
+	public String modifyUserProfile() {
+		System.out.println("Get modifyUserProfile:::");
+		return "profileModify";
+	}
+		
 }	
