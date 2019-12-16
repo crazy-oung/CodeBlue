@@ -154,11 +154,18 @@ public class UserController {
 			System.out.println("::: get - getFaqOne :::");
 			return "/faqOne";
 		}
+	// 문의내역 조회
+	@GetMapping("/inquiryBoard")
+	public String getInquiryBoard(HttpSession session) {
+		System.out.println("::: get - inquiryBoard :::");
+		return "/inquiryBoard";
+	}
 	//유저 비번, 이름 변경
 	@GetMapping("/profileModify")
 	public String modifyUserProfile() {
 		System.out.println("Get modifyUserProfile:::");
 		return "profileModify";
 	}
+	//
 		
 }	

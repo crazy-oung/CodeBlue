@@ -1,7 +1,11 @@
 package com.example.codeblue.test.hyol;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import com.example.codeblue.vo.User;
 @Controller
 public class HyolController {
 	
@@ -42,5 +46,17 @@ public class HyolController {
 	public String getFaqOne() {
 		System.out.println("::: get - getFaqOneTest :::");
 		return "/faqOneTest";
+	}
+	// 문의내역 조회
+	@GetMapping("/getInquiryBoardTest")
+	public String getInquiryBoard(HttpSession session) {
+		System.out.println("::: get - getInquiryBoardTest :::");
+		return "/inquiryBoard";
+	}
+	// 문의하기
+	@GetMapping("/addInquiryHistoryTest")
+	public String addInquiryHistory() {
+		System.out.println("::: get - addInquiryHistoryTest :::");
+		return "/addInquiry";
 	}
 }

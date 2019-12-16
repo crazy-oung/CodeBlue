@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.print.DocFlavor.STRING;
 
 import com.example.codeblue.vo.FaqBoard;
+import com.example.codeblue.vo.Inquiry;
 import com.example.codeblue.vo.ServiceCategory;
 
 public interface HyolService {
@@ -29,4 +30,8 @@ public interface HyolService {
 	public Map<String,Object> getFaqList(int currentPage, int rowPerPage, String searchCategory);
 	// faqone 출력 (이전글,다음글까지 출력)
 	public List<FaqBoard> getFaqOne(int faqId);
+	// inquiry 출력
+	public List<Inquiry> getInquiryList();
+	// inquiry 히스토리출력(자신이 올린 글만)
+	public Map<String,Object> getInquiryHistoryBoard(int currentPage, int rowPerPage, String loginUserId, String searchCategory);
 }

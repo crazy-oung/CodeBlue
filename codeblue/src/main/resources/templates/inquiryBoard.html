@@ -41,28 +41,32 @@
 				
 					<!-- Page Heading -->
 					<div class="d-sm-flex align-items-center justify-content-between mb-2 mt-5 pt-5">
-						<h2 class="text-gray-800 font-weight-bold mx-3 mt-2">FAQ </h2>
+						<h2 class="text-gray-800 font-weight-bold mx-3 mt-2">문의내역 </h2>
 					</div><!-- page Heading End -->
 					<div class="card bg-gray-100 my-3 p-2">
-						<ul class="nav" id="serviceCategory"></ul>
+						<ul class="nav" id="inquiryCategory"></ul>
 					</div>
 					<div class="d-flex justify-content-between">
 						<div id="totalRow"></div>
-						<div class="text-right"><a class="font-weight-bold" href="/faq">전체보기</a></div>
+						<div class="text-right"><a class="font-weight-bold" href="inquiryBoard">전체보기</a></div>
 					</div>
 					<table class="table table-hover">
-						<thead class="text-center">
+						<thead>
 							<tr>
+								<th>문의유형</th>
 								<th>제목</th>
-								<th>날짜</th>
+								<th>문의일시</th>
+								<th>답변여부</th>
 							</tr>
 						</thead>
-						<tbody id="faqList"></tbody>
+						<tbody id="inquiryInfo">
+						</tbody>
 					</table>
 					<p>
 					<button type="button" id="prevBtnd" class="btn ml-1 btn-sm btn-primary">이전</button>
 					<span id="pageInfo"></span>
 					<button type="button" id="nextBtnd" class="btn ml-1 btn-sm btn-primary">다음</button>
+					<a href="/addInquiryHistoryTest">문의하기</a>
 					</p>
 				</div>
 				<!-- Page Content End -->
@@ -116,42 +120,44 @@
 
 </body>
 <script>
-	// 서비스 카테고리
+	// ------------------------------------------------------문의 카테고리---------------------------------------------------
+	// 문의 카테고리
 	$.ajax({
-		url : "/rest/getServiceCategoryList",
+		url : "/rest/getInquiry",
 		method : "get",
 		success : function(json){
 			console.log(json);
 			$(json).each(function(index, item){
 				html = " <li class='nav-item'><a class='p-1 mr-1 hov-p text-primary btn";
-				html += "' href='/faq?serviceCategoryId="+item.serviceCategoryId+"'>"+
-				item.serviceCategoryName +
+				html += "' href='/inquiryBoard?inquiryId="+item.inquiryId+"'>"+
+				item.inquiryName +
 				"</a></li>";
-				$("#serviceCategory").append(html);
+				$("#inquiryCategory").append(html);
 			});
 		}
 	});
 	//분야 선택
 	// mapper에서 Page클래스의 searchCategory에 넣어 줄것이기 때문에 restController에서 리퀘스트로 받을 때 이름을 바꾼다
-	var serviceCategoryId = undefined;
-	if(getParam("serviceCategoryId")!= null){
-		serviceCategoryId = getParam("serviceCategoryId");
+	var inquiryId = undefined;
+	if(getParam("inquiryId")!= null){
+		inquiryId = getParam("inquiryId");
 	}
-	console.log("serviceCategoryId: ",serviceCategoryId);
+	console.log("inquiryId: ",inquiryId);
 	
-	// -----------------------------------------------------------테이블-------------------------------------------------------
-	// 페이징
+	// ------------------------------------------------------문의 카테고리 end---------------------------------------------------
+	// -------------------------------------------------------본문-------------------------------------------------------
+	//페이징
 	var currentPage = 1;
 	var lastPage = 0;
 	// 기본 홈
 	$.ajax({
-		url : "/rest/getFaqList",
+		url : "/rest/getInquiryBoard",
 		method : "post",
 		data : {"currentPage" : currentPage,
-				"serviceCategoryId" : serviceCategoryId},
+				"inquiryId" : inquiryId},
 		success : function(json){
 			console.log(json);
-			$("#faqList").empty();
+			$("#inquiryInfo").empty();
 			subInfo(json);
 			BtnShow(currentPage,lastPage);
 			$(json.list).each(function(index,item){
@@ -162,14 +168,14 @@
 	// 이전 버튼
 	$("#prevBtnd").click(function(){
 		$.ajax({
-			url : "/rest/getFaqList",
+			url : "/rest/getInquiryBoard",
 			method : "post",
 			data : {"currentPage" : currentPage-1,
-					"serviceCategoryId" : serviceCategoryId},
+					"inquiryId" : inquiryId},
 			success : function(json){
 				console.log(json);
+				$("#inquiryInfo").empty();
 				subInfo(json);
-				$("#faqList").empty();
 				BtnShow(currentPage,lastPage);
 				$(json.list).each(function(index,item){
 					append(index,item);
@@ -180,14 +186,14 @@
 	// 다음 버튼
 	$("#nextBtnd").click(function(){
 		$.ajax({
-			url : "/rest/getFaqList",
+			url : "/rest/getInquiryBoard",
 			method : "post",
 			data : {"currentPage" : currentPage+1,
-					"serviceCategoryId" : serviceCategoryId},
+					"inquiryId" : inquiryId},
 			success : function(json){
 				console.log(json);
+				$("#inquiryInfo").empty();
 				subInfo(json);
-				$("#faqList").empty();
 				BtnShow(currentPage,lastPage);
 				$(json.list).each(function(index,item){
 					append(index,item);
@@ -195,14 +201,15 @@
 			}
 		});
 	});
-	
 	// 출력 함수
 	function append(index,item){
 		html = "<tr>";
-		html += "<td class='px-3'><a class='nav-link p-0' href='/faqOne?faqId="+item.faqId+"'>"+item.faqTitle+"</a></td>";
-		html += "<td class='text-center'>"+item.faqDatetime+"</td>";
+		html += "<td>"+item.inquiry.inquiryName+"</td>";
+		html += "<td><a href=''>"+item.inquiryTitle+"</a></td>";
+		html += "<td>"+item.inquiryDatetime+"</td>";
+		html += "<td>"+item.inquiryAnswer+"</td>";
 		html += "</tr>";
-		$("#faqList").append(html);
+		$("#inquiryInfo").append(html);
 	}
 	// 현재,총페이지,총행 함수
 	function subInfo(json){
@@ -210,8 +217,8 @@
 		$("#pageInfo").empty();
 		currentPage = json.currentPage;
 		lastPage = json.lastPage;
-		if(json.serviceCategoryId != null){
-			serviceCategoryId = json.serviceCategoryId;	
+		if(json.inquiryId != null){
+			inquiryId = json.inquiryId;	
 		}
 		$("#totalRow").append("총 "+json.totalRow+"건");
 		$("#pageInfo").append(currentPage+"/"+lastPage);
@@ -229,5 +236,10 @@
 			$("#nextBtnd").hide();
 		}
 	}
+	// -------------------------------------------------------본문 end-------------------------------------------------------
+	// 문의하기 버튼 클릭
+	$("#inquiryBtn").click(function(){
+		
+	});
 </script>
 </html>
