@@ -36,7 +36,6 @@ console.log("관리자");
 	+ '            <a class="collapse-item" href="/adminAnswer">답변 조회</a>'
 	+ '            <a class="collapse-item" href="/adminQuestionComment">질문 댓글</a>'
 	+ '            <a class="collapse-item" href="/adminAnswerComment">답변 댓글</a>'
-	+ '            <a class="collapse-item" href="/adminVoteBoard">추천수 조회</a>'
 	+ '          </div>'
 	+ '        </div>'
 	+ '      </li>'

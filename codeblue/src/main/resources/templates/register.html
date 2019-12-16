@@ -143,125 +143,141 @@ function checkUserId(){
 				$('#id').prop('readonly', true); 
 				$("#checkedId").empty();
 				$("#checkedId").append("이메일 결정 완료! ☺")
+				$('#join').prop('disabled', false); 
 			}
 		}
 	})
 }
 
-		$.ajax({
-			url : "/rest/getRegionList",
-			method : "get",
-			success : function(json){
-				console.log(json);
-				let region;
-				$(json).each(function(index,item){
-					region = "<option value='";
-					region += item.regionId;
-					region += "'>";
-					region += item.regionName;
-					region += "</option>";
-					$("#region").append(region);
-				})
-			}
-		})
+$(document).ready(function(){
+	$('#join').prop('disabled', true); 
+	$.ajax({
+		url : "/rest/getRegionList",
+		method : "get",
+		success : function(json){
+			console.log(json);
+			let region;
+			$(json).each(function(index,item){
+				region = "<option value='";
+				region += item.regionId;
+				region += "'>";
+				region += item.regionName;
+				region += "</option>";
+				$("#region").append(region);
+			})
+		}
+	})
+})
+		
 		
 
-		$(".join").click(function(){
-			console.log("입력완료 메일전송 시작.");
-			if($("#id").val()=="" || $("#name").val()=="" || $("#pw").val()==""){
-				alert("빈칸을 채워주세요!");
-				return;
-			} 
+$(".join").click(function(){
+	console.log("입력완료 메일전송 시작.");
+	if($("#pw").val() != $("#pw2").val()){
+		alert("입력하신 비밀번호가 틀립니다. 확인해 주세요");				
+		return;
+	}
+	if($("#id").val()=="" || $("#name").val()=="" || $("#pw").val()==""){
+		alert("빈칸을 채워주세요!");
+		return;
+	} 
+	
+	$(".join").empty();
+	$(".join").append('<span class="spinner-border spinner-border-sm"></span>');
+	console.log("입력완료 메일전송 시작.");
+	
+	$.ajax({
+		url:"/rest/sendEmailToConfirm",
+		data:{ "userId" : $("#id").val() , "userName" : $("#name").val() },
+		method:"post", 
+		success:function(){
+			console.log("메일 전송 완료!")
+			$("#notice").fadeIn(300); 
+			setTimeout(function() {
+				$("#codeForm").slideDown(500); 
+			}, 300);
 			
-			$.ajax({
-				url:"/rest/sendEmailToConfirm",
-				data:{ "userId" : $("#id").val() , "userName" : $("#name").val() },
-				method:"post", 
-				success:function(){
-					console.log("메일 전송 완료!")
-					$("#notice").fadeIn(300); 
-					setTimeout(function() {
-						$("#codeForm").slideDown(500); 
-					}, 300);
-					
-					$('#id').prop('readonly', true); 
-					$("#name").prop('readonly', true); 
-					$("#pw").prop('readonly', true);  
-					$(".join").prop('disabled', true);  
-					
-					console.log($('#id').val());
-					console.log($('#name').val()); 
-				}
-
-			})
-			 
-		})
-		
-		$("#resend").click(function(){
-			console.log("입력완료 메일전송 시작.");
+			$(".join").empty();
+			$(".join").append('메일 전송 완료!');
 			
-			$.ajax({
-				url:"/rest/sendEmailToConfirm",
-				data:{ "userId" : $("#id").val() , "userName" : $("#name").val() },
-				method:"post", 
-				success:function(){
-					console.log("메일 전송 완료!")
-					$("#notice").fadeIn(300); 
-					setTimeout(function() {
-						$("#codeForm").slideDown(500); 
-					}, 300);
-					
-					$('#id').prop('readonly', true); 
-					$("#name").prop('readonly', true); 
-					$("#pw").prop('readonly', true);  
-					$(".join").prop('disabled', true);  
-					
-					console.log($('#id').val());
-					console.log($('#name').val()); 
-				}
+			$('#id').prop('readonly', true); 
+			$("#name").prop('readonly', true); 
+			$("#pw").prop('readonly', true);  
+			$(".join").prop('disabled', true);  
+			
+			console.log($('#id').val());
+			console.log($('#name').val()); 
+		}
 
-			})
-			 
-		})
-		 
-		$("#confirmCode").click(function(){
-			console.log("코드 검사");
-		 	$.ajax({
-		 		url:"/rest/verifyCode",
-				data:{ 	"userId" : $("#id").val() , 
-						"userName" : $("#name").val(),
-						"userPw" : $("#pw").val(), 
-						"code" : $("#code").val(),
-						"userBirthdate" : $("#birthDate").val(),
-						"region.regionId" : $("#region").val() 
-						},
-				method:"post", 
-				async : "true",
-				success:function(json){
-					console.log(json);
-					if(json == false){
-						alert("코드가 틀렸습니다! 다시 시도하여 주세요. :( ")
-						return;
-					}
-					$("#code").prop("disabled", true);
-					$("#confirmCode").prop("disabled", true);
-					$('#resend').css("display", "none");  
-					
-					$("#joinComplete").fadeIn(300);
-					setTimeout(function() {
-						$("#ok").append("회원이 되신 것을<br>환영합니다 🎆!");
-						$("#toLogin").append("로그인 하러 가볼까요?");
-					}, 300);	
-					
-					alert("회원가입 완료! 환영합니다~!")
-					location.replace("/login");	
-					
+	})
+	 
+})
+
+$("#resend").click(function(){
+	console.log("입력완료 메일전송 시작.");
+	
+	$.ajax({
+		url:"/rest/sendEmailToConfirm",
+		data:{ "userId" : $("#id").val() , "userName" : $("#name").val() },
+		method:"post", 
+		success:function(){
+			console.log("메일 전송 완료!")
+			$("#notice").fadeIn(300); 
+			setTimeout(function() {
+				$("#codeForm").slideDown(500); 
+			}, 300);
+			
+			$('#id').prop('readonly', true); 
+			$("#name").prop('readonly', true); 
+			$("#pw").prop('readonly', true);  
+			$(".join").prop('disabled', true);  
+			
+			console.log($('#id').val());
+			console.log($('#name').val()); 
+		}
+
+	})
+	 
+})
+ 
+$("#confirmCode").click(function(){
+	console.log("코드 검사");
+ 	$.ajax({
+ 		url:"/rest/verifyCode",
+		data:{ 	"userId" : $("#id").val() , 
+				"userName" : $("#name").val(),
+				"userPw" : $("#pw").val(), 
+				"code" : $("#code").val(),
+				"userBirthdate" : $("#birthDate").val(),
+				"region.regionId" : $("#region").val() 
 				},
-				fail:function(){
-					alert("알 수 없는 에러갑 발생 했습니다! 다시 시도하여 주세요 😥");
-				}
-			})
+		method:"post", 
+		async : "true",
+		success:function(json){
+			console.log(json);
+			if(json == false){
+				alert("코드가 틀렸습니다! 다시 시도하여 주세요. :( ")
+				return;
+			}
+			$("#code").prop("disabled", true);
+			$("#confirmCode").prop("disabled", true);
+			$('#resend').css("display", "none");  
+			
+			$("#joinComplete").fadeIn(300);
+			setTimeout(function() {
+				$("#ok").append("회원이 되신 것을<br>환영합니다 🎆!");
+				$("#toLogin").append("로그인 하러 가볼까요?");
+			}, 300);	
+			
+			alert("회원가입 완료! 환영합니다~!")
+			location.replace("/login");	
+			
+		},
+		fail:function(){
+			alert("알 수 없는 에러갑 발생 했습니다! 다시 시도하여 주세요 😥");
+		}
+	})
 
-		})  
+})  
 </script>
 </html>

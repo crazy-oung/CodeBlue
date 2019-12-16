@@ -160,158 +160,166 @@ function checkUserId(){
 				$('#id').prop('readonly', true); 
 				$("#checkedId").empty();
 				$("#checkedId").append("이메일 결정 완료! ☺")
+				$('#join').prop('disabled', false); 
 			}
 		}
 	})
 }
 
-		$.ajax({
-			url : "/rest/getFeildList",
-			method : "get",
-			success : function(json){
-				console.log(json);
-				let feild;
-				$(json).each(function(index, item){
-					feild = "<option value='";
-					feild += item.feildId;
-					feild += "'>";
-					feild += item.feildName;
-					feild += "</option>";
-					$("#feild").append(feild);
-				})
-			}
-		})
+$(document).ready(function(){
+	$('#join').prop('disabled', true); 
+	$.ajax({
+		url : "/rest/getFeildList",
+		method : "get",
+		success : function(json){
+			console.log(json);
+			let feild;
+			$(json).each(function(index, item){
+				feild = "<option value='";
+				feild += item.feildId;
+				feild += "'>";
+				feild += item.feildName;
+				feild += "</option>";
+				$("#feild").append(feild);
+			})
+		}
+	})
+	$.ajax({
+		url : "/rest/getRegionList",
+		method : "get",
+		success : function(json){
+			console.log(json);
+			let region;
+			$(json).each(function(index,item){
+				region = "<option value='";
+				region += item.regionId;
+				region += "'>";
+				region += item.regionName;
+				region += "</option>";
+				$("#region").append(region);
+			})
+		}
+	})
+})
 
-		$.ajax({
-			url : "/rest/getRegionList",
-			method : "get",
-			success : function(json){
-				console.log(json);
-				let region;
-				$(json).each(function(index,item){
-					region = "<option value='";
-					region += item.regionId;
-					region += "'>";
-					region += item.regionName;
-					region += "</option>";
-					$("#region").append(region);
-				})
-			}
-		})
+$(".join").click(function(){
+	if($("#pw").val() != $("#pw2").val()){
+		alert("입력하신 비밀번호가 틀립니다. 확인해 주세요");				
+		return;
+	}
+		
+	if($("#id").val()=="" || $("#name").val()=="" || $("#pw").val()==""){
+		alert("빈칸을 채워주세요!");
+		return;
+	} 
+	$(".join").empty();
+	$(".join").append('<span class="spinner-border spinner-border-sm"></span>');
+	console.log("입력완료 메일전송 시작.");
+	
+	$.ajax({
+		url:"/rest/sendEmailToConfirm",
+		data:{ "userId" : $("#id").val() , "userName" : $("#name").val() },
+		method:"post", 
+		success:function(){
+			console.log("메일 전송 완료!")
+			$("#notice").fadeIn(300); 
+			setTimeout(function() {
+				$("#codeForm").slideDown(500); 
+			}, 300);
+			
+			$(".join").empty();
+			$(".join").append('메일 전송 완료!');
+			
+			$('#id').prop('readonly', true); 
+			$("#name").prop('readonly', true); 
+			$("#pw").prop('readonly', true);
+			$("#pw2").prop("readonly", true);
+			$("#feild").not(":selected").attr("disabled", true);
+			$("#license").prop("readonly", true);
+			$("#licenseIssueDate").prop("readonly", true);
+			$("#birthDate").prop("readonly", true);
+			$("#region").not(":selected").attr("disabled", true);
+			
+			$(".join").prop('disabled', true);  
+			
+			console.log($('#id').val());
+			console.log($('#name').val()); 
+		}
 
-		$(".join").click(function(){
-			if($("#pw").val() != $("#pw2").val()){
-				alert("입력하신 비밀번호가 틀립니다. 확인해 주세요");				
+	})
+	 
+})
+
+$("#resend").click(function(){
+	console.log("입력완료 메일전송 시작.");
+	
+	$.ajax({
+		url:"/rest/sendEmailToConfirm",
+		data:{ "userId" : $("#id").val() , "userName" : $("#name").val() },
+		method:"post", 
+		success:function(){
+			console.log("메일 전송 완료!")
+			$("#notice").fadeIn(300); 
+			setTimeout(function() {
+				$("#codeForm").slideDown(500); 
+			}, 300); 
+			
+			console.log($('#id').val());
+			console.log($('#name').val()); 
+		}
+
+	})
+	 
+})
+ 
+$("#confirmCode").click(function(){
+	console.log("코드 검사");
+ 	$.ajax({
+ 		url:"/rest/verifyCode",
+		data:{ 	"userId" : $("#id").val() , 
+				"userName" : $("#name").val(),
+				"userPw" : $("#pw").val(),
+				"code" : $("#code").val(),
+				"userBirthdate" : $("#birthDate").val(),
+				"region.regionId" : $("#region").val()
+				},
+		method:"post", 
+		success:function(json){
+			console.log(json);
+			if(json == false){
+				alert("코드가 틀렸습니다! 다시 시도하여 주세요. :( ")
 				return;
 			}
-				
-			console.log("입력완료 메일전송 시작.");
-			if($("#id").val()=="" || $("#name").val()=="" || $("#pw").val()==""){
-				alert("빈칸을 채워주세요!");
-				return;
-			} 
+			$("#code").prop("disabled", true);
+			$("#confirmCode").prop("disabled", true); 
+			$('#resend').css("display", "none");  
 			
+			// 전문가 추가
 			$.ajax({
-				url:"/rest/sendEmailToConfirm",
-				data:{ "userId" : $("#id").val() , "userName" : $("#name").val() },
-				method:"post", 
-				success:function(){
-					console.log("메일 전송 완료!")
-					$("#notice").fadeIn(300); 
-					setTimeout(function() {
-						$("#codeForm").slideDown(500); 
-					}, 300);
-					
-					$('#id').prop('readonly', true); 
-					$("#name").prop('readonly', true); 
-					$("#pw").prop('readonly', true);
-					$("#pw2").prop("readonly", true);
-					$("#feild").not(":selected").attr("disabled", true);
-					$("#license").prop("readonly", true);
-					$("#licenseIssueDate").prop("readonly", true);
-					$("#birthDate").prop("readonly", true);
-					$("#region").not(":selected").attr("disabled", true);
-					
-					$(".join").prop('disabled', true);  
-					
-					console.log($('#id').val());
-					console.log($('#name').val()); 
-				}
-
-			})
-			 
-		})
-		$("#resend").click(function(){
-			console.log("입력완료 메일전송 시작.");
-			
-			$.ajax({
-				url:"/rest/sendEmailToConfirm",
-				data:{ "userId" : $("#id").val() , "userName" : $("#name").val() },
-				method:"post", 
-				success:function(){
-					console.log("메일 전송 완료!")
-					$("#notice").fadeIn(300); 
-					setTimeout(function() {
-						$("#codeForm").slideDown(500); 
-					}, 300); 
-					
-					console.log($('#id').val());
-					console.log($('#name').val()); 
-				}
-
-			})
-			 
-		})
-		 
-		$("#confirmCode").click(function(){
-			console.log("코드 검사");
-		 	$.ajax({
-		 		url:"/rest/verifyCode",
-				data:{ 	"userId" : $("#id").val() , 
-						"userName" : $("#name").val(),
-						"userPw" : $("#pw").val(),
-						"code" : $("#code").val(),
-						"userBirthdate" : $("#birthDate").val(),
-						"region.regionId" : $("#region").val()
+		 		url:"/rest/addExpert",
+				data:{ 	"feildId" : $("#feild").val() , 
+						"expertLicenseNo" : $("#license").val(),
+						"expertLicenseIssueDate" : $("#licenseIssueDate").val(),
+						"userId" : $("#id").val()
 						},
 				method:"post", 
-				success:function(json){
-					console.log(json);
-					if(json == false){
-						alert("코드가 틀렸습니다! 다시 시도하여 주세요. :( ")
-						return;
-					}
-					$("#code").prop("disabled", true);
-					$("#confirmCode").prop("disabled", true); 
-					$('#resend').css("display", "none");  
-					
-					// 전문가 추가
-					$.ajax({
-				 		url:"/rest/addExpert",
-						data:{ 	"feildId" : $("#feild").val() , 
-								"expertLicenseNo" : $("#license").val(),
-								"expertLicenseIssueDate" : $("#licenseIssueDate").val(),
-								"userId" : $("#id").val()
-								},
-						method:"post", 
-						async : "true",
-						success:function(){   
-							alert("전문가 등록 완료! 감사합니다! 환영합니다~")
-							location.replace("/login");	
-						},
-						fail:function(){
-							alert("알 수 없는 에러가 발생 했습니다! 다시 시도하여 주세요 😥");
-						}
-					})					
-					
+				async : "true",
+				success:function(){   
+					alert("전문가 등록 완료! 감사합니다! 환영합니다~")
+					location.replace("/login");	
 				},
 				fail:function(){
-					alert("알 수 없는 에러갑 발생 했습니다! 다시 시도하여 주세요 😥");
+					alert("알 수 없는 에러가 발생 했습니다! 다시 시도하여 주세요 😥");
 				}
-			})
+			})					
 			
-			
-
-		})  
+		},
+		fail:function(){
+			alert("알 수 없는 에러갑 발생 했습니다! 다시 시도하여 주세요 😥");
+		}
+	})
+})  
+		
+		
 </script>
 </html>
