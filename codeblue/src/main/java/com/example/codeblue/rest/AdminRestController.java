@@ -24,13 +24,28 @@ import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.QuestionCount;
+import com.example.codeblue.vo.Report;
 import com.example.codeblue.vo.ReportHistory;
 import com.example.codeblue.vo.ServiceCategory;
 
 @RestController
 public class AdminRestController {
 	@Autowired private AdminService adminService;
+	//Report 카테고리 가져오기
+	@GetMapping("/rest/admin/getReportList")
+	public List<Report> getReportList(){
+		System.out.println("::: get - getReportList :::"); 
+		return adminService.getReportList();
+	}
 	
+	//체크박스로 선택한 report배열 가져오고 삭제하기
+	@PostMapping("/rest/admin/removeReportHistoryList")
+	public String removeReportHistoryList(@RequestParam(value="checkBoxArr")List<String> reportHistoryIdList) {
+		System.out.println("::: post - removeReportHistoryList :::");
+		System.out.println(reportHistoryIdList.toString());
+		adminService.removeReportHistoryList(reportHistoryIdList);
+		return "삭제성공";
+	}
 	//inquiry 카테고리 가져오기
 	@GetMapping("/rest/admin/getInquiryList")
 	public List<Inquiry> getInquiryList(){
@@ -329,21 +344,21 @@ public class AdminRestController {
 		return adminService.getAdminExpertUserList(currentPage, rowPerPage,searchWord, toDate, fromDate);
 	}
 	
-	@PostMapping("/rest/adminNoticeBoard")
+	@PostMapping("/rest/adminNoticeBoardTest")
 	public Map<String, Object> postNotice(@RequestParam(value="currentPage",defaultValue = "1")int currentPage,
 							@RequestParam(value="rowPerPage",defaultValue = "10")int rowPerPage,
 							@RequestParam(value="searchWord", required = false)String searchWord,
 							 @RequestParam(value="toDate", required = false)String toDate,
 							 @RequestParam(value="fromDate", required = false)String fromDate) {
 		
-		System.out.println(":::post - postNotice:::");
+		System.out.println(":::post - adminNoticeBoardTest:::");
 		System.out.println("currentPage"+currentPage);
 		System.out.println("rowPerPage"+rowPerPage);
 		System.out.println("searchWord"+searchWord);
 		System.out.println("toDate : "+ toDate);
 		System.out.println("fromDate : "+ fromDate);
 
-		return adminService.getNoticeBoard(currentPage, rowPerPage, searchWord);
+		return adminService.getNoticeBoard(currentPage, rowPerPage, searchWord, toDate, fromDate);
 	}
 	
 	@PostMapping("/rest/adminNoticeBoardOne")
@@ -398,24 +413,23 @@ public class AdminRestController {
 		System.out.println("inquiryId : "+inquiryId);
 		return adminService.getInquiryHistoryList(currentPage, rowPerPage, searchWord, toDate, fromDate, inquiryId);
 	}
-	// 신고 내역 바로 가져오기
-	@GetMapping("/rest/admin/getReportHistoryList")
-	public Map<String,Object> getReportHistoryList() {
-		System.out.println("::: get - getReportHistoryList :::"); 
-
-		
-		return adminService.getReportHistoryList(1, 15);
-		
-	}
-	// 신고 내역 버튼 이전, 다음 가져오기
+	// 신고 리스트 가져오기
 	@PostMapping("/rest/admin/getReportHistoryList")
 	public Map<String,Object> getReportHistoryList(@RequestParam(value="currentPage", defaultValue = "1")int currentPage,
-									 @RequestParam(value="rowPerPage", defaultValue = "15")int rowPerPage) {
+									 @RequestParam(value="rowPerPage", defaultValue = "10")int rowPerPage,
+										@RequestParam(value="searchWord", required = false)String searchWord,
+										 @RequestParam(value="toDate", required = false)String toDate,
+										 @RequestParam(value="fromDate", required = false)String fromDate,
+										 @RequestParam(value="reportId", required = false)String reportId) {
 		System.out.println("::: post - getReportHistoryList :::"); 
 		System.out.println("currentPage : " + currentPage);
 		System.out.println("rowPerPage : " + rowPerPage);
+		System.out.println("searchWord : " + searchWord);
+		System.out.println("toDate : " + toDate);
+		System.out.println("fromDate : " + fromDate);
+		System.out.println("reportId : " + reportId);
 		
-		return adminService.getReportHistoryList(currentPage, rowPerPage);
+		return adminService.getReportHistoryList(currentPage, rowPerPage, searchWord, toDate, fromDate, reportId);
 	}
 	
 	@GetMapping("/getYearlyQuestionCount")

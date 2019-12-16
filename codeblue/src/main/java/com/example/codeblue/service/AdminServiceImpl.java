@@ -26,6 +26,7 @@ import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.QuestionComment;
 import com.example.codeblue.vo.QuestionCount;
+import com.example.codeblue.vo.Report;
 import com.example.codeblue.vo.ReportHistory;
 import com.example.codeblue.vo.ServiceCategory;
 import com.example.codeblue.vo.User;
@@ -37,6 +38,21 @@ public class AdminServiceImpl implements AdminService {
 	private AdminMapper adminMapper;
 	@Autowired 
 	private JavaMailSender javaMailSender;
+	//Report 카테고리 가져오기
+	@Override
+	public List<Report> getReportList() {
+		System.out.println(":::AdminServiceImpl - getReportList:::");
+		return adminMapper.selectReportList();
+	}
+	
+	//신고내역 리스트 삭제
+	public void removeReportHistoryList(List<String> reportHistoryIdList) {
+		System.out.println("::: AdminBoardServiceImpl - removeReportHistoryList	 :::");
+		System.out.println(reportHistoryIdList.toString());
+		adminMapper.deleteReportHistoryList(reportHistoryIdList);
+		System.out.println("신고내역 지우기 성공");
+	}
+	
 	//Inquiry 리스트 삭제
 	@Override
 	public void removeInquiryHistoryList(List<String> inquiryHistoryIdList) {
@@ -44,7 +60,7 @@ public class AdminServiceImpl implements AdminService {
 		System.out.println(inquiryHistoryIdList.toString());
 		adminMapper.deleteInquiryHistoryAnswerList(inquiryHistoryIdList);
 		adminMapper.deleteInquiryHistoryList(inquiryHistoryIdList);
-		System.out.println("공지사항 지우기 성공");
+		System.out.println("문의내역 지우기 성공");
 	}
 	//Inquiry 카테고리 가져오기
 	@Override
@@ -324,48 +340,48 @@ public class AdminServiceImpl implements AdminService {
 	}
 	
 	//FAQ 전체 리스트 가져오기
-		@Override
-		public Map<String, Object> getFaqBoardList(int currentPage, int rowPerPage, String searchWord, String toDate, String fromDate, String serviceCategoryId) {
-			System.out.println(":::AdminServiceImpl - getFaqBoardList:::");
-			System.out.println("currentPage :"+currentPage+"/rowPerPage :"+rowPerPage);
+	@Override
+	public Map<String, Object> getFaqBoardList(int currentPage, int rowPerPage, String searchWord, String toDate, String fromDate, String serviceCategoryId) {
+		System.out.println(":::AdminServiceImpl - getFaqBoardList:::");
+		System.out.println("currentPage :"+currentPage+"/rowPerPage :"+rowPerPage);
 
-			Page page = new Page();
-			page.setBeginRow((currentPage-1)*rowPerPage);
-			page.setRowPerPage(rowPerPage);
-			page.setSearchWord(searchWord);
-			page.setToDate(toDate);
-			page.setFromDate(fromDate);
-			page.setSearchCategory(serviceCategoryId);
-			System.out.println("setBeginRow" + page.getBeginRow());
-			System.out.println("setRowPerPage" + page.getRowPerPage());
-			System.out.println("setSearchWord" + page.getSearchWord());
-			System.out.println("toDate  : " + page.getToDate());
-			System.out.println("fromDate" + page.getFromDate());
-			System.out.println("searchCategory : "+page.getSearchCategory());
-			int totalRow = adminMapper.selectFaqBoardTotalCount(page);
-			int lastPage = 0;
-			
-			if(totalRow % rowPerPage != 0) {
-				lastPage = (totalRow/rowPerPage)+1;
-			}else {
-				lastPage = totalRow/rowPerPage;
-			}
-			System.out.println("lastPage:"+ lastPage );
-			
-			List<FaqBoard> list = adminMapper.selectFaqBoardList(page);
-			System.out.println(list.toString());
-			
-			Map<String, Object> map = new HashMap<String,Object>();
-			map.put("currentPage", currentPage);
-			map.put("rowPerPage", rowPerPage);
-			map.put("searchWord", searchWord);
-			map.put("totalRow", totalRow);
-			map.put("lastPage", lastPage);
-			map.put("list", list);
-			map.put("toDate", toDate);
-			map.put("fromDate", fromDate);		
-			return map;
+		Page page = new Page();
+		page.setBeginRow((currentPage-1)*rowPerPage);
+		page.setRowPerPage(rowPerPage);
+		page.setSearchWord(searchWord);
+		page.setToDate(toDate);
+		page.setFromDate(fromDate);
+		page.setSearchCategory(serviceCategoryId);
+		System.out.println("setBeginRow" + page.getBeginRow());
+		System.out.println("setRowPerPage" + page.getRowPerPage());
+		System.out.println("setSearchWord" + page.getSearchWord());
+		System.out.println("toDate  : " + page.getToDate());
+		System.out.println("fromDate" + page.getFromDate());
+		System.out.println("searchCategory : "+page.getSearchCategory());
+		int totalRow = adminMapper.selectFaqBoardTotalCount(page);
+		int lastPage = 0;
+		
+		if(totalRow % rowPerPage != 0) {
+			lastPage = (totalRow/rowPerPage)+1;
+		}else {
+			lastPage = totalRow/rowPerPage;
 		}
+		System.out.println("lastPage:"+ lastPage );
+		
+		List<FaqBoard> list = adminMapper.selectFaqBoardList(page);
+		System.out.println(list.toString());
+		
+		Map<String, Object> map = new HashMap<String,Object>();
+		map.put("currentPage", currentPage);
+		map.put("rowPerPage", rowPerPage);
+		map.put("searchWord", searchWord);
+		map.put("totalRow", totalRow);
+		map.put("lastPage", lastPage);
+		map.put("list", list);
+		map.put("toDate", toDate);
+		map.put("fromDate", fromDate);		
+		return map;
+	}
 	
 	//서비스 카테고리 리스트 가져오기
 	@Override
@@ -375,74 +391,73 @@ public class AdminServiceImpl implements AdminService {
 	}
 	
 	//병원정보 수정
-		@Override
-		public int modifyHospital(Hospital hospital) {
-			System.out.println(":::AdminService - updateHospital:::");
-			System.out.println("hospital "+hospital);
-			return adminMapper.updateHospital(hospital);
+	@Override
+	public int modifyHospital(Hospital hospital) {
+		System.out.println(":::AdminService - updateHospital:::");
+		System.out.println("hospital "+hospital);
+		return adminMapper.updateHospital(hospital);
 	}
 	
 	//병원 리스트
-		@Override 
-		public Map<String, Object> getHospitalList(int currentPage, int rowPerPage, String searchWord) {
-			System.out.println(":::HospitalServiceImpl - getHospitalList:::");
-			
-			int beginRow = (currentPage-1)*rowPerPage;
-			Page page = new Page();
-			page.setBeginRow(beginRow);
-			page.setRowPerPage(rowPerPage);
-			page.setSearchWord(searchWord);
-			
-			int totalRow = adminMapper.hospitalCount();
-			int lastPage = 0;
-			
-			if(totalRow % rowPerPage ==0) {
-				lastPage = totalRow/rowPerPage;
-			}else {
-				lastPage = (totalRow/rowPerPage)+1;
-			}
-			
-			System.out.println("lastPage : "+lastPage);
-			
-			List<Hospital> list = new ArrayList<Hospital>();
-			list = adminMapper.hospitalList(page);
-			System.out.println(list.toString());
-			
-			Map<String,Object> map = new  HashMap<String, Object>();
-			map.put("currentPage", currentPage);
-			map.put("rowPerPage", rowPerPage);
-			map.put("searchWord", searchWord);
-			map.put("totalRow", totalRow);
-			map.put("lastPage", lastPage);
-			map.put("list", list);
-			
-			return map;
+	@Override 
+	public Map<String, Object> getHospitalList(int currentPage, int rowPerPage, String searchWord) {
+		System.out.println(":::HospitalServiceImpl - getHospitalList:::");
+		
+		int beginRow = (currentPage-1)*rowPerPage;
+		Page page = new Page();
+		page.setBeginRow(beginRow);
+		page.setRowPerPage(rowPerPage);
+		page.setSearchWord(searchWord);
+		
+		int totalRow = adminMapper.hospitalCount();
+		int lastPage = 0;
+		
+		if(totalRow % rowPerPage ==0) {
+			lastPage = totalRow/rowPerPage;
+		}else {
+			lastPage = (totalRow/rowPerPage)+1;
 		}
 		
-		//제휴병원 추가
-		@Override
-		public int addHospital(Hospital hospital) {
-			System.out.println(":::HospitalServiceImpl - addHospital:::");
-			System.out.println("hospital"+hospital);
-			return adminMapper.insertHospital(hospital);
-		}
+		System.out.println("lastPage : "+lastPage);
 		
-		//제휴병원 삭제
-		@Override
-		public int removeHospital(int hospitalId) {
-			System.out.println(":::HospitalServiceImpl - removeHospital:::");
-			System.out.println("hospitalId"+hospitalId);
-			return adminMapper.deleteHospital(hospitalId);
-		}
+		List<Hospital> list = new ArrayList<Hospital>();
+		list = adminMapper.hospitalList(page);
+		System.out.println(list.toString());
 		
-		//제휴병원 상세정보
-		@Override
-		public List<Hospital> getHospitalOne(int hospitalId) {
-			System.out.println(":::HospitalServiceImpl - getHospitalOne:::");
-			System.out.println("hospitalId"+hospitalId);
-
-			return adminMapper.hospitalOne(hospitalId);
-		}
+		Map<String,Object> map = new  HashMap<String, Object>();
+		map.put("currentPage", currentPage);
+		map.put("rowPerPage", rowPerPage);
+		map.put("searchWord", searchWord);
+		map.put("totalRow", totalRow);
+		map.put("lastPage", lastPage);
+		map.put("list", list);
+		
+		return map;
+	}
+	
+	//제휴병원 추가
+	@Override
+	public int addHospital(Hospital hospital) {
+		System.out.println(":::HospitalServiceImpl - addHospital:::");
+		System.out.println("hospital"+hospital);
+		return adminMapper.insertHospital(hospital);
+	}
+	
+	//제휴병원 삭제
+	@Override
+	public int removeHospital(int hospitalId) {
+		System.out.println(":::HospitalServiceImpl - removeHospital:::");
+		System.out.println("hospitalId"+hospitalId);
+		return adminMapper.deleteHospital(hospitalId);
+	}
+	
+	//제휴병원 상세정보
+	@Override
+	public List<Hospital> getHospitalOne(int hospitalId) {
+		System.out.println(":::HospitalServiceImpl - getHospitalOne:::");
+		System.out.println("hospitalId"+hospitalId);
+		return adminMapper.hospitalOne(hospitalId);
+	}
 	// 회원 조회
 	@Override
 	public Map<String,Object> getAdminUserList(int currentPage, int rowPerPage, String searchWord, String toDate, String fromDate) {
@@ -562,41 +577,47 @@ public class AdminServiceImpl implements AdminService {
 		return map;
 	}
 	//공지사항 리스트 가져오기
-	@Override
-	public Map<String, Object> getNoticeBoard(int currentPage, int rowPerPage, String searchWord) {
-		System.out.println(":::AdminServiceImpl - getNoticeBoard:::");
-		System.out.println("currentPage :"+currentPage+"/rowPerPage :"+rowPerPage);
+		@Override
+		public Map<String, Object> getNoticeBoard(int currentPage, int rowPerPage, String searchWord, String toDate, String fromDate) {
+			System.out.println(":::AdminServiceImpl - getNoticeBoard:::");
+			System.out.println("currentPage :"+currentPage+"/rowPerPage :"+rowPerPage);
+			
+			int beginRow = (currentPage-1)*rowPerPage;
+			Page page = new Page();
+			page.setBeginRow(beginRow);
+			page.setRowPerPage(rowPerPage);
+			page.setSearchWord(searchWord);
+			page.setToDate(toDate);
+			page.setFromDate(fromDate);
+			
+			System.out.println(page.getSearchWord());
+			System.out.println(page.getToDate());
+			System.out.println(page.getFromDate());
+			int totalRow = adminMapper.selectNoticeBoardCount(page);
+			int lastPage = 0;
+			
+			if(totalRow % rowPerPage !=1) {
+				lastPage = (totalRow/rowPerPage)+1;
+			}else {
+				lastPage = totalRow/rowPerPage;
+			}
+			System.out.println("lastPage:"+ lastPage );
+			
+			List<NoticeBoard> list = adminMapper.selectNoticeBoard(page);
+			System.out.println(list.toString());
+			
+			Map<String, Object> map = new HashMap<String,Object>();
+			map.put("currentPage", currentPage);
+			map.put("rowPerPage", rowPerPage);
+			map.put("searchWord", searchWord);
+			map.put("toDate", toDate);
+			map.put("fromDate", fromDate);
+			map.put("totalRow", totalRow);
+			map.put("lastPage", lastPage);
+			map.put("list", list);
 		
-		int beginRow = (currentPage-1)*rowPerPage;
-		Page page = new Page();
-		page.setBeginRow(beginRow);
-		page.setRowPerPage(rowPerPage);
-		page.setSearchWord(searchWord);
-		
-		int totalRow = adminMapper.noticeBoardCount(page);
-		int lastPage = 0;
-		
-		if(totalRow % rowPerPage !=1) {
-			lastPage = (totalRow/rowPerPage)+1;
-		}else {
-			lastPage = totalRow/rowPerPage;
+			return map;
 		}
-		System.out.println("lastPage:"+ lastPage );
-		
-		List<NoticeBoard> list = adminMapper.selectNoticeBoard(page);
-		System.out.println(list.toString());
-		
-		Map<String, Object> map = new HashMap<String,Object>();
-		map.put("currentPage", currentPage);
-		map.put("rowPerPage", rowPerPage);
-		map.put("searchWord", searchWord);
-		map.put("totalRow", totalRow);
-		map.put("lastPage", lastPage);
-		map.put("list", list);
-		
-				
-		return map;
-	}
 	//공지사항 상세페이지 가져오기
 	@Override
 	public NoticeBoard getNoticeOne(int noticeId) {
@@ -634,31 +655,40 @@ public class AdminServiceImpl implements AdminService {
 		return adminMapper.selectInquiryHistoryOne(inquiryHistoryId);
 	}
 	//신고내역 가져오기
-	@Override
-	public Map<String, Object> getReportHistoryList(int currentPage, int rowPerPage) {
-		System.out.println("::: AdminServiceImpl - getReportHistoryList :::");
-		
-		Page page = new Page();
-		page.setRowPerPage(rowPerPage);
-		page.setBeginRow((currentPage-1)*rowPerPage);
-		
-		int totalRow = adminMapper.ReportHistoryTotalRow();
-		int lastPage = totalRow/rowPerPage;
-		
-		if(totalRow % rowPerPage != 0) {
-			lastPage ++;
+		@Override
+		public Map<String, Object> getReportHistoryList(int currentPage, int rowPerPage, String searchWord, String toDate, String fromDate, String reportId) {
+			System.out.println("::: AdminServiceImpl - getReportHistoryList :::");
+			
+			Page page = new Page();
+			page.setRowPerPage(rowPerPage);
+			page.setBeginRow((currentPage-1)*rowPerPage);
+			page.setSearchWord(searchWord);
+			page.setToDate(toDate);
+			page.setFromDate(fromDate);
+			page.setSearchCategory(reportId);
+			
+			System.out.println(page.getSearchWord());
+			System.out.println(page.getToDate());
+			System.out.println(page.getFromDate());
+			System.out.println(page.getSearchCategory());
+
+			int totalRow = adminMapper.selectReportHistoryTotalRow(page);
+			int lastPage = totalRow/rowPerPage;
+			
+			if(totalRow % rowPerPage != 0) {
+				lastPage ++;
+			}
+			List<ReportHistory> list = adminMapper.selectReportHistoryList(page);
+			
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("totalRow", totalRow);
+			map.put("list", list);
+			map.put("currentPage", currentPage);
+			map.put("rowPerPage", rowPerPage);
+			map.put("lastPage", lastPage);
+			System.out.println(map.toString());
+			return map;
 		}
-		List<ReportHistory> list = adminMapper.selectReportHistoryList(page);
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("totalRow", totalRow);
-		map.put("list", list);
-		map.put("currentPage", currentPage);
-		map.put("rowPerPage", rowPerPage);
-		map.put("lastPage", lastPage);
-		System.out.println(map.toString());
-		return map;
-	}
 	
 	//문의 내역 리스트 가져오기
 	@Override

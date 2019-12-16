@@ -314,7 +314,7 @@ function appendItem(inquiryCurrentPage){
 	}
 	
 	$.ajax({
-		url:"/rest/admin/getInquiryHistoryListTest",
+		url:"/rest/admin/getInquiryHistoryList",
 		method:"post",
 		data:{"currentPage" : inquiryCurrentPage,
 			  "rowPerPage" : $("#rowPerPage").val(),
