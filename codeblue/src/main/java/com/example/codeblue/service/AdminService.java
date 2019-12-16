@@ -7,6 +7,7 @@ import com.example.codeblue.vo.Answer;
 import com.example.codeblue.vo.FaqBoard;
 import com.example.codeblue.vo.Feild;
 import com.example.codeblue.vo.Hospital;
+import com.example.codeblue.vo.Inquiry;
 import com.example.codeblue.vo.InquiryHistory;
 import com.example.codeblue.vo.InquiryHistoryAnswer;
 import com.example.codeblue.vo.Manager;
@@ -19,7 +20,10 @@ import com.example.codeblue.vo.ServiceCategory;
 import com.example.codeblue.vo.User;
 
 public interface AdminService {
-	
+	//Inquiry 리스트 삭제
+	public void removeInquiryHistoryList(List<String> inquiryHistoryIdList);
+	//Inquiry 카테고리 가져오기
+	public List<Inquiry> getInquiryList();
 	//답변 댓글 삭제하기
 	public void removeAnswerCommentList(List<String> answerCommentIdList);
 	//답변 댓글 리스트 가져오기
@@ -65,7 +69,7 @@ public interface AdminService {
 	//공지사항 리스트 삭제
 	public void removeNoticeBoardList(List<String> noticeBoardIdList);
 	//문의 내역 리스트 출력
-	public Map<String, Object> getInquiryHistoryList(int currentPage, int rowPerPage);
+	public Map<String, Object> getInquiryHistoryList(int currentPage, int rowPerPage, String searchWord, String toDate, String fromDate, String inquiryId);
 	//문의 내역 상세 페이지 출력
 	public InquiryHistory getInquiryHistoryOne(int inquiryHistoryId);
 	//신고 내역 리스트 출력
@@ -91,13 +95,15 @@ public interface AdminService {
 	//문의사항 답변 추가하기
 	public void addInquiryHistoryAnswer(InquiryHistoryAnswer inqruiyHistoryAnswer);
 	//FAQ 전체 리스트 가져오기
-	public Map<String,Object> getFaqBoardList(int currentPage, int rowPerPage, String searchWord);
+	public Map<String,Object> getFaqBoardList(int currentPage, int rowPerPage, String searchWord, String toDate, String fromDate, String serviceCategory);
 	//FAQ 추가하기
 	public int addFaqBoard(FaqBoard faqBoard);
 	//FAQ 상세정보 가져오기
 	public FaqBoard getFaqOne(int faqId);
 	//FAQ 정보 삭제하기
 	public int removeFaq(int faqId);
+	//FAQ 리스트 삭제
+	public void removeFaqBoardList(List<String> faqBoardIdList);
 	//FAQ 수정하기
 	public int modifyFaq(FaqBoard faqBoard);
 	//관리자 추가

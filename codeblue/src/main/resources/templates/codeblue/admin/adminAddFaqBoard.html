@@ -145,7 +145,7 @@ $(document).ready(function() {
 	//답변하기 버튼 누르면 faq Board 에 저장.
 	$("#faqBoardInsertBtn").click(function(){
 		console.log($("#summernote").val());
-		if(confirm( '질문을 등록하시겠습니까?' )){
+		if(confirm( 'FAQ을 등록하시겠습니까?' )){
 		 	$.ajax({
 		 		url:"/rest/admin/addFaqBoard",
 		 		method:"post",

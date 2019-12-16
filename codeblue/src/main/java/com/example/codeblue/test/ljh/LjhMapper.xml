@@ -4,7 +4,41 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="com.example.codeblue.test.ljh.LjhMapper">
+	<!-- Inquiry 객체 -->
+	<resultMap type="com.example.codeblue.vo.Inquiry" id="Inquiry">
+		<result column="inquiry_id" property="inquiryId"></result>
+	    <result column="inquiry_name" property="inquiryName"></result>
+	</resultMap>
+	<!-- InquiryHistory 객체  -->
+	<resultMap type="com.example.codeblue.vo.InquiryHistory" id="InquiryHistory"> 
+	<!-- column은 테이블에서의 칼럼명  property는 클레스의 필드명 -->
+		<result column="inquiry_history_id" property="inquiryHistoryId" ></result>
+		<result column="inquiry_title" property="inquiryTitle" ></result>
+		<result column="inquiry_content" property="inquiryContent" ></result>
+		<result column="inquiry_datetime" property="inquiryDatetime"></result>
+	   <result column="inquiry_answer" property="inquiryAnswer"></result>
+		<association property="inquiry" resultMap="Inquiry">
+	   	</association>
+	   	<association property="user" resultMap="User">
+	   	</association>
+	</resultMap>
+	
+	<!-- ServiceCategory 객체 -->
+	<resultMap type="com.example.codeblue.vo.ServiceCategory" id="ServiceCategory">
+		<result column="service_category_id" property="serviceCategoryId"></result>
+		<result column="service_category_name" property="serviceCategoryName"></result>
+	</resultMap>
+	
+	<!-- FaqBoard 객체  -->
+	<resultMap type="com.example.codeblue.vo.FaqBoard" id="FaqBoard"> 
+	   	<result column="FAQ_id" property="faqId" ></result>
+	   	<result column="FAQ_title" property="faqTitle" ></result>
+	   	<result column="FAQ_content" property="faqContent" ></result>
+	   	<result column="FAQ_datetime" property="faqDatetime"></result>
 
+	  	<association property="serviceCategory" resultMap="ServiceCategory">
+	   	</association>
+	</resultMap>
 	<!-- User 객체 -->
 	<resultMap type="com.example.codeblue.vo.User" id="User">
 		<result column="user_id" property="userId"></result>
@@ -94,6 +128,119 @@
 		<association property="region" javaType="com.example.codeblue.vo.Region">
 		</association>
 	</resultMap>
+	
+	<!-- 문의내역 전체 리스트 -->
+	<select id="selectInquiryHistoryList" parameterType="com.example.codeblue.vo.Page" 
+			resultMap="InquiryHistory">
+	
+	SELECT  inquiry_history_id,
+			inquiry_title,
+			inquiry_datetime,
+			inquiry_answer
+    FROM inquiry_history
+    <where>
+    	<if test="searchCategory != null">
+			AND inquiry_id = #{searchCategory}
+		</if>
+		<if test="searchWord != null">
+			AND inquiry_title like CONCAT('%',#{searchWord},'%')
+		</if> 
+		<if test="toDate != null and fromDate != null">
+			AND DATE(inquiry_datetime) &gt;= DATE(#{toDate}) AND DATE(inquiry_datetime) &lt;= DATE(#{fromDate})  
+		</if>
+	</where>
+    ORDER BY inquiry_datetime DESC
+    LIMIT #{beginRow},#{rowPerPage}
+   </select>
+   <!--  문의내역 전체 행 -->
+   <select  id="InquiryHistoryTotalRow" 
+			resultType="int" parameterType="com.example.codeblue.vo.Page">
+	SELECT count(*)
+	FROM inquiry_history
+	<where>
+		<if test="searchCategory != null">
+			AND inquiry_id = #{searchCategory}
+		</if>
+		<if test="searchWord != null">
+			AND inquiry_title like CONCAT('%',#{searchWord},'%')
+		</if> 
+		<if test="toDate != null and fromDate != null">
+			AND DATE(inquiry_datetime) &gt;= DATE(#{toDate}) AND DATE(inquiry_datetime) &lt;= DATE(#{fromDate})  
+		</if>
+	</where>
+   </select>
+	
+	
+	<!--  Inquiry 카테고리 리스트 가져오기 -->
+	<select id="selectInquiryList" resultMap="Inquiry">
+		SELECT  inquiry_id,
+				inquiry_name
+		FROM inquiry
+	</select>
+	
+	<!-- inquiry 리스트 삭제 -->
+	<delete id="deleteInquiryHistoryList" parameterType="java.util.List">
+		DELETE FROM inquiry_history
+		WHERE inquiry_history_id IN
+		<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+			(#{item})
+		</foreach>
+	</delete>
+	<!-- inquiryAnswer 리스트 삭제 -->
+	<delete id="deleteInquiryHistoryAnswerList" parameterType="java.util.List">
+		DELETE FROM inquiry_history_answer
+		WHERE inquiry_history_id IN
+		<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+			(#{item})
+		</foreach>
+	</delete>
+	<!-- FAQ 리스트 삭제 -->
+	<delete id="deleteFaqBoardList" parameterType="java.util.List">
+		DELETE FROM faq_board
+		WHERE faq_id IN
+		<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+			(#{item})
+		</foreach>
+	</delete>
+	
+	<!--  FAQ 리스트 가져오기 -->
+	<select id="selectFaqBoardList" resultMap="FaqBoard" parameterType="com.example.codeblue.vo.Page">
+  	SELECT  fb.FAQ_id,
+			fb.FAQ_title,
+			fb.FAQ_datetime 
+    FROM faq_board fb INNER JOIN service_category sc 
+    ON fb.service_category_id = sc.service_category_id 
+	 <where>
+	 	 <if test="searchCategory != null">
+			AND fb.service_category_id = #{searchCategory}
+		</if>
+		<if test="searchWord != null">
+			AND fb.FAQ_title like CONCAT('%',#{searchWord},'%')
+		</if> 
+		<if test="toDate != null and fromDate != null">
+			AND DATE(faq_datetime) &gt;= DATE(#{toDate}) AND DATE(faq_datetime) &lt;= DATE(#{fromDate})  
+		</if>
+	</where>
+    ORDER BY fb.FAQ_datetime DESC 
+    LIMIT #{beginRow}, #{rowPerPage}
+  	</select>
+  	
+  	<!--  FAQ 전체리스트 행 가져오기 -->
+  	<select id="selectFaqBoardTotalCount" resultType="int" parameterType="com.example.codeblue.vo.Page">
+  		SELECT COUNT(*) 
+  		FROM faq_board
+	 <where>
+	 	 <if test="searchCategory != null">
+			AND service_category_id = #{searchCategory}
+		</if> 
+		<if test="searchWord != null">
+			AND FAQ_title like CONCAT('%',#{searchWord},'%')
+		</if> 
+		<if test="toDate != null and fromDate != null">
+			AND DATE(faq_datetime) &gt;= DATE(#{toDate}) AND DATE(faq_datetime) &lt;= DATE(#{fromDate})  
+		</if> 
+	</where>
+  	</select>
 
 	<select id="selectAnswerCommentCount" resultType="int" parameterType="int">
 		SELECT COUNT(*)

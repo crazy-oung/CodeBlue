@@ -9,6 +9,7 @@ import com.example.codeblue.vo.AnswerComment;
 import com.example.codeblue.vo.FaqBoard;
 import com.example.codeblue.vo.Feild;
 import com.example.codeblue.vo.Hospital;
+import com.example.codeblue.vo.Inquiry;
 import com.example.codeblue.vo.InquiryHistory;
 import com.example.codeblue.vo.InquiryHistoryAnswer;
 import com.example.codeblue.vo.Manager;
@@ -23,7 +24,12 @@ import com.example.codeblue.vo.User;
 
 @Mapper
 public interface AdminMapper {
-
+	//inquiry 리스트 삭제
+	public int deleteInquiryHistoryList(List<String> inquiryHistoryIdList);
+	//inquiryAnswer 리스트 삭제
+	public int deleteInquiryHistoryAnswerList(List<String> inquiryHistoryIdList);
+	//Inquiry 카테고리 가져오기
+	public List<Inquiry> selectInquiryList();
 	//답변 댓글 Id 값으로 삭제하기
 	public void deleteAnswerCommentId(List<String> list);
 	//답변 댓글 행수 가져오기
@@ -85,7 +91,7 @@ public interface AdminMapper {
 	public List<QuestionCount> selectCurrentQuestionCountFromFeild();
 	//문의내역 가져오기
 	public List<InquiryHistory> selectInquiryHistoryList(Page page);
-	public int InquiryHistoryTotalRow();
+	public int InquiryHistoryTotalRow(Page page);
 	//신고내역 가져오기
 	public List<ReportHistory> selectReportHistoryList(Page page);
 	public int ReportHistoryTotalRow();
@@ -140,13 +146,15 @@ public interface AdminMapper {
 	// FAQ 전체리스트 가져오기
 	public List<FaqBoard> selectFaqBoardList(Page page);
 	// FAQ 전체 행 값 가져오기
-	public int selectFaqBoardTotalCount();
+	public int selectFaqBoardTotalCount(Page page);
 	// FAQ 추가하기
 	public int insertFaqBoard(FaqBoard faqBoard);
 	// FAQ 상세정보가져오기
 	public FaqBoard selectFaqOne(int faqId);
 	// FAQ 삭제하기
 	public int deleteFaq(int faqId);
+	//FAQ 리스트 삭제
+	public int deleteFaqBoardList(List<String> faqBoardIdList);
 	// FAQ 수정하기
 	public int updateFaq(FaqBoard faqBoard);
 	// 관리자 정보 확인

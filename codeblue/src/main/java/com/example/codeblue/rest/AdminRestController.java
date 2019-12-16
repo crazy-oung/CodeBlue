@@ -16,6 +16,7 @@ import com.example.codeblue.vo.Answer;
 import com.example.codeblue.vo.FaqBoard;
 import com.example.codeblue.vo.Feild;
 import com.example.codeblue.vo.Hospital;
+import com.example.codeblue.vo.Inquiry;
 import com.example.codeblue.vo.InquiryHistory;
 import com.example.codeblue.vo.InquiryHistoryAnswer;
 import com.example.codeblue.vo.Manager;
@@ -26,11 +27,24 @@ import com.example.codeblue.vo.QuestionCount;
 import com.example.codeblue.vo.ReportHistory;
 import com.example.codeblue.vo.ServiceCategory;
 
-
 @RestController
 public class AdminRestController {
 	@Autowired private AdminService adminService;
 	
+	//inquiry 카테고리 가져오기
+	@GetMapping("/rest/admin/getInquiryList")
+	public List<Inquiry> getInquiryList(){
+		System.out.println("::: get - getInquiryList :::"); 
+		return adminService.getInquiryList();
+	}
+	//체크박스로 선택한 inquiry배열 가져오고 삭제하기
+	@PostMapping("/rest/admin/removeInquiryHistoryList")
+	public String removeInquiryHistoryList(@RequestParam(value="checkBoxArr")List<String> inquiryHistoryIdList) {
+		System.out.println("::: post - removeInquiryHistoryList :::");
+		System.out.println(inquiryHistoryIdList.toString());
+		adminService.removeInquiryHistoryList(inquiryHistoryIdList);
+		return "삭제성공";
+	}
 	//체크박스로 선택한 noticeId 배열 가져오고 삭제하기
 	@PostMapping("/rest/admin/removeNoticeBoardList")
 	public String removeNoticeBoardList(@RequestParam(value="checkBoxArr")List<String> noticeBoardIdList) {
@@ -166,6 +180,14 @@ public class AdminRestController {
 		
 		return adminService.removeFaq(faqId);
 	}
+	//체크박스로 선택한 FAQ 배열 가져오고 삭제하기
+	@PostMapping("/rest/admin/removeFaqBoardList")
+	public String removeFaqBoardList(@RequestParam(value="checkBoxArr")List<String> faqBoardIdList) {
+		System.out.println("::: post - removeFaqBoardList :::");
+		System.out.println(faqBoardIdList.toString());
+		adminService.removeFaqBoardList(faqBoardIdList);
+		return "삭제성공";
+	}
 	//FAQ 수정하기
 	@PostMapping("/rest/modifyFaqBorad")
 	public int modifyFaqBoard(FaqBoard faqBoard) {
@@ -177,9 +199,18 @@ public class AdminRestController {
 	@PostMapping("/rest/admin/getFaqBoardList")
 	public Map<String,Object> getFaqBoardList(@RequestParam(value="currentPage",defaultValue = "1")int currentPage,
 			@RequestParam(value="rowPerPage",defaultValue = "10")int rowPerPage,
-			@RequestParam(value="searchWord", required = false)String searchWord) {
+			@RequestParam(value="searchWord", required = false)String searchWord,
+			@RequestParam(value="toDate", required = false)String toDate,
+			 @RequestParam(value="fromDate", required = false)String fromDate,
+			 @RequestParam(value="serviceCategoryId", required = false)String serviceCategoryId) {
 		System.out.println("::: post - getFaqBoardList :::"); 
-		return adminService.getFaqBoardList(currentPage, rowPerPage, searchWord);
+		System.out.println("currentPage : "+currentPage);
+		System.out.println("rowPerPage : "+rowPerPage);
+		System.out.println("searchWord : "+searchWord);
+		System.out.println("toDate : "+toDate);
+		System.out.println("fromDate : "+fromDate);
+		System.out.println("serviceCategory : "+serviceCategoryId);
+		return adminService.getFaqBoardList(currentPage, rowPerPage, searchWord, toDate, fromDate, serviceCategoryId);
 	}
 	
 	//FAQ 추가하기 
@@ -252,7 +283,7 @@ public class AdminRestController {
 	// 회원 삭제(y->n)
 	@PostMapping("/rest/adminUserRemove")
 	public String adminUserRemove(@RequestParam(value="checkBoxArr") List<String> checkBoxArr) {
-		System.out.println("::: post - /rest/adminUserRemoveTest :::");
+		System.out.println("::: post - /rest/adminUserRemove :::");
 		System.out.println(checkBoxArr);
 		int checking = adminService.removeAdminUser(checkBoxArr);
 		System.out.println("1이면 성공 : "+checking);
@@ -301,12 +332,16 @@ public class AdminRestController {
 	@PostMapping("/rest/adminNoticeBoard")
 	public Map<String, Object> postNotice(@RequestParam(value="currentPage",defaultValue = "1")int currentPage,
 							@RequestParam(value="rowPerPage",defaultValue = "10")int rowPerPage,
-							@RequestParam(value="searchWord", required = false)String searchWord) {
+							@RequestParam(value="searchWord", required = false)String searchWord,
+							 @RequestParam(value="toDate", required = false)String toDate,
+							 @RequestParam(value="fromDate", required = false)String fromDate) {
 		
 		System.out.println(":::post - postNotice:::");
 		System.out.println("currentPage"+currentPage);
 		System.out.println("rowPerPage"+rowPerPage);
 		System.out.println("searchWord"+searchWord);
+		System.out.println("toDate : "+ toDate);
+		System.out.println("fromDate : "+ fromDate);
 
 		return adminService.getNoticeBoard(currentPage, rowPerPage, searchWord);
 	}
@@ -328,7 +363,7 @@ public class AdminRestController {
 	//공지사항 삭제
 	@PostMapping("/rest/removeNoticeBoard")
 	public int removeNoticeBoard(@RequestParam(value="noticeId")int noticeId) {
-		System.out.println(":::post - removeNoticeBoardTest:::");
+		System.out.println(":::post - removeNoticeBoard:::");
 		System.out.println("noticeId Remove : " + noticeId);
 		return adminService.removeNoticeBoard(noticeId);
 	}
@@ -345,23 +380,23 @@ public class AdminRestController {
 		System.out.println("::: post - getInquiryHistoryOne :::");
 		return adminService.getInquiryHistoryOne(inquiryHistoryId);
 	}
-	//문의 내역 바로 가져오기
-	@GetMapping("/rest/admin/getInquiryHistoryList")
-	public Map<String,Object> getInquiryHistoryList() {
-		System.out.println("::: get - getInquiryHistoryList :::"); 
 
-		return adminService.getInquiryHistoryList(1, 15);
-		
-	}
-	// 문의 내역 버튼 이전, 다음 가져오기
+	// 문의 내역 리스트 가져오기
 	@PostMapping("/rest/admin/getInquiryHistoryList")
 	public Map<String,Object> getInquiryHistoryList(@RequestParam(value="currentPage", defaultValue = "1")int currentPage,
-									 @RequestParam(value="rowPerPage", defaultValue = "15")int rowPerPage) {
+									 @RequestParam(value="rowPerPage", defaultValue = "15")int rowPerPage,
+									 @RequestParam(value="searchWord", required = false)String searchWord,
+										@RequestParam(value="toDate", required = false)String toDate,
+										 @RequestParam(value="fromDate", required = false)String fromDate,
+										 @RequestParam(value="inquiryId", required = false)String inquiryId) {
 		System.out.println("::: post - getInquiryHistoryList :::"); 
-		System.out.println("currentPage : " + currentPage);
-		System.out.println("rowPerPage : " + rowPerPage);
-		
-		return adminService.getInquiryHistoryList(currentPage, rowPerPage);
+		System.out.println("currentPage : "+currentPage);
+		System.out.println("rowPerPage : "+rowPerPage);
+		System.out.println("searchWord : "+searchWord);
+		System.out.println("toDate : "+toDate);
+		System.out.println("fromDate : "+fromDate);
+		System.out.println("inquiryId : "+inquiryId);
+		return adminService.getInquiryHistoryList(currentPage, rowPerPage, searchWord, toDate, fromDate, inquiryId);
 	}
 	// 신고 내역 바로 가져오기
 	@GetMapping("/rest/admin/getReportHistoryList")

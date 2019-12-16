@@ -17,6 +17,7 @@ import com.example.codeblue.vo.AnswerComment;
 import com.example.codeblue.vo.FaqBoard;
 import com.example.codeblue.vo.Feild;
 import com.example.codeblue.vo.Hospital;
+import com.example.codeblue.vo.Inquiry;
 import com.example.codeblue.vo.InquiryHistory;
 import com.example.codeblue.vo.InquiryHistoryAnswer;
 import com.example.codeblue.vo.Manager;
@@ -36,6 +37,21 @@ public class AdminServiceImpl implements AdminService {
 	private AdminMapper adminMapper;
 	@Autowired 
 	private JavaMailSender javaMailSender;
+	//Inquiry 리스트 삭제
+	@Override
+	public void removeInquiryHistoryList(List<String> inquiryHistoryIdList) {
+		System.out.println("::: AdminBoardServiceImpl - removeInquiryHistoryList :::");
+		System.out.println(inquiryHistoryIdList.toString());
+		adminMapper.deleteInquiryHistoryAnswerList(inquiryHistoryIdList);
+		adminMapper.deleteInquiryHistoryList(inquiryHistoryIdList);
+		System.out.println("공지사항 지우기 성공");
+	}
+	//Inquiry 카테고리 가져오기
+	@Override
+	public List<Inquiry> getInquiryList() {
+		System.out.println(":::AdminServiceImpl - getInquiryList:::");
+		return adminMapper.selectInquiryList();
+	}
 	//공지사항 리스트 삭제
 	@Override
 	public void removeNoticeBoardList(List<String> noticeBoardIdList) {
@@ -286,6 +302,14 @@ public class AdminServiceImpl implements AdminService {
 		System.out.println(":::AdminServiceImpl - removeFaq:::");
 		return adminMapper.deleteFaq(faqId);
 	}
+	//FAQ 리스트 삭제
+	@Override
+	public void removeFaqBoardList(List<String> faqBoardIdList) {
+		System.out.println("::: AdminBoardServiceImpl - removeFaqBoardList :::");
+		System.out.println(faqBoardIdList.toString());
+		adminMapper.deleteFaqBoardList(faqBoardIdList);
+		System.out.println("공지사항 지우기 성공");
+	}
 	//FAQ 수정하기
 	@Override
 	public int modifyFaq(FaqBoard faqBoard) {
@@ -300,41 +324,48 @@ public class AdminServiceImpl implements AdminService {
 	}
 	
 	//FAQ 전체 리스트 가져오기
-	@Override
-	public Map<String, Object> getFaqBoardList(int currentPage, int rowPerPage, String searchWord) {
-		System.out.println(":::AdminServiceImpl - getFaqBoardList:::");
-		System.out.println("currentPage :"+currentPage+"/rowPerPage :"+rowPerPage);
+		@Override
+		public Map<String, Object> getFaqBoardList(int currentPage, int rowPerPage, String searchWord, String toDate, String fromDate, String serviceCategoryId) {
+			System.out.println(":::AdminServiceImpl - getFaqBoardList:::");
+			System.out.println("currentPage :"+currentPage+"/rowPerPage :"+rowPerPage);
 
-		Page page = new Page();
-		page.setBeginRow((currentPage-1)*rowPerPage);
-		page.setRowPerPage(rowPerPage);
-		page.setSearchWord(searchWord);
-		System.out.println("setBeginRow" + page.getBeginRow());
-		System.out.println("setRowPerPage" + page.getRowPerPage());
-		System.out.println("setSearchWord" + page.getSearchWord());
-		int totalRow = adminMapper.selectFaqBoardTotalCount();
-		int lastPage = 0;
-		
-		if(totalRow % rowPerPage != 0) {
-			lastPage = (totalRow/rowPerPage)+1;
-		}else {
-			lastPage = totalRow/rowPerPage;
+			Page page = new Page();
+			page.setBeginRow((currentPage-1)*rowPerPage);
+			page.setRowPerPage(rowPerPage);
+			page.setSearchWord(searchWord);
+			page.setToDate(toDate);
+			page.setFromDate(fromDate);
+			page.setSearchCategory(serviceCategoryId);
+			System.out.println("setBeginRow" + page.getBeginRow());
+			System.out.println("setRowPerPage" + page.getRowPerPage());
+			System.out.println("setSearchWord" + page.getSearchWord());
+			System.out.println("toDate  : " + page.getToDate());
+			System.out.println("fromDate" + page.getFromDate());
+			System.out.println("searchCategory : "+page.getSearchCategory());
+			int totalRow = adminMapper.selectFaqBoardTotalCount(page);
+			int lastPage = 0;
+			
+			if(totalRow % rowPerPage != 0) {
+				lastPage = (totalRow/rowPerPage)+1;
+			}else {
+				lastPage = totalRow/rowPerPage;
+			}
+			System.out.println("lastPage:"+ lastPage );
+			
+			List<FaqBoard> list = adminMapper.selectFaqBoardList(page);
+			System.out.println(list.toString());
+			
+			Map<String, Object> map = new HashMap<String,Object>();
+			map.put("currentPage", currentPage);
+			map.put("rowPerPage", rowPerPage);
+			map.put("searchWord", searchWord);
+			map.put("totalRow", totalRow);
+			map.put("lastPage", lastPage);
+			map.put("list", list);
+			map.put("toDate", toDate);
+			map.put("fromDate", fromDate);		
+			return map;
 		}
-		System.out.println("lastPage:"+ lastPage );
-		
-		List<FaqBoard> list = adminMapper.selectFaqBoardList(page);
-		System.out.println(list.toString());
-		
-		Map<String, Object> map = new HashMap<String,Object>();
-		map.put("currentPage", currentPage);
-		map.put("rowPerPage", rowPerPage);
-		map.put("searchWord", searchWord);
-		map.put("totalRow", totalRow);
-		map.put("lastPage", lastPage);
-		map.put("list", list);
-	
-		return map;
-	}	
 	
 	//서비스 카테고리 리스트 가져오기
 	@Override
@@ -631,14 +662,17 @@ public class AdminServiceImpl implements AdminService {
 	
 	//문의 내역 리스트 가져오기
 	@Override
-	public Map<String, Object> getInquiryHistoryList(int currentPage, int rowPerPage) {
+	public Map<String, Object> getInquiryHistoryList(int currentPage, int rowPerPage, String searchWord, String toDate, String fromDate, String inquiryId) {
 		System.out.println("::: AdminServiceImpl - getInquiryHistoryList :::");
 		
 		Page page = new Page();
 		page.setRowPerPage(rowPerPage);
 		page.setBeginRow((currentPage-1)*rowPerPage);
-		
-		int totalRow = adminMapper.InquiryHistoryTotalRow();
+		page.setSearchWord(searchWord);
+		page.setSearchCategory(inquiryId);
+		page.setToDate(toDate);
+		page.setFromDate(fromDate);
+		int totalRow = adminMapper.InquiryHistoryTotalRow(page);
 		int lastPage = totalRow/rowPerPage;
 		
 		if(totalRow % rowPerPage != 0) {
@@ -652,6 +686,10 @@ public class AdminServiceImpl implements AdminService {
 		map.put("currentPage", currentPage);
 		map.put("rowPerPage", rowPerPage);
 		map.put("lastPage", lastPage);
+		map.put("searchWord", searchWord);
+		map.put("toDate", toDate);
+		map.put("fromDate", fromDate);	
+		
 		System.out.println(map.toString());
 		return map;
 	}

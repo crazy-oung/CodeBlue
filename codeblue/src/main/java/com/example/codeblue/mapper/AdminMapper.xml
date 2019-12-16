@@ -189,7 +189,28 @@
 		<association property="questionBoard" resultMap="QuestionBoard"></association>
 	</resultMap>
 	<!-- 객체정리 끝ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
-	
+	<!-- inquiry 리스트 삭제 -->
+	<delete id="deleteInquiryHistoryList" parameterType="java.util.List">
+		DELETE FROM inquiry_history
+		WHERE inquiry_history_id IN
+		<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+			(#{item})
+		</foreach>
+	</delete>
+	<!-- inquiryAnswer 리스트 삭제 -->
+	<delete id="deleteInquiryHistoryAnswerList" parameterType="java.util.List">
+		DELETE FROM inquiry_history_answer
+		WHERE inquiry_history_id IN
+		<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+			(#{item})
+		</foreach>
+	</delete>
+	<!--  Inquiry 카테고리 리스트 가져오기 -->
+	<select id="selectInquiryList" resultMap="Inquiry">
+		SELECT  inquiry_id,
+				inquiry_name
+		FROM inquiry
+	</select>
 	<!-- 답변에 해당하는 answer_comment 삭제 -->
 	<delete id="deleteAnswerCommentId" parameterType="java.util.List">
 		DELETE FROM answer_comment
@@ -623,6 +644,14 @@
 		DELETE FROM faq_board
 		WHERE faq_id = #{faqId} 
 	</delete>
+	<!-- FAQ 리스트 삭제 -->
+	<delete id="deleteFaqBoardList" parameterType="java.util.List">
+		DELETE FROM faq_board
+		WHERE faq_id IN
+		<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+			(#{item})
+		</foreach>
+	</delete>
 	<!-- FAQ 수정 -->
   	<update id="updateFaq"  parameterType="com.example.codeblue.vo.FaqBoard">
   		UPDATE faq_board SET FAQ_title = #{faqTitle},
@@ -913,8 +942,7 @@
    	</select>
    	
 	<!-- 문의내역 전체 리스트 -->
-	<select id="selectInquiryHistoryList" 
-			parameterType="com.example.codeblue.vo.Page" 
+	<select id="selectInquiryHistoryList" parameterType="com.example.codeblue.vo.Page" 
 			resultMap="InquiryHistory">
 	
 	SELECT  inquiry_history_id,
@@ -922,14 +950,36 @@
 			inquiry_datetime,
 			inquiry_answer
     FROM inquiry_history
+    <where>
+    	<if test="searchCategory != null">
+			AND inquiry_id = #{searchCategory}
+		</if>
+		<if test="searchWord != null">
+			AND inquiry_title like CONCAT('%',#{searchWord},'%')
+		</if> 
+		<if test="toDate != null and fromDate != null">
+			AND DATE(inquiry_datetime) &gt;= DATE(#{toDate}) AND DATE(inquiry_datetime) &lt;= DATE(#{fromDate})  
+		</if>
+	</where>
     ORDER BY inquiry_datetime DESC
     LIMIT #{beginRow},#{rowPerPage}
    </select>
    <!--  문의내역 전체 행 -->
    <select  id="InquiryHistoryTotalRow" 
-			resultType="int">
+			resultType="int" parameterType="com.example.codeblue.vo.Page">
 	SELECT count(*)
 	FROM inquiry_history
+	<where>
+		<if test="searchCategory != null">
+			AND inquiry_id = #{searchCategory}
+		</if>
+		<if test="searchWord != null">
+			AND inquiry_title like CONCAT('%',#{searchWord},'%')
+		</if> 
+		<if test="toDate != null and fromDate != null">
+			AND DATE(inquiry_datetime) &gt;= DATE(#{toDate}) AND DATE(inquiry_datetime) &lt;= DATE(#{fromDate})  
+		</if>
+	</where>
    </select>
 
    
@@ -1015,17 +1065,40 @@
 	</insert>
 	<!--  FAQ 리스트 가져오기 -->
 	<select id="selectFaqBoardList" resultMap="FaqBoard" parameterType="com.example.codeblue.vo.Page">
-  	SELECT  FAQ_id, 
-			FAQ_title, 
-			FAQ_datetime 
-    FROM faq_board 
-    ORDER BY FAQ_datetime DESC 
+  	SELECT  fb.FAQ_id,
+			fb.FAQ_title,
+			fb.FAQ_datetime 
+    FROM faq_board fb INNER JOIN service_category sc 
+    ON fb.service_category_id = sc.service_category_id 
+	 <where>
+	 	 <if test="searchCategory != null">
+			AND fb.service_category_id = #{searchCategory}
+		</if>
+		<if test="searchWord != null">
+			AND fb.FAQ_title like CONCAT('%',#{searchWord},'%')
+		</if> 
+		<if test="toDate != null and fromDate != null">
+			AND DATE(faq_datetime) &gt;= DATE(#{toDate}) AND DATE(faq_datetime) &lt;= DATE(#{fromDate})  
+		</if>
+	</where>
+    ORDER BY fb.FAQ_datetime DESC 
     LIMIT #{beginRow}, #{rowPerPage}
   	</select>
   	<!--  FAQ 전체리스트 행 가져오기 -->
-  	<select id="selectFaqBoardTotalCount" resultType="int">
+  	<select id="selectFaqBoardTotalCount" resultType="int" parameterType="com.example.codeblue.vo.Page">
   		SELECT COUNT(*) 
   		FROM faq_board
+	 <where>
+	 	 <if test="searchCategory != null">
+			AND service_category_id = #{searchCategory}
+		</if> 
+		<if test="searchWord != null">
+			AND FAQ_title like CONCAT('%',#{searchWord},'%')
+		</if> 
+		<if test="toDate != null and fromDate != null">
+			AND DATE(faq_datetime) &gt;= DATE(#{toDate}) AND DATE(faq_datetime) &lt;= DATE(#{fromDate})  
+		</if> 
+	</where>
   	</select>
 	<!-- 검색조건 카테고리 리스트 뽑기 -->
 	<select id="selectFeildList" resultMap="Feild">
