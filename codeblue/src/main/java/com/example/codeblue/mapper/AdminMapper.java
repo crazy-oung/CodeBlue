@@ -18,12 +18,17 @@ import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.QuestionComment;
 import com.example.codeblue.vo.QuestionCount;
+import com.example.codeblue.vo.Report;
 import com.example.codeblue.vo.ReportHistory;
 import com.example.codeblue.vo.ServiceCategory;
 import com.example.codeblue.vo.User;
 
 @Mapper
 public interface AdminMapper {
+	//Report 카테고리 가져오기
+	public List<Report> selectReportList();
+	//신고내역 리스트 삭제
+	public int deleteReportHistoryList(List<String> reportHistoryIdList);
 	//inquiry 리스트 삭제
 	public int deleteInquiryHistoryList(List<String> inquiryHistoryIdList);
 	//inquiryAnswer 리스트 삭제
@@ -94,7 +99,7 @@ public interface AdminMapper {
 	public int InquiryHistoryTotalRow(Page page);
 	//신고내역 가져오기
 	public List<ReportHistory> selectReportHistoryList(Page page);
-	public int ReportHistoryTotalRow();
+	public int selectReportHistoryTotalRow(Page page);
 	//문의내역 상세 내용 가져오기
 	public InquiryHistory selectInquiryHistoryOne(int inquiryHistoryId);
 	//신고내역 상세 내용 가져오기
@@ -104,7 +109,7 @@ public interface AdminMapper {
 	//공지사항 리스트
 	public List<NoticeBoard> selectNoticeBoard(Page page);
 	//공지사항 수
-	public int noticeBoardCount(Page page);
+	public int selectNoticeBoardCount(Page page);
 	//공지사항 상세보기
 	public NoticeBoard noticeBoardOne(int noticeId);
 	//공지사항 입력

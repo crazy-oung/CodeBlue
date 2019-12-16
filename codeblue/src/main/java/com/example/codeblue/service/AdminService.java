@@ -15,11 +15,17 @@ import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.QuestionCount;
+import com.example.codeblue.vo.Report;
 import com.example.codeblue.vo.ReportHistory;
 import com.example.codeblue.vo.ServiceCategory;
 import com.example.codeblue.vo.User;
 
 public interface AdminService {
+	
+	//신고내역  리스트 삭제
+	public void removeReportHistoryList(List<String> reportHistoryIdList);
+	//Report 카테고리 가져오기
+	public List<Report> getReportList();
 	//Inquiry 리스트 삭제
 	public void removeInquiryHistoryList(List<String> inquiryHistoryIdList);
 	//Inquiry 카테고리 가져오기
@@ -59,7 +65,7 @@ public interface AdminService {
 	// 전문가회원 리스트
 	public Map<String,Object> getAdminExpertUserList(int currentPage, int rowPerPage, String searchWord, String toDate, String fromDate);
 	//공지사항 리스트
-	public Map<String,Object> getNoticeBoard(int currentPage,int rowPerPage, String searchWord);
+	public Map<String,Object> getNoticeBoard(int currentPage,int rowPerPage, String searchWord, String toDate, String fromDate);
 	//공지사항 상세보기
 	public NoticeBoard getNoticeOne(int noticeId);
 	//공지사항 추가하기
@@ -73,7 +79,7 @@ public interface AdminService {
 	//문의 내역 상세 페이지 출력
 	public InquiryHistory getInquiryHistoryOne(int inquiryHistoryId);
 	//신고 내역 리스트 출력
-	public Map<String, Object> getReportHistoryList(int currentPage, int rowPerPage);
+	public Map<String, Object> getReportHistoryList(int currentPage, int rowPerPage, String searchWord, String toDate, String fromDate, String reportId);
 	//신고 내역 상세 페이지 출력
 	public ReportHistory getReportHistoryOne(int reportHistoryId);
 	public List<QuestionCount> getYearlyQuestionCount();

@@ -196,7 +196,6 @@ var toDate = undefined;
 //작성기간끝
 var fromDate = undefined;
 
-$(document).ready(function(){
 	$("#sideBarNotice").addClass("active");
 	$("#sideBarNotice").children("a").attr("aria-expanded","false");
 	$("#sideBarNotice").children("div").addClass("show");
@@ -205,39 +204,52 @@ $(document).ready(function(){
 	appendItem(currentPage);
 	//이전버튼 공지사항 보여줌
 	$("#prevBtn").click(function(){
-		appendItem(--currentPage, false, searchWord);
+		appendItem(--currentPage);
 		$("#selectAll").prop("checked",false);
 	})
 	//다음버튼 공지사항 보여줌
 	$("#nextBtn").click(function(){
-		appendItem(++currentPage, false, searchWord);
+		appendItem(++currentPage);
 		$("#selectAll").prop("checked",false);
 	})
 	//rowPerPage 변경시 공지사항 보여줌
 	$("#rowPerPage").change(function(){
-		appendItem(1, true, searchWord);
+		appendItem(1);
 		$("#selectAll").prop("checked",false);
 	});
 	//getBoard버튼 누르면 검색한다.
 	$("#getBoard").click(function(){
-		appendItem(1, true, $("#searchWord").val());
+		appendItem(1);
 		$("#selectAll").prop("checked",false);
 	})
-//document
-})
-function appendItem(currentPage, YN, word){
-	console.log("searchWord",word);
-	if(YN){
-		currentPage = 1;
-	}
+//리스트 출력
+function appendItem(currentPage){
+		//id 값이 searchWord 인 html를 가져와서 value 값이 null이 아닐경우 저장한다.
+		if(document.getElementById("searchWord").value){
+			searchWord = $("#searchWord").val();
+		} else {
+			searchWord = undefined;
+		}
+		//html태그중에 input에 id값이 toDate 인  value데이터를 Date형식으로 변환한 값이 null이 아닐경우 저장한다.
+		if(document.querySelector("input[id='toDate']").valueAsDate){
+			toDate = document.querySelector("input[id='toDate']").valueAsDate.toISOString().slice(0, 10);	
+		} else {
+			toDate = undefined;
+		}
+		//html태그중에 input에 id값이 fromDate 인  value데이터를 Date형식으로 변환한 값이 null이 아닐경우 저장한다.
+		if(document.querySelector("input[id='fromDate']").valueAsDate){
+			fromDate = document.querySelector("input[id='fromDate']").valueAsDate.toISOString().slice(0, 10);
+		} else {
+			fromDate = undefined;
+		}
 	$.ajax({
-		url : "/rest/adminNoticeBoard",
+		url : "/rest/adminNoticeBoardTest",
 		method : "post",
 		data : {"currentPage": currentPage,
 				"rowPerPage" : $("#rowPerPage").val(),
-				"searchWord" : word,
-				"toDate" : $("#toDate").val(),
-				"fromDate": $("#fromDate").val()},
+				"searchWord" : searchWord,
+				"toDate" : toDate,
+				"fromDate": fromDate},
 		success : function(json){
 			$("#notice").empty();
 			subInfo(json);
@@ -312,6 +324,8 @@ function subInfo(json){
 	rowPerPage = json.rowPerPage;
 	lastPage = json.lastPage;
 	searchWord = json.searchWord;
+	toDate = json.toDate;
+	fromDate = json.fromDate;
 	$("#searchWord").val(json.searchWord);
 	$("#totalRow").append("검색결과"+json.totalRow+"건");
 	$("#pageInfo").append(currentPage+"/"+lastPage);

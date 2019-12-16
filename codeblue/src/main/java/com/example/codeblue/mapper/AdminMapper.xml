@@ -189,6 +189,21 @@
 		<association property="questionBoard" resultMap="QuestionBoard"></association>
 	</resultMap>
 	<!-- 객체정리 끝ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
+	
+	<!-- 신고내역 리스트 삭제 -->
+	<delete id="deleteReportHistoryList" parameterType="java.util.List">
+		DELETE FROM report_history
+		WHERE report_history_id IN
+		<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+			(#{item})
+		</foreach>
+	</delete>
+	<!--  report 카테고리 리스트 가져오기 -->
+	<select id="selectReportList" resultMap="Report">
+		SELECT  report_id,
+				report_name
+		FROM report
+	</select>
 	<!-- inquiry 리스트 삭제 -->
 	<delete id="deleteInquiryHistoryList" parameterType="java.util.List">
 		DELETE FROM inquiry_history
@@ -862,6 +877,7 @@
 			AND DATE(u.user_createtime) &gt;= DATE(#{toDate}) AND DATE(u.user_createtime) &lt;= DATE(#{fromDate})
 		</if>
 	</select>
+	<!--  공지사항 리스트 출력 -->
 	<select id="selectNoticeBoard" resultMap="NoticeBoard"
   									parameterType="com.example.codeblue.vo.Page">
   		SELECT notice_id,
@@ -869,23 +885,29 @@
   			notice_content,
   			notice_datetime
   		FROM
-  			notice_board
+  			notice_board 
   		<where>
 			<if test="searchWord != null">
-				notice_title like CONCAT('%',#{searchWord},'%')
+				 notice_title like CONCAT('%',#{searchWord},'%')
+			</if>
+			<if test="toDate != null and fromDate != null">
+				AND DATE(notice_datetime) &gt;= DATE(#{toDate}) AND DATE(notice_datetime) &lt;= DATE(#{fromDate})  
 			</if>
 		</where>
   		ORDER BY notice_datetime DESC
   		LIMIT #{beginRow}, #{rowPerPage}
   	</select>
-  	
-  	<select id="noticeBoardCount" resultType="int" parameterType="com.example.codeblue.vo.Page">
+  	<!-- 공지사항 총 행수 -->
+	<select id="selectNoticeBoardCount" resultType="int" parameterType="com.example.codeblue.vo.Page">
   		SELECT 
   			COUNT(*) 
   		FROM notice_board
   		<where>
 			<if test="searchWord != null">
-				notice_title like CONCAT('%',#{searchWord},'%')
+				 notice_title like CONCAT('%',#{searchWord},'%')
+			</if>
+			<if test="toDate != null and fromDate != null">
+				AND DATE(notice_datetime) &gt;= DATE(#{toDate}) AND DATE(notice_datetime) &lt;= DATE(#{fromDate})  
 			</if>
 		</where>
   	</select>
@@ -999,22 +1021,41 @@
    	</select>
    
    <!-- 신고내역 전체 리스트 -->
-	<select id="selectReportHistoryList" 
-			parameterType="com.example.codeblue.vo.Page" 
-			resultMap="ReportHistory">
+	<select id="selectReportHistoryList" parameterType="com.example.codeblue.vo.Page" resultMap="ReportHistory">
 	
 	SELECT  report_history_id,
 			report_title,
 			report_datetime
     FROM report_history
+    <where>
+		<if test="searchCategory != null">
+			AND report_id = #{searchCategory}
+		</if> 
+		<if test="searchWord != null">
+			AND report_title like CONCAT('%',#{searchWord},'%')
+		</if> 
+		<if test="toDate != null and fromDate != null">
+			AND DATE(report_datetime) &gt;= DATE(#{toDate}) AND DATE(report_datetime) &lt;= DATE(#{fromDate})  
+		</if>
+	</where>
     ORDER BY report_datetime DESC
     LIMIT #{beginRow},#{rowPerPage}
    </select>
    <!--  신고내역 전체 행 -->
-   <select id="ReportHistoryTotalRow" 
-			resultType="int">
+   <select id="selectReportHistoryTotalRow" parameterType="com.example.codeblue.vo.Page" resultType="int">
 	SELECT count(*)
 	FROM report_history
+	<where>
+		<if test="searchCategory != null">
+			AND report_id = #{searchCategory}
+		</if>
+		<if test="searchWord != null">
+			AND report_title like CONCAT('%',#{searchWord},'%')
+		</if> 
+		<if test="toDate != null and fromDate != null">
+			AND DATE(report_datetime) &gt;= DATE(#{toDate}) AND DATE(report_datetime) &lt;= DATE(#{fromDate})  
+		</if>
+	</where>
    </select>   
 
 	<select id="selectYearlyQuestionCount" resultMap="QuestionCount">
