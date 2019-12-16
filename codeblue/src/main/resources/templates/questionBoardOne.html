@@ -73,7 +73,7 @@
 								</div>
 							</div>
 
-							<div style="display: none;" id="questionComment">
+							<div class="card p-3 bg-gray-100 border-0"style="display: none;" id="questionComment">
 								<form method="post">
 									<div>
 										<textarea id="questionCommentContent" class="form-control form-control-sm" maxlength="1000"
@@ -192,9 +192,9 @@ $.ajax({
 //질문 댓글출력
 $("#commentBtn").click(function(){
 	if($("#questionComment").css("display") == "none"){   
-        jQuery('#questionComment').css("display", "block");   
+        $('#questionComment').slideDown(300);
     } else {  
-        jQuery('#questionComment').css("display", "none");   
+        $('#questionComment').slideUp(300);
     }  
 	appendQuestionComment();
 });

@@ -36,17 +36,19 @@
 					<img src="/img/codeBlueLogo.png" width="250px"> 
 					<h1 class="text-primary h4 mt-2">회원이 되어볼까요?</h1>
 					<label>코드블루 회원들은 ...</label>
-					<a href="/registerExpert">전문가 이신가요?</a>
+					<img src="img/vote.svg" width="100%" class="my-4">
+					<hr>
+					<a href="/registerExpert">전문가 회원가입은 어떻게 하죠?</a>
 				</div>
 				
-				<div class="col-sm-6 mt-5 pt-3 text-left mb-5" align="center">
+				<div class="col-sm-6 mt-4 text-left mb-3" align="center">
 					<!-- register Form begin -->
 					<div class="card shadow p-1 mx-5 mb-5"> 
 						<form class="was-validated card-body">
 						  <div class="form-group">
 						    <label class="text-dark font-weight-bold" for="id">아이디</label>
 						    <input type="email" class="form-control form-control-sm" id="id" placeholder="E-Mail@example.com" required>
-						    <div class="valid-feedback">좋아요.</div>
+						    <div class="valid-feedback" id="checkedId"><a href="#" class="text-danger" onclick="checkUserId()"><strong>중복검사를 위해 여기를 클릭!</strong> 중복 검사를 완료해 주세요!👈👈</a></div>
 						    <div class="invalid-feedback">올바른 이메일을 입력해주세요.</div>
 						  </div>
 						  <div class="form-group">
@@ -108,8 +110,6 @@
 			</div> 
 		</div> 
 		<!-- Page Content End --> 
-		 
-
 
 	<!-- Bootstrap core JavaScript-->
 	<script src="vendor/jquery/jquery.min.js"></script>
@@ -125,7 +125,28 @@
 
 </body>
 <script> 
-
+function checkUserId(){
+	console.log($("#id").val())
+	$.ajax({
+		url : "/rest/userOne",
+		method : "post",
+		data : {"userId":$("#id").val()},
+		success : function(json){
+			console.log(json);
+			if(json != ""){
+				alert("아이디가 존재합니다!");
+				return;
+			}
+			if(confirm("아이디가 없습니다! 해당 주소로 아이디를 생성하시겠습니까?")){
+				alert("결정하면 되돌릴수 없습니다.");
+				
+				$('#id').prop('readonly', true); 
+				$("#checkedId").empty();
+				$("#checkedId").append("이메일 결정 완료! ☺")
+			}
+		}
+	})
+}
 
 		$.ajax({
 			url : "/rest/getRegionList",
@@ -143,7 +164,7 @@
 				})
 			}
 		})
-
+		
 
 		$(".join").click(function(){
 			console.log("입력완료 메일전송 시작.");

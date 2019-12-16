@@ -6,4 +6,5 @@ import lombok.Data;
 public class Tag {
 	private int tagId;
 	private String tagName;
+	private QuestionBoard questionBoard;
 }

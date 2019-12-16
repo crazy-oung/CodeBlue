@@ -5,7 +5,7 @@
 .wrapper {
     display: grid;
     grid-template-columns: 25% 25% 25% 25%;
-    grid-template-rows: 100px 100px 100px 100px 100px 100px 100px 100px 100px;
+    grid-template-rows: 100px 100px 100px 100px 100px;
 }
 </style> 
 <meta charset="utf-8">
@@ -48,27 +48,23 @@
 				
 					<!-- Page Heading -->
 					<div class="d-sm-flex align-items-center justify-content-between mb-2 mt-5 pt-5">
-						<h2 class="text-gray-800 font-weight-bold mx-3 mt-2">태그 </h2>
+						<h2 class="text-gray-800 font-weight-bold mx-3 mt-2 NotoSans">태그 </h2>
 					</div><!-- page Heading End -->
 					
 					<div class="d-flex m-2">
 						<input type="text" autocomplete="off" class="form-control form-control-sm" id="searchWord" style="width: 10%">
-						<button type="button" class="btn btn-sm btn-primary" id="searchUserBtn">검색</button>
-						<hr>
-						<input type="text" autocomplete="off" class="form-control form-control-sm" id="tagName" style="width: 10%">
-						<button type="button" class="btn btn-sm btn-primary" id="addTagBtn">추가</button>
+						<button type="button" class="btn btn-sm btn-primary" id="searchTagBtn">검색</button>
 					</div>
 					<hr>
 					
 					<!-- 본문 -->
-					<div class="wrapper" id="userList"></div>
+					<div class="wrapper" id="tagList"></div>
 					
 					<div class="d-flex justify-content-between">  
 					    <div class="p-3" id="totalRow"></div>
 					    <div class="p-3">
-						    <button type="button" class="btn btn-primary btn-sm" id="prevBtnd">이전</button>
-						    <span id="pageInfo"></span>
-						    <button type="button" class="btn btn-primary btn-sm" id="nextBtnd">다음</button>
+						    <button type="button" class="btn btn-primary btn-sm" id="prev">이전</button>
+						    <button type="button" class="btn btn-primary btn-sm" id="next">다음</button>
 					    </div>
 					</div>
 					
@@ -125,18 +121,21 @@
 <script>
 	var currentPage = 1;
 	var lastPage = 0;
-	var rowPerPage = 36;
+	var rowPerPage = 20;
 	var totalRow = 0;
 	var searchWord = null;
 	
 function appendTags(){
 	console.log("함수 실행")
-	$("userList").empty();
+	$("#tagList").empty();
+	
+	console.log(currentPage);
 	$.ajax({
-		url : "/rest/getUserList",
-		method : "post",
+		url : "/rest/getTagList",
+		method : "get",
 		data : {"currentPage" : currentPage, "searchWord": $("#searchWord").val(), "rowPerPage" : rowPerPage},
 		success : function(json){
+			console.log("getTagList success")
 			console.log(json);
 			
 			currentPage = json.currentPage;
@@ -145,28 +144,26 @@ function appendTags(){
 			
 			$("#searchWord").append(json.searchWord);
 			
-			$("#pageInfo").empty();
-			$("#pageInfo").append(currentPage+"/"+lastPage);
-			
-			$("#totalRow").empty();
-			$("#totalRow").append("유저 : "+totalRow+"명");
 			
 			// 이전 다음 버튼 
 			if(currentPage == 1){
-				$("#prevBtnd").hide();
+				console.log("이전 버튼 숨김")
+				$("#prev").hide();
 			} else {
-				$("#prevBtnd").show();
-			}
+				$("#prev").show();
+			} 
+			// 마지막 페이지 
 			if(currentPage <lastPage) {
-				$("#nextBtnd").show();
+				$("#next").show();
 			} else {
-				$("#nextBtnd").hide();
+				$("#next").hide();
 			}
+			
 			$(json.list).each(function(index,item){
-				html = "<div class='d-flex p-2'><div id='img'><img class='rounded-circle' src='/img/profile.svg' width='80px'></div>";
-				html += "<div class='px-2 py-3'><a href='/userOne?userId="+item.userId+"'>"+item.userName+"</a><br>";
-				html += item.rank.rankName+"</div></div>";
-				$("#userList").append(html);
+				html = "<div class='p-2'>";
+				html += "<div class='px-2 py-3'><a href='#' class='btn btn-sm hov-p font-weight-bold text-primary p-1'>#"+item.tagName+"</a> x ";
+				html += "<small class='text-dark text-right'>"+item.count+"</small></div></div>";
+				$("#tagList").append(html);
 			});
 		}
 	});
@@ -178,43 +175,23 @@ $(document).ready(function(){
 	appendTags();
 	
 	// 이전버튼
-	$("#prevBtnd").click(function(){
-		--currentPage
+	$("#prev").click(function(){
+		--currentPage;
 		appendTags();
 	});
 	
 	// 다음버튼
-	$("#nextBtnd").click(function(){
+	$("#next").click(function(){
 		++currentPage;
 		appendTags();
 	});
 	
 	//검색버튼
-	$("#searchUserBtn").click(function(){
+	$("#searchTagBtn").click(function(){
 		console.log("검색시작");
 		appendTags();
 	});
 	
-	//태그 추가 버튼
-	$("#addTagBtn").click(function(){
-		console.log("태그 추가");
-		
-		let tags = $("#tagName").val();
-		let tagSplit = tags.split('#');
-		console.log("태그 split");
-		console.log(tagSplit);
-		
-		$.ajax({
-			url : "/rest/addTag",
-			method : "post",
-			data : {"name" : tagSplit},
-			succress : function(json){
-				console.log(json);
-				alert("태그 추가 완료 ")
-			}
-			
-		})
-	});
 	
 });	
 

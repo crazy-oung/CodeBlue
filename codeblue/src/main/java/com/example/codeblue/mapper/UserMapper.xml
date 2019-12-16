@@ -307,7 +307,7 @@
 			   user_birthdate,
 			   user_createtime
 		FROM user
-		WHERE user_id = ${userId}
+		WHERE user_id = #{userId}
 	</select>
 
 	<select id="selectTagList" parameterType="com.example.codeblue.vo.Page" resultMap="Tag">

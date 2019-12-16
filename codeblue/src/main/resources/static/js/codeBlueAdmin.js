@@ -203,9 +203,19 @@ console.log("관리자");
        }) 
         
 	$("#sidebarToggle").click(function(){
-//		console.log("사이드바 숨김");
+		console.log("사이드바 숨김");
 		if($("#page-top").attr("class")=="sidebar-toggled"){
-//			alert("숨김상태!")
+			$("#page-top").removeClass("sidebar-toggled");
+			$("#accordionSidebar").removeClass("toggled");
+			return;
+		}
+		$("#page-top").addClass("sidebar-toggled");
+		$("#accordionSidebar").addClass("toggled");
+	})
+	
+	$("#sidebarToggleTop").click(function(){
+		console.log("사이드바 숨김");
+		if($("#page-top").attr("class")=="sidebar-toggled"){
 			$("#page-top").removeClass("sidebar-toggled");
 			$("#accordionSidebar").removeClass("toggled");
 			return;
