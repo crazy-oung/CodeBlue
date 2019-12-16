@@ -66,6 +66,7 @@
 								<div>
 									<a id="commentBtn" class="btn hov-p px-1"><i class='far fa-comment-dots mx-1'></i></a>
 									<a id="reportBtn" class='px-1 text-danger btn hov-p' href="#">신고</a>
+									<a id="goodBtn" class="px-1 text-primary btn hov-p">추천</a>
 								</div>
 								<div class="pr-2">
 									<div class="card bg-gray-200 text-dark d-flex p-1" id="questionUserName"></div>
@@ -143,11 +144,12 @@ $.ajax({
 	method : "get",
 	async : "false",
 	success : function(json){
-		console.log(json)
+		console.log(json);
 		userId = json.userId;
 		console.log("userId: ",userId);
 	}
 });
+
 //질문 답변 입력창
 $('#summernote').summernote({
 	  toolbar: [
@@ -216,6 +218,7 @@ $("#questionCommentBtn").click(function(){
 	})
 });
 
+
 // 질문 답변 추가하기
 $("#addAnswerBtn").click(function(){
 	if(userId == undefined){
@@ -236,7 +239,26 @@ $("#addAnswerBtn").click(function(){
 	})
 });
 
-
+//추천기능
+$("#goodBtn").click(function(){
+	console.log(userId);
+	if(userId == undefined){
+		alert("로그인 후 이용하실 수 있습니다.")
+		return;
+	}
+	$.ajax({
+		url : "/rest/questionVote",
+		method :"post",
+		data : {"user.userId":userId,
+				"questionBoard.questionId": getParam("questionId")
+			},
+		success : function(json){
+			console.log("추천",json);
+			console.log("추천추천");
+			alert("추천👍");
+		}
+	})
+})
 
 //질문 댓글 리스트 출력
 function appendQuestionComment(){

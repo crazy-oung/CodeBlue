@@ -50,12 +50,20 @@
 					<hr>
 					
 					<!-- hospital -->
-					<table id="hospitalOne" class="table table-hover text-center m-4"></table>
+					<div class="card m-2 p-5 border-0">
+						<div class="row">
+							<div class="col-sm-6">
+							<img src='img/hospital.svg' width='50%'>
+							</div>
+							<div class="col-sm-6" id="hospitalOne"></div>
+						</div>
+					</div>
 					<br>
-					<button type="button" id="listBtn" class="btn btn-primary">목록</button>
-					<button type="button" id="modifyBtn" class="btn btn-primary">수정</button>
-					<button type="button" id="deleteBtn" class="btn btn-primary">삭제</button>
-					
+					<div style="float: right;">
+						<button type="button" id="listBtn" class="btn btn-primary">목록</button>
+						<button type="button" id="modifyBtn" class="btn btn-primary">수정</button>
+						<button type="button" id="deleteBtn" class="btn btn-primary">삭제</button>
+					</div>
 				</div>
 			  </div>
 			<!--  Page Content End -->
@@ -155,14 +163,18 @@ $(document).ready(function(){
 			console.log(json);		
 			let hospitalOne
 			$(json).each(function(index,item){
-				    hospitalOne  = "<tr><td>병원명</td><td>"+item.hospitalName;
-					hospitalOne += "</td></tr><tr><td>전화번호</td><td>"+item.hospitalNumber;
-					hospitalOne += "<td></tr><tr><td>지역</td><td>"+item.region.regionName;
-					hospitalOne += "</td></tr><tr><td>주소</td><td>"+item.hospitalAddress;
-					hospitalOne += "</td></tr><tr><td>상세주소</td><td>"+item.hospitalAddress2;
-					hospitalOne += "</td></tr>";
+					hospitalOne  ="<p class='mb-0 text-dark'style='font-size : 30px'>"+item.hospitalName;
+					hospitalOne +="<hr><p class='mb-0 text-dark'style='font-size : 20px'>"+item.hospitalNumber;
+					hospitalOne +="</p>" ;
+					hospitalOne +="<p class='mb-0 text-dark'style='font-size : 20px'>" + item.region.regionName;
+					hospitalOne +="</p>";
+					hospitalOne += "<p class='mb-0 text-dark'style='font-size : 20px'>" + item.hospitalAddress;
+					hospitalOne += "</p><p class='mb-0 text-dark' style='font-size : 20px'>"+item.hospitalAddress2;
+					hospitalOne += "</p>";
+					
+					$("#hospitalOne").append(hospitalOne);
 			})
-			$("#hospitalOne").append(hospitalOne);
+			
 		}
 	})
 	

@@ -221,7 +221,7 @@ public class LeeServiceImp implements LeeService{
 	
 	//유저 추천 중복검사 및 추천
 	@Override
-	public String getQuestionVoteCheck(QuestionVote questionVote) {
+	public int getQuestionVoteCheck(QuestionVote questionVote) {
 		System.out.println(":::UserServiceImp - getQuestionVoteCheck:::");
 		System.out.println("questionid"+questionVote);
 		
@@ -229,7 +229,7 @@ public class LeeServiceImp implements LeeService{
 			System.out.print("추천!");
 		return leeMapper.insertQuestionVote(questionVote);
 		}
-		return "중복 추천 입니다.";
+		return 0;
 	}
 		
 }

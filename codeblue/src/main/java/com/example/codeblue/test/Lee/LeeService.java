@@ -43,5 +43,5 @@ public interface LeeService {
 	//해당 유저 질문 글 추천 수
 	public int getUserVote(String userId);
 	//유저 질문 중복 검사
-	public String getQuestionVoteCheck(QuestionVote questionVote);
+	public int getQuestionVoteCheck(QuestionVote questionVote);
 }

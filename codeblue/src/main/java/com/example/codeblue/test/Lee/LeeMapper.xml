@@ -255,7 +255,7 @@
 	<select id="selectQuestionVoteCheck" resultMap="QuestionVote" parameterType="com.example.codeblue.vo.QuestionVote">
 		SELECT user_id, question_id 
 		FROM question_vote
-		WHERE user_id = #{userId} and question_id = #{questionId}
+		WHERE user_id = #{user.userId} and question_id = #{questionBoard.questionId}
 	</select>
 	
 	<!--해당 게시글 추천기능  -->
@@ -265,8 +265,8 @@
 			question_id,
 			question_vote_datetime
 		)VALUES(
-			#{userId}, 
-			#{questionId}, 
+			#{user.userId}, 
+			#{questionBoard.questionId}, 
 			now()
 		)
 	</insert> 

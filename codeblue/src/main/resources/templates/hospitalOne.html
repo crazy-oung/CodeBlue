@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head> 
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,110 +8,106 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>공지사항 - 코드블루</title>
+<title>FAQ - 코드블루</title>
 <!-- import JQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
 
 <!-- Custom fonts for this template-->
-<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
-	type="text/css">
-<link
-	href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-	rel="stylesheet">
+<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
 <!-- Custom styles for this template-->
 <link href="css/sb-admin-2.min.css" rel="stylesheet">
 <!-- Custom styles for codeBlue -->
 <link href="css/codeBlue.css" rel="stylesheet">
-</head>
 
+<style>
+	.wrapper {
+	    display: grid;
+	    grid-template-columns: 33% 33% 33%;
+	    grid-template-rows: 34vh 34vh;
+	}
+</style> 
+</head>
 <body id="page-top">
  
 		<!-- Topbar -->
-		<nav
-			class="navbar navbar-expand navbar-light topbar mb-4 shadow fixed-top"
-			style="height: 50px; border-bottom: 1px solid #d9d9d9; border-top: 4px solid #4e73df; background: #f2f2f2;">
-			<div class="container">
-				<!-- topbar codeblue logo -->
-				<a class="navbar-brand text-primary mr-0" href="/"><img src="/img/codeBlueLogo.png" width="130px"></a> 
-				<a class="btn btn-sm btn-default mx-2 hov-g text-dark" href="/QnA">QnA</a>
-
-				<!-- Topbar Search -->
-            <div class="input-group">
-              <input type="text" class="form-control bg-light border-1 small" placeholder="병원 검색" aria-label="Search" aria-describedby="basic-addon2" id="searchWord">
-              <div class="input-group-append">
-                <button class="btn btn-primary" type="button" id="search">
-                  <i class="fas fa-search fa-sm"></i>
-                </button>
-              </div>
-            </div>
-
-				<div class="d-felx justify-content-end" style="width: 600px">
-					<a class="ml-3 btn btn-sm hov-p text-primary" href="/login">로그인</a>
-					<a class=" btn ml-1 btn-sm btn-primary" href="/register">회원가입</a>
-				</div> 
-			</div>
-		</nav>
+		<div id="topBar"></div>
 		<!-- End of Topbar -->
 
 		<!-- Begin Page Content -->
 		<div class="container">
-			<div class="row"> 
+			<div class="row"  style="height:80vh"> 
 			
 				<!-- Side Bar -->
-				<div class="col-sm-1 p-0 " style="border-right: 1px solid #d9d9d9;">
-					<nav class="navbar pl-0 sticky-container">
-						<div style="margin-top: 70px">
-							<ul class="nav flex-column">
-								<li class="pl-0"><small>질문</small></li> 
-								<li class="nav-item pl-1"><a class="nav-link pl-2 font-weight-bold pt-1 pb-0" href="/">today</a></li> 
-								<li class="nav-item pl-1"><a class="nav-link pl-2 text-danger font-weight-bold pt-1 pb-0" href="/">hot 🔥</a></li>
-								<li class="nav-item pl-1"><a class="nav-link pl-2 text-warning font-weight-bold pt-1 pb-0" href="/">help!</a></li>
-								<li class="nav-item pl-1"><a class="nav-link pl-2 text-success font-weight-bold pt-1 pb-0" href="/">ongoing</a></li>
-								<li class="mt-2"><small>조회</small></li> 
-								<li class="nav-item"><a class="nav-link text-dark pl-2 pt-1 pb-0" href="/">유저</a></li>
-								<li class="nav-item"><a class="nav-link text-dark pl-2 pt-1 pb-0" href="/">태그</a></li>
-								<li class="nav-item"><a class="nav-link text-dark pl-2 pt-1 pb-0" href="/">랭킹</a></li>
-							</ul>
-						</div> 
-					</nav>
+				<div class="col-sm-1 p-0 " style="border-right: 1px solid #d9d9d9;" id="leftSideBar">
 				</div>
 				<!-- Side Bar End -->
 				
 				<!-- Page Content -->
-				<div class="col-sm-8">
-				
-					<!-- Page Heading -->
+				<div class="col-sm-11" style="height: 100%">
 					
-					<div class="d-sm-flex align-items-center justify-content-between mb-4" style="margin-top: 80px">
-						<div>
-							<h4 class="text-gray-800 mb-0">제휴 병원</h4>
+					 <!-- Page Content -->
+			       	<div class="container-fluid px-4 pt-4" >
+						<div class="border-0 py-2 " > 
+							<!-- Page Content -->
+							<div >
+								<!-- heading -->
+								<h3 class="text-gray-800 mb-2 font-weight-bold NotoSans mt-5">제휴병원</h3>
+								<hr>
+								<!-- page Heading End -->
+			
+								<!-- hospital Board -->
+								<div class="card m-2 p-5 border-0 bg-gray-300">
+									<div class="row">
+										<div class="col-sm-6">
+										<img src='img/hospital.svg' width='50%'>
+										</div>
+										<div class="col-sm-6" id="hospitalOne"></div>
+									</div>
+								</div>
+								
+								<br>
+								<button type="button" id="listBtn" class="btn btn-primary">목록</button>
+							</div>
+							<!--  Page Content End -->
 						</div>
-						<div>
-						<table id="hospitalOne" class="table table-hover text-center m-4"></table>
-						<br>
-						<button type="button" id="listBtn" class="btn btn-primary">목록</button>	
-						</div>
-					<div>
-
-					</div>	
-
-
-					</div>
-						<table id="hospital" class="table table-hover table-bordered"></table>
-						
-					</div><!-- page Heading End -->
-					<hr>
-		
-					</div>
-					
+					</div> 
 				</div>
 				<!-- Page Content End -->
-
+	
+			</div><!-- row end -->
+			
+		</div>
+	
 	<!-- Footer -->
 	<div id="footer"></div>
 	<!-- End of Footer -->
+	
+<!-- ETC -->
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded bg-primary" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
 
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">로그아웃 하시겠습니까?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">로그아웃 하고 싶으시면 아래 로그아웃 버튼을 클릭해주세요!</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+          <a class="btn btn-primary" href="/logout">로그아웃</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
 	<!-- Bootstrap core JavaScript-->
 	<script src="vendor/jquery/jquery.min.js"></script>
@@ -123,20 +118,19 @@
 
 	<!-- Custom scripts for all pages-->
 	<script src="js/sb-admin-2.min.js"></script>
-
-	<!-- Page level plugins
-	 <script src="vendor/chart.js/Chart.min.js"></script>-->
-
-	<!-- Page level custom scripts 
-	<script src="js/demo/chart-area-demo.js"></script>
-	<script src="js/demo/chart-pie-demo.js"></script>-->
+	
+  	<!-- CodeBlue scripts -->
+  	<script src="js/codeBlueUser.js"></script>
 
 </body>
-<script type="text/javascript">
+<script>
 $(document).ready(function(){
-	 $("#sideBarNotice").addClass("active");
-     $("#sideBarNotice").children("a").attr("aria-expanded","false");
-     $("#sideBarNotice").children("div").addClass("show");
+	
+	$("#sideBar").load("/sideBar #accordionSidebar", function(){
+		$("#sideBarHospital").addClass("active");
+		$("#sideBarHospital").children("a").attr("aria-expanded","false");
+		$("#sideBarHospital").children("div").addClass("show");
+	});
 	
 	// 파라메터 정보가 저장될 오브젝트
 	// common.js 같은 모든 페이지에서 로딩되는 js 파일에 넣어두면 됨.
@@ -154,28 +148,52 @@ $(document).ready(function(){
 	};
 	$("#hospitalId").val(getParam("hospitalId"));
 	
+	//상세페이지 출력.
 	$.ajax({
-		url : "/rest/hospitalOne",
+		url : "/rest/adminHospitalOne",
 		method : "post",
 		data : {"hospitalId": getParam("hospitalId")},
 		success : function(json){
 			console.log(json);		
 			let hospitalOne
+			let hospitalName
 			$(json).each(function(index,item){
-				    hospitalOne  = "<tr><td>병원명</td><td>"+item.hospitalName;
-					hospitalOne += "</td></tr><tr><td>전화번호</td><td>"+item.hospitalNumber;
-					hospitalOne += "<td></tr><tr><td>지역</td><td>"+item.region.regionName;
-					hospitalOne += "</td></tr><tr><td>주소</td><td>"+item.hospitalAddress;
-					hospitalOne += "</td></tr><tr><td>상세주소</td><td>"+item.hospitalAddress2;
-					hospitalOne += "</td></tr>";
+				hospitalOne  ="<p class='mb-0 text-dark'style='font-size : 30px'>"+item.hospitalName;
+				hospitalOne +="<hr><p class='mb-0 text-dark'style='font-size : 20px'>"+item.hospitalNumber;
+				hospitalOne +="</p>" ;
+				hospitalOne +="<p class='mb-0 text-dark'style='font-size : 20px'>" + item.region.regionName;
+				hospitalOne +="</p>";
+				hospitalOne += "<p class='mb-0 text-dark'style='font-size : 20px'>" + item.hospitalAddress;
+				hospitalOne += "</p><p class='mb-0 text-dark' style='font-size : 20px'>"+item.hospitalAddress2;
+				hospitalOne += "</p>";
+				
+				$("#hospitalOne").append(hospitalOne);	
 			})
-			$("#hospitalOne").append(hospitalOne);
+			
 		}
 	})
 	
 	$("#listBtn").click(function(){
 		location.href="/hospital";
 	})
+	
+	$("#modifyBtn").click(function(){
+		location.href="/modifyHospital?hospitalId="+getParam("hospitalId");
+	})
+	
+	$("#deleteBtn").click(function(){
+		$.ajax({
+			url : "/removeHospital",
+			data : {"hospitalId":getParam("hospitalId")},
+			method:"get",
+			success : function(){
+				console.log("삭제");
+				location.href="/adminHospitalList";
+			}
+		})
+	})
+//document
 })
+//document
 </script>
 </html>

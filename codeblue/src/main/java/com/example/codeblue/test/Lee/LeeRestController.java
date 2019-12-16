@@ -138,7 +138,7 @@ public class LeeRestController {
 	
 	//중복 검사 후 추천
 	@PostMapping("/rest/questionVote")
-	public String postQuestionVote(QuestionVote questionVote) {
+	public int postQuestionVote(QuestionVote questionVote) {
 		System.out.println(":::post - postQuestionVote");
 		System.out.println("userId"+questionVote);
 		return leeService.getQuestionVoteCheck(questionVote);

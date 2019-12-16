@@ -53,6 +53,10 @@
 						<h3 class="text-gray-800 mb-2 font-weight-bold NotoSans">제휴병원</h3>
 						<a href="/addHospital" class="d-none d-sm-inline-block btn  btn-primary shadow"><i class="mr-2 fas fa-plus fa-sm text-white-50"></i>제휴 등록</a> 
 					</div>
+					<div class="d-flex m-2">
+						<input type="text" class="form-control form-control-sm" placeholder="병원검색" id="hospitalSearchWord" style="width: 30%">
+						<button type="button" class="btn btn-primary btn-sm" id="hospitalSearch">검색</button>
+					</div>
 					<hr>
 					<!-- page Heading End -->
 
@@ -64,8 +68,8 @@
 
 				</div>
 				<!--  Page Content End -->
-				</div>
-			</div> 
+			</div>
+		</div> 
 	      
 	      <!-- End of Main Content -->
 
@@ -149,11 +153,11 @@ $(document).ready(function(){
 	})
 	
 	//검색버튼
-	$("#search").click(function(){
+	$("#hospitalSearch").click(function(){
 		$.ajax({
 			url:"/rest/adminHospital",
 			method:"POST",
-			data:{	"searchWord": $("#searchWord").val()},
+			data:{	"searchWord": $("#hospitalSearchWord").val()},
 			success: function(json){
 				console.log(json);
 				currentPage = json.currentPage;

@@ -584,7 +584,9 @@ $(document).ready(function() {
 	
 	//태그버튼 
 	$("#tagBtn").click(function(){
-		$("#boardList").append("<tr><td>밥밥</td></tr>");
+		$("#contentBoard").hide();
+		$("#boardList").empty();
+		$("#boardList").append("<h1 class='font-weight-bold text-dark NotoSans'>현재 태그 준비중입니다.</h1>");
 	})
 
 

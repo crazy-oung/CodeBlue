@@ -47,7 +47,7 @@ public interface LeeMapper {
 	//유저 질문 글 추천 수 
 	public int selectUserVote(String userId);
 	//유저 질문 글 추천기능
-	public String insertQuestionVote(QuestionVote questionVote);
+	public int insertQuestionVote(QuestionVote questionVote);
 	//유저 질문 추천 중복검사
 	public QuestionVote selectQuestionVoteCheck(QuestionVote questionVote);
 }
