@@ -4,6 +4,11 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.codeblue.mapper.UserMapper">
+	<!-- Report 객체 -->
+	<resultMap type="com.example.codeblue.vo.Report" id="Report">
+		<result column="report_id" property="reportId"></result>
+	     <result column="report_name" property="reportName"></result>
+	</resultMap>
 	<!-- Region 객체 -->
 	<resultMap type="com.example.codeblue.vo.Region" id="Region">
 		<result column="region_id" property="regionId"></result>
@@ -106,7 +111,73 @@
 		<association property="serviceCategory" resultMap="ServiceCategory">
 		</association>
 	</resultMap>
+	<!-- ReportHistory 객체  -->
+	<resultMap type="com.example.codeblue.vo.ReportHistory" id="ReportHistory"> 
+	   	<result column="report_history_id" property="reportHistoryId" ></result>
+	   	<result column="report_title" property="reportTitle" ></result>
+	   	<result column="report_content" property="reportContent" ></result>
+	   	<result column="report_datetime" property="reportDatetime"></result>
+	   
+	   	<association property="report" resultMap="Report">
+	  	</association>
+	  	<association property="user" resultMap="User">
+	   	</association>
+	   	<association property="questionBoard" resultMap="QuestionBoard">
+	  	</association>
+	  	<association property="answer" resultMap="Answer">
+	   	</association>
+	</resultMap>
 	
+	
+	
+	<!-- 답변 상세정보 -->
+	<select id="selectAnswerOne" parameterType="String" resultMap="Answer">
+		SELECT 
+		qb.question_title,
+		a.user_id,
+		a.answer_id
+		FROM answer a
+		INNER JOIN question_board qb
+		ON a.question_id = qb.question_id
+		INNER JOIN user u
+		ON a.user_id = u.user_id
+		WHERE a.answer_id = #{answerId}
+	</select>
+	<!-- 신고값 저장 -->
+	<insert id="insertReportHistory" parameterType="com.example.codeblue.vo.ReportHistory">
+		INSERT INTO report_history (
+		<if test="questionBoard != null">
+			question_id,
+		</if>
+		<if test="answer != null">
+			answer_id,
+		</if>
+			report_id,
+			user_id,
+			report_title,
+			report_content,
+			report_datetime
+		) VALUE (
+		<if test="questionBoard != null">
+			#{questionBoard.questionId},
+		</if>
+		<if test="answer != null">
+			#{answer.answerId},
+		</if>
+			#{report.reportId},
+			#{user.userId},
+			#{reportTitle},
+			#{reportContent},
+			NOW()
+		)
+	</insert>
+	<!-- 신고창 카테고리 -->
+	<select id="selectReport" resultMap="Report">
+		SELECT 
+			report_id,
+			report_name
+		FROM report
+	</select>
 	
 	<!-- 태그 등록 -->
 	<insert id="insertTag" parameterType="map">

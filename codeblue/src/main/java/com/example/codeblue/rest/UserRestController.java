@@ -20,11 +20,43 @@ import com.example.codeblue.vo.Hospital;
 import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.QuestionComment;
+import com.example.codeblue.vo.Report;
+import com.example.codeblue.vo.ReportHistory;
 import com.example.codeblue.vo.ServiceCategory;
 import com.example.codeblue.vo.User;
 @RestController
 public class UserRestController {
 	@Autowired UserService userService;
+	
+	
+	//답변 상세정보
+	@PostMapping("/rest/getAnswerOne")
+	public Answer getAnswerOne(String answerId) {
+		System.out.println("::: post - getAnswerOne :::");
+		System.out.println("answerId " + answerId);
+		return userService.getAnswerOne(answerId);
+	}
+	// 신고내역 저장하기
+	@PostMapping("/rest/addReport")
+	public String addReport(HttpSession session,ReportHistory reportHistory) {
+		System.out.println("::: post - addReport :::");
+		System.out.println(reportHistory.toString());
+		System.out.println(session.getAttribute("loginUser"));
+		if(session.getAttribute("loginUser") == null) {
+			System.out.println("already loged in Back to user Home");
+			return "false";
+		}
+		reportHistory.setUser((User) session.getAttribute("loginUser"));
+		userService.addReportHistory(reportHistory);
+		return "success";
+	}
+	//질문카테고리리스트
+	@PostMapping("/rest/getReportList")
+	public List<Report> getReportList(){
+		System.out.println("::: post - getReportList :::");
+		return userService.getReportList();
+	}
+	
 	//질문 답변 댓글 개수 가져오기
 	@PostMapping("/rest/getAnswerCommentCount")
 	public int getAnswerCommentCount(int answerId) {

@@ -7,10 +7,17 @@ import com.example.codeblue.vo.Answer;
 import com.example.codeblue.vo.Feild;
 import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionBoard;
+import com.example.codeblue.vo.Report;
+import com.example.codeblue.vo.ReportHistory;
 
 
 public interface JJWService {
-	
+	//신고내역 저장하기
+	public void addReportHistory(ReportHistory reportHistory);
+	//신고창 카테고리
+	public List<Report> getReportList();
+	//질문 등록
+	public int addQuestion(QuestionBoard questionBoard);
 	//답변 댓글 삭제하기
 	public void removeAnswerCommentList(List<String> answerCommentIdList);
 	//답변 댓글 리스트 가져오기

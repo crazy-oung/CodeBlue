@@ -1,14 +1,24 @@
 package com.example.codeblue.test.jjw;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import com.example.codeblue.vo.QuestionBoard;
 
 @org.springframework.stereotype.Controller
 public class JJWController {
-	
-	@GetMapping("/test")
-	public String gettest() {
-		return "/test";
-	}
+
+//	//답변 신고창
+//	@GetMapping("/answerReport")
+//	public String answerReport() {
+//		return "/answerReport";
+//	}
+//	//질문 신고창
+//	@GetMapping("/questionReport")
+//	public String questionReport() {
+//		return "/questionReport";
+//	}
 	
 	@GetMapping("/test1")
 	public String gettest1() {

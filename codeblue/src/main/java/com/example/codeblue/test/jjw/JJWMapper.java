@@ -8,10 +8,18 @@ import com.example.codeblue.vo.Feild;
 import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.QuestionComment;
+import com.example.codeblue.vo.Report;
+import com.example.codeblue.vo.ReportHistory;
 
 @org.apache.ibatis.annotations.Mapper
 public interface JJWMapper {
 	
+	// 신고내역 저장하기
+	public void insertReportHistory(ReportHistory reportHistory);
+	// 신고카테고리
+	public List<Report> selectReport();
+	// 질문 등록
+	public int insertQuestion(QuestionBoard questionBoard);
 	//답변 댓글 Id 값으로 삭제하기
 	public void deleteAnswerCommentId(List<String> list);
 	//답변 댓글 행수 가져오기

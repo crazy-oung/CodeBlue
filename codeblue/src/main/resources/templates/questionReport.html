@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>글 신고하기 - 코드블루</title>
+
+<!-- Custom fonts for this template-->
+<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+<!-- Custom styles for this template-->
+<link href="css/sb-admin-2.min.css" rel="stylesheet">
+<!-- Custom styles for codeBlue -->
+<link href="css/codeBlue.css" rel="stylesheet">
+</head>
+<style>
+h1 {
+    height: 40px;
+    padding: 14px 0 0 21px;
+    background: #f4f4f3;
+    border-bottom: 1px solid #ededeb;
+    color: #101010;
+    font-size: 14px;
+    letter-spacing: -1px;
+    font-weight: bolder;
+}
+</style>
+
+<body id="page-top">
+		<!-- Begin Page Content -->
+		<div>
+			<div> 
+				<!-- Page Content -->
+				<div style="width:600px; margin: auto;">
+					<!-- Page Heading -->
+					<div>
+						<h1>글 신고하기</h1>
+					</div><!-- page Heading End -->
+					<form method="post" class="p-2">
+						<table class="small">
+							<tr class="p-2">
+								<td class="px-4">제목 :</td>
+								<td id="questionTitle" class="pl-4"></td>
+							</tr>
+							<tr>
+								<td class="px-4">작성자 :</td>
+								<td id="userId" class="pl-4"></td>
+							</tr>
+							<tr>
+								<td class="px-4">사유선택 :</td>
+								<td class="pl-4">
+									<select id="reportList" class="form-control form-control-sm">
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td class="px-4">신고 제목 :</td>
+								<td class="pl-4"><input type="text" id="reportTitle" class="form-control form-control-sm"></td>
+							</tr>
+							<tr>
+								<td class="px-4">신고 내용 :</td>
+								<td class="pl-4"><textarea cols="40" rows="5" class="form-control form-control-sm" id="reportContent" style="resize: none;" placeholder="명예훼손 및 저작권 침해와 관련된 신고는 아래 “신고하기 전에 잠깐!”을 확인해 주세요. (300자 이내)"></textarea></td>
+							</tr>
+							<tr>
+								<td class="px-4">신고하기<br>전에 잠깐!</td>
+								<td class="pl-4">게시물로 인해 개인(단체)이 명예훼손, 저작권 침해,
+								<br>기타 권리침해(사생활 · 초상권 등) 피해를 입은 경우
+								<br> <a href="#" target="_blank">문의 사항</a>을 통해 접수 해주시기 바랍니다.</td>
+							</tr>
+						</table>
+						<br>
+						<div class="text-center">
+							<button type="button" id="addReport" class="btn-sm btn-primary">신고</button>
+							<button type="button" id="close" class="btn-sm btn-primary">창 닫기</button>
+						</div>
+					</form>
+					
+				</div>
+			</div>
+		</div> 
+
+	<!-- Footer -->
+	<div id="footer"></div>
+	<!-- End of Footer -->
+	
+<!-- ETC -->
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded bg-primary" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+
+	<!-- Bootstrap core JavaScript-->
+	<script src="vendor/jquery/jquery.min.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+	<!-- Core plugin JavaScript-->
+	<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+	<!-- Custom scripts for all pages-->
+	<script src="js/sb-admin-2.min.js"></script>
+</body>
+<script>
+//파라메터 정보가 저장될 오브젝트
+var getParam = function(key){
+    var _parammap = {};
+    document.location.search.replace(/\??(?:([^=]+)=([^&]*)&?)/g, function () {
+        function decode(s) {
+            return decodeURIComponent(s.split("+").join(" "));
+        }
+
+        _parammap[decode(arguments[1])] = decode(arguments[2]);
+    });
+
+    return _parammap[key];
+};
+//질문의 제목, 작성자를가져오기
+$.ajax({
+	url :"/rest/questionBoardOne",
+	method : "post",
+	data : {"questionId" : getParam("questionId")},
+	success : function(json){
+		console.log(json);
+		$("#questionTitle").text(json.questionTitle);
+		$("#userId").text(json.user.userId);
+	}
+});
+//신고 사유를 선택할값 가져오기
+$.ajax({
+	url :"/rest/getReportList",
+	method : "post",
+	success : function(json){
+		console.log(json);
+		$(json).each(function(index,item){
+			var html = "<option value="+item.reportId+">"+item.reportName+"</option>";
+			$("#reportList").append(html);
+		});
+	}
+})
+$("#close").click(function() {
+	self.close();
+})
+$("#addReport").click(function() {
+	$.ajax({
+		url :"/rest/addReport",
+		method : "post",
+		data : {"questionBoard.questionId":getParam("questionId"),"reportTitle":$("#reportTitle").val(),"reportContent":$("#reportContent").val(),"report.reportId":$("#reportList").val()},
+		success : function(json){
+			console.log(json);
+			if(json == "false") {
+				alert("로그인을 먼저해주시기 바랍니다.");
+				location.href="/login";
+			} else {
+				alert("신고 접수가 완료 되었습니다.")
+				self.close();
+			}
+		}
+	})
+})
+</script>
+</html>

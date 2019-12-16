@@ -23,6 +23,8 @@ import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.QuestionComment;
+import com.example.codeblue.vo.Report;
+import com.example.codeblue.vo.ReportHistory;
 import com.example.codeblue.vo.ServiceCategory;
 import com.example.codeblue.vo.User;
 
@@ -31,6 +33,26 @@ import com.example.codeblue.vo.User;
 public class UserServiceImpl implements UserService{
 	@Autowired UserMapper userMapper; 
 	@Autowired JavaMailSender javaMailSender;
+	
+	//답변 상세정보
+	@Override
+	public Answer getAnswerOne(String answerId) {
+		System.out.println("::: AdminBoardServiceImpl - getAnswerOne :::");
+		return userMapper.selectAnswerOne(answerId);
+	}
+	//신고내역 저장하기
+	@Override
+	public void addReportHistory(ReportHistory reportHistory) {
+		System.out.println("::: AdminServiceImpl - addReport :::");
+		userMapper.insertReportHistory(reportHistory);
+	}
+	//신고창 카테고리
+	@Override
+	public List<Report> getReportList() {
+		System.out.println("::: AdminServiceImpl - getReportList :::");
+		return userMapper.selectReport();
+	}
+	
 	//질문 답변 댓글 총 개수 가져오기
 	@Override
 	public int getAnswerCommentCount(int answerId) {

@@ -13,12 +13,32 @@ import com.example.codeblue.vo.Feild;
 import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.QuestionComment;
+import com.example.codeblue.vo.Report;
+import com.example.codeblue.vo.ReportHistory;
 
 @org.springframework.stereotype.Service
 @Transactional
 public class JJWServiceImpl implements JJWService{
 	@Autowired 
 	private JJWMapper jjwMapper;
+	
+	@Override
+	public void addReportHistory(ReportHistory reportHistory) {
+		System.out.println("::: AdminServiceImpl - addReport :::");
+		jjwMapper.insertReportHistory(reportHistory);
+	}
+	//신고창 카테고리
+	@Override
+	public List<Report> getReportList() {
+		System.out.println("::: AdminServiceImpl - getReportList :::");
+		return jjwMapper.selectReport();
+	}
+	//질문 등록
+	@Override
+	public int addQuestion(QuestionBoard questionBoard) {
+		System.out.println("::: AskServiceImpl - addQuestion :::");
+		return jjwMapper.insertQuestion(questionBoard);
+	}
 	
 	
 	//답변 댓글 지우기

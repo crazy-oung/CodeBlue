@@ -65,7 +65,7 @@
 							<div class="d-flex justify-content-between mt-4">
 								<div>
 									<a id="commentBtn" class="btn hov-p px-1"><i class='far fa-comment-dots mx-1'></i></a>
-									<a id="reportBtn" class='px-1 text-danger btn hov-p' href="#">신고</a>
+									<a id="reportBtn" class='px-1 text-danger btn hov-p'>신고</a>
 									<a id="goodBtn" class="px-1 text-primary btn hov-p">추천</a>
 								</div>
 								<div class="pr-2">
@@ -137,6 +137,7 @@
 	<i o=""></i>
 </body>
 <script>
+
 //현재 로그인 정보 가져오기
 var userId = undefined;
 $.ajax({
@@ -284,13 +285,14 @@ function getAnswerList(){
 		method : "post",
 		data : {"questionId" : getParam("questionId")},
 		success : function(json){
+			console.log(json);
 			$("#answerCount").text(json.length+"개의 답변");
 			$("#answerList").empty();
 			$(json).each(function(index, item){
 				//질문의 답변 출력
 				let answerhtml = "<div class='text-dark text-lg px-1'>"+item.answerContent+"</div>";
 				//버튼 생성
-				answerhtml += "<div class='d-flex justify-content-between small mt-5'><div class='px-2'><a id='answerCommentBtn' onclick='openComment("+item.answerId+",true)'><i id='answerCommentTotal"+item.answerId+"' class='far fa-comment-dots mx-1'></i></a></div>";
+				answerhtml += "<div class='d-flex justify-content-between small mt-5'><div class='px-2'><a id='answerCommentBtn' onclick='openComment("+item.answerId+",true)'><i id='answerCommentTotal"+item.answerId+"' class='far fa-comment-dots mx-1'></i></a><a class='px-1 text-danger btn hov-p' onclick=window.open('/answerReport?answerId="+item.answerId+"','답변신고하기','width=600,top=200,left=600,height=410');return false;>신고</a></div>";
 				//질문의 댓글 리스트 출력
 			 	answerhtml += "<div class='d-felx'><div class='mb-0 mx-2 pr-2'>"+item.answerDatetime+" <a href='/userOne?userId="+item.user.userId+"'>"+item.user.userName+"</a></div></div>";
 				answerhtml += "</div><div class='card border-0 bg-light card-body mb-2' style='display: none;' id='answerComment"+item.answerId+"'><div id='answerCommentList"+item.answerId+"'></div>";
@@ -371,5 +373,9 @@ function openComment(value, YN){
 		}
 	})
 }
+//질문 신고창 클릭
+$("#reportBtn").click(function() {
+	window.open("/questionReport?questionId="+getParam("questionId")+"","질문신고하기","width=600,top=200,left=600, height=410");return false;
+});
 </script>
 </html>

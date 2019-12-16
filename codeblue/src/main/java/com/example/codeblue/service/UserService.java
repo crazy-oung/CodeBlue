@@ -12,11 +12,19 @@ import com.example.codeblue.vo.Manager;
 import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.QuestionComment;
+import com.example.codeblue.vo.Report;
+import com.example.codeblue.vo.ReportHistory;
 import com.example.codeblue.vo.ServiceCategory;
 import com.example.codeblue.vo.User;
 
 public interface UserService {
 	
+	//답변 상세정보 가져오기
+	public Answer getAnswerOne(String answerId);
+	//신고내역 저장하기
+	public void addReportHistory(ReportHistory reportHistory);
+	//신고창 카테고리
+	public List<Report> getReportList();
 	// 방금 등록한 질문 번호 가져오기
 	public int getLastQuestionId();
 	// 태그 등록

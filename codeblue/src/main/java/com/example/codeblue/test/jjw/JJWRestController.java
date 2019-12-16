@@ -3,6 +3,8 @@ package com.example.codeblue.test.jjw;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +14,9 @@ import com.example.codeblue.vo.Answer;
 import com.example.codeblue.vo.Feild;
 import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionBoard;
+import com.example.codeblue.vo.Report;
+import com.example.codeblue.vo.ReportHistory;
+import com.example.codeblue.vo.User;
 
 
 @org.springframework.web.bind.annotation.RestController
@@ -20,6 +25,33 @@ public class JJWRestController {
 	@Autowired
 	private JJWService service;
 	
+//	//답변 상세정보
+//	@PostMapping("/rest/getAnswerOne")
+//	public Answer getAnswerOne(String answerId) {
+//		System.out.println("::: post - getAnswerOne :::");
+//		System.out.println("answerId " + answerId);
+//		return service.getAnswerOne(answerId);
+//	}
+//	// 신고내역 저장하기
+//	@PostMapping("/rest/addReport")
+//	public String addReport(HttpSession session,ReportHistory reportHistory) {
+//		System.out.println("::: post - addReport :::");
+//		System.out.println(reportHistory.toString());
+//		System.out.println(session.getAttribute("loginUser"));
+//		if(session.getAttribute("loginUser") == null) {
+//			System.out.println("already loged in Back to user Home");
+//			return "false";
+//		}
+//		reportHistory.setUser((User) session.getAttribute("loginUser"));
+//		service.addReportHistory(reportHistory);
+//		return "success";
+//	}
+//	//질문카테고리리스트
+//	@PostMapping("/rest/getReportList")
+//	public List<Report> getReportList(){
+//		System.out.println("::: post - getReportList :::");
+//		return service.getReportList();
+//	}
 //	//답변 댓글 지우기
 //	@PostMapping("/rest/admin/removeAnswerCommentList")
 //	public String removeAnswerCommentList(@RequestParam(value="checkBoxArr")List<String> answerCommentIdList) {

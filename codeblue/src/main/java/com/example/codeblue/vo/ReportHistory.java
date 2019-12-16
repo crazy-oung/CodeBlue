@@ -8,6 +8,8 @@ public class ReportHistory {
 	private String reportTitle;
 	private String reportContent;
 	private String reportDatetime;
+	private QuestionBoard questionBoard;
+	private Answer answer;
 	private Report report;
 	private User user;
 }

@@ -589,7 +589,7 @@
 				question_datetime,
 				feild_id,
 				user_id,
-				tag_id
+				question_tags
 			) VALUES
 			<foreach collection="list" item="item" index="index" separator=",">
 				(
@@ -599,7 +599,7 @@
 					#{item.questionDatetime},
 					#{item.feild.feildId},
 					#{item.user.userId},
-					#{item.tag.tagId}
+					#{item.questionTags}
 				)
 			</foreach>
 	</insert>
@@ -622,7 +622,7 @@
 			question_datetime,
 			feild_id,
 			user_id,
-			tag_id
+			question_tags
 		FROM question_board
 		WHERE question_id IN
 		<foreach collection="list" item="item" index="index" separator="," open="(" close=")">

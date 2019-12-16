@@ -15,6 +15,19 @@ import com.example.codeblue.vo.QuestionBoard;
 public class UserController {
 	@Autowired UserService userService;
 	
+	
+	
+	//답변 신고창
+	@GetMapping("/answerReport")
+	public String answerReport() {
+		return "/answerReport";
+	}
+	//질문 신고창
+	@GetMapping("/questionReport")
+	public String questionReport() {
+		return "/questionReport";
+	}
+	
 	// 태그 출력 페이지
 	@GetMapping("/tags")
 	public String getTags() {
