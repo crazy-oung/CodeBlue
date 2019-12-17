@@ -326,6 +326,7 @@ public class UserRestController {
 			return userService.getInquiryHistoryBoard(currentPage, rowPerPage, loginUserId, searchCategory);
 	}
 
+	//회원정보 수정
 	@PostMapping("/rest/modifyProfile")
 	public void modifyUserProfile(User user,
 								@RequestParam(value="userName")String userName,
