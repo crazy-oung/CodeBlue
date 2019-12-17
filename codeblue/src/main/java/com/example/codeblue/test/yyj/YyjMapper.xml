@@ -4,21 +4,11 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.codeblue.test.yyj.YyjMapper">
-<!-- 
-	<insert id="insertAdministrator"
-			parameterType="com.example.codeblue.vo.Manager">
-		INSERT INTO manager
-			(
-				manager_id,
-				manager_pw,
-				manager_name,
-				manager_createdate	
-			)VALUES(
-				#{managerId},
-				#{managerPw},
-				#{managerName},
-				NOW()
-			)
-	</insert>
- -->
+<!-- 	<update id="updateUserProfile"
+			parameterType="com.example.codeblue.vo.User">
+		Update user
+		SET user_name = #{userName},
+			user_pw = #{userPw}
+		WHERE user_id = #{userId}	
+	</update> -->
 </mapper>

@@ -1,10 +1,8 @@
 package com.example.codeblue.test.yyj;
 
-import com.example.codeblue.vo.Manager;
+import com.example.codeblue.vo.User;
 
 public interface YyjService {
-//	//관리자 추가
-//	public int addAdministrator(Manager manager);
-//	//메일
-//	public String sendCodeToMail(Manager manager);
+	//유저 이름, 비밀번호 변경
+	//public void modifyUserProfile(User user);
 }

@@ -1,58 +1,34 @@
 package com.example.codeblue.test.yyj;
 
-import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.example.codeblue.vo.Manager;
+import com.example.codeblue.vo.User;
 
 @RestController
 public class YyjRestController {
 	@Autowired YyjService yyjService;	
 	
-//	//인증메일 전송
-//	@PostMapping("/rest/adminSendEmailToConfirm")
-//	public String adminSendEmailToConfirm(HttpSession session, Manager manager) {
-//		System.out.println("::: post - adminSendEmailToConfirm :::");
+//	@PostMapping("rest/modifyProfile")
+//	public void modifyUserProfile(User user,
+//									@RequestParam(value="userName")String userName,
+//									@RequestParam(value="userPw")String userPw,
+//									@RequestParam(value="userId")String userId) {
 //		
-//		System.out.println(manager.toString());		
-//		String code = yyjService.sendCodeToMail(manager);
-//		session.setAttribute("verifyCode", code);
+//		System.out.println("::: post - modifyUserProfile :::");		
+//		System.out.println("user Name : " + userName);
+//		System.out.println("change Pw : " + userPw);	
 //		
-//		return "success";
-//	}
+//		user = new User();
+//			user.setUserName(userName);
+//			user.setUserPw(userPw);
+//			user.setUserId(userId);
+//		System.out.println("user : " + user.toString());
+//		
+//		yyjService.modifyUserProfile(user);
 //	
-//	// 인증메일 확인
-//	@PostMapping("/rest/adminVerifyCode")
-//	public boolean adminVerifyCode(Manager manager, HttpSession session, String code) {
-//		System.out.println("::: post - adminVerifyCode :::");
-//		System.out.println(manager.toString() + "입력받은 코드:" +code);
-//		System.out.println("verifyCode : " + session.getAttribute("veriftCode"));
-//		
-//		if(session.getAttribute("verifyCode").equals(code) != true) {
-//			
-//			System.out.println("!password not correct");
-//			return false;
-//		}
-//		
-//		System.out.println("code correct!");
-//		yyjService.addAdministrator(manager);
-//		
-//		return true;
+//		//return "redirect:/userOne?userId="+user.getUserId();
 //	}
-//	
-//	//재전송
-//	@PostMapping("/rest/adminVerifyCodeForRest")
-//	public boolean adminVerifyCodeForRest(HttpSession session, String code) {
-//		System.out.println("::: post - adminVerifyCodeForRest :::");
-//		
-//		if(session.getAttribute("verifyCode").equals(code) != true) {
-//			System.out.println("!password not correct");
-//			System.out.println("code : "+code+", verifyCode: "+session.getAttribute("verifyCode"));
-//			return false;
-//		}
-//		
-//		System.out.println("code correct!");	
-//		return true;
-//	}
+
 }

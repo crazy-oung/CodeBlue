@@ -161,10 +161,13 @@ public class UserController {
 		return "/inquiryBoard";
 	}
 	//유저 비번, 이름 변경
-	@GetMapping("/profileModify")
-	public String modifyUserProfile() {
+	@GetMapping("/modifyProfile")
+	public String modifyUserProfile(HttpSession session) {
 		System.out.println("Get modifyUserProfile:::");
-		return "profileModify";
+		if(session.getAttribute("loginUser") != null) {
+			return "/modifyProfile";
+		}
+		return "/login";
 	}
 	//
 		
