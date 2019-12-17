@@ -14,7 +14,8 @@ public class QuestionBoard {
 	private int commentCount;
 	private String questionTags;
 	
-	//외래키 2개
+	//외래키 3개
 	private Feild feild;
 	private User user;
+	private Tag tag;
 }

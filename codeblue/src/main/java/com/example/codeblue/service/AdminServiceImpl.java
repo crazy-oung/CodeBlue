@@ -38,6 +38,19 @@ public class AdminServiceImpl implements AdminService {
 	private AdminMapper adminMapper;
 	@Autowired 
 	private JavaMailSender javaMailSender;
+	
+	//신고 대상(질문)상세 정보 가져오기
+		@Override
+	public QuestionBoard getReportQuestionBoardOne(int questionId) {
+		System.out.println("::: AdminServiceImpl - getReportQuestionBoardOne :::");
+		return adminMapper.selectReportQuestionBoardOne(questionId);
+	}
+	//신고 대상(답변)상세 정보 가져오기
+	@Override
+	public Answer getReportAnswerOne(int answerId) {
+		System.out.println("::: AdminServiceImpl - getReportAnswerOne :::");
+		return adminMapper.selectReportAnswerOne(answerId);
+	}
 	//Report 카테고리 가져오기
 	@Override
 	public List<Report> getReportList() {
@@ -655,40 +668,46 @@ public class AdminServiceImpl implements AdminService {
 		return adminMapper.selectInquiryHistoryOne(inquiryHistoryId);
 	}
 	//신고내역 가져오기
-		@Override
-		public Map<String, Object> getReportHistoryList(int currentPage, int rowPerPage, String searchWord, String toDate, String fromDate, String reportId) {
-			System.out.println("::: AdminServiceImpl - getReportHistoryList :::");
-			
-			Page page = new Page();
-			page.setRowPerPage(rowPerPage);
-			page.setBeginRow((currentPage-1)*rowPerPage);
-			page.setSearchWord(searchWord);
-			page.setToDate(toDate);
-			page.setFromDate(fromDate);
-			page.setSearchCategory(reportId);
-			
-			System.out.println(page.getSearchWord());
-			System.out.println(page.getToDate());
-			System.out.println(page.getFromDate());
-			System.out.println(page.getSearchCategory());
+	@Override
+	public Map<String, Object> getReportHistoryList(int currentPage, int rowPerPage, String searchWord, String toDate, String fromDate, String reportId, String reportCategory) {
+		System.out.println("::: AdminServiceImpl - getReportHistoryList :::");
+		
+		Page page = new Page();
+		page.setRowPerPage(rowPerPage);
+		page.setBeginRow((currentPage-1)*rowPerPage);
+		page.setSearchWord(searchWord);
+		page.setToDate(toDate);
+		page.setFromDate(fromDate);
+		page.setSearchCategory(reportId);
+		page.setReportCategory(reportCategory);
+		
+		System.out.println(page.getSearchWord());
+		System.out.println(page.getToDate());
+		System.out.println(page.getFromDate());
+		System.out.println(page.getSearchCategory());
+		System.out.println(page.getReportCategory());
 
-			int totalRow = adminMapper.selectReportHistoryTotalRow(page);
-			int lastPage = totalRow/rowPerPage;
-			
-			if(totalRow % rowPerPage != 0) {
-				lastPage ++;
-			}
-			List<ReportHistory> list = adminMapper.selectReportHistoryList(page);
-			
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("totalRow", totalRow);
-			map.put("list", list);
-			map.put("currentPage", currentPage);
-			map.put("rowPerPage", rowPerPage);
-			map.put("lastPage", lastPage);
-			System.out.println(map.toString());
-			return map;
+		int totalRow = adminMapper.selectReportHistoryTotalRow(page);
+		int lastPage = totalRow/rowPerPage;
+		
+		if(totalRow % rowPerPage != 0) {
+			lastPage ++;
 		}
+		List<ReportHistory> list = adminMapper.selectReportHistoryList(page);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("totalRow", totalRow);
+		map.put("list", list);
+		map.put("currentPage", currentPage);
+		map.put("rowPerPage", rowPerPage);
+		map.put("lastPage", lastPage);
+		map.put("searchWord", searchWord);
+		map.put("toDate", toDate);
+		map.put("fromDate", fromDate);
+		map.put("reportCategory", reportCategory);
+		System.out.println(map.toString());
+		return map;
+	}
 	
 	//문의 내역 리스트 가져오기
 	@Override

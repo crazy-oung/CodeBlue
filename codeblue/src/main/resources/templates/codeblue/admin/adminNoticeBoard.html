@@ -243,7 +243,7 @@ function appendItem(currentPage){
 			fromDate = undefined;
 		}
 	$.ajax({
-		url : "/rest/adminNoticeBoardTest",
+		url : "/rest/adminNoticeBoard",
 		method : "post",
 		data : {"currentPage": currentPage,
 				"rowPerPage" : $("#rowPerPage").val(),

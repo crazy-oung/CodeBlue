@@ -13,6 +13,10 @@
 	   	<result column="report_content" property="reportContent" ></result>
 	   	<result column="report_datetime" property="reportDatetime"></result>
 	   
+	   <association property="questionBoard" resultMap="QuestionBoard">
+	  	</association>
+	  	<association property="answer" resultMap="Answer">
+	  	</association>
 	   	<association property="report" resultMap="Report">
 	  	</association>
 	  	<association property="user" resultMap="User">
@@ -141,9 +145,72 @@
 		<result column="notice_datetime" property="noticeDatetime"></result>
 	</resultMap>
 	
+	<!-- 신고내역  정보 가져오기   -->
+   <select  id="selectReportHistoryOne" parameterType="int" resultMap="ReportHistory">
+		SELECT  rh.report_history_id,
+				rh.report_title,
+				rh.report_content, 
+				r.report_name,
+				u.user_id,
+				rh.report_datetime,
+				rh.question_id,
+				rh.answer_id
+	    FROM report_history rh INNER JOIN report r INNER JOIN user u 
+	    ON rh.report_id = r.report_id AND rh.user_id = u.user_id 
+	    WHERE rh.report_history_id = #{reportHistoryId}
+   	</select>
 	
 	
 	
+	<!-- 신고내역 전체 리스트 -->
+	<select id="selectReportHistoryList" parameterType="com.example.codeblue.vo.Page" resultMap="ReportHistory">
+	
+	SELECT  report_history_id,
+			report_title,
+			report_datetime
+    FROM report_history
+    <where>
+    	<if test='reportCategory == "question"'>
+			AND question_id IS NOT NULL
+		</if>
+		<if test='reportCategory == "answer"'>
+			AND answer_id IS NOT NULL
+		</if>
+		<if test="searchCategory != null">
+			AND report_id = #{searchCategory}
+		</if> 
+		<if test="searchWord != null">
+			AND report_title like CONCAT('%',#{searchWord},'%')
+		</if> 
+		<if test="toDate != null and fromDate != null">
+			AND DATE(report_datetime) &gt;= DATE(#{toDate}) AND DATE(report_datetime) &lt;= DATE(#{fromDate})  
+		</if>
+	</where>
+    ORDER BY report_datetime DESC
+    LIMIT #{beginRow},#{rowPerPage}
+   </select>
+   <!--  신고내역 전체 행 -->
+   <select id="selectReportHistoryTotalRow" parameterType="com.example.codeblue.vo.Page" resultType="int">
+	SELECT count(*)
+	FROM report_history
+	<where>
+		<if test='reportCategory == "question"'>
+			AND question_id IS NOT NULL
+		</if>
+		<if test='reportCategory == "answer"'>
+			AND answer_id IS NOT NULL
+		</if>
+		<if test="searchCategory != null">
+			AND report_id = #{searchCategory}
+		</if>
+		<if test="searchWord != null">
+			AND report_title like CONCAT('%',#{searchWord},'%')
+		</if> 
+		<if test="toDate != null and fromDate != null">
+			AND DATE(report_datetime) &gt;= DATE(#{toDate}) AND DATE(report_datetime) &lt;= DATE(#{fromDate})  
+		</if>
+	</where>
+   </select>   
   	
   	
   	

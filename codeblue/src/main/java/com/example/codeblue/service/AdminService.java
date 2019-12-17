@@ -79,11 +79,15 @@ public interface AdminService {
 	//문의 내역 상세 페이지 출력
 	public InquiryHistory getInquiryHistoryOne(int inquiryHistoryId);
 	//신고 내역 리스트 출력
-	public Map<String, Object> getReportHistoryList(int currentPage, int rowPerPage, String searchWord, String toDate, String fromDate, String reportId);
+	public Map<String, Object> getReportHistoryList(int currentPage, int rowPerPage, String searchWord, String toDate, String fromDate, String reportId, String reportCategory);
 	//신고 내역 상세 페이지 출력
 	public ReportHistory getReportHistoryOne(int reportHistoryId);
 	public List<QuestionCount> getYearlyQuestionCount();
 	public List<QuestionCount> getCurrentQuestionCountFromFeild();
+	//신고 대상(질문)상세 정보 가져오기
+	public QuestionBoard getReportQuestionBoardOne(int questionId);
+	//신고 대상(답변)상세 정보 가져오기
+	public Answer getReportAnswerOne(int answerId);
 	//검색 조건 카테고리 리스트 가져오기
 	public List<Feild> getFeildList();
 	//질문 리스트 출력

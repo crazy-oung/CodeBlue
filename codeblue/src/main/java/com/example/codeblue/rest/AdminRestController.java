@@ -31,6 +31,18 @@ import com.example.codeblue.vo.ServiceCategory;
 @RestController
 public class AdminRestController {
 	@Autowired private AdminService adminService;
+	//신고 대상(질문)상세 정보 가져오기
+	@PostMapping("/rest/admin/getReportQuestionBoardOne")
+	public QuestionBoard getReportQuestionBoardOne(int questionId) {
+		System.out.println("::: post - getReportQuestionBoardOne :::");
+		return adminService.getReportQuestionBoardOne(questionId);
+	}
+	//신고 대상(답변)상세 정보 가져오기
+	@PostMapping("/rest/admin/getReportAnswerOne")
+	public Answer getReportAnswerOne(int answerId) {
+		System.out.println("::: post - getReportAnswerOne :::");
+		return adminService.getReportAnswerOne(answerId);
+	}
 	//Report 카테고리 가져오기
 	@GetMapping("/rest/admin/getReportList")
 	public List<Report> getReportList(){
@@ -344,14 +356,14 @@ public class AdminRestController {
 		return adminService.getAdminExpertUserList(currentPage, rowPerPage,searchWord, toDate, fromDate);
 	}
 	
-	@PostMapping("/rest/adminNoticeBoardTest")
+	@PostMapping("/rest/adminNoticeBoard")
 	public Map<String, Object> postNotice(@RequestParam(value="currentPage",defaultValue = "1")int currentPage,
 							@RequestParam(value="rowPerPage",defaultValue = "10")int rowPerPage,
 							@RequestParam(value="searchWord", required = false)String searchWord,
 							 @RequestParam(value="toDate", required = false)String toDate,
 							 @RequestParam(value="fromDate", required = false)String fromDate) {
 		
-		System.out.println(":::post - adminNoticeBoardTest:::");
+		System.out.println(":::post - adminNoticeBoard:::");
 		System.out.println("currentPage"+currentPage);
 		System.out.println("rowPerPage"+rowPerPage);
 		System.out.println("searchWord"+searchWord);
@@ -363,7 +375,7 @@ public class AdminRestController {
 	
 	@PostMapping("/rest/adminNoticeBoardOne")
 	public NoticeBoard postNoticeOne(@RequestParam(value="noticeId") int noticeId) {
-		System.out.println(":::post - postNoticeOne:::");
+		System.out.println(":::post - adminNoticeBoardOne:::");
 		System.out.println("noticeId"+noticeId);
 		return adminService.getNoticeOne(noticeId);
 	}
@@ -420,7 +432,8 @@ public class AdminRestController {
 										@RequestParam(value="searchWord", required = false)String searchWord,
 										 @RequestParam(value="toDate", required = false)String toDate,
 										 @RequestParam(value="fromDate", required = false)String fromDate,
-										 @RequestParam(value="reportId", required = false)String reportId) {
+										 @RequestParam(value="reportId", required = false)String reportId,
+										 @RequestParam(value="reportCategory", required = false)String reportCategory) {
 		System.out.println("::: post - getReportHistoryList :::"); 
 		System.out.println("currentPage : " + currentPage);
 		System.out.println("rowPerPage : " + rowPerPage);
@@ -428,8 +441,9 @@ public class AdminRestController {
 		System.out.println("toDate : " + toDate);
 		System.out.println("fromDate : " + fromDate);
 		System.out.println("reportId : " + reportId);
+		System.out.println("reportCategory : " + reportCategory);
 		
-		return adminService.getReportHistoryList(currentPage, rowPerPage, searchWord, toDate, fromDate, reportId);
+		return adminService.getReportHistoryList(currentPage, rowPerPage, searchWord, toDate, fromDate, reportId, reportCategory);
 	}
 	
 	@GetMapping("/getYearlyQuestionCount")

@@ -49,17 +49,6 @@
 	        		<div class="row p-4">
 		        		<div class="col-sm-9">
 		        			 <table class="table table-sm table-borderless">
-		        				 <tr>
-		        				 	<td>
-		        			 			<button type="button" class="btn btn-outline-primary btn-sm px-4" id="reportAll">전체 내역</button>
-		        			 		</td>
-		        			 		<td>
-		        			 			<button type="button" class="btn btn-outline-primary btn-sm px-4" id="reportQuestion">질문 신고 내역</button>
-		        			 		</td>
-		        			 		<td>
-		        			 			<button type="button" class="btn btn-outline-primary btn-sm px-4" id="reportAnswer">답변 신고 내역</button>
-		        			 		</td>
-		        			 	</tr>
 		        			 	<tr>
 		        			 		<td>카테고리</td>
 		        			 		<td>
@@ -94,8 +83,13 @@
 					<div class="col-sm-2">
 						<p id="totalRow" class="py-1 m-0"></p>
 					</div>
-					<div class="col-sm-9">
+					<div class="col-sm-5">
 						<button type="button" class="btn btn-outline-primary btn-sm px-4" id="removeReportHistory">신고내역 삭제</button>
+					</div>
+					<div class="col-sm-4">
+						<button type="button" class="btn btn-outline-primary btn-sm px-4" id="reportAll">전체 내역</button>						
+						<button type="button" class="btn btn-outline-primary btn-sm px-4" id="reportQuestion">질문 신고 내역</button>
+						<button type="button" class="btn btn-outline-primary btn-sm px-4" id="reportAnswer">답변 신고 내역</button>
 					</div>
 					<div class="col-sm-1">
 						<select  class="form-control form-control-sm" id="rowPerPage">
@@ -215,6 +209,8 @@ var searchWord = undefined;
 var toDate = undefined;
 //작성기간끝
 var fromDate = undefined;
+//신고내역 질문 or 답변 유형 저장 변수 (question or answer 저장)
+var reportCategory = undefined;
 $.ajax({
 	url : "/rest/admin/getReportList",
 	method : "GET",
@@ -229,11 +225,22 @@ $.ajax({
 });
 	//페이지 들어오면 신고내역 리스트 바로 출력
 	appendItem(currentPage);
+	
 	//전체 신고내역 리스트 출력
 	$("#reportAll").click(function(){
+		reportCategory = undefined;
 		appendItem(currentPage);
 	})
-	
+	//질문 신고내역 리스트 출력
+	$("#reportQuestion").click(function(){
+		reportCategory = 'question';
+		appendItem(currentPage);
+	})
+	//답변 신고내역 리스트 출력
+	$("#reportAnswer").click(function(){
+		reportCategory = 'answer';
+		appendItem(currentPage);
+	})
 	//신고내역  이전버튼
 	$("#reportPrevBtn").click(function(){ 
 		appendItem(--currentPage);
@@ -289,7 +296,8 @@ function appendItem(currentPage){
 			  "reportId" : searchCategoryList,
 			  "searchWord" : searchWord,
 			  "toDate" : toDate,
-			  "fromDate" : fromDate},
+			  "fromDate" : fromDate,
+			  "reportCategory" : reportCategory},
 		success:function(json){
 			$("#reportHistoryList").empty();
 			subInfo(json);
@@ -322,7 +330,7 @@ $("#removeReportHistory").click(function() {
 		alert("체크 항목이 없습니다.");
 	} else {
 		$.ajax({
-			url:"/rest/admin/removeReportHistory",
+			url:"/rest/admin/removeReportHistoryList",
 			traditional : true, //ajax에서 기본적으로 배열을 지원하지않기때문에 설정
 			method:"post",
 			data:{"checkBoxArr":checkBoxArr},
@@ -366,6 +374,7 @@ function subInfo(json){
 	searchWord = json.searchWord;
 	toDate = json.toDate;
 	fromDate = json.fromDate;
+	reportCategory = json.reportCategory;
 	$("#searchWord").val(json.searchWord);
 	$("#totalRow").append("검색결과"+json.totalRow+"건");
 	$("#pageInfo").append(currentPage+"/"+lastPage);

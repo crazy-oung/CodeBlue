@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.codeblue.vo.NoticeBoard;
+import com.example.codeblue.vo.Answer;
 import com.example.codeblue.vo.Page;
-import com.example.codeblue.vo.Report;
+import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.ReportHistory;
 
 
@@ -20,7 +20,34 @@ import com.example.codeblue.vo.ReportHistory;
 public class LjhServiceImpl implements LjhService{
 	@Autowired LjhMapper ljhMapper;
 	
+	//신고 대상(질문)상세 정보 가져오기
+	@Override
+	public QuestionBoard getReportQuestionBoardOne(int questionId) {
+		System.out.println("::: AdminServiceImpl - getReportQuestionBoardOne :::");
+		return ljhMapper.selectReportQuestionBoardOne(questionId);
+	}
+	//신고 대상(답변)상세 정보 가져오기
+	@Override
+	public Answer getReportAnswerOne(int answerId) {
+		System.out.println("::: AdminServiceImpl - getReportAnswerOne :::");
+		return ljhMapper.selectReportAnswerOne(answerId);
+	}
+	@Override
+	public ReportHistory getReportHistoryOne(int reportHistoryId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
+	
+	
+
+
+
+
+
+
+	
+
 	
 	
 	

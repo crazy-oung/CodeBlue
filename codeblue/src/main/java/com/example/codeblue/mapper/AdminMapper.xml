@@ -50,6 +50,10 @@
 	   	<result column="report_content" property="reportContent" ></result>
 	   	<result column="report_datetime" property="reportDatetime"></result>
 	   
+	   <association property="questionBoard" resultMap="QuestionBoard">
+	  	</association>
+	  	<association property="answer" resultMap="Answer">
+	  	</association>
 	   	<association property="report" resultMap="Report">
 	  	</association>
 	  	<association property="user" resultMap="User">
@@ -190,6 +194,29 @@
 	</resultMap>
 	<!-- 객체정리 끝ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
 	
+	<!-- 신고내역 대상(question) 정보 가져오기 -->
+	<select id="selectReportQuestionBoardOne" parameterType="int" resultMap="QuestionBoard">
+		SELECT  qb.question_id,
+				qb.question_title,
+				qb.question_content,
+				qb.question_datetime,
+				f.feild_id,
+				f.feild_name,
+				qb.user_id
+		FROM question_board qb INNER JOIN feild f
+		ON qb.feild_id = f.feild_id
+		WHERE question_id = #{questionId}
+	</select>
+	<!-- 신고내역 대상(answer) 정보 가져오기 -->
+	<select id="selectReportAnswerOne" parameterType="int" resultMap="Answer">
+		SELECT  answer_id,
+				question_id,
+				user_id,
+				answer_content,
+				answer_datetime
+		FROM answer
+		WHERE answer_id = #{answerId}
+	</select>	
 	<!-- 신고내역 리스트 삭제 -->
 	<delete id="deleteReportHistoryList" parameterType="java.util.List">
 		DELETE FROM report_history
@@ -1005,17 +1032,17 @@
    </select>
 
    
-   <!-- 신고내역 SQL 문 -->
-   <select  id="selectReportHistoryOne" 
-   			parameterType="int"
-   			resultMap="ReportHistory">
+   <!-- 신고내역  정보 가져오기   -->
+   <select  id="selectReportHistoryOne" parameterType="int" resultMap="ReportHistory">
 		SELECT  rh.report_history_id,
 				rh.report_title,
 				rh.report_content, 
 				r.report_name,
 				u.user_id,
-				rh.report_datetime
-	    FROM report_history rh INNER JOIN report r INNER JOIN user u
+				rh.report_datetime,
+				rh.question_id,
+				rh.answer_id
+	    FROM report_history rh INNER JOIN report r INNER JOIN user u 
 	    ON rh.report_id = r.report_id AND rh.user_id = u.user_id 
 	    WHERE rh.report_history_id = #{reportHistoryId}
    	</select>
@@ -1027,17 +1054,23 @@
 			report_title,
 			report_datetime
     FROM report_history
-    <where>
-		<if test="searchCategory != null">
-			AND report_id = #{searchCategory}
-		</if> 
-		<if test="searchWord != null">
-			AND report_title like CONCAT('%',#{searchWord},'%')
-		</if> 
-		<if test="toDate != null and fromDate != null">
-			AND DATE(report_datetime) &gt;= DATE(#{toDate}) AND DATE(report_datetime) &lt;= DATE(#{fromDate})  
-		</if>
-	</where>
+	    <where>
+	    	<if test='reportCategory == "question"'>
+				AND question_id IS NOT NULL
+			</if>
+			<if test='reportCategory == "answer"'>
+				AND answer_id IS NOT NULL
+			</if>
+			<if test="searchCategory != null">
+				AND report_id = #{searchCategory}
+			</if> 
+			<if test="searchWord != null">
+				AND report_title like CONCAT('%',#{searchWord},'%')
+			</if> 
+			<if test="toDate != null and fromDate != null">
+				AND DATE(report_datetime) &gt;= DATE(#{toDate}) AND DATE(report_datetime) &lt;= DATE(#{fromDate})  
+			</if>
+		</where>
     ORDER BY report_datetime DESC
     LIMIT #{beginRow},#{rowPerPage}
    </select>
@@ -1045,18 +1078,24 @@
    <select id="selectReportHistoryTotalRow" parameterType="com.example.codeblue.vo.Page" resultType="int">
 	SELECT count(*)
 	FROM report_history
-	<where>
-		<if test="searchCategory != null">
-			AND report_id = #{searchCategory}
-		</if>
-		<if test="searchWord != null">
-			AND report_title like CONCAT('%',#{searchWord},'%')
-		</if> 
-		<if test="toDate != null and fromDate != null">
-			AND DATE(report_datetime) &gt;= DATE(#{toDate}) AND DATE(report_datetime) &lt;= DATE(#{fromDate})  
-		</if>
-	</where>
-   </select>   
+		<where>
+			<if test='reportCategory == "question"'>
+				AND question_id IS NOT NULL
+			</if>
+			<if test='reportCategory == "answer"'>
+				AND answer_id IS NOT NULL
+			</if>
+			<if test="searchCategory != null">
+				AND report_id = #{searchCategory}
+			</if>
+			<if test="searchWord != null">
+				AND report_title like CONCAT('%',#{searchWord},'%')
+			</if> 
+			<if test="toDate != null and fromDate != null">
+				AND DATE(report_datetime) &gt;= DATE(#{toDate}) AND DATE(report_datetime) &lt;= DATE(#{fromDate})  
+			</if>
+		</where>
+   </select>    
 
 	<select id="selectYearlyQuestionCount" resultMap="QuestionCount">
 		SELECT MONTH(question_datetime) AS question_month, IFNULL(COUNT(*), 0) as count

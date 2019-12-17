@@ -104,6 +104,10 @@ public interface AdminMapper {
 	public InquiryHistory selectInquiryHistoryOne(int inquiryHistoryId);
 	//신고내역 상세 내용 가져오기
 	public ReportHistory selectReportHistoryOne(int reportHistoryId);
+	//신고 대상(질문)상세 정보 가져오기
+	public QuestionBoard selectReportQuestionBoardOne(int questionId);
+	//신고 대상(답변)상세 정보 가져오기
+	public Answer selectReportAnswerOne(int answerId);
 	//서비스 카테고리 리스트 가져오기
 	public List<ServiceCategory> selectServiceCategoryList();
 	//공지사항 리스트

@@ -38,6 +38,7 @@
        <div class="container-fluid px-4 pt-4">
 			<div class="card border-0 bg-white p-3 my-2 shadow mx-3"> 
 				<!-- Page Content -->
+				
 				<div class="p-2">
 					<!-- heading -->
 					<div class="d-sm-flex align-items-center justify-content-between mb-3" >
@@ -45,10 +46,14 @@
 					</div>
 					<!-- page Heading End -->
 				<table id="reportHistoryOne" class="table table-hover text-dark"></table>
+				<div class="d-sm-flex align-items-center justify-content-between mb-3" >
+						<h3 class="text-gray-800 mb-2 font-weight-bold NotoSans">신고 대상 정보</h3>
+					</div>
+				<table id="reportTargetOne" class="table table-hover text-dark"></table>
 			</div>
           </div>
-		
         </div>
+        
         <!-- /.container-fluid --> 
       </div>
       <!-- End of Main Content -->
@@ -134,25 +139,65 @@ var getParam = function(key){
  return _parammap[key];
 };
 
-$(document).ready(function() {
-	$.ajax({
-		url :"/rest/admin/getReportHistoryOne",
-		method : "post",
-		data : {"reportHistoryId" : getParam("reportHistoryId")},
-		success : function(json){
-			console.log(json);
-			let html;
-			$(json).each(function(index, item){
-				html = "<tr align='left'><td>제목 : "+item.reportTitle+"</td></tr>";
-				html += "<tr align='left'><td>유형 : "+item.report.reportName+"</td></tr>";
-				html += "<tr align='left'><td>내용 : "+item.reportContent+"</td></tr>";
-				html += "<tr align='left'><td>작성자 : "+item.user.userId+"</td></tr>";
-				html += "<tr align='left'><td>날짜 : "+item.reportDatetime+"</td></tr>";
+$.ajax({
+	url :"/rest/admin/getReportHistoryOne",
+	method : "post",
+	data : {"reportHistoryId" : getParam("reportHistoryId")},
+	success : function(json){
+		console.log("reportHistory : ",json);
+		let html;
+		html =	"<tr align='left'><td>번호 : "+json.reportHistoryId+"</td></tr>"+
+				"<tr align='left'><td>제목 : "+json.reportTitle+"</td></tr>"+
+				"<tr align='left'><td>유형 : "+json.report.reportName+"</td></tr>"+
+				"<tr align='left'><td>내용 : "+json.reportContent+"</td></tr>"+
+				"<tr align='left'><td>작성자 : "+json.user.userId+"</td></tr>"+
+				"<tr align='left'><td>날짜 : "+json.reportDatetime+"</td></tr>";
 				$("#reportHistoryOne").append(html);
-			});
+		if(json.questionBoard.questionId != '0'){
+			getQuestionBoardOne(json.questionBoard.questionId);
+		} 
+		if(json.answer.answerId != '0'){
+			getAnswerOne(json.answer.answerId);
 		}
-	});
+	}
 });
+//신고 대상(질문)상세 정보 가져오기
+function getQuestionBoardOne(questionId){
+	$.ajax({
+		url:"/rest/admin/getReportQuestionBoardOne",
+		method:"post",
+		data:{"questionId" : questionId},
+		success : function(json){
+			$("#reportTargetOne").empty();
+			console.log("question : ",json);
+			let questionHtml =  "<tr align='left'><td>번호 : "+json.questionId+"</td></tr>"+
+								"<tr align='left'><td>제목 : "+json.questionTitle+"</td></tr>"+
+								"<tr align='left'><td>유형 : "+json.feild.feildName+"</td></tr>"+
+								"<tr align='left'><td>내용 : "+json.questionContent+"</td></tr>"+
+								"<tr align='left'><td>작성자 : "+json.user.userId+"</td></tr>"+
+								"<tr align='left'><td>날짜 : "+json.questionDatetime+"</td></tr>";
+			$("#reportTargetOne").append(questionHtml);
+		}
+	})
+}
+//신고 대상(답변)상세 정보 가져오기
+function getAnswerOne(answerId){
+	$.ajax({
+		url:"/rest/admin/getReportAnswerOne",
+		method:"post",
+		data:{"answerId" : answerId},
+		success : function(json){
+			$("#reportTargetOne").empty();
+			console.log("answer : ",json);
+			let answerHtml =  "<tr align='left'><td>번호 : "+json.answerId+"</td></tr>"+
+								"<tr align='left'><td>내용 : "+json.answerContent+"</td></tr>"+
+								"<tr align='left'><td>작성자 : "+json.user.userId+"</td></tr>"+
+								"<tr align='left'><td>날짜 : "+json.answerDatetime+"</td></tr>";
+			$("#reportTargetOne").append(answerHtml);
+		}
+	})
+}
+	
 </script>
 
 </html>
