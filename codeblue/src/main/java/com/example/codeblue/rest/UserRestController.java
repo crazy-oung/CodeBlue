@@ -1,5 +1,6 @@
 package com.example.codeblue.rest;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +23,7 @@ import com.example.codeblue.vo.Inquiry;
 import com.example.codeblue.vo.InquiryHistory;
 import com.example.codeblue.vo.InquiryHistoryAnswer;
 import com.example.codeblue.vo.NoticeBoard;
+import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.QuestionComment;
 import com.example.codeblue.vo.QuestionVote;
@@ -32,6 +34,29 @@ import com.example.codeblue.vo.User;
 @RestController
 public class UserRestController {
 	@Autowired UserService userService;
+	
+	// 태그 리스트 출력
+	@GetMapping("/rest/getTagList")
+	public	Map<String, Object> getTagList(Page page, int currentPage){
+		System.out.println("::: get - getTagList :::");
+		System.out.println(page);
+		Map<String, Object> map = new HashMap<>();
+		page.setBeginRow( (currentPage -1)*page.getBeginRow() );
+		
+		List<Map> list = userService.getTagList(page);
+		System.out.println(list);
+
+		map.put("list", list);
+		int totalRow = userService.getTagTotalRow();
+		int lastPage = totalRow/page.getRowPerPage();
+		if(totalRow%page.getRowPerPage() != 0) {
+			lastPage ++;
+		}
+		map.put("lastPage", lastPage);
+		map.put("currentPage", currentPage);
+		
+		return map;
+	}
 	
 	//프로필 정보 가져오기 
 	@PostMapping("/rest/profile")

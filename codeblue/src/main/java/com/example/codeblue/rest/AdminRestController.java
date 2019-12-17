@@ -31,6 +31,22 @@ import com.example.codeblue.vo.ServiceCategory;
 @RestController
 public class AdminRestController {
 	@Autowired private AdminService adminService;
+	
+	// 문의 처리율
+	@GetMapping("/rest/getInqueryAnswerPercentage")
+	public double getInqueryAnswerPercentage() {
+		System.out.println("::: get - getInqueryAnswerPercentage :::");
+		return adminService.getInqueryAnswerPercentage();
+	}
+	// 유저 활동지 통계
+	@GetMapping("/getUserRegionCount")
+	public	Map<String, Object> getUserRegionCount(){
+		System.out.println("::: get - getUserRegionCount :::");
+		Map<String, Object> map = adminService.getUserRegionCount();
+		System.out.println(map);
+		return map;
+	}
+	
 	//문의사항 답변 상세출력
 	@PostMapping("/rest/admin/getInquiryHistoryAnswerOne")
 	public InquiryHistoryAnswer getInquiryHistoryAnswerOne(int inquiryHistoryId) {

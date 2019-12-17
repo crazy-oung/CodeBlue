@@ -15,26 +15,8 @@ public class HdyRestController {
 	
 	@Autowired HdyService hdyService;
 	
-	@GetMapping("/rest/getTagList")
-	public	Map<String, Object> getTagList(Page page, int currentPage){
-		System.out.println("::: get - getTagList :::");
-		System.out.println(page);
-		Map<String, Object> map = new HashMap<>();
-		page.setBeginRow( (currentPage -1)*page.getBeginRow() );
-		
-		List<Map> list = hdyService.getTagList(page);
-		System.out.println(list);
 
-		map.put("list", list);
-		int totalRow = hdyService.getTagTotalRow();
-		int lastPage = totalRow/page.getRowPerPage();
-		if(totalRow%page.getRowPerPage() != 0) {
-			lastPage ++;
-		}
-		map.put("lastPage", lastPage);
-		map.put("currentPage", currentPage);
-		
-		return map;
-	}
+	
+
 	
 }

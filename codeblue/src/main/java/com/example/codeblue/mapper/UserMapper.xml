@@ -186,9 +186,33 @@
 		<association property="answer" resultMap="Answer"></association>
 		<association property="user" resultMap="User"></association>
 	</resultMap>
+	<!-- 태그 리스트 맵 타입. -->
+	<resultMap id="TagList" type="java.util.HashMap">
+		<result column="tag_name" property="tagName" javaType="java.lang.String" />
+		<result column="COUNT(*)" property="count"  javaType="java.lang.String" />
+	</resultMap>
 	<!-- 객체정리 끝ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
-	<!-- 회원 상세정보 -->
 	
+	<!-- 태그 리스트 출력 -->
+	<select id="selectTagList" parameterType="com.example.codeblue.vo.Page" resultMap="TagList">
+		SELECT tag_name, COUNT(*) 
+		FROM tag 
+ 		<where>
+			<if test="searchWord != '' ">
+				tag_name like CONCAT('%',#{searchWord},'%')
+			</if>
+		</where> 
+		GROUP BY tag_name 
+		ORDER BY COUNT(*) desc 
+		limit #{beginRow}, #{rowPerPage}
+	</select>
+	
+	<!-- 태그 전체 행 수 가져오기 -->
+	<select id="selectTagTotalRow" resultType="int">
+		SELECT COUNT(distinct tag_name)
+		FROM tag
+	</select>
+	<!-- 회원 상세정보 -->
 	<select id="selectUserOne" parameterType="String" resultMap="User">
 	      SELECT 
 	          u.user_id,
@@ -509,14 +533,6 @@
 		ON a.user_id = u.user_id
 		WHERE a.question_id =  #{questionId}
 		ORDER BY a.answer_datetime DESC
-	</select>
-
-	<select id="selectTagList" parameterType="com.example.codeblue.vo.Page" resultMap="Tag">
-		SELECT 
-			tag_name
-	    FROM tag
-	    ORDER BY notice_datetime DESC
-	    LIMIT #{beginRow},#{rowPerPage}
 	</select>
 
 	<select id="selectQuestionCommentList" parameterType="int" resultMap="QuestionComment">

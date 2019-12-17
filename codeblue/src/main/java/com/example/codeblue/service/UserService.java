@@ -14,6 +14,7 @@ import com.example.codeblue.vo.InquiryHistory;
 import com.example.codeblue.vo.InquiryHistoryAnswer;
 import com.example.codeblue.vo.Manager;
 import com.example.codeblue.vo.NoticeBoard;
+import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.QuestionComment;
 import com.example.codeblue.vo.QuestionVote;
@@ -23,6 +24,11 @@ import com.example.codeblue.vo.ServiceCategory;
 import com.example.codeblue.vo.User;
 
 public interface UserService {
+	
+	// 태그 리스트 출력
+	public List<Map> getTagList(Page page);
+	// 태그 전체 행 수
+	public int getTagTotalRow();
 	
 	//유저 상세 프로필
 	public User getUserOne(String userId);

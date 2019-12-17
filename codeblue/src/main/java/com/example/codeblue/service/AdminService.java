@@ -21,6 +21,11 @@ import com.example.codeblue.vo.ServiceCategory;
 import com.example.codeblue.vo.User;
 
 public interface AdminService {
+	
+	// 유저 활동지 통계
+	public Map<String, Object> getUserRegionCount();
+	// 문의 처리율 
+	public double getInqueryAnswerPercentage();
 	// 문의사항 답변 상세정보 가져오기
 	public InquiryHistoryAnswer getInquiryHistoryAnswerOne(int inquiryHistoryId);
 	//신고내역  리스트 삭제

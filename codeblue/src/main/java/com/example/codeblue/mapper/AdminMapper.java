@@ -1,6 +1,7 @@
 package com.example.codeblue.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -25,6 +26,10 @@ import com.example.codeblue.vo.User;
 
 @Mapper
 public interface AdminMapper {
+	// 유저 활동지 통계
+	public Map<String, Object> selectUserRegionCount();
+	// 문의 처리율
+	public double selectInqueryAnswerPercentage();
 	// 문의사항 답변 상세정보 가져오기
 	public InquiryHistoryAnswer selectInquiryHistoryAnswerOne(int inquiryHistoryId);
 	//Report 카테고리 가져오기

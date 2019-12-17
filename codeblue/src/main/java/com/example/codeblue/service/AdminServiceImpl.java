@@ -34,11 +34,21 @@ import com.example.codeblue.vo.User;
 @Service
 @Transactional
 public class AdminServiceImpl implements AdminService {
-	@Autowired
-	private AdminMapper adminMapper;
-	@Autowired 
-	private JavaMailSender javaMailSender;
-	
+	@Autowired private AdminMapper adminMapper;
+	@Autowired private JavaMailSender javaMailSender;
+	// 유저 활동지 통계
+	@Override
+	public Map<String, Object> getUserRegionCount() {
+		System.out.println("::: AdminServiceImpl - getUserRegionCount :::");
+		return adminMapper.selectUserRegionCount();
+	}
+	// 문의 처리율
+	@Override
+	public double getInqueryAnswerPercentage() {
+		System.out.println("::: AdminServiceImpl - getInqueryAnswerPercentage :::");
+		return adminMapper.selectInqueryAnswerPercentage();
+	}
+	// 문의 답변 
 	@Override
 	public InquiryHistoryAnswer getInquiryHistoryAnswerOne(int inquiryHistoryId) {
 		System.out.println("::: AdminServiceImpl - getInquiryHistoryAnswerOne :::");

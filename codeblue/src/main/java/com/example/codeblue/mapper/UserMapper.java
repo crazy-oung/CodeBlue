@@ -28,6 +28,10 @@ import com.example.codeblue.vo.User;
 
 @Mapper
 public interface UserMapper {
+	// 태그 리스트 출력
+	public List<Map> selectTagList(Page page);
+	// 태그 전체 행 수 
+	public int selectTagTotalRow();
 	
 	//유저 질문 리스트(페이징)
 	public List<QuestionBoard> selectQuestionPaging(Page page);

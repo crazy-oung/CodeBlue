@@ -14,15 +14,7 @@
 		<association property="inquiryHistory" resultMap="InquiryHistory">
 		</association>
 	</resultMap>
-	<select id="selectInquiryHistoryAnswerOne" parameterType="int" resultMap="InquiryHistoryAnswer">
-		SELECT
-			inquiry_history_id,
-			inquiry_history_answer_title,
-			inquiry_history_answer_content,
-			inquiry_history_answer_datetime
-		FROM inquiry_history_answer
-		WHERE inquiry_history_id = #{inquiryHistoryId}
-	</select>
+	
 	<!-- User 객체 -->
 	<resultMap type="com.example.codeblue.vo.User" id="User"> 
 		<!-- column은 테이블에서의 칼럼명  property는 클레스의 필드명 -->
@@ -38,6 +30,7 @@
 		<association property="rank" resultMap="Rank">
 		</association>
 	</resultMap>
+	
 	<!-- Manager 객체 -->
 	<resultMap type="com.example.codeblue.vo.Manager" id="Manager"> 
 		<!-- column은 테이블에서의 칼럼명  property는 클레스의 필드명 -->
@@ -211,8 +204,66 @@
 		<association property="user" resultMap="User"></association>
 		<association property="questionBoard" resultMap="QuestionBoard"></association>
 	</resultMap>
+	
+	<resultMap id="UserRegionCount" type="java.util.HashMap">
+		<result column="SO" property="SO" javaType="int" />
+		<result column="BS" property="BS" javaType="int" />
+		<result column="DG" property="DG" javaType="int" />
+		<result column="IC" property="IC" javaType="int" />
+		<result column="GJ" property="GJ" javaType="int" />
+		<result column="DJ" property="DJ" javaType="int" />
+		<result column="US" property="US" javaType="int" />
+		<result column="SJ" property="SJ" javaType="int" />
+		<result column="GG" property="GG" javaType="int" />
+		<result column="GW" property="GW" javaType="int" />
+		<result column="CB" property="CB" javaType="int" />
+		<result column="CN" property="CN" javaType="int" />
+		<result column="JB" property="JB" javaType="int" />
+		<result column="JN" property="JN" javaType="int" />
+		<result column="GB" property="GB" javaType="int" />
+		<result column="GN" property="GN" javaType="int" />
+		<result column="JJ" property="JJ" javaType="int" />
+	</resultMap>
 	<!-- 객체정리 끝ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
 	
+	<!-- 유저 활동지 통계 -->
+	<select id="selectUserRegionCount"	resultMap="UserRegionCount">
+		SELECT
+			SUM(case when r.region_name LIKE CONCAT("%","서울","%") then 1 ELSE 0 END) AS "SO",
+			SUM(case when r.region_name LIKE CONCAT("%","부산","%") then 1 ELSE 0 END) AS "BS",
+			SUM(case when r.region_name LIKE CONCAT("%","대구","%") then 1 ELSE 0 END) AS "DG",
+			SUM(case when r.region_name LIKE CONCAT("%","인천","%") then 1 ELSE 0 END) AS "IC",
+			SUM(case when r.region_name LIKE CONCAT("%","광주","%") then 1 ELSE 0 END) AS "GJ",
+			SUM(case when r.region_name LIKE CONCAT("%","대전","%") then 1 ELSE 0 END) AS "DJ",
+			SUM(case when r.region_name LIKE CONCAT("%","울산","%") then 1 ELSE 0 END) AS "US",
+			SUM(case when r.region_name LIKE CONCAT("%","세종","%") then 1 ELSE 0 END) AS "SJ",
+			SUM(case when r.region_name LIKE CONCAT("%","경기도","%") then 1 ELSE 0 END) AS "GG",
+			SUM(case when r.region_name LIKE CONCAT("%","강원도","%") then 1 ELSE 0 END) AS "GW",
+			SUM(case when r.region_name LIKE CONCAT("%","충북","%") then 1 ELSE 0 END) AS "CB",
+			SUM(case when r.region_name LIKE CONCAT("%","충남","%") then 1 ELSE 0 END) AS "CN",
+			SUM(case when r.region_name LIKE CONCAT("%","전북","%") then 1 ELSE 0 END) AS "JB",
+			SUM(case when r.region_name LIKE CONCAT("%","전남","%") then 1 ELSE 0 END) AS "JN",
+			SUM(case when r.region_name LIKE CONCAT("%","경북","%") then 1 ELSE 0 END) AS "GB",
+			SUM(case when r.region_name LIKE CONCAT("%","경남","%") then 1 ELSE 0 END) AS "GN",
+			SUM(case when r.region_name LIKE CONCAT("%","제주","%") then 1 ELSE 0 END) AS "JJ"
+		FROM user u INNER JOIN region r
+		ON u.region_id = r.region_id
+	</select>
+	<!-- 문의 처리율 -->
+	<select id="selectInqueryAnswerPercentage" resultType="double">
+		SELECT sum(inquiry_answer='Y')/COUNT(*)*100
+		FROM inquiry_history;
+	</select>
+	<!-- 문의 사항 답변 상세정보 가져오기 -->
+	<select id="selectInquiryHistoryAnswerOne" parameterType="int" resultMap="InquiryHistoryAnswer">
+		SELECT
+			inquiry_history_id,
+			inquiry_history_answer_title,
+			inquiry_history_answer_content,
+			inquiry_history_answer_datetime
+		FROM inquiry_history_answer
+		WHERE inquiry_history_id = #{inquiryHistoryId}
+	</select>
 	<!-- 신고내역 대상(question) 정보 가져오기 -->
 	<select id="selectReportQuestionBoardOne" parameterType="int" resultMap="QuestionBoard">
 		SELECT  qb.question_id,
@@ -1003,6 +1054,7 @@
 				ih.inquiry_content, 
 				i.inquiry_name,
 				u.user_id,
+				ih.inquiry_answer,
 				ih.inquiry_datetime
 	    FROM inquiry_history ih INNER JOIN inquiry i INNER JOIN user u
 	    ON ih.inquiry_id = i.inquiry_id AND ih.user_id = u.user_id 

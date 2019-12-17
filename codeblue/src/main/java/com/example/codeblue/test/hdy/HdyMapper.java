@@ -9,7 +9,7 @@ import com.example.codeblue.vo.Page;
 
 @Mapper
 public interface HdyMapper {
-	public List<Map> selectTagList(Page page);
-	public int selectTagTotalRow();
+
+
 	
 }

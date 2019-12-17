@@ -5,27 +5,12 @@
   
 <mapper namespace="com.example.codeblue.test.hdy.HdyMapper">
 
-	<resultMap id="tagList" type="java.util.HashMap">
-		<result column="tag_name" property="tagName" javaType="java.lang.String" />
-		<result column="COUNT(*)" property="count"  javaType="java.lang.String" />
-	</resultMap>
 
-	<select id="selectTagList" parameterType="com.example.codeblue.vo.Page" resultMap="tagList">
-		SELECT tag_name, COUNT(*) 
-		FROM tag 
- 		<where>
-			<if test="searchWord != '' ">
-				tag_name like CONCAT('%',#{searchWord},'%')
-			</if>
-		</where> 
-		GROUP BY tag_name 
-		ORDER BY COUNT(*) desc 
-		limit #{beginRow}, #{rowPerPage}
-	</select>
 	
-	<select id="selectTagTotalRow" resultType="int">
-		SELECT COUNT(distinct tag_name)AS count
-		FROM tag
-	</select>
+
+
+
+	
+
 	
 </mapper>

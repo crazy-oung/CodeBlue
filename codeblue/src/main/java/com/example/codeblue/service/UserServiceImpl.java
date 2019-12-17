@@ -40,6 +40,21 @@ public class UserServiceImpl implements UserService{
 	@Autowired UserMapper userMapper; 
 	@Autowired JavaMailSender javaMailSender;
 	
+	// 태그 리스트 출력
+	@Override
+	public List<Map> getTagList(Page page) {
+		System.out.println("::: UserServiceImpl - getTagList :::");
+		System.out.println(page);
+		List<Map> map = userMapper.selectTagList(page);
+		return map;
+	}
+	// 태그 전체 행 수 
+	@Override
+	public int getTagTotalRow() {
+		System.out.println("::: UserServiceImpl - getTagTotalRow :::");
+		return userMapper.selectTagTotalRow();
+	}
+	
 	//해당 유저정보 
 	@Override
 	public User getUserOne(String userId) {
