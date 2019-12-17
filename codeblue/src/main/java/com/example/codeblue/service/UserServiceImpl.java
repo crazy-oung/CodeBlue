@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.codeblue.mapper.UserMapper;
 import com.example.codeblue.vo.Answer;
 import com.example.codeblue.vo.AnswerComment;
+import com.example.codeblue.vo.AnswerVote;
 import com.example.codeblue.vo.Expert;
 import com.example.codeblue.vo.FaqBoard;
 import com.example.codeblue.vo.Hospital;
@@ -26,9 +27,11 @@ import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.QuestionComment;
+import com.example.codeblue.vo.QuestionVote;
 import com.example.codeblue.vo.Report;
 import com.example.codeblue.vo.ReportHistory;
 import com.example.codeblue.vo.ServiceCategory;
+import com.example.codeblue.vo.Tag;
 import com.example.codeblue.vo.User;
 
 @Transactional
@@ -36,6 +39,250 @@ import com.example.codeblue.vo.User;
 public class UserServiceImpl implements UserService{
 	@Autowired UserMapper userMapper; 
 	@Autowired JavaMailSender javaMailSender;
+	
+	//해당 유저정보 
+	@Override
+	public User getUserOne(String userId) {
+		System.out.println(":::UserServiceImp - getUserOne:::");
+		
+		return userMapper.selectUserOne(userId);
+	}
+	
+	//유저 질문 수 
+	@Override
+	public int questionBoardCount(String userId) {
+		System.out.println(":::UserServiceImp - questionBoardCount:::");
+		System.out.println("userId"+userId);
+		return userMapper.selectQuestionBoardCount(userId);
+	}
+	
+	//해당 유저 질문수 차트
+	@Override
+	public List<QuestionBoard> getQuestionChart(String userId) {
+		System.out.println("::::UserServiceImp - getQuestionChart");
+		System.out.println("userId"+userId);
+		return userMapper.selectQuestionChart(userId);
+	}
+	
+	//해당유저 질문수 리스트(페이징)
+	@Override
+	public Map<String, Object> getQuestionBoardPaging(int currentPage, int rowPerPage, String userId) {
+		System.out.println(":::UserServiceImp - getQuestionBoardPaging");
+		System.out.println("currentPage :"+currentPage +"/rowPerPage :"+rowPerPage);
+		
+		
+		Page page = new Page();
+		
+		int beginRow = (currentPage-1)*rowPerPage;
+		page.setBeginRow(beginRow);
+		page.setRowPerPage(rowPerPage);
+		page.setUserId(userId);
+		
+		System.out.println(page.toString());
+		
+		int totalRow = userMapper.selectQuestionBoardCount(userId);
+		int lastPage = totalRow/rowPerPage;
+		
+		if( totalRow%rowPerPage==0) {
+			lastPage = totalRow/rowPerPage;
+		}else {
+			lastPage = (totalRow/rowPerPage)+1;
+		}
+		
+		List<QuestionBoard> list = userMapper.selectQuestionPaging(page);
+		
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("currentPage", currentPage);
+		map.put("rowPerPage", rowPerPage);
+		map.put("lastPage",lastPage);
+		map.put("list", list);
+		map.put("beginRow", beginRow);
+		
+		return map;
+	}
+	
+	//해당유저 댓글 리스트(페이징)
+	@Override
+	public Map<String, Object> getCommentBoardPaging(int currentPage, int rowPerPage, String userId) {
+		System.out.println(":::UserServiceImp - getCommentBoardPaging:::");
+		System.out.println("currentPage : "+currentPage +"/rowPerPage :"+rowPerPage+"/userId:"+userId);
+		
+		rowPerPage =10;
+		
+		Page page = new Page();
+		
+		int beginRow = (currentPage-1)*rowPerPage;
+		page.setBeginRow(beginRow);
+		page.setRowPerPage(rowPerPage);
+		page.setUserId(userId);
+		
+		System.out.println(page.toString());
+		
+		int totalRow = userMapper.selectQuestionUserCommentCount(userId);
+		int lastPage = totalRow/rowPerPage;
+		
+		if( totalRow%rowPerPage==0) {
+			lastPage = totalRow/rowPerPage;
+		}else {
+			lastPage = (totalRow/rowPerPage)+1;
+		}
+		
+		List<QuestionComment> list = userMapper.selectCommentPaging(page);
+		
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("currentPage", currentPage);
+		map.put("rowPerPage", rowPerPage);
+		map.put("lastPage",lastPage);
+		map.put("list", list);
+		map.put("beginRow", beginRow);
+		return map;
+	}	
+		
+	//해당유저 댓글 수
+	@Override
+	public int questionCommentCount(String userId) {
+		System.out.println(":::UserServiceImp - selectCommentCount");
+		System.out.println("userId"+userId);
+		return userMapper.selectQuestionUserCommentCount(userId);
+	}
+
+	//해당유저 답글 리스트(페이징)
+	@Override
+	public Map<String, Object> getAnswerPaging(int currentPage, int rowPerPage, String userId) {
+		System.out.println(":::UserServiceImp - getAnswerPaging:::");
+		System.out.println("currentPage : "+currentPage +"/rowPerPage :"+rowPerPage+"/userId:"+userId);
+		
+		
+		Page page = new Page();
+		
+		int beginRow = (currentPage-1)*rowPerPage;
+		page.setBeginRow(beginRow);
+		page.setRowPerPage(rowPerPage);
+		page.setUserId(userId);
+		
+		System.out.println(page.toString());
+		
+		int totalRow = userMapper.selectAnswerCount(userId);
+		int lastPage = totalRow/rowPerPage;
+		
+		if( totalRow%rowPerPage == 0) {
+			lastPage = totalRow/rowPerPage;
+		}else {
+			lastPage = (totalRow/rowPerPage)+1;
+		}
+		
+		List<Answer> list = userMapper.selectQuestionAnswerPaging(page);
+		
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("currentPage", currentPage);
+		map.put("rowPerPage", rowPerPage);
+		map.put("lastPage",lastPage);
+		map.put("list", list);
+		map.put("beginRow", beginRow);
+		return map;
+	}
+	
+	//해당유저 답글 수
+	@Override
+	public int answerCount(String userId) {
+		System.out.println(":::UserServiceImp - answerCount:::");
+		System.out.println("userId"+userId);
+		return userMapper.selectAnswerCount(userId);
+	}
+	
+	//해당유저 답글 수 차트
+	@Override
+	public List<Answer> getAnswerChart(String userId) {
+		System.out.println(":::UserServiceImp - getAnswerChart:::");
+		System.out.println("userId"+userId);
+		return userMapper.selectAnswerChart(userId);
+	}
+	//유저 질문글 추천 수
+	@Override
+	public int getUserVote(String userId) {
+		System.out.println(":::UserServiceImp - getUserVote:::");
+		System.out.println("userId"+userId);
+		return userMapper.selectUserVote(userId);
+	}
+	
+	//유저 질문글 추천 중복검사 및 추천
+	@Override
+	public int getQuestionVoteCheck(QuestionVote questionVote) {
+		System.out.println(":::UserServiceImp - getQuestionVoteCheck:::");
+		System.out.println("questionid"+questionVote);
+		
+		if(userMapper.selectQuestionVoteCheck(questionVote) == null) {
+			System.out.print("추천!");
+			return userMapper.insertQuestionVote(questionVote);
+		}
+		return 0;
+	}	
+	
+	//유저 답변글 추천 중복검사 및 추천
+	@Override
+	public int getAnswerVoteCheck(AnswerVote answerVote) {
+		System.out.println(":::UserServiceImp - getAnswerVoteCheck:::");
+		System.out.println("anwerVote"+answerVote);
+		
+		if(userMapper.selectAnswerVoteCheck(answerVote) == null) {
+			System.out.print("추천!");
+			return userMapper.insertAnswerVote(answerVote);
+		}
+		return 0;
+	}
+		
+	//유저가 사용한 태그 수
+	@Override
+	public int getUserTagCount(String userId) {
+		System.out.println(":::UserServiceImp - getUserTagCount:::");
+		System.out.println("userId"+userId);
+		return userMapper.selectUserTagTotalRow(userId);
+	}
+	
+	//유저가 사용한 태그 페이징
+	@Override
+	public Map<String, Object> getUserTagPaging(int currentPage, int rowPerPage, String userId) {
+		System.out.println(":::UserServiceImp - getUserTagPaging:::");
+		System.out.println("currentPage : "+currentPage +"/rowPerPage :"+rowPerPage+"/userId:"+userId);
+		
+		int totalRow = userMapper.selectUserTagTotalRow(userId);
+		System.out.println("totalRow"+totalRow);
+		
+		int beginRow = (currentPage-1)*rowPerPage;
+		Page page = new Page();
+		page.setBeginRow(beginRow);
+		page.setRowPerPage(rowPerPage);
+		page.setUserId(userId);
+		
+		int lastPage = totalRow/rowPerPage;
+		if(totalRow % rowPerPage !=0) {
+			lastPage = (totalRow/rowPerPage)+1;
+		}else {
+			lastPage = totalRow/rowPerPage;
+		}
+		
+		
+		List<Tag> list = userMapper.selectUserTagPaging(page);
+		System.out.println(list.toString());
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", list);
+		map.put("rowPerPage", rowPerPage);
+		map.put("currentPage", currentPage);
+		map.put("userId", userId);
+		map.put("lastPage", lastPage);
+		map.put("beginRow", beginRow);
+		return map;
+	}
+	
+	//질문글 수정
+	@Override
+	public int modifyQuestion(QuestionBoard questionBoard) {
+		System.out.println(":::UserServiceImp - getUserTagPaging:::");
+		System.out.println(questionBoard.toString());
+		
+		return userMapper.updateQuestion(questionBoard);
+	}
 	
 	//답변 상세정보
 	@Override

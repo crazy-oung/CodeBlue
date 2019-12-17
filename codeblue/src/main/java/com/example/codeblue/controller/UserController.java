@@ -15,7 +15,19 @@ import com.example.codeblue.vo.QuestionBoard;
 public class UserController {
 	@Autowired UserService userService;
 	
+	//유저 활동 페이지
+	@GetMapping("/userOneActive")
+	public String getUserOneProfile() {
+		System.out.println(":::get - getUserOneProfile:::");
+		return "userOneActive";
+	}
 	
+	//질문 수정 페이지
+	@GetMapping("/modifyQuestion")
+	public String getModifyQuestion() {
+		System.out.println(":::get - getModifyQuestion:::");
+		return "modifyQuestion";
+	}
 	
 	//답변 신고창
 	@GetMapping("/answerReport")

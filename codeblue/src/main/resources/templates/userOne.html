@@ -76,9 +76,9 @@
 								</div>
 								<div>
 									 <div class="btn-group mb-2">
-								 		<button type="button" class="btn btn-outline-primary btn-sm" id="questionCommentBtn" >내 댓글</button>
+								 		<button type="button" class="btn btn-outline-primary btn-sm" id="questionBoardBtn">내 질문</button>
 								 		<button type="button" class="btn btn-outline-primary btn-sm" id="questionAnswerBtn">내 답글</button> 
-								 		<button type="button" class="btn btn-outline-primary btn-sm" id="questionBoardBtn">내 질문</button> 		
+								 		<button type="button" class="btn btn-outline-primary btn-sm" id="questionCommentBtn">내 댓글</button> 		
 									 </div>
 								</div>
 
@@ -163,11 +163,13 @@ $(document).ready(function() {
 	$.ajax({
 		url : "/rest/userTagList",
 		method : "post",
-		data : {"userId": getParam("userId")},
+		data : {"userId": getParam("userId"),
+				"currentPage":currentPage,
+				"rowPerPage":rowPerPage},
 		success : function(json){
 			console.log(json);
 			let tagList;
-			$(json).each(function(index, item){
+			$(json.list).each(function(index, item){
 				tagList = "<div class='p-2'>";
 				tagList += "<div class='p-1'><a href='#' class='btn btn-sm hov-p text-primary p-1'>#"+item.tagName+"</a> x ";
 				tagList += "<small class='text-dark text-right'>"+item.count+"</small></div></div>";
@@ -190,7 +192,9 @@ $(document).ready(function() {
 	$.ajax({
 		url :"/rest/profileQuestionBoard",
 		method : "post",
-		data : {"userId" : getParam("userId")},
+		data : {"userId": getParam("userId"),
+				"currentPage":currentPage,
+				"rowPerPage":rowPerPage},
 		success : function(json){
 			console.log(json);
 			$("#list").empty();
@@ -199,7 +203,7 @@ $(document).ready(function() {
 				boardHead += "<th>질문 제목</th>";
 				boardHead += "<th>질문 날짜</th></tr>";
 				$("#headlist").append(boardHead);
-			$(json).each(function(index, item){
+			$(json.list).each(function(index, item){
 				
 			let board =  "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionId+"</td>";
 				board += "<td><a href='/questionBoardOne?questionId="+item.questionId+"'>"+item.questionTitle+"</a></td>";
@@ -215,7 +219,9 @@ $(document).ready(function() {
 		$.ajax({
 			url :"/rest/profileQuestionBoard",
 			method : "post",
-			data : {"userId" : getParam("userId")},
+			data : {"userId": getParam("userId"),
+					"currentPage":currentPage,
+					"rowPerPage":rowPerPage},
 			success : function(json){
 				console.log("question json :"+ json);
 				$("#list").empty();
@@ -224,7 +230,7 @@ $(document).ready(function() {
 					boardHead += "<th>질문 제목</th>";
 					boardHead += "<th>질문 날짜</th></tr>";
 					$("#headlist").append(boardHead);
-				$(json).each(function(index, item){
+				$(json.list).each(function(index, item){
 					
 				let board =  "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionId+"</td>";
 					board += "<td><a href='/questionBoardOne?questionId="+item.questionId+"'>"+item.questionTitle+"</a></td>";
@@ -241,7 +247,9 @@ $(document).ready(function() {
 		$.ajax({
 			url : "/rest/questionAnswer",
 			method : "post",
-			data :  {"userId" : getParam("userId")},
+			data :  {"userId": getParam("userId"),
+					"currentPage":currentPage,
+					"rowPerPage":rowPerPage},
 			success : function(json){
 				console.log("answer json : "+json);
 				$("#list").empty();
@@ -251,7 +259,7 @@ $(document).ready(function() {
 					answerHead += "<th>답변 날짜</th></tr>";
 					$("#headlist").append(answerHead);
 
-				$(json).each(function(index,item){
+				$(json.list).each(function(index,item){
 					let answer = "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.answerId+"</td>";
 						answer += "<td><a href='/questionBoardOne?questionId="+item.questionBoard.questionId+"'>"+item.answerContent+"</a></td>";
 						answer += "<td>"+item.answerDatetime+"</td></tr>";
@@ -267,7 +275,9 @@ $(document).ready(function() {
 		$.ajax({
 			url :"/rest/profileQuestionComment",
 			method : "post",
-			data : {"userId" : getParam("userId")},
+			data : {"userId": getParam("userId"),
+					"currentPage":currentPage,
+					"rowPerPage":rowPerPage},
 			success : function(json){
 				console.log("comment json:"+json);
 				$("#list").empty();
@@ -277,7 +287,7 @@ $(document).ready(function() {
 					commentHead += "<th>댓글 날짜</th></tr>";
 					$("#headlist").append(commentHead);
 					
-				$(json).each(function(index, item){
+				$(json.list).each(function(index, item){
 				
 					let comment =  "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionCommentId+"</td>";
 						comment += "<td><a href='/questionBoardOne?questionId="+item.questionBoard.questionId+"'>"+item.questionCommentContent+"</a></td>";

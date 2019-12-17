@@ -195,7 +195,7 @@
 <script type="text/javascript">
 var currentPage  = 1;
 var rowPerPage = 10;
-var lastPage =0;
+var lastPage = 0;
 
 function activeCategory(item){
 	$("#answerBtn").removeClass("active");
@@ -211,6 +211,7 @@ function reset(){
 	buttonHide();
 	console.log("요약...")
 	activeCategory("summaryBtn");
+	rowPerPage = 6;
 	
 	$("#boardList").empty();
 	
@@ -219,12 +220,14 @@ function reset(){
 	$.ajax({
 		url :"/rest/profileQuestionBoard",
 		method : "post",
-		data : {"userId" : getParam("userId")},
+		data : {"userId": getParam("userId"),
+				"currentPage":currentPage,
+				"rowPerPage":rowPerPage},
 		success : function(json){
 			console.log(json);
 			$("#questionList").empty();
 			
-			$(json).each(function(index, item){
+			$(json.list).each(function(index, item){
 				
 			let board =  "<tr><td><span class='badge badge-primary m-0 mr-2'>Q</span>"+item.questionId+"</td>";
 				board += "<td><a href='/questionBoardOne?questionId="+item.questionId+"'>"+item.questionTitle+"</a></td>";
@@ -239,12 +242,14 @@ function reset(){
 	$.ajax({
 		url :"/rest/profileQuestionComment",
 		method : "post",
-		data : {"userId" : getParam("userId")},
+		data : {"userId": getParam("userId"),
+				"currentPage":currentPage,
+				"rowPerPage":rowPerPage},
 		success : function(json){
 			console.log(json);
 			$("#commentList").empty();
 			
-			$(json).each(function(index, item){
+			$(json.list).each(function(index, item){
 			
 				let comment =  "<tr><td><span class='badge badge-primary m-0 mr-2'>C</span>"+item.questionBoard.questionId+"</td>";
 					comment += "<td><a href='/questionBoardOne?questionId="+item.questionBoard.questionId+"'>"+item.questionCommentContent+"</a></td>";
@@ -258,12 +263,14 @@ function reset(){
 	$.ajax({
 		url : "/rest/questionAnswer",
 		method : "post",
-		data :  {"userId" : getParam("userId")},
+		data :  {"userId": getParam("userId"),
+				"currentPage":currentPage,
+				"rowPerPage":rowPerPage},
 		success : function(json){
 			console.log("answer json : "+json);
 			$("#answerList").empty();
 
-			$(json).each(function(index,item){
+			$(json.list).each(function(index,item){
 				let answer = "<tr><td><span class='badge badge-primary m-0 mr-2'>A</span>"+item.answerId+"</td>";
 					answer += "<td><a href='/questionBoardOne?questionId="+item.questionBoard.questionId+"'>"+item.answerContent+"</a></td>";
 					answer += "<td>"+item.answerDatetime+"</td></tr>";
@@ -276,11 +283,13 @@ function reset(){
 	$.ajax({
 		url : "/rest/userTagList",
 		method : "post",
-		data : {"userId": getParam("userId")},
+		data : {"userId": getParam("userId"),
+				"currentPage":currentPage,
+				"rowPerPage":rowPerPage},
 		success : function(json){
 			console.log(json);
 			let tagList;
-			$(json).each(function(index, item){
+			$(json.list).each(function(index, item){
 				tagList  = "<tr><td><span class='badge badge-primary m-0 mr-2'>#</span>"+item.tagName+"</td></tr>";
 				$("#tag").append(tagList);
 			})
@@ -670,7 +679,7 @@ $(document).ready(function() {
 				tagPaging()
 				console.log(json);
 				$(json.list).each(function(index,item){
-					let question = "<tr><td><span class='badge badge-primary m-0 mr-2'>#</span>"+item.tagName+"</td>";
+					let question = "<tr><td class='text-primary'><span class='badge badge-primary m-0 mr-2'>#</span>"+item.tagName+"</td>";
 						question += "<td>"+item.count+"</td></tr>";
 					$("#boardList").append(question);
 				})
@@ -694,7 +703,7 @@ $(document).ready(function() {
 				tagPaging()
 				console.log(json);
 				$(json.list).each(function(index,item){
-					let question = "<tr><td><span class='badge badge-primary m-0 mr-2'>#</span>"+item.tagName+"</td>";
+					let question = "<tr><td class='text-primary'><span class='badge badge-primary m-0 mr-2'>#</span>"+item.tagName+"</td>";
 						question += "<td>"+item.count+"</td></tr>";
 					$("#boardList").append(question);
 				})
@@ -830,7 +839,7 @@ $(document).ready(function() {
 				  data: {
 				    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
 				    datasets: [{
-				      label: "질문수",
+				      label: "댓글수",
 				      lineTension: 0.3,
 				      backgroundColor: "rgba(78, 115, 223, 0.05)",
 				      borderColor: "rgba(78, 115, 223, 1)",

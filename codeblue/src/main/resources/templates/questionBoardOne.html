@@ -68,7 +68,8 @@
 									<a id="reportBtn" class='px-1 text-danger btn hov-p'>신고</a>
 									<a id="goodBtn" class="px-1 text-primary btn hov-p">추천</a>
 								</div>
-								<div class="pr-2">
+								<div class="pr-2 row">
+									<div id="modify"></div>
 									<div class="card bg-gray-200 text-dark d-flex p-1" id="questionUserName"></div>
 								</div>
 							</div>
@@ -150,6 +151,7 @@ $.ajax({
 		console.log("userId: ",userId);
 	}
 });
+$("#modifyBtn").hide();
 
 //질문 답변 입력창
 $('#summernote').summernote({
@@ -186,6 +188,14 @@ $.ajax({
 		$("#questionUserName").append('<a href="/userOne?userId='+json.user.userId+'">'+json.user.userName+'</a>');
 		//질문 답변 리스트 출력
 		getAnswerList();
+		
+		console.log(userId, json.user.userId);
+		if(userId == json.user.userId){
+			$("#modify").append("<a id='modifyBtn' class='px-1 text-black btn hov-p' href='/modifyQuestion?questionId="+json.questionId+"'>수정</a>");
+			console.log("수정가능");
+		}else{
+			console.log("수정불가");
+		}
 	}
 });
 
@@ -240,7 +250,7 @@ $("#addAnswerBtn").click(function(){
 	})
 });
 
-//추천기능
+//질문 게시글 추천기능
 $("#goodBtn").click(function(){
 	console.log(userId);
 	if(userId == undefined){
@@ -256,10 +266,39 @@ $("#goodBtn").click(function(){
 		success : function(json){
 			console.log("추천",json);
 			console.log("추천추천");
-			alert("추천👍");
+			if(json == 1){
+				alert("추천👍");	
+			}else{
+				alert("이미 추천하셨습니다.")	
+			}
 		}
 	})
 })
+
+
+//답변 게시글 추천
+function answerGoodBtn(answerId){
+	if(userId == undefined){
+		alert("로그인 후 이용하실 수 있습니다.")
+		return;
+	}
+	
+	$.ajax({
+		url : "/rest/answerVote",
+		method : "post",
+		data : {"user.userId": userId,
+				"answer.answerId" : answerId},
+		success : function(json){
+			console.log(json);
+			console.log("답글추천");
+			if(json == 1){
+				alert("추천👍");	
+			}else{
+				alert("이미 추천하셨습니다.")	
+			}
+		}
+	})
+}
 
 //질문 댓글 리스트 출력
 function appendQuestionComment(){
@@ -292,7 +331,10 @@ function getAnswerList(){
 				//질문의 답변 출력
 				let answerhtml = "<div class='text-dark text-lg px-1'>"+item.answerContent+"</div>";
 				//버튼 생성
-				answerhtml += "<div class='d-flex justify-content-between small mt-5'><div class='px-2'><a id='answerCommentBtn' onclick='openComment("+item.answerId+",true)'><i id='answerCommentTotal"+item.answerId+"' class='far fa-comment-dots mx-1'></i></a><a class='px-1 text-danger btn hov-p' onclick=window.open('/answerReport?answerId="+item.answerId+"','답변신고하기','width=600,top=200,left=600,height=410');return false;>신고</a></div>";
+				answerhtml += "<div class='d-flex justify-content-between small mt-5'><div class='px-2'><a id='answerCommentBtn' onclick='openComment("+item.answerId+",true)'>";
+				answerhtml += "<i id='answerCommentTotal"+item.answerId+"' class='far fa-comment-dots mx-1'></i></a>";
+				answerhtml += "<a class='px-1 py-0 text-sm text-danger' href='' onclick=window.open('/answerReport?answerId="+item.answerId+"','답변신고하기','width=600,top=200,left=600,height=410');return false;>신고</a>"
+				answerhtml += "<a class='px-1 py-0 text-sm text-primary' href='' onclick='answerGoodBtn("+item.answerId+")'>추천</a></div>";
 				//질문의 댓글 리스트 출력
 			 	answerhtml += "<div class='d-felx'><div class='mb-0 mx-2 pr-2'>"+item.answerDatetime+" <a href='/userOne?userId="+item.user.userId+"'>"+item.user.userName+"</a></div></div>";
 				answerhtml += "</div><div class='card border-0 bg-light card-body mb-2' style='display: none;' id='answerComment"+item.answerId+"'><div id='answerCommentList"+item.answerId+"'></div>";
@@ -308,6 +350,7 @@ function getAnswerList(){
 		}	
 	});
 }
+
 //질문 답변 댓글 추가
 function addAnswerComment(answerId){
 	console.log("answerCommentContent",$("#answerCommentContent"+answerId).val());

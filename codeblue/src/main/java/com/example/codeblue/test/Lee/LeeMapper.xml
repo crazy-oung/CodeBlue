@@ -1,17 +1,17 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<!-- <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
   
 <mapper namespace="com.example.codeblue.test.Lee.LeeMapper">
-	<!-- tagList객체 -->
+	tagList객체
 	<resultMap id="tagList" type="java.util.HashMap">
       <result column="tag_name" property="tagName" javaType="java.lang.String" />
       <result column="COUNT(*)" property="count"  javaType="java.lang.String" />
    </resultMap>
 	
-	<!-- Answer 객체 -->
+	Answer 객체
 	<resultMap type="com.example.codeblue.vo.Answer" id="Answer">
 		<result column="answer_id" property="answerId"></result>
 		<result column="answer_content" property="answerContent"></result>
@@ -20,7 +20,7 @@
 		<association property="user" resultMap="User"></association>
 		<association property="questionBoard" resultMap="QuestionBoard"></association>
 	</resultMap>
-	<!-- User 객체 -->
+	User 객체
 	<resultMap type="com.example.codeblue.vo.User" id="User">
 		<result column="user_id" property="userId"></result>
 		<result column="user_name" property="userName"></result>
@@ -32,18 +32,18 @@
 		<association property="region" resultMap="Region"></association>
 		<association property="rank" resultMap="Rank"></association>
 	</resultMap>
-	<!-- Region 객체 -->
+	Region 객체
 	<resultMap type="com.example.codeblue.vo.Region" id="Region">
 		<result column="region_id" property="regionId"></result>
 		<result column="region_name" property="regionName"></result>
 	</resultMap>
-	<!-- Rank 객체 -->
+	Rank 객체
 	<resultMap type="com.example.codeblue.vo.Rank" id="Rank">
 		<result column="rank_id" property="rankId"></result>
 		<result column="rank_name" property="rankName"></result>
 	</resultMap>
 	
-		<!-- QuestionComment 객체 -->
+		QuestionComment 객체
 	<resultMap type="com.example.codeblue.vo.QuestionComment" id="QuestionComment">
 		<result column="question_comment_id" property="questionCommentId"></result>
 		<result column="question_comment_content" property="questionCommentContent"></result>
@@ -53,7 +53,7 @@
 		<association property="questionBoard" resultMap="QuestionBoard"></association>
 	</resultMap>
 	
-	<!-- QuestionBoard 객체 -->
+	QuestionBoard 객체
 	<resultMap type="com.example.codeblue.vo.QuestionBoard" id="QuestionBoard">
 		<result column="question_id" property="questionId"></result>
 		<result column="question_title" property="questionTitle"></result>
@@ -68,19 +68,19 @@
 		<association property="user" resultMap="User"></association>
 	</resultMap>
 	
-	<!-- Tag 객체 -->
+	Tag 객체
 	<resultMap type="com.example.codeblue.vo.Tag" id="Tag">
 		<result column="tag_id" property="tagId"></result>
 		<result column="tag_name" property="tagName"></result>
 	</resultMap>
 	
-	<!-- Feild 객체 -->
+	Feild 객체
 	<resultMap type="com.example.codeblue.vo.Feild" id="Feild">
 		<result column="feild_id" property="feildId"></result>
 		<result column="feild_name" property="feildName"></result>
 	</resultMap>
 	
-	<!-- QuestionCount 객체 -->
+	QuestionCount 객체
 	<resultMap type="com.example.codeblue.vo.QuestionCount" id="QuestionCount">
 		<result column="question_date" property="questionDate"></result>
 		<result column="question_month" property="questionMonth"></result>
@@ -88,8 +88,8 @@
 		<result column="feild_id" property="feildId"></result>
 	</resultMap>
 	
-	<!-- 새로만듬 같이 이동시킬것 -->
-	<!-- CommentCount 객체 -->
+	새로만듬 같이 이동시킬것
+	CommentCount 객체
 	<resultMap type="com.example.codeblue.vo.QuestionCount" id="CommentCount">
 		<result column="question_date" property="questionDate"></result>
 		<result column="question_month" property="questionMonth"></result>
@@ -97,15 +97,21 @@
 		<result column="feild_id" property="feildId"></result>
 	</resultMap>
 	
-	<!-- 같이 이동 -->
-	<!-- QuestionVote 객체  -->
+	같이 이동
+	QuestionVote 객체 
 	<resultMap type="com.example.codeblue.vo.QuestionVote" id="QuestionVote">
 		<result column="question_vote_datetime" property="questionVoteDateTime"></result>
 		<association property="questionBoard" resultMap="QuestionBoard"></association>
 		<association property="user" resultMap="User"></association>
 	</resultMap>
 		
-	<!-- 회원 상세정보 -->
+	<resultMap type="com.example.codeblue.vo.AnswerVote" id="AnswerVote">
+		<result column="answer_vote_datetime" property="answerVoteDateTime"></result>
+		<association property="answer" resultMap="Answer"></association>
+		<association property="user" resultMap="User"></association>
+	</resultMap>
+		
+	회원 상세정보
 	<select id="selectUserOne" parameterType="String" resultMap="User">
 	      SELECT 
 	          u.user_id,
@@ -119,23 +125,21 @@
 			u.rank_id = k.rank_id  
 		  WHERE u.user_id = #{userId}
 	</select>
+	    
+    질문 게시글 출력  페이징
+    <select id="selectQuestionPaging" resultMap="QuestionBoard" parameterType="com.example.codeblue.vo.Page">
+		 SELECT	qb.question_id, 
+		    	qb.question_title,
+		 		qb.question_datetime, 
+		 		u.user_id
+		FROM question_board qb INNER JOIN USER u
+		on qb.user_id = u.user_id 
+		WHERE u.user_id = #{userId}
+		ORDER BY question_datetime DESC
+		LIMIT #{beginRow}, #{rowPerPage}
+    </select>
 	
-	<!-- 해당유저 질문게시글 출력 -->
-	<select id="selectQuestionBoardList" resultMap="QuestionBoard" parameterType="String">
-		SELECT 
-			qb.question_id,
-			qb.question_title,
-			u.user_id,
-			qb.question_datetime 
-		FROM question_board qb INNER JOIN user u 
-		ON qb.user_id = u.user_id 
-		WHERE 
-			u.user_id = #{userId} 
-		ORDER BY qb.question_datetime DESC  
-		LIMIT 0, 6;
-	</select>
-	
-	<!-- 해당유저 질문수 -->
+	해당유저 질문수
 	<select id="selectQuestionBoardCount" resultType="int" parameterType="String">
 		SELECT 
 			COUNT(*)
@@ -144,7 +148,7 @@
 		WHERE u.user_id = #{userId}
 	</select>
 	
-	<!-- 해당유저 월별 게시글 수 차트 -->
+	해당유저 월별 게시글 수 차트
 	<select id="selectQuestionChart" resultMap="QuestionCount" parameterType="String">
 		SELECT MONTH(question_datetime) AS question_month, IFNULL(COUNT(*), 0) as count
 		      FROM ( SELECT question_datetime, user_id from question_board WHERE YEAR(question_datetime) = YEAR(NOW()) )t INNER JOIN user u 
@@ -152,39 +156,14 @@
 		      WHERE u.user_id = #{userId}
 	    GROUP BY question_month
 	</select>
-    
-    <!-- 질문 게시글 페이징 -->
-    <select id="selectQuestionPaging" resultMap="QuestionBoard" parameterType="com.example.codeblue.vo.Page">
-		 SELECT	qb.question_id, 
-		    	qb.question_title,
-		 		qb.question_datetime 
-		FROM question_board qb INNER JOIN USER u
-		on qb.user_id = u.user_id 
-		WHERE u.user_id = #{userId}
-		ORDER BY question_datetime DESC
-		LIMIT #{beginRow}, #{rowPerPage}
-    </select>
-   	
-	<!-- 해당유저 댓글 리스트 출력 -->
-	<select id="selectQuestionCommentList" resultMap="QuestionComment" parameterType="String" >
-		SELECT	
-			qc.question_comment_id,
-			u.user_id,
-			qc.question_comment_content,
-			qc.question_id,
-			qc.question_comment_datetime 
-		FROM question_comment qc INNER JOIN user u 
-		ON qc.user_id = u.user_id AND u.user_id = #{userId} 
-		ORDER BY qc.question_comment_datetime DESC 
-		LIMIT 0,6
-	</select>
 	
-    <!-- 댓글 리스트 페이징 -->
+    댓글 리스트 출력 페이징
     <select id="selectCommentPaging" resultMap="QuestionComment" parameterType="com.example.codeblue.vo.Page">
 	   	SELECT	qb.question_id, 
 		    	qc.question_comment_id,
 		    	qc.question_comment_datetime,
-		    	qc.question_comment_content	 		
+		    	qc.question_comment_content,
+		    	u.user_id	 		
 		FROM question_comment qc INNER JOIN USER u INNER JOIN question_board qb
 		ON qc.user_id = u.user_id AND qc.question_id = qb.question_id
 		WHERE u.user_id = #{userId}
@@ -193,7 +172,7 @@
     </select>
     
 	
-	<!-- 해당유저 월별 답변 수 차트 -->
+	해당유저 월별 답변 수 차트
 	<select id="selectAnswerChart" resultMap="CommentCount" parameterType="String">
 		SELECT MONTH(answer_datetime) AS question_month, IFNULL(COUNT(*), 0) as count
 		      FROM ( SELECT answer_datetime, user_id FROM answer WHERE YEAR(answer_datetime) = YEAR(NOW()) )t INNER JOIN user u 
@@ -202,8 +181,8 @@
 	    GROUP BY question_month
     </select>
     	
-	<!-- 해당유저 댓글수 -->
-	<select id="selectQuestionCommentCount" resultType="int" parameterType="String">
+	해당유저 댓글수
+	<select id="selectQuestionUserCommentCount" resultType="int" parameterType="String">
 		SELECT 
 			COUNT(*)
 		FROM question_comment qc Inner Join user u
@@ -211,21 +190,7 @@
 		WHERE u.user_id = #{userId}
 	</select>
 	
-	<!-- 해당유저 답변 리스트 -->
-	<select id="selectQuestionAnswerList" resultMap="Answer" parameterType="String">
-		SELECT a.answer_id, 
-			concat(substring(a.answer_content,1,20),'...')AS answer_content, 
-			a.answer_datetime, 
-			qb.question_id, 
-			u.user_id 
-		FROM answer a INNER JOIN user u INNER JOIN question_board qb
-		ON a.user_id = u.user_id AND a.question_id = qb.question_id
-		WHERE u.user_id = #{userId}
-		ORDER BY a.answer_datetime DESC
-		LIMIT 0,6
-	</select>
-	
-	<!-- 해당유저 답변 리스트 (페이징)-->
+	해당유저 답변 리스트 출력 (페이징)
 	<select id="selectQuestionAnswerPaging" resultMap="Answer" parameterType="com.example.codeblue.vo.Page">
 		SELECT a.answer_id,
 				concat(substring(a.answer_content,1,20),'...')AS answer_content,
@@ -239,7 +204,7 @@
 		LIMIT #{beginRow}, #{rowPerPage}
 	</select>
 	
-	<!-- 해당유저 댓글수 -->
+	해당유저 댓글수
 	<select id="selectAnswerCount" resultType="int" parameterType="String">
 		SELECT 
 			COUNT(*)
@@ -248,7 +213,7 @@
 		WHERE u.user_id = #{userId}
 	</select>
 
-	<!-- 해닫유저가 받은 추천수 -->
+	해닫유저가 받은 질문 추천수
 	<select id="selectUserVote" resultType="int" parameterType="String">
 		SELECT COUNT(qb.question_id)
 		FROM question_vote qv INNER JOIN question_board qb
@@ -257,14 +222,14 @@
 		GROUP BY qb.user_id
 	</select>
 	
-	<!-- 해당 게시글 추천전 중복조회 -->
+	해당 질문 게시글 추천전 중복조회
 	<select id="selectQuestionVoteCheck" resultMap="QuestionVote" parameterType="com.example.codeblue.vo.QuestionVote">
 		SELECT user_id, question_id 
 		FROM question_vote
 		WHERE user_id = #{user.userId} and question_id = #{questionBoard.questionId}
 	</select>
 	
-	<!--해당 게시글 추천기능  -->
+	해당 질문 게시글 추천기능 
 	<insert id="insertQuestionVote" parameterType="com.example.codeblue.vo.QuestionVote">
 		INSERT INTO question_vote (
 			user_id, 
@@ -277,31 +242,50 @@
 		)
 	</insert> 
 	
+	해당 답변 글 추천전 중복조회
+	<select id="selectAnswerVoteCheck" resultMap="AnswerVote" parameterType="com.example.codeblue.vo.AnswerVote">
+		SELECT user_id, answer_id 
+		FROM answer_vote
+		WHERE user_id = #{user.userId} and answer_id = #{answer.answerId}
+	</select>
 	
-	<!--유저가 사용한 태그리스트 -->
-	 <select id="selectUserTagList" parameterType="String" resultMap="tagList">
-      SELECT t.tag_name, COUNT(*) 
-      FROM tag t INNER JOIN user u 
-      WHERE u.user_id = #{userId}
-      GROUP BY t.tag_name 
-      ORDER BY COUNT(*) desc 
-      limit 0, 6
-   </select>
+
+	해당 답변글 추천기능 
+	<insert id="insertAnswerVote" parameterType="com.example.codeblue.vo.AnswerVote">
+		INSERT INTO answer_vote (
+			user_id, 
+			answer_id,
+			answer_vote_datetime
+		)VALUES(
+			#{user.userId}, 
+			#{answer.answerId}, 
+			now()
+		)
+	</insert> 
    
-   <!-- 유저가 사용한 태그 수 -->
-   <select id="selectUserTagTotalRow" resultType="int" parameterType="String">
-      SELECT COUNT(t.tag_name)AS count
-      FROM tag t INNER JOIN user u
-      WHERE u.user_id = #{userId}
-   </select>
-   
-   <!-- 유저가 사용한 태그리스트(페이징) -->
+   유저가 사용한 태그리스트 출력(페이징)
    <select id="selectUserTagPaging" parameterType="com.example.codeblue.vo.Page" resultMap="tagList">
-      SELECT t.tag_name, COUNT(*) 
-      FROM tag t INNER JOIN user u 
-      WHERE u.user_id = #{userId}
-      GROUP BY t.tag_name 
-      ORDER BY COUNT(*) desc 
-      limit #{beginRow}, #{rowPerPage}
+	      SELECT t.tag_name, COUNT(*) 
+	      FROM tag t INNER JOIN user u 
+	      WHERE u.user_id = #{userId}
+	      GROUP BY t.tag_name 
+	      ORDER BY COUNT(*) desc 
+	      limit #{beginRow}, #{rowPerPage}
    </select>
-</mapper>
+   
+   유저가 사용한 태그 수
+   <select id="selectUserTagTotalRow" resultType="int" parameterType="String">
+	      SELECT COUNT(t.tag_name)AS count
+	      FROM tag t INNER JOIN user u
+	      WHERE u.user_id = #{userId}
+   </select>
+   
+   질문글 수정
+   <update id="updateQuestion" parameterType="com.example.codeblue.vo.QuestionBoard">
+    	UPDATE question_board SET question_title = #{questionTitle}, 
+							      question_content= #{questionContent}, 
+							      feild_id= #{feild.feildId}, 
+							      question_tags= #{questionTags}   
+    	WHERE user_id = #{user.userId} AND question_id= #{questionId}
+   </update>
+</mapper> -->

@@ -150,9 +150,223 @@
 		<result column="inquiry_history_answer_datetime" property="inquiryHistoryAnswerDatetime"></result>
 		<association property="inquiryHistory" resultMap="InquiryHistory"></association>
 	</resultMap>
+	
+	<!-- tagList객체 -->
+	<resultMap id="tagList" type="java.util.HashMap">
+      <result column="tag_name" property="tagName" javaType="java.lang.String" />
+      <result column="COUNT(*)" property="count"  javaType="java.lang.String" />
+   </resultMap>
+   
+   <!-- QuestionCount 객체 -->
+	<resultMap type="com.example.codeblue.vo.QuestionCount" id="QuestionCount">
+		<result column="question_date" property="questionDate"></result>
+		<result column="question_month" property="questionMonth"></result>
+		<result column="count" property="questionCount"></result>
+		<result column="feild_id" property="feildId"></result>
+	</resultMap>
+
+	<!-- CommentCount 객체 -->
+	<resultMap type="com.example.codeblue.vo.QuestionCount" id="CommentCount">
+		<result column="question_date" property="questionDate"></result>
+		<result column="question_month" property="questionMonth"></result>
+		<result column="count" property="questionCount"></result>
+		<result column="feild_id" property="feildId"></result>
+	</resultMap>
+
+	<!-- QuestionVote 객체  -->
+	<resultMap type="com.example.codeblue.vo.QuestionVote" id="QuestionVote">
+		<result column="question_vote_datetime" property="questionVoteDateTime"></result>
+		<association property="questionBoard" resultMap="QuestionBoard"></association>
+		<association property="user" resultMap="User"></association>
+	</resultMap>
+	
+	<!-- AnswerVote 객체 -->	
+	<resultMap type="com.example.codeblue.vo.AnswerVote" id="AnswerVote">
+		<result column="answer_vote_datetime" property="answerVoteDateTime"></result>
+		<association property="answer" resultMap="Answer"></association>
+		<association property="user" resultMap="User"></association>
+	</resultMap>
 	<!-- 객체정리 끝ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
+	<!-- 회원 상세정보 -->
 	
+	<select id="selectUserOne" parameterType="String" resultMap="User">
+	      SELECT 
+	          u.user_id,
+	          u.user_name,
+	          r.region_name,
+	          u.user_birthdate,
+	          u.user_createtime,
+	          k.rank_name
+	      FROM user u INNER JOIN region r INNER JOIN rank k
+	      ON u.region_id = r.region_id and
+			u.rank_id = k.rank_id  
+		  WHERE u.user_id = #{userId}
+	</select>
+	    
+    <!-- 질문 게시글 출력  페이징 -->
+    <select id="selectQuestionPaging" resultMap="QuestionBoard" parameterType="com.example.codeblue.vo.Page">
+		 SELECT	qb.question_id, 
+		    	qb.question_title,
+		 		qb.question_datetime, 
+		 		u.user_id
+		FROM question_board qb INNER JOIN USER u
+		on qb.user_id = u.user_id 
+		WHERE u.user_id = #{userId}
+		ORDER BY question_datetime DESC
+		LIMIT #{beginRow}, #{rowPerPage}
+    </select>
 	
+	<!-- 해당유저 질문수 -->
+	<select id="selectQuestionBoardCount" resultType="int" parameterType="String">
+		SELECT 
+			COUNT(*)
+		FROM question_board q Inner Join user u
+		ON q.user_id = u.user_id
+		WHERE u.user_id = #{userId}
+	</select>
+	
+	<!-- 해당유저 월별 게시글 수 차트 -->
+	<select id="selectQuestionChart" resultMap="QuestionCount" parameterType="String">
+		SELECT MONTH(question_datetime) AS question_month, IFNULL(COUNT(*), 0) as count
+		      FROM ( SELECT question_datetime, user_id from question_board WHERE YEAR(question_datetime) = YEAR(NOW()) )t INNER JOIN user u 
+		      ON u.user_id = t.user_id
+		      WHERE u.user_id = #{userId}
+	    GROUP BY question_month
+	</select>
+	
+    <!-- 댓글 리스트 출력 페이징 -->
+    <select id="selectCommentPaging" resultMap="QuestionComment" parameterType="com.example.codeblue.vo.Page">
+	   	SELECT	qb.question_id, 
+		    	qc.question_comment_id,
+		    	qc.question_comment_datetime,
+		    	qc.question_comment_content,
+		    	u.user_id	 		
+		FROM question_comment qc INNER JOIN USER u INNER JOIN question_board qb
+		ON qc.user_id = u.user_id AND qc.question_id = qb.question_id
+		WHERE u.user_id = #{userId}
+		ORDER BY qc.question_comment_datetime DESC
+		LIMIT #{beginRow}, #{rowPerPage}
+    </select>
+    
+	
+	<!-- 해당유저 월별 답변 수 차트 -->
+	<select id="selectAnswerChart" resultMap="CommentCount" parameterType="String">
+		SELECT MONTH(answer_datetime) AS question_month, IFNULL(COUNT(*), 0) as count
+		      FROM ( SELECT answer_datetime, user_id FROM answer WHERE YEAR(answer_datetime) = YEAR(NOW()) )t INNER JOIN user u 
+		      ON u.user_id = t.user_id
+		      WHERE u.user_id = #{userId}
+	    GROUP BY question_month
+    </select>
+    	
+	<!-- 해당유저 댓글수 -->
+	<select id="selectQuestionUserCommentCount" resultType="int" parameterType="String">
+		SELECT 
+			COUNT(*)
+		FROM question_comment qc Inner Join user u
+		ON qc.user_id = u.user_id
+		WHERE u.user_id = #{userId}
+	</select>
+	
+	<!-- 해당유저 답변 리스트 출력 (페이징)-->
+	<select id="selectQuestionAnswerPaging" resultMap="Answer" parameterType="com.example.codeblue.vo.Page">
+		SELECT a.answer_id,
+				concat(substring(a.answer_content,1,20),'...')AS answer_content,
+				a.answer_datetime,
+				qb.question_id,
+				u.user_id 
+		FROM answer a INNER JOIN user u INNER JOIN question_board qb
+		ON a.user_id = u.user_id AND a.question_id = qb.question_id
+		WHERE u.user_id = #{userId}
+		ORDER BY a.answer_datetime DESC
+		LIMIT #{beginRow}, #{rowPerPage}
+	</select>
+	
+	<!-- 해당유저 댓글수 -->
+	<select id="selectAnswerCount" resultType="int" parameterType="String">
+		SELECT 
+			COUNT(*)
+		FROM answer a Inner Join user u
+		ON a.user_id = u.user_id
+		WHERE u.user_id = #{userId}
+	</select>
+
+	<!-- 해닫유저가 받은 질문 추천수 -->
+	<select id="selectUserVote" resultType="int" parameterType="String">
+		SELECT COUNT(qb.question_id)
+		FROM question_vote qv INNER JOIN question_board qb
+		ON qv.question_id = qb.question_id
+		WHERE qb.user_id = #{userId}
+		GROUP BY qb.user_id
+	</select>
+	
+	<!-- 해당 질문 게시글 추천전 중복조회 -->
+	<select id="selectQuestionVoteCheck" resultMap="QuestionVote" parameterType="com.example.codeblue.vo.QuestionVote">
+		SELECT user_id, question_id 
+		FROM question_vote
+		WHERE user_id = #{user.userId} and question_id = #{questionBoard.questionId}
+	</select>
+	
+	<!--해당 질문 게시글 추천기능  -->
+	<insert id="insertQuestionVote" parameterType="com.example.codeblue.vo.QuestionVote">
+		INSERT INTO question_vote (
+			user_id, 
+			question_id,
+			question_vote_datetime
+		)VALUES(
+			#{user.userId}, 
+			#{questionBoard.questionId}, 
+			now()
+		)
+	</insert> 
+	
+	<!-- 해당 답변 글 추천전 중복조회 -->
+	<select id="selectAnswerVoteCheck" resultMap="AnswerVote" parameterType="com.example.codeblue.vo.AnswerVote">
+		SELECT user_id, answer_id 
+		FROM answer_vote
+		WHERE user_id = #{user.userId} and answer_id = #{answer.answerId}
+	</select>
+	
+
+	<!--해당 답변글 추천기능  -->
+	<insert id="insertAnswerVote" parameterType="com.example.codeblue.vo.AnswerVote">
+		INSERT INTO answer_vote (
+			user_id, 
+			answer_id,
+			answer_vote_datetime
+		)VALUES(
+			#{user.userId}, 
+			#{answer.answerId}, 
+			now()
+		)
+	</insert> 
+   
+   <!-- 유저가 사용한 태그리스트 출력(페이징) -->
+   <select id="selectUserTagPaging" parameterType="com.example.codeblue.vo.Page" resultMap="tagList">
+	      SELECT t.tag_name, COUNT(*) 
+	      FROM tag t INNER JOIN user u 
+	      WHERE u.user_id = #{userId}
+	      GROUP BY t.tag_name 
+	      ORDER BY COUNT(*) desc 
+	      limit #{beginRow}, #{rowPerPage}
+   </select>
+   
+   <!-- 유저가 사용한 태그 수 -->
+   <select id="selectUserTagTotalRow" resultType="int" parameterType="String">
+	      SELECT COUNT(t.tag_name)AS count
+	      FROM tag t INNER JOIN user u
+	      WHERE u.user_id = #{userId}
+   </select>
+   
+   <!-- 질문글 수정 -->
+   <update id="updateQuestion" parameterType="com.example.codeblue.vo.QuestionBoard">
+    	UPDATE question_board SET question_title = #{questionTitle}, 
+							      question_content= #{questionContent}, 
+							      feild_id= #{feild.feildId}, 
+							      question_tags= #{questionTags}   
+    	WHERE user_id = #{user.userId} AND question_id= #{questionId}
+   </update>
+	
+	<!-- ㅇㅇ -->
 	
 	<!-- 답변 상세정보 -->
 	<select id="selectAnswerOne" parameterType="String" resultMap="Answer">
@@ -295,18 +509,6 @@
 		ON a.user_id = u.user_id
 		WHERE a.question_id =  #{questionId}
 		ORDER BY a.answer_datetime DESC
-	</select>
-	
-	<select id="selectUserOne" parameterType="com.example.codeblue.vo.User"
-			resultMap="User">
-		SELECT 
-			   user_id,
-			   user_name,
-			   region_id,
-			   user_birthdate,
-			   user_createtime
-		FROM user
-		WHERE user_id = #{userId}
 	</select>
 
 	<select id="selectTagList" parameterType="com.example.codeblue.vo.Page" resultMap="Tag">
