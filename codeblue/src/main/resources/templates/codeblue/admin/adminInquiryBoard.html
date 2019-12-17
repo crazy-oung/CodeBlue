@@ -84,8 +84,13 @@
 					<div class="col-sm-2">
 						<p id="totalRow" class="py-1 m-0"></p>
 					</div>
-					<div class="col-sm-9">
+					<div class="col-sm-5">
 						<button type="button" class="btn btn-outline-primary btn-sm px-4" id="removeInquiryHistory">문의내역 삭제</button>
+					</div>
+					<div class="col-sm-4">
+						<button type="button" class="btn btn-outline-primary btn-sm px-4" id="inquiryAll">전체 내역</button>						
+						<button type="button" class="btn btn-outline-primary btn-sm px-4" id="inquiryComplete">답변 완료 내역</button>
+						<button type="button" class="btn btn-outline-primary btn-sm px-4" id="inquiryStaying">답변 대기 내역</button>
 					</div>
 					<div class="col-sm-1">
 						<select  class="form-control form-control-sm" id="rowPerPage">
@@ -200,7 +205,9 @@ var searchWord = undefined;
 var toDate = undefined;
 //작성기간끝
 var fromDate = undefined;
-//Inquiry 카테고리 리스트 출력
+//답변 완료/대기 여부 저장
+var inquiryCategory = undefined;
+
 $.ajax({
 	url : "/rest/admin/getInquiryList",
 	method : "GET",
@@ -219,6 +226,21 @@ $.ajax({
 	$("#sideBarNotice").children("a").attr("aria-expanded","false");
 	$("#sideBarNotice").children("div").addClass("show");
 
+	//전체 신고내역 리스트 출력
+	$("#inquiryAll").click(function(){
+		inquiryCategory = undefined;
+		appendItem(inquiryCurrentPage);
+	})
+	//답변 완료 리스트 출력
+	$("#inquiryComplete").click(function(){
+		inquiryCategory = 'Y';
+		appendItem(inquiryCurrentPage);
+	})
+	//답변 대기 리스트
+	$("#inquiryStaying").click(function(){
+		inquiryCategory = 'N';
+		appendItem(inquiryCurrentPage);
+	})
 	//문의내역 이전 버튼
 	$("#inquiryPrevBtn").click(function(){ 
 		appendItem(--inquiryCurrentPage);
@@ -321,7 +343,8 @@ function appendItem(inquiryCurrentPage){
 			  "searchWord" :  searchWord,
 			  "toDate" : toDate,
 			  "fromDate" : fromDate,
-			  "inquiryId" : searchCategoryList},
+			  "inquiryId" : searchCategoryList,
+			  "inquiryCategory" : inquiryCategory},
 		success: function(json){
 			$("#inquiryHistoryList").empty();
 
@@ -353,10 +376,10 @@ function subInfo(json){
 	searchWord = json.searchWord;
 	toDate = json.toDate;
 	fromDate = json.fromDate;
+	inquiryCategory = json.inquiryCategory;
 	$("#searchWord").val(json.searchWord);
 	$("#totalRow").append("검색결과"+json.totalRow+"건");
 	$("#pageInfo").append(inquiryCurrentPage+"/"+lastPage);
 }
 </script>
-
 </html>

@@ -57,6 +57,10 @@
 					<label class="text-dark font-weight-bold">내용</label>
 					<textarea class="form-control form-control-sm mb-2" cols="100" rows="5" id="inquiryHistoryAnswerContent"></textarea>
 				</div>
+				<div>
+					<label class="text-dark font-weight-bold">답변날짜</label>
+					<textarea class="form-control form-control-sm mb-2" cols="15" rows="1" id="inquiryHistoryAnswerDatetime" readonly="readonly"></textarea>
+				</div>
 				<button id="inquiryHistoryAnswerBtn" type="button" class="btn ml-1 px-4 btn-primary">답변전송</button>
 			</div>
           </div>
@@ -151,41 +155,51 @@ $("#inquiryHistoryId").append("번 문의내역");
 $("#inquiryAnswer").append(getParam("inquiryHistoryId"));
 $("#inquiryAnswer").append("번 문의답변");
 
-$(document).ready(function() {
-	//문의내역 상세정보 가져오기
-	$.ajax({
-		url :"/rest/admin/getInquiryHistoryOne",
-		method : "post",
-		data : {"inquiryHistoryId" : getParam("inquiryHistoryId")},
-		success : function(json){
-			console.log(json);
-			let html;
-			$(json).each(function(index, item){
-				html = "<tr align='left'><td>문의 제목 : "+item.inquiryTitle+"</td></tr>";
-				html += "<tr align='left'><td>문의 유형 : "+item.inquiry.inquiryName+"</td></tr>";
-				html += "<tr align='left'><td>문의 내역 : "+item.inquiryContent+"</td></tr>";
-				html += "<tr align='left'><td>작성자 : "+item.user.userId+"</td></tr>";
-				html += "<tr align='left'><td>작성 날짜 : "+item.inquiryDatetime+"</td></tr>";
-				$("#inquiryHistoryOne").append(html);
-			});
-		}
-	});
-	
-	//답변하기 버튼 누르면 inquiryHistoryAnswer에 저장.
-	$("#inquiryHistoryAnswerBtn").click(function(){
-	 	$.ajax({
-	 		url:"/rest/admin/addInquiryHistoryAnswer",
-			data:{ 	"inquiryHistoryAnswerTitle" : $("#inquiryHistoryAnswerTitle").val() ,
-					"inquiryHistoryAnswerContent" : $("#inquiryHistoryAnswerContent").val(),
-					"inquiryHistory.inquiryHistoryId" : getParam("inquiryHistoryId")
-					},
-			method:"post",
-			success:function(){
-				location.replace("/adminInquiryBoard");	
-			},
-		})
-	})  
+//문의내역 상세정보 가져오기
+$.ajax({
+	url :"/rest/admin/getInquiryHistoryOne",
+	method : "post",
+	data : {"inquiryHistoryId" : getParam("inquiryHistoryId")},
+	success : function(json){
+		console.log(json);
+		let html;
+		$(json).each(function(index, item){
+			html =   "<tr align='left'><td>문의 제목 : "+item.inquiryTitle+"</td></tr>"+
+					 "<tr align='left'><td>문의 유형 : "+item.inquiry.inquiryName+"</td></tr>"+
+					 "<tr align='left'><td>문의 내역 : "+item.inquiryContent+"</td></tr>"+
+					 "<tr align='left'><td>작성자 : "+item.user.userId+"</td></tr>"+
+					 "<tr align='left'><td>작성 날짜 : "+item.inquiryDatetime+"</td></tr>";
+			$("#inquiryHistoryOne").append(html);
+		});
+	}
 });
+$.ajax({
+	url : "/rest/admin/getInquiryHistoryAnswerOne",
+	method:"post",
+	data : {"inquiryHistoryId" : getParam("inquiryHistoryId")},
+	success : function(json){
+		
+		$("#inquiryHistoryAnswerDatetime").append(json.inquiryHistoryAnswerDatetime);
+		$("#inquiryHistoryAnswerTitle").append(json.inquiryHistoryAnswerTitle);
+		$("#inquiryHistoryAnswerContent").append(json.inquiryHistoryAnswerContent);
+	}
+})
+
+//답변하기 버튼 누르면 inquiryHistoryAnswer에 저장.
+$("#inquiryHistoryAnswerBtn").click(function(){
+ 	$.ajax({
+ 		url:"/rest/admin/addInquiryHistoryAnswer",
+		data:{ 	"inquiryHistoryAnswerTitle" : $("#inquiryHistoryAnswerTitle").val() ,
+				"inquiryHistoryAnswerContent" : $("#inquiryHistoryAnswerContent").val(),
+				"inquiryHistory.inquiryHistoryId" : getParam("inquiryHistoryId")
+				},
+		method:"post",
+		success:function(){
+			location.replace("/adminInquiryBoard");	
+		},
+	})
+})  
+
 </script>
 
 </html>

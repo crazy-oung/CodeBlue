@@ -31,6 +31,13 @@ import com.example.codeblue.vo.ServiceCategory;
 @RestController
 public class AdminRestController {
 	@Autowired private AdminService adminService;
+	//문의사항 답변 상세출력
+	@PostMapping("/rest/admin/getInquiryHistoryAnswerOne")
+	public InquiryHistoryAnswer getInquiryHistoryAnswerOne(int inquiryHistoryId) {
+		System.out.println("::: post - getInquiryHistoryAnswerOne :::");
+		return adminService.getInquiryHistoryAnswerOne(inquiryHistoryId);
+	}
+	
 	//신고 대상(질문)상세 정보 가져오기
 	@PostMapping("/rest/admin/getReportQuestionBoardOne")
 	public QuestionBoard getReportQuestionBoardOne(int questionId) {
@@ -411,11 +418,12 @@ public class AdminRestController {
 	// 문의 내역 리스트 가져오기
 	@PostMapping("/rest/admin/getInquiryHistoryList")
 	public Map<String,Object> getInquiryHistoryList(@RequestParam(value="currentPage", defaultValue = "1")int currentPage,
-									 @RequestParam(value="rowPerPage", defaultValue = "15")int rowPerPage,
+									 @RequestParam(value="rowPerPage", defaultValue = "10")int rowPerPage,
 									 @RequestParam(value="searchWord", required = false)String searchWord,
 										@RequestParam(value="toDate", required = false)String toDate,
 										 @RequestParam(value="fromDate", required = false)String fromDate,
-										 @RequestParam(value="inquiryId", required = false)String inquiryId) {
+										 @RequestParam(value="inquiryId", required = false)String inquiryId,
+										 @RequestParam(value="inquiryCategory", required = false)String inquiryCategory) {
 		System.out.println("::: post - getInquiryHistoryList :::"); 
 		System.out.println("currentPage : "+currentPage);
 		System.out.println("rowPerPage : "+rowPerPage);
@@ -423,7 +431,8 @@ public class AdminRestController {
 		System.out.println("toDate : "+toDate);
 		System.out.println("fromDate : "+fromDate);
 		System.out.println("inquiryId : "+inquiryId);
-		return adminService.getInquiryHistoryList(currentPage, rowPerPage, searchWord, toDate, fromDate, inquiryId);
+		System.out.println("inquiryCategory : "+inquiryCategory);
+		return adminService.getInquiryHistoryList(currentPage, rowPerPage, searchWord, toDate, fromDate, inquiryId, inquiryCategory);
 	}
 	// 신고 리스트 가져오기
 	@PostMapping("/rest/admin/getReportHistoryList")

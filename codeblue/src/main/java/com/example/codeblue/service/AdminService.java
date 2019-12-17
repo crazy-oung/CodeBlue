@@ -21,7 +21,8 @@ import com.example.codeblue.vo.ServiceCategory;
 import com.example.codeblue.vo.User;
 
 public interface AdminService {
-	
+	// 문의사항 답변 상세정보 가져오기
+	public InquiryHistoryAnswer getInquiryHistoryAnswerOne(int inquiryHistoryId);
 	//신고내역  리스트 삭제
 	public void removeReportHistoryList(List<String> reportHistoryIdList);
 	//Report 카테고리 가져오기
@@ -75,7 +76,7 @@ public interface AdminService {
 	//공지사항 리스트 삭제
 	public void removeNoticeBoardList(List<String> noticeBoardIdList);
 	//문의 내역 리스트 출력
-	public Map<String, Object> getInquiryHistoryList(int currentPage, int rowPerPage, String searchWord, String toDate, String fromDate, String inquiryId);
+	public Map<String, Object> getInquiryHistoryList(int currentPage, int rowPerPage, String searchWord, String toDate, String fromDate, String inquiryId, String inquiryCategory);
 	//문의 내역 상세 페이지 출력
 	public InquiryHistory getInquiryHistoryOne(int inquiryHistoryId);
 	//신고 내역 리스트 출력

@@ -39,8 +39,13 @@ public class AdminServiceImpl implements AdminService {
 	@Autowired 
 	private JavaMailSender javaMailSender;
 	
+	@Override
+	public InquiryHistoryAnswer getInquiryHistoryAnswerOne(int inquiryHistoryId) {
+		System.out.println("::: AdminServiceImpl - getInquiryHistoryAnswerOne :::");
+		return adminMapper.selectInquiryHistoryAnswerOne(inquiryHistoryId);
+	}
 	//신고 대상(질문)상세 정보 가져오기
-		@Override
+	@Override
 	public QuestionBoard getReportQuestionBoardOne(int questionId) {
 		System.out.println("::: AdminServiceImpl - getReportQuestionBoardOne :::");
 		return adminMapper.selectReportQuestionBoardOne(questionId);
@@ -711,7 +716,7 @@ public class AdminServiceImpl implements AdminService {
 	
 	//문의 내역 리스트 가져오기
 	@Override
-	public Map<String, Object> getInquiryHistoryList(int currentPage, int rowPerPage, String searchWord, String toDate, String fromDate, String inquiryId) {
+	public Map<String, Object> getInquiryHistoryList(int currentPage, int rowPerPage, String searchWord, String toDate, String fromDate, String inquiryId, String inquiryCategory) {
 		System.out.println("::: AdminServiceImpl - getInquiryHistoryList :::");
 		
 		Page page = new Page();
@@ -721,6 +726,7 @@ public class AdminServiceImpl implements AdminService {
 		page.setSearchCategory(inquiryId);
 		page.setToDate(toDate);
 		page.setFromDate(fromDate);
+		page.setReportCategory(inquiryCategory);
 		int totalRow = adminMapper.InquiryHistoryTotalRow(page);
 		int lastPage = totalRow/rowPerPage;
 		
@@ -738,7 +744,7 @@ public class AdminServiceImpl implements AdminService {
 		map.put("searchWord", searchWord);
 		map.put("toDate", toDate);
 		map.put("fromDate", fromDate);	
-		
+		map.put("inquiryCategory", inquiryCategory);
 		System.out.println(map.toString());
 		return map;
 	}

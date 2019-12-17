@@ -4,6 +4,25 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="com.example.codeblue.mapper.AdminMapper">
+
+	<!--  InquiryHistoryAnswer 객체 -->
+	<resultMap type="com.example.codeblue.vo.InquiryHistoryAnswer" id="InquiryHistoryAnswer"> 
+		<result column="inquiry_history_answer_title" property="inquiryHistoryAnswerTitle" ></result>
+		<result column="inquiry_history_answer_content" property="inquiryHistoryAnswerContent"></result>
+		<result column="inquiry_history_answer_datetime" property="inquiryHistoryAnswerDatetime"></result>
+		
+		<association property="inquiryHistory" resultMap="InquiryHistory">
+		</association>
+	</resultMap>
+	<select id="selectInquiryHistoryAnswerOne" parameterType="int" resultMap="InquiryHistoryAnswer">
+		SELECT
+			inquiry_history_id,
+			inquiry_history_answer_title,
+			inquiry_history_answer_content,
+			inquiry_history_answer_datetime
+		FROM inquiry_history_answer
+		WHERE inquiry_history_id = #{inquiryHistoryId}
+	</select>
 	<!-- User 객체 -->
 	<resultMap type="com.example.codeblue.vo.User" id="User"> 
 		<!-- column은 테이블에서의 칼럼명  property는 클레스의 필드명 -->
@@ -1000,6 +1019,12 @@
 			inquiry_answer
     FROM inquiry_history
     <where>
+    	<if test='reportCategory == "Y"'>
+			AND inquiry_answer = #{reportCategory}
+		</if>
+		<if test='reportCategory == "N"'>
+			AND inquiry_answer = #{reportCategory}
+		</if>
     	<if test="searchCategory != null">
 			AND inquiry_id = #{searchCategory}
 		</if>
@@ -1010,7 +1035,7 @@
 			AND DATE(inquiry_datetime) &gt;= DATE(#{toDate}) AND DATE(inquiry_datetime) &lt;= DATE(#{fromDate})  
 		</if>
 	</where>
-    ORDER BY inquiry_datetime DESC
+       ORDER BY inquiry_answer DESC, inquiry_datetime DESC
     LIMIT #{beginRow},#{rowPerPage}
    </select>
    <!--  문의내역 전체 행 -->
@@ -1019,6 +1044,12 @@
 	SELECT count(*)
 	FROM inquiry_history
 	<where>
+		<if test='reportCategory == "Y"'>
+			AND inquiry_answer = #{reportCategory}
+		</if>
+		<if test='reportCategory == "N"'>
+			AND inquiry_answer = #{reportCategory}
+		</if>
 		<if test="searchCategory != null">
 			AND inquiry_id = #{searchCategory}
 		</if>

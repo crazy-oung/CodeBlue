@@ -25,6 +25,8 @@ import com.example.codeblue.vo.User;
 
 @Mapper
 public interface AdminMapper {
+	// 문의사항 답변 상세정보 가져오기
+	public InquiryHistoryAnswer selectInquiryHistoryAnswerOne(int inquiryHistoryId);
 	//Report 카테고리 가져오기
 	public List<Report> selectReportList();
 	//신고내역 리스트 삭제
