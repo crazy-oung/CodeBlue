@@ -4,11 +4,79 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.codeblue.test.yyj.YyjMapper">
-<!-- 	<update id="updateUserProfile"
-			parameterType="com.example.codeblue.vo.User">
-		Update user
-		SET user_name = #{userName},
-			user_pw = #{userPw}
-		WHERE user_id = #{userId}	
-	</update> -->
+	
+	<resultMap type="com.example.codeblue.vo.Point" id="Point">
+		<!-- Point에 대한 객체 -->
+		<result column="point_id" property="pointId"></result>
+		<result column="point_number" property="pointNumber"></result>
+		<result column="point_datetime" property="pointDatetime"></result>
+		<association property="user" javaType="com.example.codeblue.vo.User">
+			<result column="user_id" property="userId"></result>
+			<result column="user_name" property="userName"></result>
+		</association>
+	</resultMap>
+	
+	<resultMap id="pointSum" type="java.util.HashMap">
+		<!-- Point에 대한 객체 -->
+		<result column="point_id" property="pointId"></result>
+		<result column="point_number" property="pointNumber"></result>
+		<association property="user" javaType="com.example.codeblue.vo.User">
+			<result column="user_id" property="userId"></result>
+			<result column="user_name" property="userName"></result>
+		</association>
+	</resultMap>
+	
+	<!-- 기본 리스트 -->
+	<select id="selectPointList" resultMap="Point" parameterType="com.example.codeblue.vo.Page"> 
+		SELECT 
+			p.point_id,
+			u.user_id,
+			u.user_name,
+			p.point_number,
+			p.point_datetime	
+		FROM point p INNER JOIN user u
+		ON p.user_id = u.user_id
+		<where>
+			<if test="searchWord != null">
+				and u.user_id like CONCAT('%',#{searchWord},'%')
+			</if>
+		</where>
+		<if test="toDate != null and fromDate != null">
+				AND DATE(user_createtime) &gt;= DATE(#{toDate}) AND DATE(user_createtime) &lt;= DATE(#{fromDate})
+		</if>
+		ORDER BY point_id DESC
+		LIMIT #{beginRow} , #{rowPerPage}			
+	</select>
+	
+	<!-- 포인트 합계 리스트 -->
+	<select id="selectPointTotalList"
+			resultMap="pointSum" parameterType="com.example.codeblue.vo.Page">
+		SELECT 
+			u.user_id,
+			u.user_name,
+			sum(p.point_number) as point_number
+		FROM point p INNER JOIN user u
+		ON p.user_id = u.user_id
+		GROUP BY u.user_id
+		<where>
+			<if test="searchWord != null">
+				and u.user_name like CONCAT('%',#{searchWord},'%')
+			</if>
+		</where>
+		ORDER BY sum(p.point_number) DESC
+		LIMIT #{beginRow}, #{rowPerPage}
+	</select>
+	
+	<!-- 기본리스트 토탈 -->
+	<select id="selectPointListTotalRow" resultType="int">
+		SELECT COUNT(*) FROM point
+	</select>
+	
+	<!-- sum리스트 토탈 -->
+	<select id="selectPointListSumTotalRow" resultType="int">
+		SELECT COUNT(*) FROM (SELECT COUNT(*)
+			FROM point
+		GROUP BY user_id) A
+	</select>
+	
 </mapper>
