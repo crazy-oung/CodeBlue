@@ -12,6 +12,7 @@ import com.example.codeblue.vo.FaqBoard;
 import com.example.codeblue.vo.Hospital;
 import com.example.codeblue.vo.Inquiry;
 import com.example.codeblue.vo.InquiryHistory;
+import com.example.codeblue.vo.InquiryHistoryAnswer;
 import com.example.codeblue.vo.Manager;
 import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.Page;
@@ -25,6 +26,7 @@ import com.example.codeblue.vo.User;
 
 @Mapper
 public interface UserMapper {
+	
 	
 	//답변  상세정보
 	public Answer selectAnswerOne(String answerId);
@@ -109,6 +111,12 @@ public interface UserMapper {
 	public int selectFaqCount(Page page);
 	// faqone 출력 (이전글,다음글까지 출력)
 	public List<FaqBoard> selectFaqOne(int faqId);
+	//문의 답변 가져오기
+	public InquiryHistoryAnswer selectInquiryHistoryAnswerOne(int inquiryHistoryId);
+	//문의 상세내용가져오기
+	public InquiryHistory selectInquiryHistoryOne(int inquiryHistoryId);
+	//문의 사항 저장하기
+	public void insertInquiryHistory(InquiryHistory inquiryHistory);
 	// inquiry 카테고리 조회
 	public List<Inquiry> selectInquiry();
 	// 문의 내역 리스트  출력

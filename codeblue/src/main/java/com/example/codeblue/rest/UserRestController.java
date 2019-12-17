@@ -18,6 +18,8 @@ import com.example.codeblue.vo.Expert;
 import com.example.codeblue.vo.FaqBoard;
 import com.example.codeblue.vo.Hospital;
 import com.example.codeblue.vo.Inquiry;
+import com.example.codeblue.vo.InquiryHistory;
+import com.example.codeblue.vo.InquiryHistoryAnswer;
 import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.QuestionComment;
@@ -301,6 +303,35 @@ public class UserRestController {
 		System.out.println("::: post - /getFaqOne :::");
 		System.out.println("faqId : "+faqId);
 		return userService.getFaqOne(faqId);
+	}
+	//문의 답변 가져오기
+	@PostMapping("/rest/getInquiryHistoryAnswerOne")
+	public InquiryHistoryAnswer getInquiryHistoryAnswerOne(int inquiryHistoryId) {
+		System.out.println("::: post - getInquiryHistoryAnswerOne :::");
+		System.out.println("inquiryHistoryId : "+inquiryHistoryId);
+		return userService.getInquiryHistoryAnswerOne(inquiryHistoryId);
+	}
+	
+	//문의 상세내용 가져오기
+	@PostMapping("/rest/getInquiryHistoryOne")
+	public InquiryHistory getInquiryHistoryOne(int inquiryHistoryId) {
+		System.out.println("::: post - getInquiryHistoryOne :::");
+		System.out.println("inquiryHistoryId : "+inquiryHistoryId);
+		return userService.getInquiryHistoryOne(inquiryHistoryId);
+	}
+	//문의 사항 저장
+	@PostMapping("/rest/addInquiryHistory")
+	public String addInquiryHistory(HttpSession session,InquiryHistory inquiryHistory) {
+		System.out.println("::: post - addInquiryHistory :::");
+		System.out.println(inquiryHistory.toString());
+		System.out.println(session.getAttribute("loginUser"));
+		if(session.getAttribute("loginUser") == null) {
+			System.out.println("already loged in Back to user Home");
+			return "false";
+		}
+		inquiryHistory.setUser((User) session.getAttribute("loginUser"));
+		userService.addInquiryHistory(inquiryHistory);
+		return "success";
 	}
 	// 문의내역 카테고리
 			@GetMapping("/rest/getInquiry")

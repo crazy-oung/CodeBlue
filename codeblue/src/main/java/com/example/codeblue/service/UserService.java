@@ -9,6 +9,8 @@ import com.example.codeblue.vo.Expert;
 import com.example.codeblue.vo.FaqBoard;
 import com.example.codeblue.vo.Hospital;
 import com.example.codeblue.vo.Inquiry;
+import com.example.codeblue.vo.InquiryHistory;
+import com.example.codeblue.vo.InquiryHistoryAnswer;
 import com.example.codeblue.vo.Manager;
 import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.QuestionBoard;
@@ -74,6 +76,12 @@ public interface UserService {
 	public Map<String,Object> getFaqList(int currentPage, int rowPerPage, String searchCategory);
 	// faqone 출력 (이전글,다음글까지 출력)
 	public List<FaqBoard> getFaqOne(int faqId);
+	//문의 답변 가져오기
+	public InquiryHistoryAnswer getInquiryHistoryAnswerOne(int inquiryHistoryId);
+	//문의 상세내용 가져오기
+	public InquiryHistory getInquiryHistoryOne(int inquiryHistoryId);
+	//문의 사항 저장하기
+	public void addInquiryHistory(InquiryHistory inquiryHistory);
 	// inquiry 출력
 	public List<Inquiry> getInquiryList();
 	// inquiry 히스토리출력(자신이 올린 글만)

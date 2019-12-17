@@ -145,13 +145,12 @@
 	</resultMap>
 	<!-- InquiryHistoryAnswer 객체 -->
 	<resultMap type="com.example.codeblue.vo.InquiryHistoryAnswer" id="InquiryHistoryAnswer">
-		<result column="inquiry_history_answer_id" property="inquiryHistoryAnswerId"></result>
 		<result column="inquiry_history_answer_title" property="inquiryHistoryAnswerTitle"></result>
 		<result column="inquiry_history_answer_content" property="inquiryHistoryAnswerContent"></result>
 		<result column="inquiry_history_answer_datetime" property="inquiryHistoryAnswerDatetime"></result>
-		
 		<association property="inquiryHistory" resultMap="InquiryHistory"></association>
 	</resultMap>
+	<!-- 객체정리 끝ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
 	
 	
 	
@@ -563,6 +562,44 @@
 		    (SELECT faq_id FROM faq_board WHERE faq_id &gt; #{faqId} ORDER BY faq_id LIMIT 1)
 			 );
 	</select>
+	<!-- 문의 답변 -->
+	<select id="selectInquiryHistoryAnswerOne" parameterType="int" resultMap="InquiryHistoryAnswer">
+		SELECT 
+			inquiry_history_answer_title,
+			inquiry_history_answer_content,
+			inquiry_history_answer_datetime
+		FROM inquiry_history_answer
+		WHERE inquiry_history_id = #{inquiryHistoryId}
+	</select>
+	<!-- 문의 상세내용 -->
+	<select  id="selectInquiryHistoryOne" parameterType="int" resultMap="InquiryHistory">
+	   	SELECT  ih.inquiry_history_id,
+				ih.inquiry_title,
+				ih.inquiry_content, 
+				i.inquiry_name,
+				u.user_id,
+				ih.inquiry_datetime,
+				ih.inquiry_answer
+	    FROM inquiry_history ih INNER JOIN inquiry i INNER JOIN user u
+	    ON ih.inquiry_id = i.inquiry_id AND ih.user_id = u.user_id 
+	    WHERE ih.inquiry_history_id = #{inquiryHistoryId}
+   	</select>
+	<!-- 문의값 저장 -->
+	<insert id="insertInquiryHistory" parameterType="com.example.codeblue.vo.InquiryHistory">
+		INSERT INTO inquiry_history (
+			inquiry_title,
+			inquiry_content,
+			inquiry_id,
+			user_id,
+			inquiry_datetime
+		) VALUES (
+			#{inquiryTitle},
+			#{inquiryContent},
+			#{inquiry.inquiryId},
+			#{user.userId},
+			NOW()
+		)
+	</insert>
 	<!-- inquiry 카테고리 출력 -->
 	<select id="selectInquiry" resultMap="Inquiry">
 		SELECT inquiry_id, inquiry_name

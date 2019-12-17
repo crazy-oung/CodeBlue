@@ -8,7 +8,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>FAQ - 코드블루</title>
+<title>문의내역 - 코드블루</title>
 <!-- import JQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
 
@@ -62,12 +62,16 @@
 						<tbody id="inquiryInfo">
 						</tbody>
 					</table>
-					<p>
-					<button type="button" id="prevBtnd" class="btn ml-1 btn-sm btn-primary">이전</button>
-					<span id="pageInfo"></span>
-					<button type="button" id="nextBtnd" class="btn ml-1 btn-sm btn-primary">다음</button>
-					<a href="/addInquiryHistoryTest">문의하기</a>
-					</p>
+					<div class="d-flex justify-content-between py-4">
+						<div class="p-2">
+							<button type="button" id="prevBtnd" class="btn ml-1 btn-sm btn-primary">이전</button>
+							<span id="pageInfo"></span>
+							<button type="button" id="nextBtnd" class="btn ml-1 btn-sm btn-primary">다음</button>
+						</div>
+						<div class="text-right">
+							<button type="button" onclick="location.href='/addInquiryHistory'" class="btn btn-primary">문의 하기</button>
+						</div>
+					</div>
 				</div>
 				<!-- Page Content End -->
 	
@@ -149,6 +153,8 @@
 	//페이징
 	var currentPage = 1;
 	var lastPage = 0;
+	$("#prevBtnd").hide();
+	$("#nextBtnd").hide();
 	// 기본 홈
 	$.ajax({
 		url : "/rest/getInquiryBoard",
@@ -203,13 +209,23 @@
 	});
 	// 출력 함수
 	function append(index,item){
-		html = "<tr>";
-		html += "<td>"+item.inquiry.inquiryName+"</td>";
-		html += "<td><a href=''>"+item.inquiryTitle+"</a></td>";
-		html += "<td>"+item.inquiryDatetime+"</td>";
-		html += "<td>"+item.inquiryAnswer+"</td>";
-		html += "</tr>";
-		$("#inquiryInfo").append(html);
+		if(item.inquiryAnswer == "Y") {
+			html = "<tr>";
+			html += "<td>"+item.inquiry.inquiryName+"</td>";
+			html += "<td><a href='/getInquiryOne?inquiryHistoryId="+item.inquiryHistoryId+"'>"+item.inquiryTitle+"</a></td>";
+			html += "<td>"+item.inquiryDatetime+"</td>";
+			html += "<td>답변완료</td>";
+			html += "</tr>";
+			$("#inquiryInfo").append(html);
+		} else {
+			html = "<tr>";
+			html += "<td>"+item.inquiry.inquiryName+"</td>";
+			html += "<td><a href='/getInquiryOne?inquiryHistoryId="+item.inquiryHistoryId+"'>"+item.inquiryTitle+"</a></td>";
+			html += "<td>"+item.inquiryDatetime+"</td>";
+			html += "<td>답변대기중</td>";
+			html += "</tr>";
+			$("#inquiryInfo").append(html);
+		}
 	}
 	// 현재,총페이지,총행 함수
 	function subInfo(json){

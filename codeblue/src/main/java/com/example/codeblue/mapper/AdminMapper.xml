@@ -725,7 +725,7 @@
 
 	<!-- 병원 추가 -->
 	<insert id="insertHospital" parameterType="com.example.codeblue.vo.Hospital">
-		INSERT INTO Hospital(
+		INSERT INTO hospital(
 			hospital_name, hospital_number, hospital_address, hospital_address2,region_Id
 		) VALUES(
 			#{hospitalName}, #{hospitalNumber}, #{hospitalAddress}, #{hospitalAddress2}, #{region.regionId}

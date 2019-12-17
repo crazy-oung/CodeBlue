@@ -20,6 +20,7 @@ import com.example.codeblue.vo.FaqBoard;
 import com.example.codeblue.vo.Hospital;
 import com.example.codeblue.vo.Inquiry;
 import com.example.codeblue.vo.InquiryHistory;
+import com.example.codeblue.vo.InquiryHistoryAnswer;
 import com.example.codeblue.vo.Manager;
 import com.example.codeblue.vo.NoticeBoard;
 import com.example.codeblue.vo.Page;
@@ -395,6 +396,25 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	
+	//문의 답변 가져오기
+	@Override
+	public InquiryHistoryAnswer getInquiryHistoryAnswerOne(int inquiryHistoryId) {
+		System.out.println("::: AdminServiceImpl - getInquiryHistoryOne :::");
+		return userMapper.selectInquiryHistoryAnswerOne(inquiryHistoryId);
+	}
+	//문의 상세내용
+	@Override
+	public InquiryHistory getInquiryHistoryOne(int inquiryHistoryId) {
+		System.out.println("::: AdminServiceImpl - getInquiryHistoryOne :::");
+		return userMapper.selectInquiryHistoryOne(inquiryHistoryId);
+	}
+	//문의 저장
+	@Override
+	public void addInquiryHistory(InquiryHistory inquiryHistory) {
+		System.out.println("::: AdminServiceImpl - addReport :::");
+		userMapper.insertInquiryHistory(inquiryHistory);
+		
+	}
 	// 방금 등록한 질문 번호
 	@Override
 	public int getLastQuestionId() {

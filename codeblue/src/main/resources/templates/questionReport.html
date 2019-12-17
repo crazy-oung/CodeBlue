@@ -73,13 +73,13 @@ h1 {
 								<td class="px-4">신고하기<br>전에 잠깐!</td>
 								<td class="pl-4">게시물로 인해 개인(단체)이 명예훼손, 저작권 침해,
 								<br>기타 권리침해(사생활 · 초상권 등) 피해를 입은 경우
-								<br> <a href="#" target="_blank">문의 사항</a>을 통해 접수 해주시기 바랍니다.</td>
+								<br> <a href="/addInquiryHistory" target="_blank">문의 사항</a>을 통해 접수 해주시기 바랍니다.</td>
 							</tr>
 						</table>
 						<br>
 						<div class="text-center">
-							<button type="button" id="addReport" class="btn-sm btn-primary">신고</button>
-							<button type="button" id="close" class="btn-sm btn-primary">창 닫기</button>
+							<button type="button" id="addReport" class="btn btn-sm btn-primary">신고</button>
+							<button type="button" id="close" class="btn btn-sm btn-primary">창 닫기</button>
 						</div>
 					</form>
 					
@@ -147,23 +147,29 @@ $.ajax({
 })
 $("#close").click(function() {
 	self.close();
+	return;
 })
+
 $("#addReport").click(function() {
-	$.ajax({
-		url :"/rest/addReport",
-		method : "post",
-		data : {"questionBoard.questionId":getParam("questionId"),"reportTitle":$("#reportTitle").val(),"reportContent":$("#reportContent").val(),"report.reportId":$("#reportList").val()},
-		success : function(json){
-			console.log(json);
-			if(json == "false") {
-				alert("로그인을 먼저해주시기 바랍니다.");
-				location.href="/login";
-			} else {
-				alert("신고 접수가 완료 되었습니다.")
-				self.close();
+	if(!$("#reportTitle").val()){
+		alert("제목을 입력해주세요.");
+	}else {
+		$.ajax({
+			url :"/rest/addReport",
+			method : "post",
+			data : {"questionBoard.questionId":getParam("questionId"),"reportTitle":$("#reportTitle").val(),"reportContent":$("#reportContent").val(),"report.reportId":$("#reportList").val()},
+			success : function(json){
+				console.log(json);
+				if(json == "false") {
+					alert("로그인을 먼저해주시기 바랍니다.");
+					location.href="/login";
+				} else {
+					alert("신고 접수가 완료 되었습니다.")
+					self.close();
+				}
 			}
-		}
-	})
+		})
+	}
 })
 </script>
 </html>

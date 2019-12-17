@@ -5,6 +5,9 @@ import java.util.List;
 import com.example.codeblue.vo.Answer;
 import com.example.codeblue.vo.AnswerComment;
 import com.example.codeblue.vo.Feild;
+import com.example.codeblue.vo.Inquiry;
+import com.example.codeblue.vo.InquiryHistory;
+import com.example.codeblue.vo.InquiryHistoryAnswer;
 import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.QuestionComment;
@@ -14,6 +17,14 @@ import com.example.codeblue.vo.ReportHistory;
 @org.apache.ibatis.annotations.Mapper
 public interface JJWMapper {
 	
+	//문의 답변 가져오기
+	public InquiryHistoryAnswer selectInquiryHistoryAnswerOne(int inquiryHistoryId);
+	//문의 상세내용가져오기
+	public InquiryHistory selectInquiryHistoryOne(int inquiryHistoryId);
+	//문의 사항 저장하기
+	public void insertInquiryHistory(InquiryHistory inquiryHistory);
+	//문의 카테고리가져오기
+	public List<Inquiry> selectInquiry();
 	// 신고내역 저장하기
 	public void insertReportHistory(ReportHistory reportHistory);
 	// 신고카테고리

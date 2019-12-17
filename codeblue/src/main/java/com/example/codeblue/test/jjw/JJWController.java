@@ -9,6 +9,18 @@ import com.example.codeblue.vo.QuestionBoard;
 @org.springframework.stereotype.Controller
 public class JJWController {
 
+//	//문의 상세페이지
+//	@GetMapping("/getInquiryOne")
+//	public String getInquiryOne() {
+//		System.out.println("::: get - getInquiryOne :::");
+//		return "/inquiryOne";
+//	}
+//	// 문의하기
+//	@GetMapping("/addInquiryHistory")
+//	public String addInquiryHistory() {
+//		System.out.println("::: get - addInquiryHistory :::");
+//		return "/addInquiry";
+//	}
 //	//답변 신고창
 //	@GetMapping("/answerReport")
 //	public String answerReport() {

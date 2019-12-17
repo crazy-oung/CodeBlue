@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.codeblue.vo.Answer;
 import com.example.codeblue.vo.Feild;
+import com.example.codeblue.vo.Inquiry;
+import com.example.codeblue.vo.InquiryHistory;
+import com.example.codeblue.vo.InquiryHistoryAnswer;
 import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.Report;
@@ -24,6 +27,43 @@ public class JJWRestController {
 	
 	@Autowired
 	private JJWService service;
+	
+//	//문의 답변 가져오기
+//	@PostMapping("/rest/getInquiryHistoryAnswerOne")
+//	public InquiryHistoryAnswer getInquiryHistoryAnswerOne(int inquiryHistoryId) {
+//		System.out.println("::: post - getInquiryHistoryAnswerOne :::");
+//		System.out.println("inquiryHistoryId : "+inquiryHistoryId);
+//		return service.getInquiryHistoryAnswerOne(inquiryHistoryId);
+//	}
+//	
+//	//문의 상세내용 가져오기
+//	@PostMapping("/rest/getInquiryHistoryOne")
+//	public InquiryHistory getInquiryHistoryOne(int inquiryHistoryId) {
+//		System.out.println("::: post - getInquiryHistoryOne :::");
+//		System.out.println("inquiryHistoryId : "+inquiryHistoryId);
+//		return service.getInquiryHistoryOne(inquiryHistoryId);
+//	}
+//	//문의 사항 저장
+//	@PostMapping("/rest/addInquiryHistory")
+//	public String addInquiryHistory(HttpSession session,InquiryHistory inquiryHistory) {
+//		System.out.println("::: post - addInquiryHistory :::");
+//		System.out.println(inquiryHistory.toString());
+//		System.out.println(session.getAttribute("loginUser"));
+//		if(session.getAttribute("loginUser") == null) {
+//			System.out.println("already loged in Back to user Home");
+//			return "false";
+//		}
+//		inquiryHistory.setUser((User) session.getAttribute("loginUser"));
+//		service.addInquiryHistory(inquiryHistory);
+//		return "success";
+//	}
+	
+	//문의 카테고리
+	@PostMapping("/rest/getInquiryList")
+	public List<Inquiry> getInquiryList() {
+		System.out.println("::: post - getReportList :::");
+		return service.getInquiryList();
+	}
 	
 //	//답변 상세정보
 //	@PostMapping("/rest/getAnswerOne")
@@ -46,7 +86,7 @@ public class JJWRestController {
 //		service.addReportHistory(reportHistory);
 //		return "success";
 //	}
-//	//질문카테고리리스트
+//	//신고카테고리리스트
 //	@PostMapping("/rest/getReportList")
 //	public List<Report> getReportList(){
 //		System.out.println("::: post - getReportList :::");

@@ -10,6 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.codeblue.vo.Answer;
 import com.example.codeblue.vo.AnswerComment;
 import com.example.codeblue.vo.Feild;
+import com.example.codeblue.vo.Inquiry;
+import com.example.codeblue.vo.InquiryHistory;
+import com.example.codeblue.vo.InquiryHistoryAnswer;
 import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.QuestionComment;
@@ -22,6 +25,33 @@ public class JJWServiceImpl implements JJWService{
 	@Autowired 
 	private JJWMapper jjwMapper;
 	
+	//문의 답변 가져오기
+	@Override
+	public InquiryHistoryAnswer getInquiryHistoryAnswerOne(int inquiryHistoryId) {
+		System.out.println("::: AdminServiceImpl - getInquiryHistoryOne :::");
+		return jjwMapper.selectInquiryHistoryAnswerOne(inquiryHistoryId);
+	}
+	//문의 상세내용
+	@Override
+	public InquiryHistory getInquiryHistoryOne(int inquiryHistoryId) {
+		System.out.println("::: AdminServiceImpl - getInquiryHistoryOne :::");
+		return jjwMapper.selectInquiryHistoryOne(inquiryHistoryId);
+	}
+	//문의 저장
+	@Override
+	public void addInquiryHistory(InquiryHistory inquiryHistory) {
+		System.out.println("::: AdminServiceImpl - addReport :::");
+		jjwMapper.insertInquiryHistory(inquiryHistory);
+		
+	}
+	
+	//문의 카테고리
+	@Override
+	public List<Inquiry> getInquiryList() {
+		System.out.println("::: AdminServiceImpl - getInquiryList :::");
+		return jjwMapper.selectInquiry();
+	}
+	//신고 저장
 	@Override
 	public void addReportHistory(ReportHistory reportHistory) {
 		System.out.println("::: AdminServiceImpl - addReport :::");

@@ -5,6 +5,9 @@ import java.util.Map;
 
 import com.example.codeblue.vo.Answer;
 import com.example.codeblue.vo.Feild;
+import com.example.codeblue.vo.Inquiry;
+import com.example.codeblue.vo.InquiryHistory;
+import com.example.codeblue.vo.InquiryHistoryAnswer;
 import com.example.codeblue.vo.Page;
 import com.example.codeblue.vo.QuestionBoard;
 import com.example.codeblue.vo.Report;
@@ -12,6 +15,16 @@ import com.example.codeblue.vo.ReportHistory;
 
 
 public interface JJWService {
+	
+	
+	//문의 답변 가져오기
+	public InquiryHistoryAnswer getInquiryHistoryAnswerOne(int inquiryHistoryId);
+	//문의 상세내용 가져오기
+	public InquiryHistory getInquiryHistoryOne(int inquiryHistoryId);
+	//문의 사항 저장하기
+	public void addInquiryHistory(InquiryHistory inquiryHistory);
+	//문의내역 카테고리가져오기
+	public List<Inquiry> getInquiryList();
 	//신고내역 저장하기
 	public void addReportHistory(ReportHistory reportHistory);
 	//신고창 카테고리

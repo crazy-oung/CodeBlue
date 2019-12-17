@@ -149,11 +149,23 @@ public class UserController {
 		return "/faq";
 	}
 	// faqOne 조회
-		@GetMapping("/faqOne")
-		public String getFaqOne() {
-			System.out.println("::: get - getFaqOne :::");
-			return "/faqOne";
-		}
+	@GetMapping("/faqOne")
+	public String getFaqOne() {
+		System.out.println("::: get - getFaqOne :::");
+		return "/faqOne";
+	}
+	//문의 상세페이지
+	@GetMapping("/getInquiryOne")
+	public String getInquiryOne() {
+		System.out.println("::: get - getInquiryOne :::");
+		return "/inquiryOne";
+	}
+	// 문의하기
+	@GetMapping("/addInquiryHistory")
+	public String addInquiryHistory() {
+		System.out.println("::: get - addInquiryHistory :::");
+		return "/addInquiry";
+	}
 	// 문의내역 조회
 	@GetMapping("/inquiryBoard")
 	public String getInquiryBoard(HttpSession session) {

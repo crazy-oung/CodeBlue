@@ -8,7 +8,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>FAQ - 코드블루</title>
+<title>1대1 문의 - 코드블루</title>
 <!-- import JQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
 
@@ -41,9 +41,30 @@
 				
 					<!-- Page Heading -->
 					<div class="d-sm-flex align-items-center justify-content-between mb-2 mt-5 pt-5">
-						<h2 class="text-gray-800 font-weight-bold mx-3 mt-2">문의하기 </h2>
+						<h2 class="text-gray-800 font-weight-bold mx-3 mt-2">1:1 문의하기 </h2>
 					</div><!-- page Heading End -->
-					
+					<form method="post" class="p-4">
+						<table>
+							<tr>
+								<td>제목 : </td>
+								<td><input type="text" id="inquiryTitle" class="form-control"></td>
+							</tr>
+							<tr>
+								<td>문의 유형 : </td>
+								<td>
+									<select id="inquiryList" class="form-control form-control-sm">
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td>내용 :</td>
+								<td><textarea cols="80" rows="10" style="resize: none;" id="inquiryContent" class="form-control"></textarea></td>
+							</tr>
+						</table>
+						<p class="pt-4">
+							<button type="button" id="addInquiry" class="btn btn-primary">문의하기</button>
+						</p>
+					</form>
 				</div>
 				<!-- Page Content End -->
 	
@@ -97,5 +118,40 @@
 </body>
 <script>
 
+//문의 유형 가져오기
+$.ajax({
+	url :"/rest/getInquiryList",
+	method : "post",
+	success : function(json){
+		console.log(json);
+		$(json).each(function(index,item){
+			var html = "<option value="+item.inquiryId+">"+item.inquiryName+"</option>";
+			$("#inquiryList").append(html);
+		});
+	}
+})
+$("#addInquiry").click(function() {
+	if(!$("#inquiryTitle").val()) {
+		alert("제목을 입력해주세요")
+	}else {
+		$.ajax({
+			url :"/rest/addInquiryHistory",
+			method : "post",
+			data : {"inquiryTitle":$("#inquiryTitle").val(),"inquiryContent":$("#inquiryContent").val(),"inquiry.inquiryId":$("#inquiryList").val()},
+			success : function(json){
+				console.log(json);
+				if(json == "false") {
+					alert("로그인을 먼저해주시기 바랍니다.");
+					location.href="/login";
+					return;
+				} else {
+					alert("문의 접수가 완료 되었습니다.")
+					location.href="/inquiryBoard";
+				}
+			}
+		})
+	}
+
+})
 </script>
 </html>

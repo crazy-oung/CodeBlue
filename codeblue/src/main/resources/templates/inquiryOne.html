@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+
+<head> 
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>1대1문의 - 코드블루</title>
+
+<style>
+    ww{
+        text-align: right;
+    }
+</style>
+
+<!-- import JQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
+
+<!-- Custom fonts for this template-->
+<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
+	type="text/css">
+<link
+	href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+	rel="stylesheet">
+
+<!-- Custom styles for this template-->
+<link href="css/sb-admin-2.min.css" rel="stylesheet">
+<!-- Custom styles for codeBlue -->
+<link href="css/codeBlue.css" rel="stylesheet">
+</head>
+
+<body id="page-top">
+ 
+	<!-- Topbar -->
+	<div id="topBar"></div>
+	<!-- End of Topbar -->
+
+		<!-- Begin Page Content -->
+		<div class="container" style="height: 85vh">
+			<div class="row" style="height: 100%"> 
+			
+				<!-- Side Bar -->
+				<div class="col-sm-1 p-0 " style="border-right: 1px solid #d9d9d9;" id="leftSideBar"></div>
+				<!-- Side Bar End -->
+				
+				<!-- Page Content -->
+				<div class="col-sm-11">
+				
+					<!-- Page Heading -->
+					<div class="d-sm-flex align-items-center justify-content-between mb-2 mt-5 pt-5">
+						<h3 class="text-gray-800 font-weight-bold mx-3 mt-2" id="inquiryTitle">1:1 내역 📂<br><br></h3>
+					</div><!-- page Heading End -->
+					
+<!-- 					<p class="text-right small mb-1 px-2" id="inquiryDatetime">게시일:  </p>					 -->
+					<!-- 공지사항 내용 -->
+					<table class="table table-borderless">
+						<thead class="badge-primary">
+							<tr>
+								<th class="text-center">내용</th>
+								<th width="20%">문의 일시</th>
+								<th width="13%" class="text-center">답변여부</th>
+							</tr>
+						</thead>
+						<tbody id="inquiryOne" class="inner-box">
+						</tbody>
+						<tbody id="inquiryHistoryAnswerOne">
+						</tbody>
+					</table>
+					
+					<p>
+						<a href="/inquiryBoard" class="btn ml-1 btn-sm btn-primary">목록으로</a>
+					</p>
+				</div>
+				<!-- Page Content End -->
+	
+			</div>
+		</div> 
+		
+	<!-- Footer -->
+	<div id="footer"></div>
+	<!-- End of Footer -->
+	
+<!-- ETC -->
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded bg-primary" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">로그아웃 하시겠습니까?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">로그아웃 하고 싶으시면 아래 로그아웃 버튼을 클릭해주세요!</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+          <a class="btn btn-primary" href="/logout">로그아웃</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+	<!-- Bootstrap core JavaScript-->
+	<script src="vendor/jquery/jquery.min.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+	<!-- Core plugin JavaScript-->
+	<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+	<!-- Custom scripts for all pages-->
+	<script src="js/sb-admin-2.min.js"></script>
+
+  	<!-- CodeBlue scripts -->
+  	<script src="js/codeBlueUser.js"></script>
+
+</body>
+<script type="text/javascript">
+
+// 파라메터 정보가 저장될 오브젝트
+// common.js 같은 모든 페이지에서 로딩되는 js 파일에 넣어두면 됨.
+var getParam = function(key){
+    var _parammap = {};
+    document.location.search.replace(/\??(?:([^=]+)=([^&]*)&?)/g, function () {
+        function decode(s) {
+            return decodeURIComponent(s.split("+").join(" "));
+        }
+
+        _parammap[decode(arguments[1])] = decode(arguments[2]);
+    });
+
+    return _parammap[key];
+};
+
+$(document).ready(function() {
+	$.ajax({
+		url :"/rest/getInquiryHistoryOne",
+		method : "post",
+		data : {"inquiryHistoryId" : getParam("inquiryHistoryId")},
+		success : function(json){
+			console.log(json);
+			if(json.inquiryAnswer == "Y") {
+				var html = "<tr>"+
+							"<td><span class='badge badge-primary m-0 mr-2 text-center'>Q</span>"+json.inquiryTitle+"</td>"+
+							"<td>"+json.inquiryDatetime+"</td>"+
+							"<td class='text-center'>"+json.inquiryAnswer+"</td>"+
+							"</tr>"+
+							"<tr>"+
+							"<td class='px-4'>답변완료</td>"+
+							"</tr>";
+				$("#inquiryOne").append(html);
+			} else {
+				var html = "<tr>"+
+							"<td><span class='badge badge-primary m-0 mr-2 text-center'>Q</span>"+json.inquiryTitle+"</td>"+
+							"<td>"+json.inquiryDatetime+"</td>"+
+							"<td class='text-center'>답변대기중</td>"+
+							"</tr>"+
+							"<tr>"+
+							"<td class='px-4'>"+json.inquiryContent+"</td>"+
+							"</tr>";
+				$("#inquiryOne").append(html);
+			}
+			if(json.inquiryAnswer == "Y"){ //답변이 들어올경우에 
+				$.ajax({
+					url :"/rest/getInquiryHistoryAnswerOne",
+					method : "post",
+					data : {"inquiryHistoryId" : getParam("inquiryHistoryId")},
+					success : function(json){
+						console.log(json);
+						var html = "<tr>"+
+									"<td class='px-4 pb-0'><span class='badge badge-primary m-0 mr-2 text-center'>A</span>"+json.inquiryHistoryAnswerTitle+"</td>"+
+									"<td>"+json.inquiryHistoryAnswerDatetime+"</td>"+
+									"<td class='text-center'>답변완료</td>"+
+									"</tr>"+
+									"<tr>"+
+									"<td class='px-4'>"+json.inquiryHistoryAnswerContent+"</td>"+
+									"</tr>";
+						$("#inquiryHistoryAnswerOne").append(html);
+					}
+				});
+			}
+		}
+	});
+
+});
+</script>
+</html>
