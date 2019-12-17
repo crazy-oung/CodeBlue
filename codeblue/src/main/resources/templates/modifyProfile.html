@@ -144,7 +144,7 @@ $(document).ready(function() {
 			}
 	}
 		$.ajax({
-			url:"/rest/profileModify",
+			url:"/rest/modifyProfile",
 			method:"post",
 			data:{"userPw":$("#pw").val(), "userName":$("#name").val(), "userId" : $("#userId").val()},
 			success:function(){
