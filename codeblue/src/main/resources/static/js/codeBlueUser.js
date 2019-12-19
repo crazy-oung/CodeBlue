@@ -14,13 +14,13 @@ $(document).ready(function() {
 							+'</div>'
 							+'</div>'
 							+'</form>'
-							+'<div class="d-sm-none dropdown no-arrow" style="margin-left:30%">'	//모바일 검색
+							+'<div class="d-sm-none dropdown no-arrow">'	//모바일 검색
 							+'<a class="dropdown-toggle text-primary btn hov-p px-2" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
-							+'<i class="fas fa-search fa-fw"></i>     '
+							+'<i class="fas fa-search fa-fw"></i>'
 							+'</a>     '
 							+'<!-- Dropdown - Messages -->    ' 
 							+'<div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">        '
-							+'<form class="form-inline mr-auto w-100 navbar-search">     '  
+							+'<form class="form-inline mr-auto w-100 navbar-search">'  
 							+'<div class="input-group">         '
 							+'<input type="text" class="form-control bg-light border-0 small" placeholder="검색어" aria-label="Search" aria-describedby="basic-addon2" id="searchQuestionBoard">     '    
 							+'<div class="input-group-append">   '        
@@ -147,23 +147,34 @@ $(document).ready(function() {
 		success : function(json) {
 			console.log(json);
 			if (json == "") {
-				$("#userInfo").append('<li class="nav-item ml-2 mr-1">'
-										+'<a class="btn btn-sm hov-p text-primary p-1" href="/login" style="width: 70px">로그인</a>'
+				$("#userInfo").append('<li class="d-none d-sm-inline-block nav-item ml-2 mr-1">'
+										+'<a class="btn btn-sm hov-p text-primary  p-1" href="/login" style="width: 70px">로그인</a>'
 										+'</li>'
-										+'<li class="nav-item">'
+										+'<li class="d-none d-sm-inline-block nav-item">'
 										+'<a class="btn btn-sm btn-primary p-1" href="/register" style="width: 80px">회원가입</a>'
-										+'</li>');
+										+'</li>'
+										+'<li class="d-sm-none nav-item ml-2 mr-1">'
+										+'<a class="btn btn-sm hov-p text-primary p-1" href="/login"><i class="fas fa-sign-in-alt"></i></a>'
+										+'</li>'
+										+'<li class="d-sm-none nav-item">'
+										+'<a class="btn btn-sm btn-primary p-1" href="/register"><i class="fas fa-user-plus"></i></a>'
+										+'</li>'
+										
+				);
 				return;
 			}
 			
 			$("#userInfo").empty();
 			$("#userInfo").append('<li class="nav-item dropdown no-arrow"><a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
-						+ '<span class="mr-2 d-lg-inline text-gray-600 small" id="userName">'
+						+ '<span class="mr-2 d-none d-lg-inline text-gray-600 small" id="userName">'
 						+ json.userName
 						+ '</span>'
 						+ '<img class="img-profile rounded-circle" src="/img/profile.svg">'
 						+ '</a>'
 						+ '<div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">'
+						+ '<a class="dropdown-item d-sm-none text-gray-900" id="userName" href="#">'
+						+ '<i class="far fa-id-badge fa-sm fa-fw mr-2 text-gray-400"></i>' + json.userName + '</a>'
+						+ '<div class="dropdown-divider d-sm-none"></div>'
 						+ '<a class="dropdown-item" href="/userOne?userId='+json.userId+'">'
 						+ '<i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>프로필</a>'
 						+ '<a class="dropdown-item" href="/modifyProfile?userId='+json.userId+'"><i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>설정</a>'
@@ -187,6 +198,7 @@ $(document).ready(function() {
 		feildId = getParam("feildId");
 	}
 	console.log("feildId: ",feildId);
+	
 	// 필드 테이블 출력
 	$.ajax({
 		url : "/rest/getFeildList",
@@ -230,9 +242,6 @@ $(document).ready(function() {
 			})
 		}
 	})	
-
-		
-		
 		
 	//이전버튼
 	$("#prevBtn").click(function(){
@@ -344,7 +353,8 @@ $(document).ready(function() {
 
 // 리스트 출력
 function appendItem(item){
-	return "<tr>"+
+
+	html = "<tr>"+
 	"<td width='9%' class=><div class='text-center pt-1'>"+item.voteCount+"<br>"+
 	"<small class='my-1'>추천</small>"+
 	"</div></td>"+
@@ -353,9 +363,22 @@ function appendItem(item){
 	"</div></td>"+
 	"<td><a class='nav-link' href='/questionBoardOne?questionId="+item.questionId+"'>"+item.questionTitle+"</a>" +
 	"<div class='d-flex justify-content-between'>"+
-	"<small class='p-2'>태그 잔뜩 나열</small>"+
+	"<small class='p-2'>";
+	if(item.questionTags != null && item.questionTags != "" ){
+		console.log("태그 있음!")
+		console.log(item.questionTags);
+		let tags = item.questionTags;
+		tags = tags.split("#");
+		console.log(tags);
+		for(let i=1;i<tags.length;i++){
+			console.log(i);
+			html+='<a class="text-primary mx-1 p-0 px-1 btn btn-sm btn-light alert-primary" href="#">#'+tags[i]+'</a>';
+		}
+	}
+	html += "</small>"+
 	"<small class='p-2'>uploaded at"+item.questionDatetime +" by <a href='/userOne?userId="+item.user.userId+"'>"+ item.user.userName+"</small></div>"
 	+"</td></tr>";
+	return html;
 }
 
 

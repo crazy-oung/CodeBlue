@@ -49,7 +49,7 @@ console.log("관리자");
 	+ '            <h6 class="collapse-header">회원 조회 및 관리</h6>'
 	+ '            <a class="collapse-item" href="/adminUserList">회원 조회</a>'
 	+ '            <a class="collapse-item" href="/adminWithdrawUserList">탈퇴회원 조회</a>'
-	+ '            <a class="collapse-item" href="/adminReportUserList">신고회원 조회</a>'
+	+ '            <a class="collapse-item" href="#">신고회원 조회</a>'
 	+ '            <a class="collapse-item" href="/adminExpertUserList">전문가 조회</a>'
 	+ '          </div>'
 	+ '        </div>'

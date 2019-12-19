@@ -62,7 +62,8 @@
 					<div class="row">
 						<div class='col-sm-9' style="width: 100%">
 							<div id="tableBody" class='text-dark table-borderless text-lg' style="word-break:break-all;"></div><!-- 질문 내용 출력  -->
-							<div class="d-flex justify-content-between mt-4">
+							<div class="mt-4" id="tagList" style="word-break:break-all;"></div>
+							<div class="d-flex justify-content-between mt-1">
 								<div>
 									<a id="commentBtn" class="btn hov-p px-1"><i class='far fa-comment-dots mx-1'></i></a>
 									<a id="reportBtn" class='px-1 text-danger btn hov-p'>신고</a>
@@ -89,14 +90,14 @@
 								<div id="questionCommentList">
 								</div>
 							</div>
-							<h1 class="h5 text-dark mt-3 mb-0" id="answerCount"></h1>
-							<hr> 
+							<h1 class="h5 text-dark mt-3 mb-0 font-weight-bold" id="answerCount"></h1>
+							<hr class="mt-2"> 
 							<div id="answerList"  class='table table-hover table-sm'>
 								<table id="bodyTable" class="text-dark"></table>
 							</div>
 							
 							<!-- 답변 입력란 -->
-							<p class='text-dark small text-right mb-1'>도움을 줄 수 있는 사람을 알고 계신가요? 질문에 링크를 공유해주세요!</p>
+							<p class='text-gray-900 small text-right mb-1 '>도움을 줄 수 있는 사람을 알고 계신가요? 질문에 링크를 공유해주세요!</p>
 							<div id="summernote" class="mb-3"></div>
 							<button class='btn btn-sm btn-primary m-1 px-4' id="addAnswerBtn">답변게시</button>
 							
@@ -116,7 +117,30 @@
 		<!-- End of Footer -->
 
 	</div>
+<!-- ETC -->
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded bg-primary" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
 
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">로그아웃 하시겠습니까?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">로그아웃 하고 싶으시면 아래 로그아웃 버튼을 클릭해주세요!</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+          <a class="btn btn-primary" href="/logout">로그아웃</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
 	<!-- Bootstrap core JavaScript-->
 	<script src="vendor/jquery/jquery.min.js"></script>
@@ -135,7 +159,6 @@
 
 	<!-- CodeBlue scripts -->
 	<script src="js/codeBlueUser.js"></script>
-	<i o=""></i>
 </body>
 <script>
 
@@ -187,15 +210,28 @@ $.ajax({
 		$("#tableBody").append(json.questionContent);
 		$("#questionUserName").append('<a href="/userOne?userId='+json.user.userId+'">'+json.user.userName+'</a>');
 		//질문 답변 리스트 출력
-		getAnswerList();
+		if(json.questionTags != null && json.questionTags != "" ){
+			console.log("태그 있음!")
+			console.log(json.questionTags);
+			let tags = json.questionTags;
+			tags = tags.split("#");
+			console.log(tags);
+			let html = "";
+			for(let i=1;i<tags.length;i++){
+				console.log(i);
+				html +='<a class="text-primary mr-2 p-0 px-1 btn btn-light alert-primary" href="#">#'+tags[i]+'</a>';
+			}
+			$("#tagList").append(html);
+		}
 		
 		console.log(userId, json.user.userId);
 		if(userId == json.user.userId){
-			$("#modify").append("<a id='modifyBtn' class='px-1 text-black btn hov-p' href='/modifyQuestion?questionId="+json.questionId+"'>수정</a>");
+			$("#modify").append("<a id='modifyBtn' class='px-1 btn hov-p text-dark mx-1' href='/modifyQuestion?questionId="+json.questionId+"'>수정</a>");
 			console.log("수정가능");
 		}else{
 			console.log("수정불가");
 		}
+		getAnswerList();
 	}
 });
 
@@ -317,6 +353,7 @@ function appendQuestionComment(){
 		}
 	});
 }
+
 //질문 답변리스트 출력
 function getAnswerList(){
 	$.ajax({
@@ -343,7 +380,7 @@ function getAnswerList(){
 							  "	placeholder='개인정보를 공유 및 요청하거나, 명예 훼손, 무단 광고, 불법 정보 유포시 모니터링 후 삭제될 수 있으며, 이에 대한 민형사상 책임은 게시자에게 있습니다.'></textarea>"+
 							  "<div class='text-right m-1'><button type='button' id='questionAnswerCommentBtn' onclick='addAnswerComment("+item.answerId+")' class='btn btn-sm btn-primary text-right px-3'>등록</button></div></div>";
 							  
-				answerhtml += "<hr>";
+				answerhtml += "<hr class='mt-2'>";
 				openCommentCount(item.answerId);
 				$("#answerList").append(answerhtml);
 			})

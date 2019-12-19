@@ -151,10 +151,10 @@ $(document).ready(function() {
 				var html = "<tr>"+
 							"<td><span class='badge badge-primary m-0 mr-2 text-center'>Q</span>"+json.inquiryTitle+"</td>"+
 							"<td>"+json.inquiryDatetime+"</td>"+
-							"<td class='text-center'>"+json.inquiryAnswer+"</td>"+
+							"<td class='text-center'>답변완료</td>"+
 							"</tr>"+
 							"<tr>"+
-							"<td class='px-4'>답변완료</td>"+
+							"<td class='px-4'>"+json.inquiryContent+"</td>"+
 							"</tr>";
 				$("#inquiryOne").append(html);
 			} else {

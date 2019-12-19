@@ -233,7 +233,7 @@
 		    	qb.question_title,
 		 		qb.question_datetime, 
 		 		u.user_id
-		FROM question_board qb INNER JOIN USER u
+		FROM question_board qb INNER JOIN user u
 		on qb.user_id = u.user_id 
 		WHERE u.user_id = #{userId}
 		ORDER BY question_datetime DESC
@@ -265,7 +265,7 @@
 		    	qc.question_comment_datetime,
 		    	qc.question_comment_content,
 		    	u.user_id	 		
-		FROM question_comment qc INNER JOIN USER u INNER JOIN question_board qb
+		FROM question_comment qc INNER JOIN user u INNER JOIN question_board qb
 		ON qc.user_id = u.user_id AND qc.question_id = qb.question_id
 		WHERE u.user_id = #{userId}
 		ORDER BY qc.question_comment_datetime DESC
@@ -562,6 +562,7 @@
 			qb.question_title,
 			qb.question_content,
 			qb.question_datetime,
+			qb.question_tags,
 			qb.feild_id,
 			u.user_id,
 			u.user_name
@@ -575,7 +576,7 @@
 				q.question_id,
 				q.question_title,
 				q.question_datetime,
-				q.question_content,
+				q.question_tags,
 				q.user_id,
 				u.user_name,
 				CASE WHEN a.answer_count IS NULL then 0 ELSE a.answer_count END AS answer_count,
