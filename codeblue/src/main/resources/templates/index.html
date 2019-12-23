@@ -20,6 +20,84 @@
 <link href="css/sb-admin-2.min.css" rel="stylesheet">
 <!-- Custom styles for codeBlue -->
 <link href="css/codeBlue.css" rel="stylesheet">
+<style>
+#scroll a {
+  padding-top: 60px;
+}
+#scroll a span {
+  position: absolute;
+  left: 20%;
+  width: 18px;
+  height: 30px;
+  margin-left: -15px;
+  border: 2px solid #4e73df;
+  border-radius: 50px;
+  box-sizing: border-box;
+}
+#scroll a span::before {
+  position: absolute;
+  left: 50%;
+  content: '';
+  top:2px;
+  width: 6px;
+  height: 6px;
+  margin-left: -3px;
+  background-color: #4e73df;
+  border-radius: 100%;
+  -webkit-animation: sdb10 2s infinite;
+  animation: sdb10 2s infinite;
+  box-sizing: border-box;
+}
+@-webkit-keyframes sdb10 {
+  0% {
+    -webkit-transform: translate(0, 0);
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  80% {
+    -webkit-transform: translate(0, 15px);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes sdb10 {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  80% {
+    transform: translate(0, 15px);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.demo a {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  z-index: 2;
+  display: inline-block;
+  -webkit-transform: translate(0, -50%);
+  transform: translate(0, -50%);
+  color: #fff;
+  font : normal 400 20px/1 'Josefin Sans', sans-serif;
+  letter-spacing: .1em;
+  text-decoration: none;
+  transition: opacity .3s;
+}
+.demo a:hover {
+  opacity: .5;
+}
+</style>
 </head>
 <body id="page-top">
  
@@ -29,21 +107,26 @@
 	
 	<!-- Begin Page Content -->
 	<div class="NotoSans">
-		<div class="alert-primary p-3" style="background: linear-gradient(to bottom, #99ccff 0%, #dce3f9 100%)">
-			<div class="container text-center" style="padding-top: 120px;padding-bottom: 120px">
-					<h4 class="text-primary mb-0 mt-2 font-weight-bold"> 건강에 대한 호기심이 꽃 피는 곳 </h4>
-					<hr>
-					<img src="/img/codeBlue.png" width="78%">
-					<hr>
-					<img class="mt-5 py-5 mb-4" src="/img/ask.svg" width="350px"><br>
-					<h3 class="text-primary"><strong>코드블루</strong>는 건강의학지식기반 지식교류서비스 입니다.</h3>
+		<div class="p-3 pt-5" style="background: linear-gradient(to bottom, #99ccff 0%, #dce3f9 100%)">
+			<div class="container text-center py-5">
+				<h4 class="text-primary mb-0 mt-2 font-weight-bold"> 건강에 대한 호기심이 꽃 피는 곳 </h4>
+				<hr>
+				<img src="/img/codeBlue.png" width="78%">
+				<hr>
+				<img class="mt-5 py-5 mb-4 d-none d-lg-inline" src="/img/ask.svg" width="350px"><br>
+				<img class="mt-4 pb-5 mb-5 d-sm-none" src="/img/ask.svg" width="90%"><br>
+				<h3 class="text-primary"><strong>코드블루</strong>는 건강의학지식기반 지식교류서비스 입니다.</h3>
+				<div id="scroll" class="demo">
+				  <a><span></span></a>
+				</div>
 			</div>
 		</div>
 		
-		<div class="container text-center py-5 my-2">
+		<div class="container text-center py-5 my-2" id="how">
 			<h3 class="text-primary mb-0 mt-3 font-weight-bold">코드블루는 어떻게 운영될까요?</h3>
 			<hr>
-			<img class="py-5" src="/img/questionMark.svg" width="350px"><br>
+			<img class="py-5 d-none d-lg-inline" src="/img/questionMark.svg" width="350px"><br>
+			<img class="py-5 d-sm-none" src="/img/questionMark.svg" width="90%"><br>
 			<h4 class="text-primary mb-3">코드블루에서는 사용자가 올린 질문이나 궁금한 내용, 고민에 대해 다른<br>사용자들이 자발적으로 답을 달면서 지식을 주고받습니다.</h4>
 		</div>
 		
@@ -51,7 +134,8 @@
 			<div class="container text-center py-5 my-2">
 					<h3 class="text-primary mb-0 mt-3 font-weight-bold">코드블루는 건강한 교류서비스 유지를 위해 노력합니다.</h3>
 					<hr>
-					<img class="m-4 py-2" src="/img/obs.svg" width="350px"><br>
+					<img class="m-4 py-2 d-none d-lg-inline" src="/img/obs.svg" width="350px"><br>
+					<img class="m-4 py-2 d-sm-none" src="/img/obs.svg" width="90%"><br>
 					<h4 class="text-primary mb-3"><strong>코드블루</strong>는 건강한 교류 활동이 유지 될 수 있도록 건강한 교류 문화를 활성화 하고 유지하기 위해 힘씁니다.</h4>
 			</div>
 		</div>
@@ -66,9 +150,8 @@
 			<i class="fab fa-html5 text-primary fa-5x mx-3"></i>
 			<i class="fab fa-css3-alt text-primary fa-5x mx-3"></i>
 			<i class="fab fa-github text-primary fa-5x mx-3"></i>
-			<i class="fas fa-code text-primary fa-5x mx-3"></i>
 			<hr>
-			<small>코드블루는 크루들의 <a>💙</a>으로 만들어졌습니다. 크루 상시채용중./</small>
+			<small>코드블루는 크루들의 💙으로 만들어졌습니다.</small>
 		</div>
 		
 		<div class="alert-primary text-center p-5" style="background: linear-gradient(to top, #99ccff 0%, #dce3f9 100%);">
@@ -108,7 +191,7 @@
 					</div>
 				</div><!-- row end -->
 			</div>
-			<small>이미지를 클릭하면 깃허브로 이동합니다. 💙 </small>
+			<small>이미지를 클릭하면 깃허브로 이동합니다.</small>
 		</div>
 		
 	</div><!-- content container end -->
@@ -157,5 +240,4 @@
   	<script src="js/codeBlueUser.js"></script>
 
 </body>
-
 </html>
